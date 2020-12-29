@@ -1,14 +1,17 @@
-name: Quant II
+name: Quantitative Methods II
 output_dir: "."
 navbar:
   title: "Psych 5067"
   left:
     - text: Syllabus
       href: schedule.html
-    - text: Lectures
+    - text: Lecture Slides
       menu:
+      - text: "Something Here"
     - text: Lecture Videos
+      href: lectureVideos.html
     - text: Homework
+      href: homework.html
 output:
   html_document:
     lib_dir: site_libs
