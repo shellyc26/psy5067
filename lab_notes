@@ -1,0 +1,150 @@
+notes for lab materials
+
+Lab 2: Univariate Regression *CORY*
+
+saving lm() output as a list 
+  * how to explore this using View()
+  * specific functions for extracting information
+      * coefficients(mod.1)       # coefficients
+      * residuals(mod.1)          # residuals
+      * fitted.values(mod.1)      # fitted values ie predicted
+      * summary(mod.1)$r.squared  # R-sq for the model
+      * summary(mod.1)$sigma      # se of the model
+  * broom::tidy() and broom::augment()
+    * reason for using these is that extracting information from lm() output is messy -- list form, missingness problems
+    
+APA worthy tables
+  * stargazer::stargazer()
+    * can you make this work with an HTML RMarkdown?
+    * using `out = file.html` argument to save to external file (show them how to open with Word)
+  * sjPlot::tab_model()
+    * using argument `file = file.doc` argument to save to external file
+    * this one doesn't work with Rmarkdown (that saves using pandoc, which is what's used to create HTML and Word files)
+    
+------------------------------------------------------------------------------------------------------
+    
+Lab 3: Regression (cont) & GLM *BRENDAN*
+
+APA graphics
+  *sjPlot::plot_model()
+    * for now, don't worry about different types of plots
+      * in fact, most arguments don't work right for univariate regression
+    * show.data = T
+  * ggpubr::ggscatter()
+    * add stat_cor() so they can add the text of the correlation to it
+
+* confint()
+* predict() -- within and out-of sample
+
+------------------------------------------------------------------------------------------------------
+
+Lab 4: Two continuous predictors *CORY*
+-partial correlations
+-semi-partial correlations (don't talk about how they're not symmetric -- this will be a HW question)
+-partial & semi-partial MATRIX
+-functions to teach = ppcor::pcor.test() and ppcor::spcor.test()
+-extracting output from these functions
+-multiple regression with two continuous predictors (how to interpret coefficients)
+-show how to make tables
+  sjPlot -- can put two regression models in a single table
+
+------------------------------------------------------------------------------------------------------
+
+Lab 5: Categorical predictors/one-way ANOVA *BRENDAN*
+-stats::aov() 
+-making your categorical predictor a factor (make sure it's not numeric--thinks it's continuous and will do it wrong--show them the wrong way)
+  --if it's continuous, the degrees of freedom will be 1 (which is wrong!); if it's a factor (as it should be), it will be the number of groups minus 1
+  --this doesn't matter in the two groups case, bc in this case df will also equal 1
+-review how factors work in R (don't talk about ordered vs. non-ordered)
+-look at degrees of freedom for your categorical predictor--does it make sense? 
+- dummy coding and effects coding
+* setting dummy codes with constrasts(outcome) = contr.treatment(1) #replace 1 with whatever level you want to be the reference
+* also setting effects coding with contr.sum(3) #3 being the reference group
+  --intercept = grand mean and slope = difference between each group and grand mean 
+  
+* aov() will get you sums of squares, and then you can do pairwise.t.test and use Bonferonni and Holm corretion
+* if you do ANOVA using lm(), you get traditional ANOVA table in additiona to built-in pairwise comparions 
+
+* plotting and making tables (sjPlot and stargazer)--you've already learned these functions, now we're just putting in a different type of model
+
+------------------------------------------------------------------------------------------------------
+
+Lab 6: Assumptions and Diagnostics *CORY*
+
+Don't worry about going through all the code covered in lecture. 
+Primary goals should be 
+- sjPlot::plot_model(., type = "diag") #plots 4 diagnostic plots
+- plotting residuals against 
+    * fitted values
+    * predictors
+    * ID (or other variables not in the model, like date or gender)
+
+You might also point them back to the olsrr package, which has good documentation and useful plots for detecting outliers: https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html -- 
+
+------------------------------------------------------------------------------------------------------
+
+Lab 7: Interactions *BRENDAN*
+
+-interaction with continuous predictors 
+-simple slopes ("by hand" with +/- 1 SD)
+-reghelper::simple_slopes()
+-plotting interactions with sjPlot (plot_model, type = "int"")--look at lecture slides for other options for plotting (switching between X and Y, plotting moderator at specific values)
+-for inspiration, see: 
+-http://www.strengejacke.de/sjPlot/
+-http://www.strengejacke.de/sjPlot/articles/plot_interactions.html
+
+-centering and standardizing
+
+------------------------------------------------------------------------------------------------------
+
+Lab 8: Factorial ANOVA *BRENDAN*
+
+-use lm() function (it'll give you the same thing as aov())
+  -anova() on lm object gives you anova table
+-create tables:
+  -apa.aov.table() - factorial ANOVA output
+  -apa.2way.table() --> gives you just means and marginal means
+  -https://cran.r-project.org/web/packages/apaTables/vignettes/apaTables.html
+
+- emmeans package for obtaining means and SEs for groups (look at slides for Thursday 2/27)
+ > fit = lm(Y ~ X1*X2, data = data)
+ > all.means = ref.grid(fit)
+ > x1.means = ref.grid(fit, "x1")
+ 
+-sjPlot:: plot_model() to get plots of marginal means and conditional means --> this gives you dots
+
+-if you want barplots instead...
+-ggpubr will give you a bar plot instead of dots (which plot_model gives you)
+  -NOTE: the confidence intervals will look different for each group because it does not pool standard deviations (which isn't accurate if you've met the homogeniety of variance assumption)
+  -don't go over ggpubr in lab, just link to ggpubr page or point them to Sara's source code from lecture
+  -you can also show them code for using sjplot::plot_model() output (means and CIs) to create a ggplot bar graph (see Sara's code from Slack)
+
+-calculating eta squared
+-lsr::etaSquared
+
+------------------------------------------------------------------------------------------------------
+
+Lab 9: Papaja *CORY*
+
+-creating tables
+https://crsh.github.io/papaja_man/reporting.html#tables (also link to this whole book)
+
+-create a model
+-apa_print() will allow you to index separate coefficients that you can put in in-line code
+-apa_table(apa_print(model_object)$table) will genereate latex code to give you a formatted model summary table  
+
+For citations: https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+
+------------------------------------------------------------------------------------------------------
+
+Lab 10: Bootstrapping *CORY*
+
+-use when you can't assume estimate is normally distribution; e.g. correlations 
+-use when comparing very small or unequal samples 
+-use when you want to get precision around some estimate that doens't come with it's own standard error (e.g. R^2, Cronbach's alpha)
+
+- boot::boot() function
+- base R cheatsheet for functions
+- other options to mention:
+  - papaja::apa_print.list()
+  - lavaan

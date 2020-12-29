@@ -1,0 +1,537 @@
+---
+title: 'Univariate regression II'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = F, message = F, warning=F}
+library(tidyverse)
+library(broom)
+```
+
+
+## Last time...
+
+- Introduction to univariate regression
+
+- Calculation and interpretation of $b_0$ and $b_1$
+
+- Relationship between $X$, $Y$, $\hat{Y}$, and $e$ 
+
+---
+
+### Today...
+
+Regression to the mean
+
+Statistical inferences with regression
+
+- Partitioning the variance
+
+- Testing $b_{xy}$
+
+---
+
+## Regression to the mean
+
+Galton's observation about heights was part of the motivation to develop the regression equation: If you selected a parent who was exceptionally tall (or short), their child was almost always not as tall (or as short).
+
+```{r, echo = F, warning = F, message = F, fig.height = 4}
+library(psychTools)
+library(tidyverse)
+galton = psychTools::galton
+mod = lm(child~parent, data = galton)
+point = 902
+galton = broom::augment(mod)
+
+
+galton %>%
+  ggplot(aes(x = parent, y = child)) +
+  geom_point(alpha = .3) +
+  geom_hline(aes(yintercept = 72), color = "red") +
+  geom_vline(aes(xintercept = 72), color = "red") +
+  theme_bw(base_size = 20)
+```
+
+
+---
+
+## Regression to the mean
+
+This phenomenon is known as **regression to the mean.** This describes the phenomenon in which an random variable produces an extreme score on a first measurement, but a lower score on a second measurement. 
+
+.pull-left[
+We can see this in the standardized regression equation:
+
+$$\hat{Y} = r_{xy}(X) + e$$
+In that the slope coefficient can never be greater than 1. 
+
+]
+
+.pull-right[
+![](images/quincunx.png)
+]
+
+---
+
+## Regression to the mean
+
+This can be a threat to internal validity if interventions are applied based on first measurement scores. 
+
+.pull-left[
+```{r, echo = F, message = F, warning =F}
+set.seed(011620)
+true_score = rnorm(m = 75, sd = 7, n = 35)
+midterm = true_score + rnorm(sd = 4, n = 35)
+final = true_score + rnorm(sd = 4, n = 35)
+grades = data.frame(midterm = midterm, final = final, 
+                    tutor = ifelse(midterm < 70, "yes", "no")) 
+
+grades$change = final-midterm
+library(ggpubr)
+ggpubr::ggerrorplot(data = grades, 
+                    x = "tutor", 
+                    y = "change", 
+                    desc_stat = "mean_ci", 
+                    color = "tutor", 
+                    ylab = "Change in grade between final and midterm", size = 2) + 
+  theme_minimal(base_size = 20)
+```
+]
+--
+
+.pull-right[
+```{r, echo = F}
+ggpubr::ggscatter(data = grades, 
+                  x = "midterm", 
+                  y = "final", 
+                  color = "tutor",
+                  size = 3) + theme_minimal(base_size = 20)
+```
+
+]
+
+---
+
+## Statistical Inference
+
+- The way the world is = our model + error
+
+- How good is our model? Does it "fit" the data well? 
+
+--
+
+To assess how well our model fits the data, we simply take all the variability in our outcome and partition it into different categories. For now, we will partition it into two categories: the variability that is predicted by (explained by) our model, and variability that is not.
+
+---
+
+## Partitioning variation 
+
+- We formally test how well we are doing with our guesses by partitioning variation
+
+$$Y = \hat{Y} + e$$
+
+$$Y = \hat{Y} + (Y - \hat{Y})$$
+
+$$Y - \bar{Y} = (\hat{Y} -\bar{Y}) + (Y - \hat{Y})$$
+
+$$(Y - \bar{Y})^2 = [(\hat{Y} -\bar{Y}) + (Y - \hat{Y})]^2$$
+
+$$\sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
+---
+
+$$\Large \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
+
+Each of these is the sum of a squared deviation from an expected value of Y. We can abbreviate the sum of squared deviations:
+
+$$\Large SS_Y = SS_{\text{Model}} + SS_{\text{Residual}}$$
+
+The relative magnitude of sums of squares, especially in more complex designs, provides a way of identifying particularly large and important sources of variability. In the future, we can further partition $SS_{\text{Model}}$ and $SS_{\text{Residual}}$ into smaller pieces, which will help us make more specific inferences and increase statistical power, respectively. 
+
+$$\Large s^2_Y = s^2_{\hat{Y}} + s^2_{e}$$
+---
+
+## Partitioning variance in Y
+Consider the case with no correlation between X and Y
+
+$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
+--
+$$\Large \hat{Y} = \bar{Y}$$
+
+To the extent that we can generate different predicted values of Y based on the values of the predictors, we are doing well in our prediction
+
+$$\large \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
+
+$$\Large SS_Y = SS_{\text{Model}} + SS_{\text{Residual}}$$
+
+---
+## Coefficient of Determination
+
+$$\Large \frac{s_{Model}^2}{s_{y}^2} = \frac{SS_{Model}}{SS_{Y}} = R^2$$
+
+$R^2$ represents the proportion of variance in Y that is explained by the model. 
+
+--
+
+$\sqrt{R^2} = R$ is the correlation between the predicted values of Y from the model and the actual values of Y
+
+$$\large \sqrt{R^2} = r_{Y\hat{Y}}$$
+---
+
+```{r, echo = F}
+set.seed(123)
+x.1 <- rnorm(10, 0, 1)
+e.1 <- rnorm(10, 0, 2)
+y.1 <- .5 + .55 * x.1 + e.1
+d.1 <- data.frame(x.1,y.1)
+m.1 <- lm(y.1 ~ x.1, data = d.1)
+d1.f<- augment(m.1)
+```
+
+.pull-left[
+```{r, echo = F}
+d1.f %>%
+  ggplot(aes(x = x.1, y = y.1)) +
+  geom_smooth(se = F, method = "lm")+
+  geom_point(shape = 1, size = 4) +
+  geom_point(aes(y = .fitted), color = "red", size = 4)+
+  theme_bw(base_size = 35)
+```
+]
+
+--
+
+.pull-right[
+```{r, echo = F}
+d1.f %>%
+  ggplot(aes(x = y.1, y = .fitted)) +
+  geom_smooth(se = F, method = "lm")+
+  geom_point(color = "black", size = 4) +
+  theme_bw(base_size = 35)
+```
+]
+
+
+
+
+---
+## Example
+```{r, echo = 2:4, highlight.output = 17}
+galton.data <- psychTools::galton
+fit.1 = lm(child ~ parent, data = galton.data)
+summary(fit.1) 
+summary(fit.1)$r.squared
+```
+
+---
+## Example
+
+```{r}
+cor(galton.data$parent, galton.data$child, use = "pairwise")
+```
+
+--
+
+```{r}
+cor(galton.data$parent, galton.data$child)^2
+```
+
+---
+## Computing Sum of Squares
+
+$$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$
+$$\Large SS_{Model} = R^2({SS_{Y})}$$
+$$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$
+
+$$\Large  SS_{residual} = (1- R^2){SS_{Y}}$$
+???
+ 
+```{r,echo=FALSE, message=FALSE, warning = F}
+set.seed(123)
+library(broom)
+library(tidyverse)
+x.1 <- rnorm(10, 0, 1)
+e.1 <- rnorm(10, 0, 2)
+y.1 <- .5 + .55 * x.1 + e.1
+d.1 <- data.frame(x.1,y.1)
+m.1 <- lm(y.1 ~ x.1, data = d.1)
+d1.f<- augment(m.1)
+d1.f$color = "black"
+d1.f[9, "color"] = "red"
+newcolors = c("black", "red")
+```
+
+
+```{r, echo=FALSE}
+ggplot(d1.f , aes(x=x.1, y=y.1)) +
+  geom_point(size = 2, aes(color = color)) +
+  geom_smooth(method = lm, se = FALSE) +
+  geom_point(aes(y = .fitted, color = color), shape = 1, size = 2) +
+  geom_segment(aes( xend = x.1, yend = .fitted, color = color))+
+  geom_hline(aes(yintercept = mean(y.1)))+
+  scale_color_manual(values = newcolors)+
+  guides(color = F)+
+  theme_bw(base_size = 20)
+```
+
+---
+## residual standard error
+
+```{r, echo=FALSE, highlight.output = 16}
+summary(fit.1)
+```
+
+---
+## residual standard error/deviation 
+
+- aka standard deviation of the residual
+- aka **standard error of the estimate**
+
+$$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y|X} = \sqrt{\frac{\Sigma(Y_i -\hat{Y_i})^2}{N-2}}$$
+
+- interpreted in original units (unlike $R^2$)
+
+- standard deviation of Y not accounted by model
+
+---
+
+## residual standard error/deviation or standard error of the estimate
+
+
+```{r}
+summary(fit.1)$sigma 
+galton.data.1 = broom::augment(fit.1)
+psych::describe(galton.data.1$.resid)
+sd(galton.data$child)
+```
+
+---
+
+
+```{r, echo = F}
+set.seed(20200116)
+x.1 = rnorm(1000,0,1)
+e = seq(4, .01, by = -.1)
+r2 = numeric(length = length(e))
+rsd= numeric(length = length(e))
+for(i in 1:length(e)){
+  e.1 <- rnorm(1000, 0, e[i])
+  y.1 <- .5 + .55 * x.1 + e.1
+  d.1 <- data.frame(x.1,y.1)
+  m.1 <- lm(y.1 ~ x.1, data = d.1)
+  r2[i] = summary(m.1)$r.squared
+  rsd[i] = summary(m.1)$sigma
+}
+
+data.frame(r2 = r2, rsd = rsd) %>%
+  ggplot(aes(x = r2, y = rsd)) + 
+  geom_line() +
+  scale_x_continuous(expression(paste(R^2))) + 
+  scale_y_continuous(expression(hat(sigma[e])))  +
+  theme_bw(base_size = 20)
+```
+---
+## $R^2$ and residual standard deviation
+
+- two sides of same coin
+
+- one in original units, the other standardized 
+
+- $R^2$ can be tricky because the numerator and denominator can be changed in different ways. 
+
+- for example if variance in Y is changed but with the same model and residual standard error $R^2$ could decline or increase
+
+---
+## Inferential tests
+
+NHST is about making decisions:
+  
+  - these two means are/are not different
+  - this correlation is/is not significant
+  - the distribution of this categorical variable is/is not different between these groups
+  
+--
+
+In regression, there are several inferential tests being conducted at once. The first is called the **omnibus test** -- this is a test of whether the model fits the data. 
+
+---
+
+### Omnibus test
+
+$$\Large H_{0}: \rho_{XY}^2= 0$$
+
+$$\Large H_{0}: \rho_{XY}^2 \neq 0$$
+
+It is possible to calculate the significance of your regression with a correlation test. In fact, it would seem quite practical and logical to do so. 
+
+--
+
+However, historically we use a different probability distribution -- **the _F_ distribution** to estimate the significance of our model. It's important to know that these methods are mathematically equivalent. But the _F_ distribution is useful here, because it works with our ability to partition variance.
+
+---
+
+```{r, echo = F}
+data.frame(x = c(0, 5)) %>%
+  ggplot(aes(x = x)) +
+  stat_function(fun = function(x) df(x, df1 = 3, df2 = 10), 
+                geom = "line", aes(color = "df1 = 3", linetype = "df2 = 10")) +
+  stat_function(fun = function(x) df(x, df1 = 1, df2 = 10), 
+                geom = "line", aes(color = "df1 = 1", linetype = "df2 = 10")) +
+  stat_function(fun = function(x) df(x, df1 = 5, df2 = 10), 
+                geom = "line", aes(color = "df1 = 5", linetype = "df2 = 10")) +
+    stat_function(fun = function(x) df(x, df1 = 3, df2 = 50), 
+                geom = "line", aes(color = "df1 = 3", linetype = "df2 = 50")) +
+  stat_function(fun = function(x) df(x, df1 = 1, df2 = 50), 
+                geom = "line", aes(color = "df1 = 1", linetype = "df2 = 50")) +
+  stat_function(fun = function(x) df(x, df1 = 5, df2 = 50), 
+                geom = "line", aes(color = "df1 = 5", linetype = "df2 = 50")) +
+  scale_y_continuous("density")+
+  theme_bw(base_size = 20)
+```
+
+
+---
+
+## _F _ Distribution review
+
+The F probability distribution represents all possible ratios of two variances:
+
+$$F \approx \frac{s^2_{1}}{s^2_{2}}$$
+Each variance estimate in the ratio is $\chi^2$ distributed, if the data are normally distributed. The ratio of two $\chi^2$ distributed variables is $F$ distributed. It should be noted that each $\chi^2$ distribution has its own degrees of freedom.
+
+$$F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$
+As a result, _F_ has two degrees of freedom, $\nu_1$ and $\nu_2$
+
+???
+
+---
+
+## _F_  Distributions and regression
+
+Recall that when using a _z_ or _t_ distribution, we were interested in whether one mean was equal to another mean -- sometimes the second mean was calculated from another sample or hypothesized (i.e., the value of the null). In this comparison, we compared the _difference of two means_ to 0 (or whatever our null hypothesis dictates), and if the difference was not 0, we concluded significance. 
+
+_F_ statistics are not testing the likelihood of differences; they test the size of a _ratio_. In this case, we want to determine whether the variance explained by our model is larger in magnitude than another variance. 
+
+Which variance?
+
+---
+
+$$\Large F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$
+$$\Large F_{\nu_1\nu_2} = \frac{\frac{\text{Variance}_{\text{Model}}}{\nu_1}}{\frac{\text{Variance}_{\text{Residual}}}{\nu_2}}$$
+
+$$\Large F = \frac{MS_{Model}}{MS_{residual}}$$
+---
+
+.pull-left[
+The degrees of freedom for our model are 
+
+$$DF_1 = k$$
+$$DF_2 = N-k-1$$
+
+Where k is the number of IV's in your model, and N is the sample size. ]
+
+.pull-right[
+
+Mean squares are calculated by taking the relevant Sums of Squares and dividing by their respective degrees of freedom.
+
+- $SS_{\text{Model}}$ is divided by $DF_1$
+
+- $SS_{\text{Residual}}$ is divided by $DF_2$
+]
+
+---
+
+```{r}
+anova(fit.1)
+```
+
+---
+
+```{r,highlight.output=18}
+summary(fit.1)
+```
+
+
+---
+## Mean square error (MSE)
+
+
+- AKA means square residual/within
+
+- unbiased estimate of error variance
+
+    - measure of discrepancy between the data and the model
+
+- the MSE is the variance around the fitted regression line
+
+- Note: this is not the same thing as the residual standard error
+
+---
+## regression coefficient
+
+$$\Large H_{0}: \beta_{1}= 0$$
+$$\Large H_{1}: \beta_{1} \neq 0$$
+---
+## What does the regression coefficient test?
+- Does X provide any predictive information? 
+
+- Does X provide any explanatory power regarding the variability of Y? 
+
+- Is the the average value the best guess (i.e., is Y bar equal to the predicted value of Y?)
+
+- Is the regression line flat? 
+
+- Are X and Y correlated?  
+
+---
+## Regression coefficient
+$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$
+$$\Large t(n-2) = \frac{b_{1}}{se_{b}}$$
+---
+
+## $SE_b$
+
+- standard errors for the slope coefficient
+
+- represent our uncertainty (noise) in our estimate of the regression coefficient 
+
+- different from residual standard error/deviation (but proportional to)  
+
+- much like previously we can take our estimate (b) and put confidence regions around it to get an estimate of what could be "possible" if we ran the study again  
+
+---
+## Intercept
+
+- more complex standard error calculation as the calculation depends on how far the X value (here zero) is away from the mean of X
+
+    - farther from the mean, less information, thus more uncertainty 
+    
+---
+```{r, highlight.output = c(11,12)}
+summary(fit.1)
+```
+
+---
+
+class: inverse
+
+## Next time...
+
+Even more univariate regression!
+
+--
+
+- Confidence intervals 
+
+- Confidence and prediction _bands_
+
+- Model comparison
+
+- **Matrix algebra**

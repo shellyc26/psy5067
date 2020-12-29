@@ -1,0 +1,38 @@
+---
+title: "Helpful and/or interesting material"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 2
+    toc_float: TRUE
+    theme: cosmo
+---
+
+This page contains links to journal articles, blog posts, webpages, etc., that we (the instructors) believe may be useful to you, or at the very least interesting. **Bold** articles are ones that we consider **must-reads** but don't have enough time to actually assign. And to be clear, must-read means that people will probably assume you've read this and know the basic points.  
+
+## On coding and data science
+
+Peters (2004) ["The Zen of Python."](https://www.python.org/dev/peps/pep-0020/) -- A list of 19 principles for writing better Python code; the principles also apply to writing better R code. 
+
+Hill (2019) ["Meet xaringan."](https://arm.rbind.io/slides/xaringan.html#1) -- There are a ton of resource for learning how to make slides using R. Too many to list here. I like this one because it's accessible, funny, visually appealing, and will help you make slides that you're proud of. (By the way, UO has theme you can use.)
+
+Bryan (2019) ["Happy Git with R."](https://happygitwithr.com) -- Interested in using GitHub for version control? Jenny Bryan will guide you through the process and metaphorically hand you a tissue when you're screaming with frustration.
+
+## On creating useful graphics
+
+Patil (2020) ["ggstatsplot"](https://indrajeetpatil.github.io/ggstatsplot/index.html) -- A very useful R package for creating visuals to display some basic univariate and bivariate descriptives. 
+
+## On statistical models
+
+[YouTube series on linear algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
+
+[PSY 611](https://uopsych.github.io/psy611/) -- Don't forget everything we covered last term!
+
+Dunn & Smyth (2019) [Generalized Linear Models With Examples in R](https://link.springer.com/book/10.1007/978-1-4419-0118-7) -- if you're looking for a supplemental (free, online) textbook to cover general and generalized linear models, I highly recommend this one. It includes useful tidbits, like [coding factors](https://link.springer.com/chapter/10.1007/978-1-4419-0118-7_1#Sec4), an expansion on the [matrix algebra notation](https://link.springer.com/chapter/10.1007/978-1-4419-0118-7_2#Sec13) for multiple regression, and an extended section on the [R code](https://link.springer.com/chapter/10.1007/978-1-4419-0118-7_2#Sec39) useful for linear models. Plus, it expands to cases we don't cover in class. 
+
+## On politics and forecasting
+
+Silver (May 2016) [How I Acted Like A Pundit And Screwed Up On Donald Trump](https://fivethirtyeight.com/features/how-i-acted-like-a-pundit-and-screwed-up-on-donald-trump/) -- Nate Silver discusses how he allowed bias into his polling models and missed a prediction he could have made.
+
+Silver (Nov 2016) [Why FiveThirtyEight Gave Trump A Better Chance Than Almost Anyone Else](https://fivethirtyeight.com/features/why-fivethirtyeight-gave-trump-a-better-chance-than-almost-anyone-else/) --  Nate Silver discusses how his models are bias and theory-free and 538 got it right.
+

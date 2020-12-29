@@ -1,0 +1,657 @@
+---
+title: 'Bootstrapping'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = F, message = F, warning = F}
+library(tidyverse)
+```
+
+
+#Last time...
+
+Wrapping up interactions
+
+* Power
+
+# Today
+
+Finish polynomials and 3-way interactions
+
+Robust estimation
+* Weighted Least Squares
+* Boostrapping
+
+---
+## Polynomial regression 
+ 
+Polynomial regression is most often a form of hierarchical regressoin that systematically tests a series of higher order functions for a single variable.
+
+$$
+\begin{aligned}
+\large \textbf{Linear: } \hat{Y} &= b_0 + b_1X \\
+\large \textbf{Quadtratic: } \hat{Y} &= b_0 + b_1X + b_2X^2 \\
+\large \textbf{Cubic: } \hat{Y} &= b_0 + b_1X + b_2X^2 + b_3X^3\\
+\end{aligned}
+$$
+
+---
+### Example
+
+Can a team have too much talent? Researchers hypothesized that teams with too many talented players have poor intrateam coordination and therefore perform worse than teams with a moderate amount of talent. To test this hypothesis, they looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
+
+```{r, message=F}
+library(here)
+football = read.csv(here("data/swaab.csv"))
+```
+
+.small[Swaab, R.I., Schaerer, M, Anicich, E.M., Ronay, R., and Galinsky, A.D. (2014). [The too-much-talent effect: Team
+interdependence determines when more talent is too much or not enough.](https://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Too%20much%20talent%20PS.pdf) _Psychological Science 25_(8), 1581-1591.]
+
+---
+
+```{r mod1, warning = F, message = F, fig.width = 10, fig.height = 5}
+mod1 = lm(points ~ talent, data = football)
+library(broom)
+aug1 = augment(mod1)
+ggplot(aug1, aes(x = .fitted, y = .resid)) +
+  geom_point() + 
+  geom_smooth(se = F) +
+  theme_bw(base_size = 20)
+```
+
+---
+```{r mod2}
+mod2 = lm(points ~ talent + I(talent^2), data = football)
+summary(mod2)
+```
+
+---
+
+```{r, message = F}
+library(sjPlot)
+plot_model(mod2, type = "pred")
+```
+
+---
+## Interpretation
+
+The intercept is the predicted value of Y when x = 0 -- this is always the interpretation of the intercept, no matter what kind of regression model you're running. 
+
+The $b_1$ coefficient is the tangent to the curve when X=0. In other words, this is the rate of change when X is equal to 0. If 0 is not a meaningful value on your X, you may want to center, as this will tell you the rate of change at the mean of X.
+
+---
+
+## Interpretation
+
+The $b_2$ coefficient indexes the acceleration, which is how much the slope is going to change. More specifically, $2 \times b_2$ is the acceleration: the rate of change in $b_1$ for a 1-unit change in X.
+
+You can use this to calculate the slope of the tangent line at any value of X you're interested in:
+$$\large b_1 + (2\times b_2\times X)$$
+
+---
+
+```{r}
+tidy(mod2)
+```
+
+.pull-left[
+**At X = 10**
+```{r}
+54.9 + (2*-.570*10)
+```
+
+]
+.pull-right[
+**At X = 70**
+```{r}
+54.9 + (2*-.570*70)
+```
+
+]
+
+---
+
+## Polynomials are interactions
+
+An term for $X^2$ is a term for $X \times X$ or the multiplication of two independent variables holding the same values. 
+
+```{r}
+football$talent_2 = football$talent*football$talent
+tidy(lm(points ~ talent + talent_2, data = football))
+```
+---
+
+## Polynomials are interactions
+
+Put another way:
+
+$$\large \hat{Y} = b_0 + b_1X + b_2X^2$$
+
+$$\large \hat{Y} = b_0 + \frac{b_1}{2}X + \frac{b_1}{2}X + b_2(X \times X)$$
+
+The interaction term in another model would be interpreted as "how does the slope of X change as I move up in Z?" -- here, we ask "how does the slope of X change as we move up in X?"
+---
+
+## When should you use polynomial terms?
+
+You may choose to fit a polynomial term after looking at a scatterplot of the data or looking at residual plots. A U-shaped curve may be indicative that you need to fit a quadratic form -- although, as we discussed before, you may actually be measuring a different kind of non-linear relationship. 
+
+Polynomial terms should mostly be dictated by theory -- if you don't have a good reason for thinking there will be a change in sign, then a polynomial is not right for you.
+
+And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
+---
+
+```{r, warning = F, message = F, fig.width=10, fig.height=5}
+aug2 = augment(mod2)
+ggplot(aug2, aes(x = .fitted, y = .resid)) +
+  geom_point() + 
+  geom_smooth(se = F) +
+  theme_bw(base_size = 20)
+
+```
+
+---
+
+```{r, warning = F, message = F, fig.width=10, fig.height=7}
+plot_model(mod2, type = "pred", show.data = T)
+```
+
+---
+
+class: inverse
+
+## Three-way interactions and beyond
+
+---
+
+
+### Three-way interactions (regression)
+
+**Regression equation**
+
+$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$
+The three-way interaction qualifies the three main effects (and any two-way interactions). 
+
+Like a two-way interaction, the three-way interaction is a conditional effect.  And it is symmetrical, meaning there are several equally correct ways of interpreting it.
+
+**Factorial ANOVA**
+
+We describe the factorial ANOVA design by the number of levels of each factor. "X by Z by W" (e.g., 2 by 3 by 4, or 2x3x4)
+---
+A two-way  (A x B) interaction means that the magnitude of one main effect (e.g., A main effect) depends on levels of the other variable (B).  But, it is equally correct to say that the magnitude of the B main effect depends on levels of A. In regression, we refer to these as **conditional effects** and in ANOVA, they are called **simple main effects.**
+
+A three-way interaction means that the magnitude of one two-way interaction (e.g., A x B) depends on levels of the remaining variable (C). 
+
+It is equally correct to say that the magnitude of the A x C interaction depend on levels of B. Or, that the magnitude of the B x C interaction depends on levels of A. These are known as **simple interaction effects**.
+
+---
+### Example (regression)
+
+```{r, echo = F}
+set.seed(03032020)
+gender = sample(c("male", "female"), size = 150, replace = T)
+bad_day = sample(x = c(1:5), size = 150, replace = T)
+talk = round(2*(gender == "female") + .2*(bad_day) + rnorm(n = 150))
+talk = talk + 1
+talk[talk < 1] = 1
+talk[talk > 5] = 5
+stress = bad_day + talk - (bad_day*talk) + round(rnorm(n = 150, sd = 5))
+stress_m = bad_day + talk + (bad_day*talk)+ round(rnorm(n = 150, sd = 5))
+stress[gender == "male"] = stress_m[gender == "male"]
+stress = stress+1+abs(min(stress))
+
+stress_data = data.frame(gender, bad_day, talk, stress)
+```
+
+
+```{r}
+psych::describe(stress_data, fast = T)
+table(stress_data$gender)
+```
+
+---
+
+```{r}
+mod_stress = lm(stress ~ bad_day*talk*gender, data = stress_data)
+summary(mod_stress)
+```
+
+---
+
+```{r, message = F}
+library(reghelper)
+simple_slopes(mod_stress)
+```
+
+---
+
+```{r, fig.width=10, fig.height = 7}
+plot_model(mod_stress, type = "int", mdrt.values = "meansd")
+```
+
+---
+
+As a reminder, centering will change all but the highest-order terms in a model. 
+
+```{r}
+stress_data = stress_data %>%
+  mutate(bad_day_c = bad_day - mean(bad_day),
+         talk_c = talk - mean(talk))
+newmod = lm(stress ~ bad_day_c*talk_c*gender, data = stress_data)
+```
+
+---
+```{r}
+tidy(mod_stress)
+```
+```{r}
+tidy(newmod)
+```
+
+
+---
+### Four-way? 
+
+
+$$
+\begin{aligned}
+\hat{Y} &= b_0 + b_1X + b_{2}Z + b_{3}W + b_{4}Q + b_{5}XW\\
+&+ b_{6}ZW + b_{7}XZ + b_{8}QX + b_{9}QZ + b_{10}QW\\
+&+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ + b_{15}XZWQ\\
+\end{aligned}
+$$
+
+--
+
+3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test (more on this later). 
+
+---
+
+Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
+
+Best practice for 3-way (and higher) interactions is to use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator.
+
+Even better if one of these moderators is experimenter manipulated, which increases the likelihood of balanced conditions. 
+
+---
+class: inverse
+
+no more interactions
+---
+
+## Homoscedasticity
+
+Homoscedasticity is the assumption that the variance of Y is constant across all levels of a predictor.
+
+```{r, echo = F}
+set.seed(031020)
+N = 80
+n.per = round(N/4)
+y.x1 = rnorm(n = n.per, mean = 50, sd = 10)
+y.x2 = rnorm(n = n.per, mean = 40, sd = 7)
+y.x3 = rnorm(n = n.per, mean = 30, sd = 5)
+y.x4 = rnorm(n = n.per, mean = 20, sd = 2)
+
+y = c(y.x1, y.x2, y.x3, y.x4)
+
+x.list = sapply(c(1:4), function(x) rnorm(n = n.per, mean = x, sd = .2))
+xvar = as.vector(x.list)
+
+Data = data.frame(calm = xvar, 
+                  problems = round(y/10))
+```
+
+```{r, message = F, fig.height = 4}
+library(tidyverse)
+ggplot(Data, aes(x = calm, y = problems)) +
+  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1))
+```
+
+---
+
+## Weighted least squares
+
+Weighted least squares (WLS) is a commonly used remedial procedure for heteroscedasticity (or failiing to meet the assumptino of homoscedasticity).
+
+In an ordinary least squares (OLS) approach, each case in the dataset is given equal weight. WLS assigns each case a weight $w_i$, depending upon the precision of the observation of Y in that case. For observations for which the variance around the residuals around the regression line is low, the case is given a high weight.
+
+---
+
+Recall that an OLS estimation chooses values of $b_0$ and $b_1$ that minimizes the sum of squared residuals:
+
+$$\large \text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$
+
+In a WLS approach, weights are taken into account, such that the values of $b_0$ and $b_1$ are chosen to minimize the sum of the **weighted** squared residuals:
+
+$$\large \text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$
+
+The value of the weights is the inverse of the conditional variance of the residuals in the population corresponding to the specified value of X:
+
+$$\large w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$
+---
+
+The value of $\sigma^2_{Y-\hat{Y}|X}$, the variance of the residuals in the population conditional on X, is not known and must be estimated. A common procedure for estimating weights is to estimate the usual OLS regression equation, square the residuals, and then regress the squared residuals onto X. The weight is then estimated as the inverse of the predicted value for a case. 
+
+Using our own data:
+
+```{r}
+ols.model = lm(problems ~ calm, data = Data)
+library(broom)
+ols_aug = augment(ols.model)
+head(ols_aug)
+```
+---
+
+```{r}
+# square residuals
+ols_aug$resid_sq = ols_aug$.resid^2
+# regress squared resid on predictor
+weight.mod = lm(resid_sq ~ calm, data = ols_aug)
+```
+
+.pull-left[
+```{r}
+coef(ols.model)
+```
+
+]
+
+.pull-right[
+```{r}
+coef(weight.mod)
+```
+
+]
+
+```{r}
+# extract predicted values
+pred.resid = predict(weight.mod)
+head(pred.resid)
+# find inverse of predicted values
+# use absolute value if some of your predicted values are negative  
+est.weights = 1/abs(pred.resid) 
+head(est.weights)
+```
+
+
+---
+
+```{r}
+wls.model = lm(problems ~ calm, data = Data, weights = est.weights)
+```
+
+
+#### OLS solution
+```{r}
+tidy(ols.model)
+```
+
+#### WLS solution
+```{r}
+tidy(wls.model)
+```
+
+---
+
+```{r, echo = F, fig.width=10, fig.height=8}
+Data %>%
+  ggplot(aes(x = calm, y = problems)) +
+  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1)) +
+  geom_smooth(method = "lm", se = F, aes(color = "OLS")) +
+  geom_smooth(method = "lm", se = F, aes(color = "WLS", weight = est.weights))
+```
+
+
+---
+
+WLS is a robust method for dealing with heteroscedasticity. What if you violate the normality assumption of regression?
+
+--
+
+A **bootstrapping** approach is useful when the theoretical sampling distribution for an estimate is unknown or unverifiable. In other words, if you have reason to suspect that either the variables in your model are not normally distributed, or that they're non-normally distributed, then bootstrapping can help ensure non-bias estimation and appropriately sized confidence intervals. 
+
+---
+
+## Bootstrapping
+
+In bootstrapping, the theoretical sampling distribution is assumed to be unknown or unverifiable. Under the weak assumption that the sample in hand is representative of some population, then that population sampling distribution can be built empirically by randomly sampling with replacement from the sample.
+
+The resulting empirical sampling distribution can be used to construct confidence intervals and make inferences.
+
+---
+
+### Illustration
+
+Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, and Ross. To bootstrap their heights, you would draw from this group many samples of 6 people *with replacement*, each time calculating the average height of the sample.
+
+```{r, echo = F}
+friends = c("Rachel", "Monica", "Phoebe", "Joey", "Chandler", "Ross")
+heights = c(65, 65, 68, 70, 72, 73)
+names(heights) = friends
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+(sample1 = sample(friends, size = 6, replace = T)); mean(heights[sample1])
+```
+???
+
+
+```{r}
+heights
+```
+
+---
+### Illustration
+
+```{r}
+boot = 10000
+friends = c("Rachel", "Monica", "Phoebe", "Joey", "Chandler", "Ross")
+heights = c(65, 65, 68, 70, 72, 73)
+sample_means = numeric(length = boot)
+for(i in 1:boot){
+  this_sample = sample(heights, size = length(heights), replace = T)
+  sample_means[i] = mean(this_sample)
+}
+```
+
+---
+
+## Illustration 
+```{r, echo = F, message = F, fig.width = 10, fig.height=6, warning = F}
+library(ggpubr)
+mu = mean(heights)
+sem = sd(heights)/sqrt(length(heights))
+cv_t = qt(p = .975, df = length(heights)-1)
+
+bootstrapped = data.frame(means = sample_means) %>%
+  ggplot(aes(x = means)) + 
+  geom_histogram(color = "white") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(sample_means), color = "mean"), size = 2) +
+  geom_vline(aes(xintercept = median(sample_means), color = "median"), size = 2) +
+  geom_vline(aes(xintercept = quantile(sample_means, probs = .025), color = "Lower 2.5%"), size = 2) +
+    geom_vline(aes(xintercept = quantile(sample_means, probs = .975), color = "Upper 2.5%"), size = 2) +
+  scale_x_continuous(limits = c(mu-3*sem, mu+3*sem))+
+  ggtitle("Bootstrapped distribution") +
+  cowplot::theme_cowplot()
+
+
+from_prob = data.frame(means = seq(from = min(sample_means), to = max(sample_means))) %>%
+  ggplot(aes(x = means)) +
+  stat_function(fun = function(x) dnorm(x, m = mu, sd = sem)) + 
+  geom_vline(aes(xintercept = mean(heights), color = "mean"), size = 2) +
+  geom_vline(aes(xintercept = median(heights), color = "median"), size = 2) +
+  geom_vline(aes(xintercept = mu-cv_t*sem, color = "Lower 2.5%"), size = 2) +
+  geom_vline(aes(xintercept = mu+cv_t*sem, color = "Upper 2.5%"), size = 2) +scale_x_continuous(limits = c(mu-3*sem, mu+3*sem))+  
+  ggtitle("Distribution from probability theory") +
+  cowplot::theme_cowplot()
+
+ggarrange(bootstrapped, from_prob, ncol = 1)
+```
+
+---
+### Example
+
+A sample of 216 response times. What is their central tendency and variability?
+
+There are several candidates for central tendency (e.g., mean, median) and for variability (e.g., standard deviation, interquartile range).  Some of these do not have well understood theoretical sampling distributions.
+
+For the mean and standard deviation, we have theoretical sampling distributions to help us, provided we think the mean and standard deviation are the best indices. For the others, we can use bootstrapping.
+
+---
+```{r, echo = F, message=F, fig.width=10, fig.height=8}
+library(tidyverse)
+set.seed(03102020)
+response = rf(n = 216, 3, 50) 
+response = response*500 + rnorm(n = 216, mean = 200, sd = 100)
+
+values = quantile(response, 
+                  probs = c(.025, .5, .975))
+mean_res = mean(response)
+
+data.frame(x = response) %>%
+  ggplot(aes(x)) +
+  geom_histogram(aes(y = ..density..), binwidth = 150, fill = "lightgrey", color = 
+                   "black")+
+  geom_density()+
+  geom_vline(aes(xintercept = values[1], 
+                 color = "Lower 2.5%"), size = 2)+
+  geom_vline(aes(xintercept = values[2], 
+                 color = "Median"), size = 2)+
+  geom_vline(aes(xintercept = values[3], 
+                 color = "Upper 2.5%"), size = 2)+
+  geom_vline(aes(xintercept = mean_res, 
+                 color = "Mean"), size = 2)+
+  labs(x = "Reponse time (ms)", title = "Response Time Distribution") + cowplot::theme_cowplot(font_size = 20)
+```
+
+---
+### Bootstrapping
+
+Before now, if we wanted to estimate the mean and the 95% confidence interval around the mean, we would find the theoretical sampling distribution by scaling a t-distribution to be centered on the mean of our sample and have a standard deviation equal to $\frac{s}{\sqrt{N}}.$ But we have to make many assumptions to use this sampling distribution, and we may have good reason not to.  
+
+Instead, we can build a population sampling distribution empirically by randomly sampling with replacement from the sample.
+
+
+---
+
+## Response time example
+```{r}
+boot = 10000
+response_means = numeric(length = boot)
+for(i in 1:boot){
+  sample_response = sample(response, size = 216, replace = T)
+  response_means[i] = mean(sample_response)
+}
+```
+
+```{r, echo = F, message = F, fig.width = 10, fig.height=6}
+data.frame(means = response_means) %>%
+  ggplot(aes(x = means)) + 
+  geom_histogram(color = "white") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_means), color = "mean"), size = 2) +
+  geom_vline(aes(xintercept = median(response_means), color = "median"), size = 2) +
+  geom_vline(aes(xintercept = quantile(response_means, probs = .025), color = "Lower 2.5%"), size = 2) +
+    geom_vline(aes(xintercept = quantile(response_means, probs = .975), color = "Upper 2.5%"), size = 2) +
+  cowplot::theme_cowplot()
+```
+
+
+---
+
+```{r}
+mean(response_means)
+median(response_means)
+
+quantile(response_means, probs = c(.025, .975))
+```
+
+What about something like the median?
+
+---
+
+```{r}
+boot = 10000
+response_med = numeric(length = boot)
+for(i in 1:boot){
+  sample_response = sample(response, size = 216, replace = T)
+  response_med[i] = median(sample_response)
+}
+```
+.pull-left[
+```{r echo=F,  message=FALSE}
+data.frame(medians = response_med) %>%
+  ggplot(aes(x = medians)) + 
+  geom_histogram(aes(y = ..density..),
+                 color = "white", fill = "grey") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_med), color = "mean"), size = 2) +
+  geom_vline(aes(xintercept = median(response_med), color = "median"), size = 2) +
+  geom_vline(aes(xintercept = quantile(response_med, probs = .025), color = "Lower 2.5%"), size = 2) +
+    geom_vline(aes(xintercept = quantile(response_med, probs = .975), color = "Upper 2.5%"), size = 2) +
+  cowplot::theme_cowplot()
+```
+]
+.pull-right[
+```{r}
+mean(response_med)
+median(response_med)
+quantile(response_med, 
+         probs = c(.025, .975))
+```
+]
+---
+
+```{r}
+boot = 10000
+response_sd = numeric(length = boot)
+for(i in 1:boot){
+  sample_response = sample(response, size = 216, replace = T)
+  response_sd[i] = sd(sample_response)
+}
+```
+.pull-left[
+```{r echo=F,  message=FALSE}
+data.frame(sds = response_sd) %>%
+  ggplot(aes(x = sds)) + 
+  geom_histogram(aes(y = ..density..),color = "white", fill = "grey") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_sd), color = "mean"), size = 2) +
+  geom_vline(aes(xintercept = median(response_sd), color = "median"), size = 2) +
+  geom_vline(aes(xintercept = quantile(response_sd, probs = .025), color = "Lower 2.5%"), size = 2) +
+    geom_vline(aes(xintercept = quantile(response_sd, probs = .975), color = "Upper 2.5%"), size = 2) +
+  cowplot::theme_cowplot()
+```
+]
+.pull-right[
+```{r}
+mean(response_sd)
+median(response_sd)
+quantile(response_sd, 
+         probs = c(.025, .975))
+```
+]
+
+---
+class: inverse
+
+## Next time...
+
+Finish bootstrapping
+
+Yarkoni and Westfall (2017) and the lessons of machine learning
+
