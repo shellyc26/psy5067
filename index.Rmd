@@ -16,7 +16,24 @@ This is where announcements will go
 
 # Overview
 
+This course is the second in a two-course sequence that introduces necessary skills and knowledge for carrying out statistical analyses in the social sciences. The course has an applied focus for psychological research, but theoretical details will be emphasized when they facilitate understanding of key concepts. In other words, we will strike a balance between learning how to do statistics and knowing why we are doing it a particular way. Mastering both will facilitate generalization to new problems and techniques. We will primarily be covering regression analyses throughout this semester, including extensions of classic regression analyses.
+
 ## Instructors
+
+**Shelly Cooper** -- [shelly.cooper@wustl.edu](mailto:shelly.cooper@wustl.edu)
+
+- ICON [Schedule a 30min meeting](https://calendly.com/shelly-cooper/30min)
+
+**Violet Brown** -- [violet.brown@wustl.edu](mailto:violet.brown@wustl.edu)
+
+- Office Hours: By appointment & in "check-in" times
+- *If you are in Psychology or Computational & Data Sciences*
+
+**Chan Hyung Park** -- [chanhyungpark@wustl.edu](mailto:chanhyungpark@wustl.edu)
+
+- Office Hours: By appointment & in "check-in" times
+- *If you are in Business, Movement Science, PNP, Speech & Hearing*
+
 
 # Materials
 
