@@ -22,7 +22,7 @@ This course is the second in a two-course sequence that introduces necessary ski
 
 **Shelly Cooper** -- [shelly.cooper@wustl.edu](mailto:shelly.cooper@wustl.edu)
 
-- ICON [Schedule a 30min meeting](https://calendly.com/shelly-cooper/30min)
+- `r fontawesome::fa("calendar-alt")` [Schedule a 30min meeting](https://calendly.com/shelly-cooper/30min)
 
 **Violet Brown** -- [violet.brown@wustl.edu](mailto:violet.brown@wustl.edu)
 
