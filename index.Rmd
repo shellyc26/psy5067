@@ -1,5 +1,5 @@
 ---
-title: "Psyh 5067: Quantitative Methods II"
+title: "Psych 5067: Quantitative Methods II"
 subtitle: "Department of Psychological & Brain Sciences, Washington University in St. Louis"
 author: "Spring 2021. Instructor: Shelly R. Cooper"
 output: 
