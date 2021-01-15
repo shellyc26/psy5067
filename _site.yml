@@ -7,7 +7,10 @@ navbar:
       href: schedule.html
     - text: Lecture Slides
       menu:
-      - text: "Something Here"
+      - text: "1-Introduction"
+        href: "lectures/1-introduction.html"
+      - text: "2-GLM"
+        href: "lectures/2-glm.html"
     - text: Lecture Videos
       href: lectureVideos.html
     - text: Homework
