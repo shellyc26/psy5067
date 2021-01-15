@@ -766,6 +766,12 @@ summary(mod.1)
 ---
 ## Summary
 
+![](images/regMeme.jpeg)
+
+---
+
+## Summary
+
 - We are using linear models to do the exact same tests as *t*-tests and ANOVAs
 - It is the exact same because *t*-tests and ANOVAs are part of the general linear model
 - Looking at these tests through the perspective of a linear model provides us with all the information you got from last semester - and more! 
@@ -776,5 +782,6 @@ summary(mod.1)
 class: inverse
 
 ## Next time
+
 
 Revisiting correlations, and turning those into regression
