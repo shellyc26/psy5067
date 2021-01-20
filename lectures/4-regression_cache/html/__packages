@@ -1,11 +1,12 @@
 base
-broom
-tidyverse
+psych
 ggplot2
+broom
+dplyr
+tidyverse
 tibble
 tidyr
 readr
 purrr
-dplyr
 stringr
 forcats

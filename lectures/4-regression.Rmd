@@ -1,5 +1,5 @@
 ---
-title: 'Univariate regression II'
+title: 'Univariate regression'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -11,527 +11,425 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r, echo = F, message = F, warning=F}
+```{r, echo = F, warning = F, message = F, results = 'hide'}
+library(psych)
 library(tidyverse)
 library(broom)
 ```
 
 
-## Last time...
+## Last time
 
-- Introduction to univariate regression
+- Correlation as inferential test
+   - Power 
+   
+- Fisher's r to z transformation
 
-- Calculation and interpretation of $b_0$ and $b_1$
+- Correlation matrices
 
-- Relationship between $X$, $Y$, $\hat{Y}$, and $e$ 
-
----
-
-### Today...
-
-Regression to the mean
-
-Statistical inferences with regression
-
-- Partitioning the variance
-
-- Testing $b_{xy}$
+- Interpreting effect size
 
 ---
 
-## Regression to the mean
+## Today
 
-Galton's observation about heights was part of the motivation to develop the regression equation: If you selected a parent who was exceptionally tall (or short), their child was almost always not as tall (or as short).
+**Regression**
 
-```{r, echo = F, warning = F, message = F, fig.height = 4}
-library(psychTools)
-library(tidyverse)
-galton = psychTools::galton
-mod = lm(child~parent, data = galton)
-point = 902
-galton = broom::augment(mod)
+- What is it? Why is it useful
 
+- Nuts and bolts
 
-galton %>%
-  ggplot(aes(x = parent, y = child)) +
-  geom_point(alpha = .3) +
-  geom_hline(aes(yintercept = 72), color = "red") +
-  geom_vline(aes(xintercept = 72), color = "red") +
+  - Equation
+
+  - Ordinary least squares
+
+  - Interpretation
+  
+---
+
+## Regression
+
+Regression is a general data analytic system, meaning lots of things fall under the umbrella of regression. This system can handle a variety of forms of relations, although all forms have to be specified in a linear way. Usefully, we can incorporate IVs of all nature -- continuous, categorical, nominal, ordinal....
+
+The output of regression includes both effect sizes and, if using frequentist or Bayesian software, statistical significance. We can also incorporate multiple influences (IVs) and account for their intercorrelations. 
+
+---
+
+### Regression
+
+- **Scientific** use: explaining the influence of one or more variables on some outcome. 
+
+  + Does this intervention affect reaction time?
+  + Does self-esteem predict relationship quality?
+  
+- **Prediction** use: We can develop models based on what's happened in the past to predict what will happen in the figure.
+
+  + Insurance premiums
+  + Graduate school... success?
+  
+- **Adjustment**: Statistically control for known effects
+
+  + If everyone had the same level of SES, would abuse still be associated with criminal behavior?
+
+---
+
+## Regression equation
+
+What is a regression equation?
+
+- Functional relationship
+
+  - Ideally like a physical law $(E = MC^2)$
+  
+  - In practice, it's never as robust as that
+  
+How do we uncover the relationship?
+
+---
+
+### How does Y vary with X?
+
+- The regression of Y (DV) on X (IV) corresponds to the line that gives the mean value of Y corresponding to each possible value of X
+
+- $\large E(Y|X)$
+
+- "Our best guess" regardless of whether our model includes categories or continuous predictor variables
+
+- We will evaluate our guesses based on how far away we are from the mean. But how do we come up with those guesses in the first place?
+
+---
+
+## Regression Equation
+
+$$\Large Y = b_{0} + b_{1}X +e$$
+
+$$\Large \hat{Y} = b_{0} + b_{1}X$$
+
+$\hat{Y}$ signifies the predicted score -- no error
+
+The difference between the predicted and observed score is the residual ($e_i$)
+
+There is a different $e$ value for each observation in the dataset
+
+---
+
+## OLS
+- How do we find the regression estimates? 
+- Ordinary Least Squares (OLS) estimation
+- Minimizes deviations 
+
+$$ min\sum(Y_{i}-\hat{Y})^{2} $$ 
+
+- Other estimation procedures possible (and necessary in some cases)
+
+---
+
+ 
+```{r,echo=FALSE, message=FALSE, cache=TRUE, warning = F}
+set.seed(123)
+x.1 <- rnorm(10, 0, 1)
+e.1 <- rnorm(10, 0, 2)
+y.1 <- .5 + .55 * x.1 + e.1
+d.1 <- data.frame(x.1,y.1)
+m.1 <- lm(y.1 ~ x.1, data = d.1)
+d1.f<- augment(m.1)
+```
+
+```{r plot1, echo=FALSE, cache=TRUE, eval = T, warning=FALSE, message=FALSE}
+ggplot(d1.f , aes(x=x.1, y=y.1)) +
+    geom_point(size = 2) +
+  geom_smooth(method = lm, se = FALSE) +
   theme_bw(base_size = 20)
 ```
 
-
 ---
-
-## Regression to the mean
-
-This phenomenon is known as **regression to the mean.** This describes the phenomenon in which an random variable produces an extreme score on a first measurement, but a lower score on a second measurement. 
-
-.pull-left[
-We can see this in the standardized regression equation:
-
-$$\hat{Y} = r_{xy}(X) + e$$
-In that the slope coefficient can never be greater than 1. 
-
-]
-
-.pull-right[
-![](images/quincunx.png)
-]
-
----
-
-## Regression to the mean
-
-This can be a threat to internal validity if interventions are applied based on first measurement scores. 
-
-.pull-left[
-```{r, echo = F, message = F, warning =F}
-set.seed(011620)
-true_score = rnorm(m = 75, sd = 7, n = 35)
-midterm = true_score + rnorm(sd = 4, n = 35)
-final = true_score + rnorm(sd = 4, n = 35)
-grades = data.frame(midterm = midterm, final = final, 
-                    tutor = ifelse(midterm < 70, "yes", "no")) 
-
-grades$change = final-midterm
-library(ggpubr)
-ggpubr::ggerrorplot(data = grades, 
-                    x = "tutor", 
-                    y = "change", 
-                    desc_stat = "mean_ci", 
-                    color = "tutor", 
-                    ylab = "Change in grade between final and midterm", size = 2) + 
-  theme_minimal(base_size = 20)
-```
-]
---
-
-.pull-right[
-```{r, echo = F}
-ggpubr::ggscatter(data = grades, 
-                  x = "midterm", 
-                  y = "final", 
-                  color = "tutor",
-                  size = 3) + theme_minimal(base_size = 20)
-```
-
-]
-
----
-
-## Statistical Inference
-
-- The way the world is = our model + error
-
-- How good is our model? Does it "fit" the data well? 
-
---
-
-To assess how well our model fits the data, we simply take all the variability in our outcome and partition it into different categories. For now, we will partition it into two categories: the variability that is predicted by (explained by) our model, and variability that is not.
-
----
-
-## Partitioning variation 
-
-- We formally test how well we are doing with our guesses by partitioning variation
-
-$$Y = \hat{Y} + e$$
-
-$$Y = \hat{Y} + (Y - \hat{Y})$$
-
-$$Y - \bar{Y} = (\hat{Y} -\bar{Y}) + (Y - \hat{Y})$$
-
-$$(Y - \bar{Y})^2 = [(\hat{Y} -\bar{Y}) + (Y - \hat{Y})]^2$$
-
-$$\sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
----
-
-$$\Large \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
-
-Each of these is the sum of a squared deviation from an expected value of Y. We can abbreviate the sum of squared deviations:
-
-$$\Large SS_Y = SS_{\text{Model}} + SS_{\text{Residual}}$$
-
-The relative magnitude of sums of squares, especially in more complex designs, provides a way of identifying particularly large and important sources of variability. In the future, we can further partition $SS_{\text{Model}}$ and $SS_{\text{Residual}}$ into smaller pieces, which will help us make more specific inferences and increase statistical power, respectively. 
-
-$$\Large s^2_Y = s^2_{\hat{Y}} + s^2_{e}$$
----
-
-## Partitioning variance in Y
-Consider the case with no correlation between X and Y
-
-$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
---
-$$\Large \hat{Y} = \bar{Y}$$
-
-To the extent that we can generate different predicted values of Y based on the values of the predictors, we are doing well in our prediction
-
-$$\large \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$
-
-$$\Large SS_Y = SS_{\text{Model}} + SS_{\text{Residual}}$$
-
----
-## Coefficient of Determination
-
-$$\Large \frac{s_{Model}^2}{s_{y}^2} = \frac{SS_{Model}}{SS_{Y}} = R^2$$
-
-$R^2$ represents the proportion of variance in Y that is explained by the model. 
-
---
-
-$\sqrt{R^2} = R$ is the correlation between the predicted values of Y from the model and the actual values of Y
-
-$$\large \sqrt{R^2} = r_{Y\hat{Y}}$$
----
-
-```{r, echo = F}
-set.seed(123)
-x.1 <- rnorm(10, 0, 1)
-e.1 <- rnorm(10, 0, 2)
-y.1 <- .5 + .55 * x.1 + e.1
-d.1 <- data.frame(x.1,y.1)
-m.1 <- lm(y.1 ~ x.1, data = d.1)
-d1.f<- augment(m.1)
-```
-
-.pull-left[
-```{r, echo = F}
-d1.f %>%
-  ggplot(aes(x = x.1, y = y.1)) +
-  geom_smooth(se = F, method = "lm")+
-  geom_point(shape = 1, size = 4) +
-  geom_point(aes(y = .fitted), color = "red", size = 4)+
-  theme_bw(base_size = 35)
-```
-]
-
---
-
-.pull-right[
-```{r, echo = F}
-d1.f %>%
-  ggplot(aes(x = y.1, y = .fitted)) +
-  geom_smooth(se = F, method = "lm")+
-  geom_point(color = "black", size = 4) +
-  theme_bw(base_size = 35)
-```
-]
-
-
-
-
----
-## Example
-```{r, echo = 2:4, highlight.output = 17}
-galton.data <- psychTools::galton
-fit.1 = lm(child ~ parent, data = galton.data)
-summary(fit.1) 
-summary(fit.1)$r.squared
-```
-
----
-## Example
-
-```{r}
-cor(galton.data$parent, galton.data$child, use = "pairwise")
-```
-
---
-
-```{r}
-cor(galton.data$parent, galton.data$child)^2
-```
-
----
-## Computing Sum of Squares
-
-$$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$
-$$\Large SS_{Model} = R^2({SS_{Y})}$$
-$$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$
-
-$$\Large  SS_{residual} = (1- R^2){SS_{Y}}$$
-???
- 
-```{r,echo=FALSE, message=FALSE, warning = F}
-set.seed(123)
-library(broom)
-library(tidyverse)
-x.1 <- rnorm(10, 0, 1)
-e.1 <- rnorm(10, 0, 2)
-y.1 <- .5 + .55 * x.1 + e.1
-d.1 <- data.frame(x.1,y.1)
-m.1 <- lm(y.1 ~ x.1, data = d.1)
-d1.f<- augment(m.1)
-d1.f$color = "black"
-d1.f[9, "color"] = "red"
-newcolors = c("black", "red")
-```
-
 
 ```{r, echo=FALSE}
 ggplot(d1.f , aes(x=x.1, y=y.1)) +
-  geom_point(size = 2, aes(color = color)) +
-  geom_smooth(method = lm, se = FALSE) +
-  geom_point(aes(y = .fitted, color = color), shape = 1, size = 2) +
-  geom_segment(aes( xend = x.1, yend = .fitted, color = color))+
-  geom_hline(aes(yintercept = mean(y.1)))+
-  scale_color_manual(values = newcolors)+
-  guides(color = F)+
+    geom_point(size = 2) +
+  geom_point(aes(y = .fitted), shape = 1, size = 2) +
   theme_bw(base_size = 20)
 ```
 
----
-## residual standard error
 
-```{r, echo=FALSE, highlight.output = 16}
+---
+
+```{r, echo=FALSE}
+ggplot(d1.f , aes(x=x.1, y=y.1)) +
+    geom_point(size = 2) +
+  geom_point(aes(y = .fitted), shape = 1, size = 2) +
+  geom_segment(aes( xend = x.1, yend = .fitted))+
+  theme_bw(base_size = 20)
+```
+
+
+
+---
+
+```{r, echo=FALSE, wanring = FALSE, message = FALSE}
+ggplot(d1.f , aes(x=x.1, y=y.1)) +
+    geom_point(size = 2) +
+  geom_smooth(method = lm, se = FALSE) +
+  geom_point(aes(y = .fitted), shape = 1, size = 2) +
+  geom_segment(aes( xend = x.1, yend = .fitted))+
+  theme_bw(base_size = 20)
+```
+
+
+---
+
+```{r, echo = F}
+new.i = 1.1
+new.slope = -0.7
+d1.f$new.fitted = 1.1 -0.7*d1.f$x.1
+
+ggplot(d1.f , aes(x=x.1, y=y.1)) +
+    geom_point(size = 2) +
+  geom_abline(intercept = new.i, slope = new.slope, color = "blue", size = 1) +
+  geom_point(aes(y = new.fitted), shape = 1, size = 2) +
+  geom_segment(aes( xend = x.1, yend = new.fitted))+
+  theme_bw(base_size = 20)
+```
+
+## compare to bad fit
+---
+
+## What is error?
+
+$$\Large Y = b_{0} + b_{1}X +e$$
+
+$$\Large \hat{Y} = b_{0} + b_{1}X$$
+
+$$\Large Y_i = \hat{Y_i} + e_i$$
+
+$$\Large e_i = Y_i - \hat{Y_i}$$
+
+---
+
+## OLS
+
+The line that yields the smallest sum of squared deviations
+
+$$\Large \Sigma(Y_i - \hat{Y_i})^2$$
+$$\Large = \Sigma(Y_i - (b_0+b_{1}X_i))^2$$
+$$\Large = \Sigma(e_i)^2$$
+
+--
+
+In order to find the OLS solution, you could try many different coefficients $(b_0 \text{ and } b_{1})$ until you find the one with the smallest sum squared deviation. Luckily, there are simple calculations that will yield the OLS solution every time.
+
+---
+## Regression coefficient, $b_{1}$
+
+$$\large b_{1} = \frac{cov_{XY}}{s_{x}^{2}} = r_{xy} \frac{s_{y}}{s_{x}}$$
+
+$$\large r_{xy} = \frac{s_{xy}}{s_xs_y}$$
+
+- The regression coefficient (slope) equals the estimated change in Y for a 1-unit change in X  
+- For nominal variables using dummy coding (0s and 1s), the regression coefficient equals the difference in means between the 2 groups (remember, correlation can be used for nominal variables!)
+
+---
+## Standardized regression
+
+- Regression using z-scores for Y and X
+- Correlation equals standardized regression coefficient
+
+$$\large b_{1} = r_{xy} \frac{s_{y}}{s_{x}}$$
+
+$$ \large r_{xy} = b_1\frac{s_x}{s_y} $$
+
+If the variance of both X and Y is equal to 1 (as in z-scores): 
+
+$$\large \beta_{1} = b_{1}^* = r_{xy}$$
+
+---
+
+## Standardized regression equation
+
+$$\large Y = b_{yx}^*X+e$$
+
+$$\large b_{yx}^* = b_{yx}\frac{s_x}{s_y}$$
+--
+
+According to this regression equation, when $X = 0, Y = 0$. Our interpretation of the coefficient is that a one-standard deviation increase in X is associated with a $b_{yx}^*$ standard deviation increase in Y. Our regression coefficient is equivalent to the correlation coefficient *when we have only one predictor in our model.*
+
+---
+
+## Estimating the intercept, $b_0$
+(AKA how to get the raw score regressione equation)
+
+- Re-write equation to include the means of Y and X (xbar & ybar)
+- Intercept serves to adjust for differences in means between X and Y
+
+$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
+- If standardized, intercept drops out
+- Otherwise, intercept is where regression line crosses the y-axis at X = 0  
+- Notice that when  $X = \bar{X}$ the regression line goes through  $\bar{Y}$ . This is true for all regressions such that the regression line must bass through $\bar{X}$  and  $\bar{Y}$
+
+---
+
+## Example
+
+
+
+```{r}
+galton.data <- psychTools::galton
+head(galton.data)
+describe(galton.data, fast = T)
+cor(galton.data)
+```
+
+---
+
+If we regress child height onto parents':
+
+```{r}
+r = cor(galton.data)[2,1]
+m_parent = mean(galton.data$parent)
+m_child = mean(galton.data$child)
+s_parent = sd(galton.data$parent)
+s_child = sd(galton.data$child)
+
+(b1 = r*(s_child/s_parent))
+(b0 = m_child - b1*m_parent)
+```
+
+
+How will this change if we regress parent height onto child height?
+
+---
+
+```{r}
+(b1 = r*(s_child/s_parent))
+(b0 = m_child - b1*m_parent)
+```
+
+
+```{r}
+(b1 = r*(s_parent/s_child))
+(b0 = m_parent - b1*m_child)
+```
+
+---
+## In `R`
+
+```{r}
+fit.1 <- lm(child ~ parent, data = galton.data)
 summary(fit.1)
 ```
 
 ---
-## residual standard error/deviation 
-
-- aka standard deviation of the residual
-- aka **standard error of the estimate**
-
-$$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y|X} = \sqrt{\frac{\Sigma(Y_i -\hat{Y_i})^2}{N-2}}$$
-
-- interpreted in original units (unlike $R^2$)
-
-- standard deviation of Y not accounted by model
-
----
-
-## residual standard error/deviation or standard error of the estimate
-
+## Reversed
 
 ```{r}
-summary(fit.1)$sigma 
-galton.data.1 = broom::augment(fit.1)
-psych::describe(galton.data.1$.resid)
-sd(galton.data$child)
+summary(lm(parent ~ child, data = galton.data))
 ```
-
----
-
-
-```{r, echo = F}
-set.seed(20200116)
-x.1 = rnorm(1000,0,1)
-e = seq(4, .01, by = -.1)
-r2 = numeric(length = length(e))
-rsd= numeric(length = length(e))
-for(i in 1:length(e)){
-  e.1 <- rnorm(1000, 0, e[i])
-  y.1 <- .5 + .55 * x.1 + e.1
-  d.1 <- data.frame(x.1,y.1)
-  m.1 <- lm(y.1 ~ x.1, data = d.1)
-  r2[i] = summary(m.1)$r.squared
-  rsd[i] = summary(m.1)$sigma
-}
-
-data.frame(r2 = r2, rsd = rsd) %>%
-  ggplot(aes(x = r2, y = rsd)) + 
-  geom_line() +
-  scale_x_continuous(expression(paste(R^2))) + 
-  scale_y_continuous(expression(hat(sigma[e])))  +
-  theme_bw(base_size = 20)
-```
----
-## $R^2$ and residual standard deviation
-
-- two sides of same coin
-
-- one in original units, the other standardized 
-
-- $R^2$ can be tricky because the numerator and denominator can be changed in different ways. 
-
-- for example if variance in Y is changed but with the same model and residual standard error $R^2$ could decline or increase
-
----
-## Inferential tests
-
-NHST is about making decisions:
-  
-  - these two means are/are not different
-  - this correlation is/is not significant
-  - the distribution of this categorical variable is/is not different between these groups
-  
---
-
-In regression, there are several inferential tests being conducted at once. The first is called the **omnibus test** -- this is a test of whether the model fits the data. 
-
----
-
-### Omnibus test
-
-$$\Large H_{0}: \rho_{XY}^2= 0$$
-
-$$\Large H_{0}: \rho_{XY}^2 \neq 0$$
-
-It is possible to calculate the significance of your regression with a correlation test. In fact, it would seem quite practical and logical to do so. 
-
---
-
-However, historically we use a different probability distribution -- **the _F_ distribution** to estimate the significance of our model. It's important to know that these methods are mathematically equivalent. But the _F_ distribution is useful here, because it works with our ability to partition variance.
-
----
-
-```{r, echo = F}
-data.frame(x = c(0, 5)) %>%
-  ggplot(aes(x = x)) +
-  stat_function(fun = function(x) df(x, df1 = 3, df2 = 10), 
-                geom = "line", aes(color = "df1 = 3", linetype = "df2 = 10")) +
-  stat_function(fun = function(x) df(x, df1 = 1, df2 = 10), 
-                geom = "line", aes(color = "df1 = 1", linetype = "df2 = 10")) +
-  stat_function(fun = function(x) df(x, df1 = 5, df2 = 10), 
-                geom = "line", aes(color = "df1 = 5", linetype = "df2 = 10")) +
-    stat_function(fun = function(x) df(x, df1 = 3, df2 = 50), 
-                geom = "line", aes(color = "df1 = 3", linetype = "df2 = 50")) +
-  stat_function(fun = function(x) df(x, df1 = 1, df2 = 50), 
-                geom = "line", aes(color = "df1 = 1", linetype = "df2 = 50")) +
-  stat_function(fun = function(x) df(x, df1 = 5, df2 = 50), 
-                geom = "line", aes(color = "df1 = 5", linetype = "df2 = 50")) +
-  scale_y_continuous("density")+
-  theme_bw(base_size = 20)
-```
-
-
----
-
-## _F _ Distribution review
-
-The F probability distribution represents all possible ratios of two variances:
-
-$$F \approx \frac{s^2_{1}}{s^2_{2}}$$
-Each variance estimate in the ratio is $\chi^2$ distributed, if the data are normally distributed. The ratio of two $\chi^2$ distributed variables is $F$ distributed. It should be noted that each $\chi^2$ distribution has its own degrees of freedom.
-
-$$F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$
-As a result, _F_ has two degrees of freedom, $\nu_1$ and $\nu_2$
 
 ???
 
----
+**Things to discuss**
 
-## _F_  Distributions and regression
-
-Recall that when using a _z_ or _t_ distribution, we were interested in whether one mean was equal to another mean -- sometimes the second mean was calculated from another sample or hypothesized (i.e., the value of the null). In this comparison, we compared the _difference of two means_ to 0 (or whatever our null hypothesis dictates), and if the difference was not 0, we concluded significance. 
-
-_F_ statistics are not testing the likelihood of differences; they test the size of a _ratio_. In this case, we want to determine whether the variance explained by our model is larger in magnitude than another variance. 
-
-Which variance?
+- Coefficient estimates
+- Statistical tests (covered in more detail soon)
 
 ---
 
-$$\Large F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$
-$$\Large F_{\nu_1\nu_2} = \frac{\frac{\text{Variance}_{\text{Model}}}{\nu_1}}{\frac{\text{Variance}_{\text{Residual}}}{\nu_2}}$$
 
-$$\Large F = \frac{MS_{Model}}{MS_{residual}}$$
----
-
-.pull-left[
-The degrees of freedom for our model are 
-
-$$DF_1 = k$$
-$$DF_2 = N-k-1$$
-
-Where k is the number of IV's in your model, and N is the sample size. ]
-
-.pull-right[
-
-Mean squares are calculated by taking the relevant Sums of Squares and dividing by their respective degrees of freedom.
-
-- $SS_{\text{Model}}$ is divided by $DF_1$
-
-- $SS_{\text{Residual}}$ is divided by $DF_2$
-]
+```{r, echo=FALSE, cache=TRUE, warning = FALSE, message = FALSE}
+ggplot(galton.data, aes(x=parent, y=child)) +
+    geom_point() +    
+    geom_smooth(method=lm,   # Add linear regression line
+                se=FALSE) +
+  theme_bw(base_size = 20)
+```
 
 ---
+
+### Data, predicted, and residuals
 
 ```{r}
-anova(fit.1)
+library(broom)
+model_info = augment(fit.1)
+head(model_info)
+```
+
+```{r}
+describe(model_info)
+```
+
+???
+
+Point out the average of the residuals is 0, just like average deviation from the mean is 0. 
+
+---
+
+## Residuals
+
+- Dispersion of residuals can be thought of as what is left over in Y that is *not* explained by our model. As residuals get smaller on average, so will the SD of the residuals.
+
+- Sigma ( $\sigma$ ) is the SD of residuals. It can be thought of as how much left over in Y that we cannot explain by our model.
+
+---
+
+```{r, warning=FALSE, message=FALSE}
+model_info %>% ggplot(aes(x = parent, y = .fitted)) +
+  geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste("X is related to ", hat(Y))))+
+  scale_x_continuous("X") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
 ```
 
 ---
 
-```{r,highlight.output=18}
-summary(fit.1)
+```{r, warning=FALSE, message=FALSE}
+model_info %>% ggplot(aes(x = parent, y = .resid)) +
+  geom_point() + geom_smooth(se = F, method = "lm") + ggtitle("X is always unrelated to e")+
+  scale_x_continuous("X") + scale_y_continuous("e") + theme_bw(base_size = 30)
 ```
 
-
----
-## Mean square error (MSE)
-
-
-- AKA means square residual/within
-
-- unbiased estimate of error variance
-
-    - measure of discrepancy between the data and the model
-
-- the MSE is the variance around the fitted regression line
-
-- Note: this is not the same thing as the residual standard error
-
----
-## regression coefficient
-
-$$\Large H_{0}: \beta_{1}= 0$$
-$$\Large H_{1}: \beta_{1} \neq 0$$
----
-## What does the regression coefficient test?
-- Does X provide any predictive information? 
-
-- Does X provide any explanatory power regarding the variability of Y? 
-
-- Is the the average value the best guess (i.e., is Y bar equal to the predicted value of Y?)
-
-- Is the regression line flat? 
-
-- Are X and Y correlated?  
-
----
-## Regression coefficient
-$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$
-$$\Large t(n-2) = \frac{b_{1}}{se_{b}}$$
 ---
 
-## $SE_b$
-
-- standard errors for the slope coefficient
-
-- represent our uncertainty (noise) in our estimate of the regression coefficient 
-
-- different from residual standard error/deviation (but proportional to)  
-
-- much like previously we can take our estimate (b) and put confidence regions around it to get an estimate of what could be "possible" if we ran the study again  
-
----
-## Intercept
-
-- more complex standard error calculation as the calculation depends on how far the X value (here zero) is away from the mean of X
-
-    - farther from the mean, less information, thus more uncertainty 
-    
----
-```{r, highlight.output = c(11,12)}
-summary(fit.1)
+```{r, warning=FALSE, message=FALSE}
+model_info %>% ggplot(aes(x = child, y = .fitted)) +
+  geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste("Y can be related to ", hat(Y))))+
+  scale_x_continuous("Y") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
 ```
+
+---
+
+```{r, warning=FALSE, message=FALSE}
+model_info %>% ggplot(aes(x = child, y = .resid)) +
+  geom_point() + geom_smooth(se = F, method = "lm") + ggtitle("Y is sometimes related to e")+
+  scale_x_continuous("Y") + scale_y_continuous("e") + theme_bw(base_size = 25)
+```
+
+---
+
+```{r, warning=FALSE, message=FALSE}
+model_info %>% ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste(hat(Y), " is always unrelated to e")))+
+  scale_y_continuous("e") + scale_x_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
+```
+
+---
+
+```{r, warning=FALSE, message=FALSE}
+model_info %>% rename(y = child, x = parent) %>% select(x,y,.fitted,.resid) %>% gather("key", "value") %>%
+  ggplot(aes(value, fill = key)) + geom_histogram(bins = 25) + guides(fill = F)+
+  facet_wrap(~key, scales = "free") + theme_bw(base_size = 20)
+```
+
+---
+
+## Residuals Summary
+
+- Residuals are not correlated with $X$ and $\hat{Y}$ because those two are perfectly correlated with one another (that is, $r(\text{fitted and X}) = 1$  )
+- $X$ and $\hat{Y}$ represent the *same* information. We use our model ( $X$ ) to make a prediction ( $\hat{Y}$ ). These predictions are entirely based on the model.
+- There is no correlation between residuals with $X$ and $\hat{Y}$ because they are created by subtracting them out of $Y$. That is, ( $\epsilon = Y - \hat{Y}$ )
+- Sigma ( $\sigma$ ; the SD of residuals) can be thought of as how much left over in $Y$ after we take out all of the information our model provides. 
 
 ---
 
 class: inverse
 
-## Next time...
+## Next time... 
 
-Even more univariate regression!
-
---
-
-- Confidence intervals 
-
-- Confidence and prediction _bands_
-
-- Model comparison
-
-- **Matrix algebra**
+Statistical inferences with regression

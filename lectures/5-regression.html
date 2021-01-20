@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
-    <title>Univariate regression III</title>
+    <title>Univariate regression II</title>
     <meta charset="utf-8" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
@@ -12,176 +12,549 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Univariate regression III
+# Univariate regression II
 
 ---
 
 
-## Last week -- Inferential tests
+
+
+
+## Last time...
+
+- Introduction to univariate regression
+
+- Calculation and interpretation of `\(b_0\)` and `\(b_1\)`
+
+- Relationship between `\(X\)`, `\(Y\)`, `\(\hat{Y}\)`, and `\(e\)` 
+
+---
+
+## Today...
+
+Statistical inferences with regression
+
+- Partitioning the variance
+
+- Testing `\(b_{xy}\)`
+
+
+---
+
+## Statistical Inference
+
+- The way the world is = our model + error
+
+- How good is our model? Does it "fit" the data well? 
+
+--
+
+To assess how well our model fits the data, we simply take all the variability in our outcome and partition it into different categories. For now, we will partition it into two categories: the variability that is predicted by (explained by) our model, and variability that is not.
+
+---
+
+## Partitioning variation 
+
+- We formally test how well we are doing with our guesses by partitioning variation
+- To the extent that we can generate different predicted values of Y, based on the values of the predicors, we are doing well in our prediction
+
+`$$\sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$`
+
+Each of these is the sum of a squared deviation from an expected value of Y. We can abbreviate the sum of squared deviations:
+
+`$$SS_{Y} = SS_{\text{Model}} + SS_{\text{Residual}}$$`
+
+
+`$$\frac{s^2_{regression}}{s^2_y} = \frac{SS_{regression}}{SS_Y} = R^2$$`
+
+---
+## Partitioning Variance
+
+The relative magnitude of sums of squares, especially in more complex designs, provides a way of identifying particularly large and important sources of variability. In the future, we can further partition `\(SS_{\text{Model}}\)` and `\(SS_{\text{Residual}}\)` into smaller pieces, which will help us make more specific inferences and increase statistical power, respectively. 
+
+`$$\Large s^2_Y = s^2_{\hat{Y}} + s^2_{e}$$`
+---
+
+## Partitioning variance in Y
+Consider the case with no correlation between X and Y
+
+`$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$`
+--
+`$$\Large \hat{Y} = \bar{Y}$$`
+
+To the extent that we can generate different predicted values of Y based on the values of the predictors, we are doing well in our prediction
+
+`$$\large \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$`
+
+`$$\Large SS_Y = SS_{\text{Model}} + SS_{\text{Residual}}$$`
+
+---
+## Coefficient of Determination
+
+`$$\Large \frac{s_{Model}^2}{s_{y}^2} = \frac{SS_{Model}}{SS_{Y}} = R^2$$`
+
+`\(R^2\)` represents the proportion of variance in Y that is explained by the model. 
+
+--
+
+`\(\sqrt{R^2} = R\)` is the correlation between the predicted values of Y from the model and the actual values of Y
+
+`$$\large \sqrt{R^2} = r_{Y\hat{Y}}$$`
+---
+
+
 
 .pull-left[
-**Omnibus test**
+![](5-regression_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
 
-- Does the model fit the data?
-
-- *F*-test (ratio of variances)
-
-    - How many magnitudes larger is variability attributed to the model compared to left-over variability?
-    
-* Effect size: Model fit can be measured in terms of `\(\large R^2\)` or `\(\large s_{Y|X}\)`
-  ]
-  
 --
 
 .pull-right[
-**Coefficient test**
-
-- Does X explain Y?
-    - Is the slope of the regression line flat?
-
-- *t*-test (is this slope bigger than 0?)
-    - In a univariate regression model, the test of the slope is equivalent to the omnibus test
-
-* Effect size: the size of the coefficient `\((b)\)` 
-    
-  ]
-  
-    
----
-
-## Last time
-
-.pull-left[
-
-**Unstandardized regression equation**
-
-`$$Y = b_0 + b_1X + e$$`
-
-- Intercept and slope are interpreted in the units of Y.
-  - Useful if the units of Y are meaningful. (Dollars, days, donuts)
-  
-- Built from covariances and variances
-
-`$$b_1 = \frac{cov_{XY}}{s^2_X}$$`
-
-]
-
-.pull-right[
-
-**Standardized regression equation**
-
-`$$Z_Y = b^*_1Z_X + e$$`
-
-- Slope are interpreted in standardized units.
-  - Useful for comparison
-  
-- Built from correlations
-
-`$$b^*_1 = r_{xy}$$`
-
+![](5-regression_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 ]
 
 
 
 
-    
----
-## Terminology
-
-- `\(R^2\)`
---
-  - **coefficient of determination**
-  - squared correlation between `\(Y\)` and `\(\hat{Y}\)`
-  - proportion of variance in Y accounted for by the model
-  
-- `\(s_{Y|X}\)` 
-
---
-  - **standard error of the estimate** or standard deviation of the residuals.
-  - The standard deviation of Y not accounted for by the model.(Compare this to the original standard deviation. 
-  
-- `\(MSE\)`
-
---
-  - **mean square error** or unbiased estimate of error variance
-  - measure of discrepancy between model and data
-  - variance around fitted regression line
 ---
 ## Example
- 
-*Overclaiming* occurs when people claim that they know something that is impossible to know; are experts susceptible to overclaiming?
-
-Participants completed a measure of self-perceived knowledge, in which they indicate their level of knowledge in the area of personal finance. Next participants indicated how much they knew about 15 terms related to personal finance (e.g., home equity). Included in the 15 items were three terms that do not actually exist (e.g., annualized credit). Thus, overclaiming occurred when participants said that they were knowledgeable about the non-existent terms. Finally, participants completed a test of financial literacy called the FINRA.
-
-.small[
-Atir, S., Rosenzweig, E., &amp; Dunning, D. (2015). [When knowledge knows no bounds: Self-perceived expertise predicts claims of impossible knowledge.](https://journals.sagepub.com/stoken/default+domain/ZtrwAQcGwtzhkvv8vgKq/full) Psychological Science, 26, 1295-1303. ]
-
-
----
-
 
 ```r
-library(here)
-expertise = read.csv(here("data/expertise.csv"))
-psych::describe(expertise)
-```
-
-```
-##                          vars   n   mean    sd median trimmed   mad   min
-## id                          1 202 101.50 58.46 101.50  101.50 74.87  1.00
-## order_of_tasks              2 202   1.50  0.50   1.50    1.50  0.74  1.00
-*## self_perceived_knowledge    3 202   4.43  1.17   4.50    4.45  0.74  1.00
-*## overclaiming_proportion     4 202   0.31  0.23   0.28    0.29  0.25  0.00
-## accuracy                    5 202   0.30  0.21   0.28    0.29  0.21 -0.19
-## FINRA_score                 6 202   3.70  1.19   4.00    3.85  1.48  0.00
-##                             max  range  skew kurtosis   se
-## id                       202.00 201.00  0.00    -1.22 4.11
-## order_of_tasks             2.00   1.00  0.00    -2.01 0.04
-## self_perceived_knowledge   7.00   6.00 -0.20     0.15 0.08
-## overclaiming_proportion    1.00   1.00  0.64    -0.31 0.02
-## accuracy                   0.93   1.12  0.28    -0.07 0.01
-## FINRA_score                5.00   5.00 -1.01     0.57 0.08
-```
-
-```r
-cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion")])
-```
-
-```
-##                          self_perceived_knowledge overclaiming_proportion
-## self_perceived_knowledge                1.0000000               0.4811502
-## overclaiming_proportion                 0.4811502               1.0000000
-```
-
----
-
-
-```r
-fit.1 = lm(overclaiming_proportion ~ self_perceived_knowledge, data = expertise)
-summary(fit.1)
+fit.1 = lm(child ~ parent, data = galton.data)
+summary(fit.1) 
 ```
 
 ```
 ## 
 ## Call:
-## lm(formula = overclaiming_proportion ~ self_perceived_knowledge, 
-##     data = expertise)
+## lm(formula = child ~ parent, data = galton.data)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.50551 -0.15610  0.00662  0.12167  0.54215 
+##     Min      1Q  Median      3Q     Max 
+## -7.8050 -1.3661  0.0487  1.6339  5.9264 
 ## 
 ## Coefficients:
-##                          Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              -0.11406    0.05624  -2.028   0.0439 *  
-## self_perceived_knowledge  0.09532    0.01228   7.762 4.22e-13 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
+## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.2041 on 200 degrees of freedom
-## Multiple R-squared:  0.2315,	Adjusted R-squared:  0.2277 
-## F-statistic: 60.25 on 1 and 200 DF,  p-value: 4.225e-13
+## Residual standard error: 2.239 on 926 degrees of freedom
+*## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
 ```
+
+```r
+summary(fit.1)$r.squared
+```
+
+```
+## [1] 0.2104629
+
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+NA
+*NA```
+
+---
+## Example
+
+
+```r
+cor(galton.data$parent, galton.data$child, use = "pairwise")
+```
+
+```
+## [1] 0.4587624
+```
+
+--
+
+
+```r
+cor(galton.data$parent, galton.data$child)^2
+```
+
+```
+## [1] 0.2104629
+```
+
+---
+## Computing Sum of Squares
+
+`$$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$`
+`$$\Large SS_{Model} = R^2({SS_{Y})}$$`
+`$$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$`
+
+`$$\Large  SS_{residual} = (1- R^2){SS_{Y}}$$`
+
+---
+
+## Using `R` To Check Yourself
+`$$SS_{residual} = (1- R^2){SS_{Y}}$$`
+
+```r
+r2 = summary(fit.1)$r.squared
+
+fit.1.anova = summary(aov(fit.1))
+
+ssTotal = fit.1.anova[[1]]$`Sum Sq`[1] + fit.1.anova[[1]]$`Sum Sq`[2]
+
+ssResidual = (1 - r2) * ssTotal
+
+# print things out
+fit.1.anova
+```
+
+```
+##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## parent        1   1237    1237   246.8 &lt;2e-16 ***
+## Residuals   926   4640       5                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+ssResidual
+```
+
+```
+## [1] 4640.273
+```
+
+
+
+???
+ 
+
+
+
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+![](5-regression_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+## Mean Square Error (MSE)
+
+- AKA means square residual/within
+- AKA square of residual standard error/deviation (sigma)
+- *Unbiased* estimate of error variance
+- Measure of discrepancy between the data and the model
+- The MSE is the variance of data around the fitted regression line
+- Just like with MSwithin, which was variance around predicted group means
+- It is the mean of the square of the residuals
+
+
+```r
+head(fit.1$residuals)
+```
+
+```
+##         1         2         3         4         5         6 
+## -7.805016 -6.512435 -4.573563 -3.927273 -3.604127 -5.366144
+```
+
+```r
+mse = mean(fit.1$residuals ^ 2)
+```
+
+---
+## MSE
+
+- It is the square of the residual standard error/deviation (sigma) aka RSE
+
+
+```r
+mse = (summary(fit.1)[["sigma"]]) ^2
+```
+
+---
+
+## Residual Standard Error
+
+
+```
+## 
+## Call:
+## lm(formula = child ~ parent, data = galton.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.8050 -1.3661  0.0487  1.6339  5.9264 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
+## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+*## Residual standard error: 2.239 on 926 degrees of freedom
+## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+## Residual standard error/deviation 
+
+- aka standard deviation of the residual
+- aka **standard error of the estimate**
+
+`$$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y|X} = \sqrt{\frac{\Sigma(Y_i -\hat{Y_i})^2}{N-2}}$$`
+
+- interpreted in original units (unlike `\(R^2\)`)
+
+- standard deviation of Y not accounted by model
+
+---
+
+## residual standard error/deviation or standard error of the estimate
+
+
+
+```r
+summary(fit.1)$sigma 
+```
+
+```
+## [1] 2.238547
+```
+
+```r
+galton.data.1 = broom::augment(fit.1)
+psych::describe(galton.data.1$.resid)
+```
+
+```
+##    vars   n mean   sd median trimmed  mad   min  max range  skew kurtosis   se
+## X1    1 928    0 2.24   0.05    0.06 2.26 -7.81 5.93 13.73 -0.24    -0.23 0.07
+```
+
+```r
+sd(galton.data$child)
+```
+
+```
+## [1] 2.517941
+```
+
+Because the size of `\(\hat{\sigma}\)` depends on both how well the model does as well as the original units of measurement, it is important to compare it to Y to evaluate! 
+
+---
+## Residual Standard Error and Sigma
+
+- So many names to represent the spread of data around the regression line
+- Standard deviation of the residual, standard error of the estimate, MSE...
+- We will refer to this as sigma, and use estimated sigma, as we do not know the population value ( `\(\hat{\sigma}\)` )
+- It is interpreted in original units (unlike `\(R^2\)` )
+- It is the standard deviation of Y not accounted by the model (i.e., residuals)
+
+---
+## Why do we care about sigma?
+
+- Let's simulate!
+- Data generating process: $$Y_{i} \sim \mathcal{N}(\mu,\,\sigma)\ $$
+
+- In English: our DV for individual `\(i\)` is distributed normally with a mean of `\(\mu\)` and a standard deviation of `\(\sigma\)`
+- This describes how we think our DVs are generated, and the paramters of interest
+A a standard regression model assumes this, but we will see other DGPs such as binomial or poisson that do not
+
+- For normal, `\(\mu\)` gets all the focus but `\(\sigma\)` is just as important
+
+---
+Our plan is to fix `\(\mu\)` and then vary sigma to see what happens
+
+
+```r
+set.seed(1234)
+x.1 &lt;- rnorm(1000, 0, 1) # randomly select 1000 numbers for x
+e.1 &lt;- rnorm(1000, 0, 1) # randomly select 1000 numbers for error
+y.1 &lt;- .5 + .55 * x.1 + e.1 # create our y
+d.1 &lt;- data.frame(x.1,y.1) # combine x and y into a data.frame
+m.1 &lt;- lm(y.1 ~ x.1, data = d.1) # use x to predict y with this data
+```
+
+---
+.tiny[
+
+```r
+summary(m.1)
+```
+
+```
+## 
+## Call:
+## lm(formula = y.1 ~ x.1, data = d.1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.1661 -0.6439  0.0145  0.6537  3.0684 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.51599    0.03100   16.64   &lt;2e-16 ***
+## x.1          0.60571    0.03109   19.48   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9801 on 998 degrees of freedom
+## Multiple R-squared:  0.2755,	Adjusted R-squared:  0.2748 
+## F-statistic: 379.5 on 1 and 998 DF,  p-value: &lt; 2.2e-16
+```
+]
+---
+
+![](5-regression_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+Again, but with a larger sigma
+
+```r
+set.seed(987)
+e.2 &lt;- rnorm(1000, 0, 2) # larger sigma
+y.2 &lt;- .5 + .55 * x.1 + e.2 # same Xs, same mu (.5)
+d.2 &lt;- data.frame(x.1,y.2)
+m.2 &lt;- lm(y.2 ~ x.1, data = d.2)
+```
+
+
+---
+.tiny[
+
+```r
+summary(m.2)
+```
+
+```
+## 
+## Call:
+## lm(formula = y.2 ~ x.1, data = d.2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.6267 -1.4359 -0.0192  1.4480  6.3439 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.52137    0.06345   8.217 6.43e-16 ***
+## x.1          0.59823    0.06363   9.402  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.006 on 998 degrees of freedom
+## Multiple R-squared:  0.08136,	Adjusted R-squared:  0.08044 
+## F-statistic: 88.39 on 1 and 998 DF,  p-value: &lt; 2.2e-16
+```
+]
+---
+![](5-regression_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+## `\(R^2\)` and residual standard deviation
+
+- two sides of same coin
+
+- one in original units, the other standardized 
+
+- `\(R^2\)` can be tricky because the numerator and denominator can be changed in different ways. 
+
+- for example if variance in Y is changed but with the same regression model and residual standard error, `\(R^2\)` could increase or decrease
+
+---
+![](5-regression_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+---
+## Inferential tests
+
+NHST is about making decisions:
+  
+  - these two means are/are not different
+  - this correlation is/is not significantly different from 0
+  - the distribution of this categorical variable is/is not different between these groups
+  
+--
+
+In regression, there are several inferential tests being conducted at once. The first is called the **omnibus test** -- this is a test of whether the model fits the data. 
+
+---
+
+## Omnibus test
+
+`$$\Large H_{0}: \rho_{XY}^2= 0$$`
+
+`$$\Large H_{0}: \rho_{XY}^2 \neq 0$$`
+
+It is possible to calculate the significance of your regression with a correlation test. In fact, it would seem quite practical and logical to do so. 
+
+--
+
+However, historically we use a different probability distribution -- **the _F_ distribution** to estimate the significance of our model. It's important to know that these methods are mathematically equivalent. But the _F_ distribution is useful here, because it works with our ability to partition variance.
+
+
+---
+
+## _F _ Distribution review
+
+The F probability distribution represents all possible ratios of two variances:
+
+`$$F \approx \frac{s^2_{1}}{s^2_{2}}$$`
+Each variance estimate in the ratio is `\(\chi^2\)` distributed, if the data are normally distributed. The ratio of two `\(\chi^2\)` distributed variables is `\(F\)` distributed. It should be noted that each `\(\chi^2\)` distribution has its own degrees of freedom.
+
+`$$F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$`
+As a result, _F_ has two degrees of freedom, `\(\nu_1\)` and `\(\nu_2\)`
+
+???
+
+---
+
+## _F_  Distributions and regression
+
+Recall that when using a _z_ or _t_ distribution, we were interested in whether one mean was equal to another mean -- sometimes the second mean was calculated from another sample or hypothesized (i.e., the value of the null). In this comparison, we compared the _difference of two means_ to 0 (or whatever our null hypothesis dictates), and if the difference was not 0, we concluded significance. 
+
+_F_ statistics are not testing the likelihood of differences; they test the size of a _ratio_. In this case, we want to determine whether the variance explained by our model is larger in magnitude than another variance. 
+
+Which variance?
+
+---
+
+`$$\Large F_{\nu_1\nu_2} = \frac{\frac{\chi^2_{\nu_1}}{\nu_1}}{\frac{\chi^2_{\nu_2}}{\nu_2}}$$`
+`$$\Large F_{\nu_1\nu_2} = \frac{\frac{\text{Variance}_{\text{Model}}}{\nu_1}}{\frac{\text{Variance}_{\text{Residual}}}{\nu_2}}$$`
+
+`$$\Large F = \frac{MS_{Model}}{MS_{residual}}$$`
+---
+
+.pull-left[
+The degrees of freedom for our model are 
+
+`$$DF_1 = k$$`
+`$$DF_2 = N-k-1$$`
+
+Where *k* is the number of IV's in your model, and *N* is the sample size. ]
+
+.pull-right[
+
+Mean squares are calculated by taking the relevant Sums of Squares and dividing by their respective degrees of freedom.
+
+- `\(SS_{\text{Model}}\)` is divided by `\(DF_1\)`
+
+- `\(SS_{\text{Residual}}\)` is divided by `\(DF_2\)`
+]
 
 ---
 
@@ -193,10 +566,10 @@ anova(fit.1)
 ```
 ## Analysis of Variance Table
 ## 
-## Response: overclaiming_proportion
-##                           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## self_perceived_knowledge   1 2.5095 2.50948  60.249 4.225e-13 ***
-## Residuals                200 8.3303 0.04165                      
+## Response: child
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## parent      1 1236.9 1236.93  246.84 &lt; 2.2e-16 ***
+## Residuals 926 4640.3    5.01                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -205,14 +578,177 @@ anova(fit.1)
 
 
 ```r
-library(sjPlot)
-set_theme(base = theme_bw())
-plot_model(fit.1, type = "pred", show.data = T, jitter = T) 
+summary(fit.1)
 ```
 
-![](5-regression_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+```
+## 
+## Call:
+## lm(formula = child ~ parent, data = galton.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.8050 -1.3661  0.0487  1.6339  5.9264 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
+## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.239 on 926 degrees of freedom
+## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+*## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+## Model Comparisons
+- So the omnibus F-statistic is the ratio of MSregression to MSresidual
+- Test of overall significance. Does your model give a better fit to the data than a model that contains no independent variables? 
+- This is truly a question of model comparisons!
+
+--
+
+- The basic idea is askign how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
+- Every model you report implies that you are favoring that model over an alternative model, typically the null. Taking a more formal model comparison approach allows you to be more flexible, explicit, and deliberate. 
+
+---
+## Full vs. Restricted Models
 
 
+```r
+fit.1 &lt;- lm(child ~ parent, data = galton.data)
+fit.0 &lt;- lm(child ~ 1, data = galton.data)
+
+summary(fit.0)
+```
+
+```
+## 
+## Call:
+## lm(formula = child ~ 1, data = galton.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.3885 -1.8885  0.1115  2.1115  5.6115 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 68.08847    0.08266   823.8   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.518 on 927 degrees of freedom
+```
+
+---
+
+```
+## 
+## Call:
+## lm(formula = child ~ parent, data = galton.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.8050 -1.3661  0.0487  1.6339  5.9264 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
+## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.239 on 926 degrees of freedom
+## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
+```
+---
+.pull-left[
+
+```r
+anova(fit.0)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: child
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals 927 5877.2    6.34
+```
+]
+
+.pull-right[
+
+```r
+anova(fit.1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: child
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## parent      1 1236.9 1236.93  246.84 &lt; 2.2e-16 ***
+## Residuals 926 4640.3    5.01                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+---
+## The comparison!
+
+
+```r
+anova(fit.1, fit.0)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: child ~ parent
+## Model 2: child ~ 1
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1    926 4640.3                                  
+## 2    927 5877.2 -1   -1236.9 246.84 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+## Model Comparisons
+
+- Model comparisons are redundant with nil/null hypotheses and coefficient tests right now, be they'll be more flexible down the road
+- Key is to start thinking about your implicit alternative models
+- The ultimate goal would be to create two models that represent two equally plausible theories
+- Theory A is made up of components XYZ, whereas theory B has QRS components. You can then ask which theory (model) is better. 
+- A model embodies your hypothesis! It is the mathematical expression of your hypothesis!
+
+---
+## Regression coefficient
+
+`$$\Large H_{0}: \beta_{1}= 0$$`
+`$$\Large H_{1}: \beta_{1} \neq 0$$`
+---
+## What does the regression coefficient test?
+- Does X provide any predictive information? 
+
+- Does X provide any explanatory power regarding the variability of Y? 
+
+- Is the the average value the best guess (i.e., is Y bar equal to the predicted value of Y?)
+
+- Is the regression line flat? 
+
+- Are X and Y correlated?  
+
+---
+## Regression coefficient
+`$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$`
+`$$\Large t(n-2) = \frac{b_{1}}{se_{b}}$$`
 ---
 
 ## `\(SE_b\)`
@@ -226,492 +762,84 @@ plot_model(fit.1, type = "pred", show.data = T, jitter = T)
 - much like previously we can take our estimate (b) and put confidence regions around it to get an estimate of what could be "possible" if we ran the study again  
 
 ---
+## Intercept
 
+- more complex standard error calculation as the calculation depends on how far the X value (here zero) is away from the mean of X
 
-```r
-summary(fit.1)
-```
+    - farther from the mean, less information, thus more uncertainty 
+    
+---
+## Confidence interval for coefficents
 
-```
-## 
-## Call:
-## lm(formula = overclaiming_proportion ~ self_perceived_knowledge, 
-##     data = expertise)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.50551 -0.15610  0.00662  0.12167  0.54215 
-## 
-## Coefficients:
-##                          Estimate Std. Error t value Pr(&gt;|t|)    
-*## (Intercept)              -0.11406    0.05624  -2.028   0.0439 *  
-*## self_perceived_knowledge  0.09532    0.01228   7.762 4.22e-13 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.2041 on 200 degrees of freedom
-## Multiple R-squared:  0.2315,	Adjusted R-squared:  0.2277 
-## F-statistic: 60.25 on 1 and 200 DF,  p-value: 4.225e-13
-```
-
+- Same equation as we've been working with
+- Estimate plus minus 1.96*se
 
 ---
-## Confidence interval for coefficients
-
-- same equation as we've been working with:
-
-`$$CI_b = b \pm CV(SE_b)$$`
-
-- How do we estimate the critical value?
-
-- After a certain sample size, the CV can be assumed to be what?
+## Confidence bands for regression line
+![](5-regression_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 
 ---
-## `\(SE_{\hat{Y_i}}\)`
+.pull-left[
+- Compare mean estimate for height of 70 based on regression vs binning
+- Model uses all data where binning uses much less
+]
 
-In addition to estimating precision around the our coefficients, we can also estimate our precision around our predicted values, `\(\hat{Y_i}\)`. Why might this be a useful exercise?
+.pull-right[
+![](5-regression_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+]
 
---
-
-The formula to estimate the standard error of any particular `\(\hat{Y_i}\)` is
-
-`$$s_{\hat{Y}_X} = s_{Y|X}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
----
-
-
-```r
-model_info = broom::augment(fit.1)
-psych::describe(model_info, fast=T)
-```
-
-```
-##                          vars   n mean   sd   min  max range   se
-## overclaiming_proportion     1 202 0.31 0.23  0.00 1.00  1.00 0.02
-## self_perceived_knowledge    2 202 4.43 1.17  1.00 7.00  6.00 0.08
-## .fitted                     3 202 0.31 0.11 -0.02 0.55  0.57 0.01
-*## .se.fit                     4 202 0.02 0.01  0.01 0.04  0.03 0.00
-## .resid                      5 202 0.00 0.20 -0.51 0.54  1.05 0.01
-## .hat                        6 202 0.01 0.01  0.00 0.05  0.04 0.00
-## .sigma                      7 202 0.20 0.00  0.20 0.20  0.00 0.00
-## .cooksd                     8 202 0.01 0.01  0.00 0.09  0.09 0.00
-## .std.resid                  9 202 0.00 1.00 -2.50 2.68  5.18 0.07
-```
-
-```r
-head(model_info[,c("overclaiming_proportion", ".fitted", ".se.fit")])
-```
-
-```
-## # A tibble: 6 x 3
-##   overclaiming_proportion .fitted .se.fit
-##                     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1                   0.444   0.410  0.0195
-## 2                   0.556   0.315  0.0144
-## 3                   0.167   0.220  0.0183
-## 4                   0.722   0.458  0.0241
-## 5                   0.389   0.124  0.0277
-## 6                   0.944   0.553  0.0347
-```
-
-
-We can string these together in a figure and create **confidence bands**.
-
----
-
-![](5-regression_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
-
-
----
-
-```r
-confint(fit.1)
-```
-
-```
-##                                2.5 %       97.5 %
-## (Intercept)              -0.22495982 -0.003151603
-## self_perceived_knowledge  0.07110265  0.119532290
-```
-
----
-
-![](5-regression_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
-
----
-## Confidence Bands for regression line
-![](5-regression_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
----
-Compare mean estimate for self-perceived knowledge based on regression vs binning
-
-![](5-regression_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 ---
 ## Confidence Bands
 
-`$$\Large \hat{Y}\pm t_{critical} * s_{Y|X}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
+`$$\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
 
 
 ---
-## Prediction bands
-
-- very similar to confidence bands around regressions line
-
-- differences is that we are predicting and individual i's score, not the Y hat for a particular level of X. (A new `\(Y_i\)` given x, rather than `\(\bar{Y}\)` given x)
-
+## Prediction band
+- We are predicting and individual *i*'s score, not the `\(\hat{Y}\)` for a particular level of `\(X\)`. (A new `\(Y_i\)` given `\(X\)`, rather than `\(\bar{Y}\)` given `\(X\)` )
 - Because there is greater variation in predicting an individual value rather than a collection of individual values (i.e., the mean) the prediction band is greater
+- Combines unknown variability in 1) the estimated mean (as reflected in se of b) 2) peoples scores around  mean (residual standard error) 
 
-- Combines unknown variability in 1) the estimated mean `\((\text{as reflected in }SE_b)\)` 2) peoples scores around  mean $(\text{residual standard error }, s_{Y|X}) $
-
-`$$\large \hat{Y}\pm t_{critical} * se_{residual}*\sqrt{1+ \frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
----
-
-![](5-regression_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
-
----
-
-## Matrix algebra
-
-Recall that `\(Y\)` is a vector of values, which can be represented as an `\(n\times1\)` matrix, `\(\mathbf{y}\)`. Similarly, X can be represented as an `\(n\times1\)` matrix, `\(\mathbf{X}\)`.
-
-Consider now our regression equation:
-
-`$$\mathbf{y} = b_0 + b_1\mathbf{x} + e$$`
-
-If we augment the matrix `\(\mathbf{X}\)` to be an `\(n\times2\)` matrix, in which the first column is filled with 1's, we can simplify this equation:
-
-`$$\mathbf{y} = \mathbf{b}\mathbf{X}$$`
-
-Where `\(\mathbf{b}\)` is a `\(1 \times 2\)` matrix containing our estimates of the intercept and slope. 
-
-If we solve for b, we find that
-
-`$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$`
-
-???
-One property of the residuals is that the the average residual is 0, so we can remove this from the equation as well.
-
----
-
-### A simple example
-
-.pull-left[
-| X | 6 | 7 | 8 | 9 | 7 |
-|:-:|:-:|:-:|:-:|:-:|:-:|
-| Y | 1 | 2 | 3 | 3 | 4 |
-]
-
-.pull-right[
-`$$\mathbf{X} = \left(\begin{array}
-{rr}
-1 &amp; 6  \\
-1 &amp; 7 \\
-1 &amp; 8 \\
-1 &amp; 9 \\
-1 &amp; 7 \\
-\end{array}\right)$$`
-]
-
---
-
-`$$\mathbf{X'X} = \left(\begin{array}
-{rrrrr}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-6 &amp; 7 &amp; 8 &amp; 9 &amp; 7 \\
-\end{array}\right) \left(\begin{array}
-{rr}
-1 &amp; 6  \\
-1 &amp; 7 \\
-1 &amp; 8 \\
-1 &amp; 9 \\
-1 &amp; 7 \\
-\end{array}\right) = 
-\left(\begin{array}
-{rr}
-5 &amp; 37  \\
-37 &amp; 279 \\
-\end{array}\right)$$`
-
-
-
-???
-
-$$
-\mathbf{X'X} = \left(\begin{array}
-{rr}
-N &amp; \Sigma X  \\
-\Sigma X &amp; \Sigma X^2 \\
-\end{array}\right)
-$$
-
-
----
-
-`$$\mathbf{X'X} = 
-\left(\begin{array}
-{rr}
-5 &amp; 37  \\
-37 &amp; 279 \\
-\end{array}\right)$$`
-
-
-```r
-m = matrix(c(5,37,37,279), nrow = 2)
-solve(m)
-```
-
-```
-##           [,1]       [,2]
-## [1,] 10.730769 -1.4230769
-## [2,] -1.423077  0.1923077
-```
-
-
-`$$\mathbf{X'X}^{-1} = 
-\left(\begin{array}
-{rr}
-10.73 &amp; -1.42  \\
--1.42 &amp; .19 \\
-\end{array}\right)$$`
-
----
-
-.pull-left[
-`$$\mathbf{X} = \left(\begin{array}
-{rr}
-1 &amp; 6  \\
-1 &amp; 7 \\
-1 &amp; 8 \\
-1 &amp; 9 \\
-1 &amp; 7 \\
-\end{array}\right)$$`
-]
-.pull-right[
-`$$\mathbf{y} = \left(\begin{array}
-{r}
-1   \\
-2  \\
-3  \\
-3  \\
-4  \\
-\end{array}\right)$$`
-]
-
-`$$\mathbf{X'y} = \left(\begin{array}
-{rrrrr}
-1 &amp; 1 &amp; 1 &amp; 1 &amp; 1  \\
-6 &amp; 7 &amp; 8 &amp; 9 &amp; 7 \\
-\end{array}\right) \left(\begin{array}
-{r}
-1   \\
-2  \\
-3  \\
-3  \\
-4  \\
-\end{array}\right) = 
-\left(\begin{array}
-{r}
-13   \\
-99 \\
-\end{array}\right)$$`
-
-???
-
-$$
-\mathbf{X'y} = \left(\begin{array}
-{rr}
-\Sigma Y   \\
-\Sigma XY  \\
-\end{array}\right)
-$$
----
-`$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$`
-
-`$$\mathbf{X'y} = \left(\begin{array}
-{rr}
-10.73 &amp; -1.42   \\
--1.42 &amp; .19  \\
-\end{array}\right) \left(\begin{array}
-{r}
-13   \\
-99  \\
-\end{array}\right) = 
-\left(\begin{array}
-{r}
--1.38   \\
-0.54 \\
-\end{array}\right)$$`
-
-
-```r
-x = c(6,7,8,9,7)
-y = c(1,2,3,3,4)
-summary(lm(y ~ x))
-```
-
-```
-## 
-## Call:
-## lm(formula = y ~ x)
-## 
-## Residuals:
-##        1        2        3        4        5 
-## -0.84615 -0.38462  0.07692 -0.46154  1.61538 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)  -1.3846     3.6342  -0.381    0.729
-## x             0.5385     0.4865   1.107    0.349
-## 
-## Residual standard error: 1.109 on 3 degrees of freedom
-## Multiple R-squared:  0.2899,	Adjusted R-squared:  0.05325 
-## F-statistic: 1.225 on 1 and 3 DF,  p-value: 0.3492
-```
-
----
-
-## Matrix algebra
-
-In the case of a single predictor (univariate regression), the matrix algebra method to calculate coefficients may seem more complicated than using the formulas for OLS. 
-
-However, when we expand into multiple regression (next week), the matrix algebra method is much easier to expand to fit. 
-
-
----
-## Model Comparison
-
-- The basic idea is asking how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. We can ask does adding a new predictor variable help explain more variance or should we stick with a parsimonious model.   
-
-- Every model test you do implicitly implies you favoring that over an alternative model, typically the null. This framework allows you to be more flexible and explicit.   
+`$$\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{1+ \frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
 
 ---
 
 
 ```r
-fit.1 &lt;- lm(overclaiming_proportion ~ self_perceived_knowledge, data = expertise)
-
-fit.0 &lt;- lm(overclaiming_proportion ~ 1, data = expertise)
-```
-
-
----
-
-
-```r
-summary(fit.0)
-```
-
-```
-## 
-## Call:
-## lm(formula = overclaiming_proportion ~ 1, data = expertise)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.30803 -0.19692 -0.03025  0.13641  0.69197 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.30803    0.01634   18.85   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.2322 on 201 degrees of freedom
-```
-
----
-
-```r
-summary(fit.1)
-```
-
-```
-## 
-## Call:
-## lm(formula = overclaiming_proportion ~ self_perceived_knowledge, 
-##     data = expertise)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.50551 -0.15610  0.00662  0.12167  0.54215 
-## 
-## Coefficients:
-##                          Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              -0.11406    0.05624  -2.028   0.0439 *  
-## self_perceived_knowledge  0.09532    0.01228   7.762 4.22e-13 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.2041 on 200 degrees of freedom
-## Multiple R-squared:  0.2315,	Adjusted R-squared:  0.2277 
-## F-statistic: 60.25 on 1 and 200 DF,  p-value: 4.225e-13
+temp_var &lt;- predict(fit.1, interval="prediction")
+new_df &lt;- cbind(galton.data, temp_var)
+pred &lt;- ggplot(new_df, aes(y=child, x=parent))+
+       geom_point() +   
+  geom_smooth(method=lm,se=TRUE) +
+ geom_ribbon(aes(ymin = lwr, ymax = upr), 
+               fill = "blue", alpha = 0.1)
 ```
 
 
 ---
 
 ```r
-anova(fit.0)
+pred
 ```
 
-```
-## Analysis of Variance Table
-## 
-## Response: overclaiming_proportion
-##            Df Sum Sq  Mean Sq F value Pr(&gt;F)
-## Residuals 201  10.84 0.053929
-```
+![](5-regression_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
 
 ---
 
-```r
-anova(fit.1)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Response: overclaiming_proportion
-##                           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-## self_perceived_knowledge   1 2.5095 2.50948  60.249 4.225e-13 ***
-## Residuals                200 8.3303 0.04165                      
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-
----
-
-```r
-anova(fit.1, fit.0)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Model 1: overclaiming_proportion ~ self_perceived_knowledge
-## Model 2: overclaiming_proportion ~ 1
-##   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
-## 1    200  8.3303                                  
-## 2    201 10.8398 -1   -2.5095 60.249 4.225e-13 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
----
-## Model Comparisons 
-
-- Model comparisons are redundant with nil/null hypotheses and coefficient tests right now, but will be more flexible down the road. 
-
-- Key is to start thinking about your implicit alternative models
-
-- The ultimate goal would be to create two models that represent two equally plausible theories. 
-
-- Theory A is made up of components XYZ, whereas theory B has QRS components. You can then ask which theory (model) is better? 
-
----
 class: inverse
 
-## Next time
+## Next time...
 
-The general linear model
+Partial Correlations
+
+### Things you should be able to do (based on this lecture and the one before):
+
+- Can you get an individual's predicted score &amp; residual from an equation?
+- Can you calculate b0 &amp; b1?
+- Can you take the output from `R` and write a regression equation?
+- Can you tell me if you have a "good" model?
+- Is a coefficient meaningful? How do you know and can you calculate it?
+- Can you plot a regression, confidence band, and prediction band?
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -759,6 +887,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -776,17 +930,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
