@@ -58,8 +58,23 @@ $$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
   - similar to semi-partial correlation -- represents part of each $X$
 
 ---
+## Interpretting multiple regression model
+$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
 
-## example
+- Intercept is the value of $Y$ when all predictors = 0
+- Regression coefficients are the predicted change in $Y$ for a 1 unit change in $X$, *holding all other predictors constant*
+
+--
+
+- Residual in simple regression can be thought of as a measure of $Y$ that is left over after accounting for your DV
+- Partial correlation can be created by:
+
+  1. create a measure of $X_1$ that is independent of $X_2$
+  2. create a measure of $Y$ that is independent of $X_2$
+  3. correlate the new measures
+---
+
+## Example
 ```{r, message=FALSE}
 library(here)
 stress.data = read.csv(here("data/stress.csv"))
@@ -69,7 +84,7 @@ describe(stress.data$Stress)
 
 ---
 
-## example
+## #xample
 
 ```{r, output.lines = c(9:19)}
 mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
@@ -109,12 +124,19 @@ $$\large \text{minimize} \sum (z_{Y}-\hat{z}_{Y})^2$$
 ]
 
 ---
-## Calculating the standardized regression coefficient 
+## Calculating the standardized partial regression coefficient 
 
 $$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
 
 $$b_{2}^* = \frac{r_{Y2}-r_{Y1}r_{12}}{1-r_{12}^2}$$
+---
+## Notice the similarity with semi-partial correlation
 
+$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+
+
+
+$$sr = r_{y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
 
 
 ---
@@ -142,7 +164,6 @@ $$\large \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
 
 ** Partial correlation** $r_{y1.2}$
 $$\large \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}}$$
-
 ---
 
 ```{r}
@@ -182,17 +203,30 @@ pcor.test(x = stress.data$Anxiety,
 ```
 
 ]
+
+???
+point is they're not the same, but they're close!
+
 ---
-    
-## Original metric
+## Review
+
+.pull-left[
+
+#### Original Metric
 
 $$b_{1} = b_{1}^*\frac{s_{Y}}{s_{X1}}$$
 
 $$b_{1}^* = b_{1}\frac{s_{X1}}{s_{Y}}$$
+]
 
-### Intercept
+.pull-right[
+
+#### Intercept
 
 $$b_{0} = \bar{Y} - b_{1}\bar{X_{1}} - b_{2}\bar{X_{2}}$$
+
+]
+
 ---
 
 ```{r, highlight.output = 11}
@@ -208,55 +242,11 @@ summary(mr.model)
 ```
 
 ---
-
-## Matrix algebra
-
-As we add variables to our model, the calculation of coefficient estimates using correlations and partial correlations gets more complicated. We'll only consider the formulas for the case of multiple regression with two variables, because as we move to three or more, these formulas become unreadable, although our interpretations are the same. 
-
-But the matrix algebra calculations for coefficients remain the same. 
-
----
-
-## Matrix algebra
-
-.pull-left[
-
-### Univariate regression
-
-$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$
-Where $\mathbf{X}$ is an $n \times 2$ matrix, where the first column is composed of 1's and the second column are participant's scores on X.
-]
-
-.pull-left[
-
-### Mutiple regression
-
-$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$
-
-Where $\mathbf{X}$ is an $n \times (k+1)$ matrix, where the first column is composed of 1's and the columns 2-(k+1) are participant's scores on k IV's $(X_1...X_{K})$.
-]
-
----
-
-```{r}
-X.mat = cbind(1,stress.data[,c("Anxiety", "Support")])
-X.mat = as.matrix(X.mat)
-
-y.mat = as.matrix(stress.data[,c("Stress")])
-
-solve(t(X.mat) %*% X.mat) %*% t(X.mat) %*% y.mat
-
-coef(mr.model)
-```
-
-
----
-
-### "Controlling for"
+## "Controlling for"
 
 ![](images/control.gif)
 
-Taken from [@nickchk](https://twitter.com/nickchk)
+Taken from [@nickchk](https://twitter.com/nickchk/status/1068215492458905600)
 
 ---
 
@@ -268,14 +258,23 @@ summary(mr.model)
 ```
 
 ---
-
-```{r}
+.pull-left[
+```{r, warning = FALSE, message = FALSE, eval=FALSE}
 library(broom)
 stress.data1 = augment(mr.model)
 stress.data1 %>%
   ggplot(aes(x = Stress, y = .fitted)) + geom_point() + geom_smooth(method = "lm") + scale_x_continuous("Y (Stress)") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 20)
 ```
+]
 
+.pull-right[
+```{r, warning = FALSE, message = FALSE, echo=FALSE}
+library(broom)
+stress.data1 = augment(mr.model)
+stress.data1 %>%
+  ggplot(aes(x = Stress, y = .fitted)) + geom_point() + geom_smooth(method = "lm") + scale_x_continuous("Y (Stress)") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 20)
+```
+]
 ---
 ## Multiple correlation, R
 
@@ -369,14 +368,14 @@ summary(mr.model)
 
 ---
 
-## Standard errors
+## Test of individual regression coefficients
 
 $$\Large H_{0}: \beta_{X}= 0$$
 $$\Large H_{1}: \beta_{X} \neq 0$$
 
 ---
 
-## Standard error of regression coefficient
+## Test of individual regression coefficients
 
 In the case of univariate regression:
 
@@ -388,3 +387,16 @@ $$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}} \s
 
 - As N increases... 
 - As variance explained increases... 
+
+---
+class: inverse
+
+## Next time
+
+More multiple regression
+
+#### Can you...
+- write out standardized and unstandardized regression equations?
+- interpret the coefficients of a multiple regression?
+- draw comparisons from ANOVA and regression?
+- calculate $R^2$?

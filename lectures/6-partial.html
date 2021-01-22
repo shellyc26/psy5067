@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Partial correlations</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -17,12 +18,6 @@ class: center, middle, inverse, title-slide
 ---
 
 
-## Homework
-
-Homework assignment #1 has been posted!
-Due Friday, February 7 at 9 am. 
-
----
 ## Today
 
 - path diagrams
@@ -112,9 +107,14 @@ Why?
 ]
 
 ---
+
+### GPA = SES + Peer Relationships
 ![](images/venn/Slide2.jpeg)
 
-### What is `\(R^2\)`?
+## What is `\(R^2\)`?
+
+???
+can be thought of as overlapping venn diagrams
 
 ---
 
@@ -129,18 +129,24 @@ Why?
 ### What is `\(R^2\)`?
 
 ![](images/venn/Slide3.jpeg)
+.pull-right[
+`\(R^2_{Y.12} = a + b + c\)`
+]
 ---
 
 ### Types of correlations
 
 Pearson product moment correlation
+- Standard correlation measure
+- Ignores all outside variables
+- aka bi-variate correlation
 - Zero-order correlation
 - Only two variables are X and Y
 
 --
 
 Semi-partial correlation
-- This correlation assess the extent to which the part of `\(X_1\)` *that is independent of* of `\(X_2\)` correlates with all of Y
+- This correlation assess the extent to which the part of `\(X_1\)` *that is independent of* of `\(X_2\)` correlates with *all* of Y
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
 
 ---
@@ -173,7 +179,7 @@ Semi-partial correlation
 --
 
 Partial correlation
-- The extent to which the part of X1 that is independent of X2 is correlated with the part of Y that is also independent of X2. 
+- The extent to which the part of `\(X_1\)` *that is independent* of `\(X_2\)` is correlated with *the part of Y that is also independent of* `\(X_2\)`. 
 ---
 
 ![](images/venn/Slide5.jpeg)
@@ -183,22 +189,40 @@ Partial correlation
 ---
 ### Partial correlations
 
-`$$\large pr_1=r_{Y1.2} = \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}} = \frac{r_{Y(1.2)}}{\sqrt{1-r^2_{Y_2}}}$$`
+`$$\large pr_1=r_{Y1.2} = \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}} = \frac{r_{Y(1.2)}}{\sqrt{1-r^2_{Y2}}}$$`
+---
+
+### Partial correlation
+
+`$$\large pr^2= \frac{R^2_{Y.12} - r^2_{Y2}}{\sqrt{1-r^2_{Y2}}}$$`
+
+`$$\large sr^2 = R^2_{Y.12} - r^2_{Y2}$$`
 ---
 
 ### What happens if X1 and X2 are uncorrelated?
 
+.pull-left[
 How does the semi-partial correlation compare to the zero-order correlation?
 
---
 
 `$$\large r_{Y(1.2)} = r_{Y1}$$`
 
 How does the partial correlation compare to the zero-order correlation?
 
---
 
 `$$\large r_{Y1.2} \neq r_{Y1}$$`
+
+]
+
+.pull-right[
+
+![](images/venn/Slide2.jpeg)
+
+]
+
+???
+the latter is true bc you've removed variance in y...so there's no way for it to be true. specificlaly, you've removed c
+
 
 
 ---
@@ -217,7 +241,7 @@ The partial correlations most often used when some third variable, Z, is a plaus
 
 ## Example
 
-Recall the expertise dataset, which measures a person's perception of their knowledge of personal finance (`self_perceived_knowledge`) and their performance on an objective measures of knowledge (`overclaiming_perception`). 
+We have a dataset called `expertise` which measures a person's perception of their knowledge of personal finance (`self_perceived_knowledge`) and their performance on an objective measures of knowledge (`overclaiming_perception`). 
 
 Participants also completed a test called the FINRA, which is an actual financial literacy test. 
 
@@ -231,7 +255,7 @@ expertise = read.csv(here("data/expertise.csv"))
 
 
 ```r
-round(cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")]),2)
+round(cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")]), digits = 2)
 ```
 
 ```
@@ -247,14 +271,7 @@ round(cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "F
 
 ```r
 library(ppcor)
-```
-
-```
-## Loading required package: MASS
-```
-
-```r
-round(spcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")])$estimate,2)
+round(spcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")])$estimate, digits = 2)
 ```
 
 ```
@@ -267,7 +284,8 @@ round(spcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", 
 ## overclaiming_proportion        -0.20
 ## FINRA_score                     1.00
 ```
-
+???
+spcor gets the semipartial correlation
 ---
 
 
@@ -302,6 +320,8 @@ round(pcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "
 ## FINRA_score                     1.00
 ```
 
+???
+pcor gets partial cor
 
 ---
 
@@ -317,6 +337,8 @@ We can use this to construct a measure of `\(X_1\)` that is independent of `\(X_
 
 `$$\Large e_{X_1} = X_1 - \hat{X}_{1.2}$$`
 
+???
+We run a regression where X2 predicts X1. then we take the error from that, which is the part of X1 that is independent of X2.
 ---
 
 We can either correlate that value with Y, to calculate our semi-partial correlation:
@@ -337,7 +359,7 @@ Or we can calculate a measure of Y that is also independent of `\(X_2\)` and cor
 
 
 ```r
-# create measure of perceived knowledge independent of FINRA score
+# create measure of perceived knowledge *independent* of FINRA score
 mod.know = lm(self_perceived_knowledge ~ FINRA_score, data = expertise)
 expertise.know = broom::augment(mod.know)
 
@@ -364,11 +386,27 @@ cor(expertise.know$.resid, expertise.over$.resid)
 
 ---
 
+### Who cares? Where are we going?
+
+`$$\large \hat{Y} = b_0 + b_{1}X_{1} + b_{2}X_{2} + ... + b_{p}X_{p}$$`
+
+- Regression coefficients are "partial" regression coefficients
+- Predicted change in `\(Y\)` for a 1 unit change in `\(X\)` *holding all other predictors constant*
+- Similar to semi-partial correlations -- represents part of each `\(X\)`
+
+---
+
 class: inverse
 
 ## Next time...
 
 Multiple regression!!
+
+#### Can you...
+
+- interpret a partial correlation and a semi-partial correlation?
+- think of scenarios where one is preferable to the other?
+- you will get practice on this in the hw!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -416,6 +454,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -433,17 +497,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

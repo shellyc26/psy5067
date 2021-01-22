@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Multiple Regression</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -40,8 +41,23 @@ class: center, middle, inverse, title-slide
   - similar to semi-partial correlation -- represents part of each `\(X\)`
 
 ---
+## Interpretting multiple regression model
+`$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$`
 
-## example
+- Intercept is the value of `\(Y\)` when all predictors = 0
+- Regression coefficients are the predicted change in `\(Y\)` for a 1 unit change in `\(X\)`, *holding all other predictors constant*
+
+--
+
+- Residual in simple regression can be thought of as a measure of `\(Y\)` that is left over after accounting for your DV
+- Partial correlation can be created by:
+
+  1. create a measure of `\(X_1\)` that is independent of `\(X_2\)`
+  2. create a measure of `\(Y\)` that is independent of `\(X_2\)`
+  3. correlate the new measures
+---
+
+## Example
 
 ```r
 library(here)
@@ -57,7 +73,7 @@ describe(stress.data$Stress)
 
 ---
 
-## example
+## #xample
 
 
 ```r
@@ -95,7 +111,7 @@ library(visreg)
 visreg2d(mr.model,"Support", "Anxiety", plot.type = "persp")
 ```
 
-![](8-m_regression_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](7-m_regression_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -116,12 +132,19 @@ $$\large \text{minimize} \sum (Y-\hat{Y})^2 $$
 ]
 
 ---
-## Calculating the standardized regression coefficient 
+## Calculating the standardized partial regression coefficient 
 
 `$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$`
 
 `$$b_{2}^* = \frac{r_{Y2}-r_{Y1}r_{12}}{1-r_{12}^2}$$`
+---
+## Notice the similarity with semi-partial correlation
 
+`$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$`
+
+
+
+`$$sr = r_{y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$`
 
 
 ---
@@ -149,7 +172,6 @@ Note, however, that the calculations differ between the three effect sizes. Thes
 
 ** Partial correlation** `\(r_{y1.2}\)`
 `$$\large \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}}$$`
-
 ---
 
 
@@ -204,17 +226,30 @@ pcor.test(x = stress.data$Anxiety,
 ```
 
 ]
+
+???
+point is they're not the same, but they're close!
+
 ---
-    
-## Original metric
+## Review
+
+.pull-left[
+
+#### Original Metric
 
 `$$b_{1} = b_{1}^*\frac{s_{Y}}{s_{X1}}$$`
 
 `$$b_{1}^* = b_{1}\frac{s_{X1}}{s_{Y}}$$`
+]
 
-### Intercept
+.pull-right[
+
+#### Intercept
 
 `$$b_{0} = \bar{Y} - b_{1}\bar{X_{1}} - b_{2}\bar{X_{2}}$$`
+
+]
+
 ---
 
 
@@ -276,70 +311,11 @@ summary(mr.model)
 ```
 
 ---
-
-## Matrix algebra
-
-As we add variables to our model, the calculation of coefficient estimates using correlations and partial correlations gets more complicated. We'll only consider the formulas for the case of multiple regression with two variables, because as we move to three or more, these formulas become unreadable, although our interpretations are the same. 
-
-But the matrix algebra calculations for coefficients remain the same. 
-
----
-
-## Matrix algebra
-
-.pull-left[
-
-### Univariate regression
-
-`$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$`
-Where `\(\mathbf{X}\)` is an `\(n \times 2\)` matrix, where the first column is composed of 1's and the second column are participant's scores on X.
-]
-
-.pull-left[
-
-### Mutiple regression
-
-`$$(\mathbf{X'X})^{-1} \mathbf{X'y}=\mathbf{b}$$`
-
-Where `\(\mathbf{X}\)` is an `\(n \times (k+1)\)` matrix, where the first column is composed of 1's and the columns 2-(k+1) are participant's scores on k IV's `\((X_1...X_{K})\)`.
-]
-
----
-
-
-```r
-X.mat = cbind(1,stress.data[,c("Anxiety", "Support")])
-X.mat = as.matrix(X.mat)
-
-y.mat = as.matrix(stress.data[,c("Stress")])
-
-solve(t(X.mat) %*% X.mat) %*% t(X.mat) %*% y.mat
-```
-
-```
-##               [,1]
-## 1       -0.3158660
-## Anxiety  0.2560870
-## Support  0.4061785
-```
-
-```r
-coef(mr.model)
-```
-
-```
-## (Intercept)     Support     Anxiety 
-##  -0.3158660   0.4061785   0.2560870
-```
-
-
----
-
-### "Controlling for"
+## "Controlling for"
 
 ![](images/control.gif)
 
-Taken from [@nickchk](https://twitter.com/nickchk)
+Taken from [@nickchk](https://twitter.com/nickchk/status/1068215492458905600)
 
 ---
 
@@ -374,7 +350,7 @@ summary(mr.model)
 ```
 
 ---
-
+.pull-left[
 
 ```r
 library(broom)
@@ -382,9 +358,11 @@ stress.data1 = augment(mr.model)
 stress.data1 %&gt;%
   ggplot(aes(x = Stress, y = .fitted)) + geom_point() + geom_smooth(method = "lm") + scale_x_continuous("Y (Stress)") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 20)
 ```
+]
 
-![](8-m_regression_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
-
+.pull-right[
+![](7-m_regression_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+]
 ---
 ## Multiple correlation, R
 
@@ -537,14 +515,14 @@ summary(mr.model)
 
 ---
 
-## Standard errors
+## Test of individual regression coefficients
 
 `$$\Large H_{0}: \beta_{X}= 0$$`
 `$$\Large H_{1}: \beta_{X} \neq 0$$`
 
 ---
 
-## Standard error of regression coefficient
+## Test of individual regression coefficients
 
 In the case of univariate regression:
 
@@ -555,7 +533,20 @@ In the case of multiple regression:
 `$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}} \sqrt{\frac {1}{1-R_{i.jkl...p}^2}}$$`
 
 - As N increases... 
-- As variance explained increases...
+- As variance explained increases... 
+
+---
+class: inverse
+
+## Next time
+
+More multiple regression
+
+#### Can you...
+- write out standardized and unstandardized regression equations?
+- interpret the coefficients of a multiple regression?
+- draw comparisons from ANOVA and regression?
+- calculate `\(R^2\)`?
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -603,6 +594,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -620,17 +637,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
