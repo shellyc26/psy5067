@@ -8,4 +8,31 @@ output:
     theme: cosmo
 ---
 
-The following links should take you to the appropriate YouTube video. 
+## Week 1
+
+#### 1/26
+- [Introduction](https://youtu.be/ZX8ck7Y0c1g)
+- [Zoom Check-in with Everyone](https://wustl.zoom.us/j/91992423151?pwd=Y1hoTnVoMlhKcFdZblY2Q0FGczNrZz09)
+- HW 1 posted
+
+#### 1/28
+- GLM & Categorical Predictors
+
+## Week 2
+
+#### 2/2
+- Correlation
+
+#### 2/4
+- Univariate Regression
+- [Zoom Check-in with Violet](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 3
+
+#### 2/9
+- Univariate Regression
+- **HW 1 Due by 10am**
+
+#### 2/11
+- Partial Correlations
+- [Zoom Check-in with Chan](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
