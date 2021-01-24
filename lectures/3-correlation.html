@@ -3,6 +3,7 @@
   <head>
     <title>Correlations</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -36,11 +37,6 @@ class: center, middle, inverse, title-slide
 ---
 ## Scatter Plot with best fit line
 
-
-
-```
-## `geom_smooth()` using formula 'y ~ x'
-```
 
 ![](3-correlation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
@@ -204,7 +200,7 @@ Assumes:
 
 ---
 
-### Sampling distribution?
+## Sampling distribution?
 
 --
 
@@ -301,11 +297,16 @@ If we want to make calculations based on `\(\rho \neq 0\)` then we will run into
 
 `$$\large z^{'} = {\frac{1}{2}}ln{\frac{1+r}{1-r}}$$`
 
+???
+ln = natural log
 ---
 ## Fisher’s r to z’ transformation
 
 ![](3-correlation_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
+.pull-right[
+No longer bounded by 1 &amp; -1
+]
 
 ---
 ##  Steps for computing confidence interval
@@ -317,6 +318,8 @@ If we want to make calculations based on `\(\rho \neq 0\)` then we will run into
 $$ SE_z = \frac{1}{\sqrt{N-3}}$$
 
 `$$\large r = {\frac{e^{2z'}-1}{e^{2z'}+1}}$$`
+
+.small[*Note, `e` here stands for Euler's number. `exp(1)` is straight Euler's number or `e`, `exp(2)` is Euler's number squared or `e^2`*]
 ---
 
 ### Example
@@ -325,15 +328,16 @@ In a sample of 42 students, you calculate a correlation of 0.44 between hours sp
 
 
 
-
-.pull-left[
 `$$z^{'} = {\frac{1}{2}}ln{\frac{1+.44}{1-.44}} = 0.47$$`
 `$$SE_z = \frac{1}{\sqrt{42-3}} = 0.16$$`
 
 `$$CI_{Z_{LB}} = 0.47-(2.021)0.16 = 0.15$$`
 
 `$$CI_{Z_{UB}} = 0.47+(2.021)0.16 = 0.8$$`
-]
+
+
+
+.small[Why is it 2.021 instead of 1.96? Because we're using a *t* distribution with N-2 degrees of freedom. `qt(p = .975, df = N-2, lower.tail = T)` = 2.021]
 
 ---
 
@@ -437,15 +441,8 @@ pnorm(abs(zstat), lower.tail = F)*2
 ## Effect size
 How big is practical?
 
-- Cohen (.1, .3., .5)
+- Cohen (.1, .3, .5)
 - Meyer &amp; Hemphill .3 is average
-- Rosenthaul:
-
-Drug TX?  | Alive |  Dead
-----------|-------|--------
-Treatment |  65   |  35
-No Tx     |  35   |  65
-
 
 ---
 ## What is the size of the correlation?
@@ -954,14 +951,13 @@ corrplot(cor(bfi, use = "pairwise"), method = "square")
 ---
 ## Other correlation tests:
 1. Set of correlations
-2. Dependent correlations (i.e., within same group)
-  These are more easily tested via Structural Equation Modeling (SEM)
+2. Dependent correlations (i.e., within same group). These are more easily tested via Structural Equation Modeling (SEM)
 3. Intra Class Correlation (ICC)
 
 - Again, best to do these tests in another framework (e.g., interaction, SEM, MLM)
 
 ---
-## Factors that influence r (and most other test statistics)
+## Factors that influence *r* (and most other test statistics)
 
 1. Restriction of range (GRE scores and success)
 
@@ -973,6 +969,7 @@ corrplot(cor(bfi, use = "pairwise"), method = "square")
 
 5. Reliability
 
+6. Outliers
 ---
 ## Reliability
 
@@ -1006,42 +1003,39 @@ All measurement includes error
 ---
 ## Reliability
 
-- think of reliability as a correlation with a measure and itself in a different world, at a different time, or a different but equal version
+- Think of reliability as a correlation with a measure and itself in a different world, at a different time, or a different but equal version
 
 `$$\large r_{XX}$$`
 
 ---
 ## Reliability
 
-- true score variance divided by observed variance
-- how do you assess theoretical variance i.e., true score variance?
+- True score variance divided by observed variance
+
+`$$r_{XX} = \frac{\sigma^2_{T}}{\sigma^2_{T} + \sigma^2_{E}}$$`
+
+- How do you assess theoretical variance i.e., true score variance?
 
 `$$\large r_{XY} = r_{X_{T} Y_{T}} {\sqrt{r_{XX}r_{YY}}}$$`
+- We can look at our observed correlation ( `\(r_{XY}\)` ) and our reliability coefficients ( `\(r_{XX}\)` and `\(r_{YY}\)` ), and solve
 
-`$$\large r_{XY} = .6 {\sqrt {(.70) (.70)}}$$`
+`$$\large .3 = r_{X_{T} Y_{T}} {\sqrt {(.70) (.70)}}$$`
 
 ---
 ## Reliability
 
-`$$\large r_{X_{T} Y_{T}} =  = {\frac {r_{XY}} {\sqrt{r_{XX}r_{YY}}}}$$`
+`$$\large r_{X_{T} Y_{T}} =  {\frac {r_{XY}} {\sqrt{r_{XX}r_{YY}}}}$$`
 
 
-`$$\large r_{X_{T} Y_{T}} =  = {\frac {.30} {\sqrt{(.70)(.70)}}} = .42$$`
+`$$\large r_{X_{T} Y_{T}} = {\frac {.30} {\sqrt{(.70)(.70)}}} = .42$$`
+--
 
-
-???
-
-### Take aways
-
-N needed for .42 = 42
-N needed for .3 = 84 -- need twice as many people!!
-
-it doesn't work the other way -- you can't take your correlation and back calculate the true score, because reliabilities are also estimates. these can be wrong; the correlation you calculate is the max it could bep
+- CAVEAT: Reliabilities are also estimates. They can be wrong and there are lots of ways to get a reliability coefficient. The correlation you calculate ( `\(r_{X_{T} Y_{T}}\)` ) is the highest correlation it could possibly be -- not the actual "theoretically true" correlation. (Kind of reminiscent of statistical power)
 
 ---
 ## Most common ways to assess
 
-- cronbachs alpha
+- Cronbach's `\(\alpha\)`
 
 ```r
 library (psych)
@@ -1049,17 +1043,17 @@ alpha(measure)
 ## Gives average split half correlation
 ## Can tell you if you are assessing a single construct
 ```
-- test - retest reliability
-- Kappa or ICC
+- Test - retest reliability (r, ICC)
+- Inter-rater reliability (kappa, ICC)
 
 ---
 ## Reliability
 
-- if you are going to measure something, do it well
+- If you are going to measure something, do it well
 
-- applies to ALL IVs and DVs, and all designs
+- Applies to ALL IVs and DVs, and all designs
 
-- remember this when interpreting other research
+- Remember this when interpreting other research
 
 ---
 ## Types of correlations
