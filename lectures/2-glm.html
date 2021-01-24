@@ -3,6 +3,7 @@
   <head>
     <title>General Linear Model</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -312,7 +313,7 @@ example.data %&gt;%
 ```
 ## # A tibble: 3 x 2
 ##      tx `mean(traffic.risk, na.rm = TRUE)`
-##   &lt;dbl&gt;                              &lt;dbl&gt;
+## * &lt;dbl&gt;                              &lt;dbl&gt;
 ## 1     0                               2.65
 ## 2     1                               2.17
 ## 3    NA                               2.29
@@ -954,16 +955,15 @@ head(fit.1.data)
 ```
 
 ```
-## # A tibble: 6 x 10
-##   .rownames traffic.risk    tx .fitted .se.fit .resid    .hat .sigma .cooksd
-##   &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1 1                 1.86     1    2.17  0.0605 -0.312 0.00602  0.780 4.90e-4
-## 2 2                 1        1    2.17  0.0605 -1.17  0.00602  0.777 6.87e-3
-## 3 3                 3.29     1    2.17  0.0605  1.12  0.00602  0.777 6.26e-3
-## 4 4                 2        1    2.17  0.0605 -0.170 0.00602  0.780 1.44e-4
-## 5 5                 2.43     1    2.17  0.0605  0.259 0.00602  0.780 3.37e-4
-## 6 6                 3.29     1    2.17  0.0605  1.12  0.00602  0.777 6.26e-3
-## # … with 1 more variable: .std.resid &lt;dbl&gt;
+## # A tibble: 6 x 9
+##   .rownames traffic.risk    tx .fitted .resid .std.resid    .hat .sigma  .cooksd
+##   &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1 1                 1.86     1    2.17 -0.312     -0.402 0.00602  0.780 0.000490
+## 2 2                 1        1    2.17 -1.17      -1.51  0.00602  0.777 0.00687 
+## 3 3                 3.29     1    2.17  1.12       1.44  0.00602  0.777 0.00626 
+## 4 4                 2        1    2.17 -0.170     -0.218 0.00602  0.780 0.000144
+## 5 5                 2.43     1    2.17  0.259      0.334 0.00602  0.780 0.000337
+## 6 6                 3.29     1    2.17  1.12       1.44  0.00602  0.777 0.00626
 ```
 
 ---
@@ -996,11 +996,11 @@ glance(mod.1)
 ```
 
 ```
-## # A tibble: 1 x 11
+## # A tibble: 1 x 12
 ##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    0.0834        0.0800 0.779      24.4 1.38e-6     2  -315.  635.  646.
-## # … with 2 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1    0.0834        0.0800 0.779      24.4 1.38e-6     1  -315.  635.  646.
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 
 
@@ -1104,28 +1104,28 @@ etaSquared(mod.1)
 .small[
 
 ```r
-tidy(anova(mod.1))
+glance(mod.1)
 ```
 
 ```
-## # A tibble: 2 x 6
-##   term         df sumsq meansq statistic     p.value
-##   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-## 1 tx            1  14.8 14.8        24.4  0.00000138
-## 2 Residuals   268 163.   0.607      NA   NA
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1    0.0834        0.0800 0.779      24.4 1.38e-6     1  -315.  635.  646.
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 
 
 ```r
-tidy(anova(mod.1.eff))
+glance(mod.1.eff)
 ```
 
 ```
-## # A tibble: 2 x 6
-##   term         df sumsq meansq statistic     p.value
-##   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-## 1 tx.effect     1  14.8 14.8        24.4  0.00000138
-## 2 Residuals   268 163.   0.607      NA   NA
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1    0.0834        0.0800 0.779      24.4 1.38e-6     1  -315.  635.  646.
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
 ```
 ]
 ---

@@ -749,11 +749,11 @@ etaSquared(mod.1)
 ## $R^2$ for different coding schemes
 .small[
 ```{r}
-tidy(anova(mod.1))
+glance(mod.1)
 ```
 
 ```{r}
-tidy(anova(mod.1.eff))
+glance(mod.1.eff)
 ```
 ]
 ---
