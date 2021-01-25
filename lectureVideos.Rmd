@@ -16,7 +16,7 @@ output:
 - HW 1 posted
 
 #### 1/28
-- GLM & Categorical Predictors
+- [GLM & Categorical Predictors](https://youtu.be/-ew-txPO3p4)
 
 ## Week 2
 
