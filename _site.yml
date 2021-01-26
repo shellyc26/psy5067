@@ -18,9 +18,9 @@ navbar:
     - text: Homework
       href: homework.html
   right:
-    - icon: fa-github
+    - text: GitHub
       href: https://github.com/shellyc26/psy5067
-    - icon: fa-slack
+    - text: Slack
       href: https://quantii-spring2021.slack.com
 output:
   html_document:
