@@ -12,7 +12,31 @@ output:
 
 # Announcements
 
-This is where announcements will go
+#### **List of Zoom Check-in Dates -- 1/27**
+
+Remember that this semester you must attend at least 4 Zoom check-ins. There are 10 possible. They all will be on Thursdays, except for the very last check-in (noted below). You can attend any 4 that you want. For instance, if your AI is Violet, you are still totally welcome to attend a check-in with Chan. Here is a list of dates so you can put them on your calendar. Please note that in Canvas, there is also a link to a `.ics` file which will sync with your calendar software (I use Google Calendars). Dates:
+
+- 2/4 with Violet
+- 2/11 with Chan
+- 2/18 with Shelly
+- 2/25 with Violet -- REVIEW SESSION
+- 3/4 with Shelly
+- 3/18 with Chan
+- 4/1 with Shelly
+- 4/15 with Violet
+- 4/22 with Chan
+- 5/4 with Shelly (NOTE: This is a TUESDAY!)
+
+#### **Update R & RStudio**
+
+Before jumping into the semester, now is a good time to update your software. Make sure you have a solid internet connection before doing anything!Here's my suggested order of operations:
+
+- Update computer software first, if needed 
+- Update R (not RStudio). Once opened, go to R > Check for updates. If there is a new update, it will ask if you want to visit the CRAN. Type the letter `y` and hit enter. This should open up a webpage where you can download/install the latest version of R. You do *not* need to uninstall anything; it will do it for you.
+- Update RStudio. On Macs, you can do this by going to Help > Check for updates. I think it's the same for PCs, but it might be located under a different menu. Follow the directions for installation.
+- After it's done, re-open RStudio. Go to your Packages tab and click the green icon for Update. It will list all of your packages that have new updates available. I usually pick select 10-15 at a time just to not overwhelm my computer, but it's totally up to you. If at any point one of these packages says `There are binary versions available but the source versions are later. Do you want to install from sources the package which needs compilation?` go ahead and type `y` into the console and hit enter. Remember, with installing and updating packages, you'll get a lot of scary red text and it'll be doing a lot of stuff you don't understand. That's ok! When it's working, you will see a red stop sign in the top right of the Console pane. Don't do anything until that red icon is gone -- the icon means it's still working. 
+
+If you come across any errors in the updating process, please take a screenshot and send it to Shelly, Violet, or Chan asap! 
 
 # Overview
 
