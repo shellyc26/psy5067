@@ -228,6 +228,8 @@ $$\large r_{xy} = \frac{s_{xy}}{s_xs_y}$$
 - The regression coefficient (slope) equals the estimated change in Y for a 1-unit change in X  
 - For nominal variables using dummy coding (0s and 1s), the regression coefficient equals the difference in means between the 2 groups (remember, correlation can be used for nominal variables!)
 
+.tiny[Suggested Practice: Go in `R` and see if you can prove ot yourself that these equations are the same!]
+
 ---
 ## Standardized regression
 
@@ -246,12 +248,12 @@ $$\large \beta_{1} = b_{1}^* = r_{xy}$$
 
 ## Standardized regression equation
 
-$$\large Y = b_{yx}^*X+e$$
+$$\large Y = b_{1}^*X+e$$
 
-$$\large b_{yx}^* = b_{yx}\frac{s_x}{s_y}$$
+$$\large b_{1}^* = b_{1}\frac{s_x}{s_y}$$
 --
 
-According to this regression equation, when $X = 0, Y = 0$. Our interpretation of the coefficient is that a one-standard deviation increase in X is associated with a $b_{yx}^*$ standard deviation increase in Y. Our regression coefficient is equivalent to the correlation coefficient *when we have only one predictor in our model.*
+According to this regression equation, when $X = 0, Y = 0$. Our interpretation of the coefficient is that a one-standard deviation increase in X is associated with a $b_{1}^*$ standard deviation increase in Y. Our regression coefficient is equivalent to the correlation coefficient *when we have only one predictor in our model.*
 
 ---
 
@@ -264,7 +266,7 @@ According to this regression equation, when $X = 0, Y = 0$. Our interpretation o
 $$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
 - If standardized, intercept drops out
 - Otherwise, intercept is where regression line crosses the y-axis at X = 0  
-- Notice that when  $X = \bar{X}$ the regression line goes through  $\bar{Y}$ . This is true for all regressions such that the regression line must bass through $\bar{X}$  and  $\bar{Y}$
+- Notice that when  $X = \bar{X}$ the regression line goes through  $\bar{Y}$. This is true for all regressions such that the regression line must pass through $\bar{X}$  and  $\bar{Y}$
 
 ---
 
@@ -421,7 +423,7 @@ model_info %>% rename(y = child, x = parent) %>% select(x,y,.fitted,.resid) %>% 
 
 ## Residuals Summary
 
-- Residuals are not correlated with $X$ and $\hat{Y}$ because those two are perfectly correlated with one another (that is, $r(\text{fitted and X}) = 1$  )
+- Residuals are not correlated with $X$ and $\hat{Y}$ because those two are perfectly correlated with one another (that is, $r_{\text{fitted,x}} = 1$  )
 - $X$ and $\hat{Y}$ represent the *same* information. We use our model ( $X$ ) to make a prediction ( $\hat{Y}$ ). These predictions are entirely based on the model.
 - There is no correlation between residuals with $X$ and $\hat{Y}$ because they are created by subtracting them out of $Y$. That is, ( $\epsilon = Y - \hat{Y}$ )
 - Sigma ( $\sigma$ ; the SD of residuals) can be thought of as how much left over in $Y$ after we take out all of the information our model provides. 

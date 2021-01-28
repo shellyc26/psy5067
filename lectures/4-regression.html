@@ -3,6 +3,7 @@
   <head>
     <title>Univariate regression</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -188,6 +189,8 @@ In order to find the OLS solution, you could try many different coefficients `\(
 - The regression coefficient (slope) equals the estimated change in Y for a 1-unit change in X  
 - For nominal variables using dummy coding (0s and 1s), the regression coefficient equals the difference in means between the 2 groups (remember, correlation can be used for nominal variables!)
 
+.tiny[Suggested Practice: Go in `R` and see if you can prove ot yourself that these equations are the same!]
+
 ---
 ## Standardized regression
 
@@ -206,12 +209,12 @@ If the variance of both X and Y is equal to 1 (as in z-scores):
 
 ## Standardized regression equation
 
-`$$\large Y = b_{yx}^*X+e$$`
+`$$\large Y = b_{1}^*X+e$$`
 
-`$$\large b_{yx}^* = b_{yx}\frac{s_x}{s_y}$$`
+`$$\large b_{1}^* = b_{1}\frac{s_x}{s_y}$$`
 --
 
-According to this regression equation, when `\(X = 0, Y = 0\)`. Our interpretation of the coefficient is that a one-standard deviation increase in X is associated with a `\(b_{yx}^*\)` standard deviation increase in Y. Our regression coefficient is equivalent to the correlation coefficient *when we have only one predictor in our model.*
+According to this regression equation, when `\(X = 0, Y = 0\)`. Our interpretation of the coefficient is that a one-standard deviation increase in X is associated with a `\(b_{1}^*\)` standard deviation increase in Y. Our regression coefficient is equivalent to the correlation coefficient *when we have only one predictor in our model.*
 
 ---
 
@@ -224,7 +227,7 @@ According to this regression equation, when `\(X = 0, Y = 0\)`. Our interpretati
 `$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$`
 - If standardized, intercept drops out
 - Otherwise, intercept is where regression line crosses the y-axis at X = 0  
-- Notice that when  `\(X = \bar{X}\)` the regression line goes through  `\(\bar{Y}\)` . This is true for all regressions such that the regression line must bass through `\(\bar{X}\)`  and  `\(\bar{Y}\)`
+- Notice that when  `\(X = \bar{X}\)` the regression line goes through  `\(\bar{Y}\)`. This is true for all regressions such that the regression line must pass through `\(\bar{X}\)`  and  `\(\bar{Y}\)`
 
 ---
 
@@ -418,15 +421,15 @@ head(model_info)
 ```
 
 ```
-## # A tibble: 6 x 9
-##   child parent .fitted .se.fit .resid    .hat .sigma .cooksd .std.resid
-##   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
-## 1  61.7   70.5    69.5  0.116   -7.81 0.00270   2.22 0.0165       -3.49
-## 2  61.7   68.5    68.2  0.0739  -6.51 0.00109   2.23 0.00462      -2.91
-## 3  61.7   65.5    66.3  0.137   -4.57 0.00374   2.23 0.00787      -2.05
-## 4  61.7   64.5    65.6  0.173   -3.93 0.00597   2.24 0.00931      -1.76
-## 5  61.7   64      65.3  0.192   -3.60 0.00735   2.24 0.00966      -1.62
-## 6  62.2   67.5    67.6  0.0807  -5.37 0.00130   2.23 0.00374      -2.40
+## # A tibble: 6 x 8
+##   child parent .fitted .resid .std.resid    .hat .sigma .cooksd
+##   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1  61.7   70.5    69.5  -7.81      -3.49 0.00270   2.22 0.0165 
+## 2  61.7   68.5    68.2  -6.51      -2.91 0.00109   2.23 0.00462
+## 3  61.7   65.5    66.3  -4.57      -2.05 0.00374   2.23 0.00787
+## 4  61.7   64.5    65.6  -3.93      -1.76 0.00597   2.24 0.00931
+## 5  61.7   64      65.3  -3.60      -1.62 0.00735   2.24 0.00966
+## 6  62.2   67.5    67.6  -5.37      -2.40 0.00130   2.23 0.00374
 ```
 
 
@@ -439,22 +442,20 @@ describe(model_info)
 ## child         1 928 68.09 2.52  68.20   68.12 2.97 61.70 73.70 12.00 -0.09
 ## parent        2 928 68.31 1.79  68.50   68.32 1.48 64.00 73.00  9.00 -0.04
 ## .fitted       3 928 68.09 1.16  68.21   68.10 0.96 65.30 71.12  5.82 -0.04
-## .se.fit       4 928  0.10 0.03   0.09    0.09 0.02  0.07  0.21  0.13  1.53
-## .resid        5 928  0.00 2.24   0.05    0.06 2.26 -7.81  5.93 13.73 -0.24
+## .resid        4 928  0.00 2.24   0.05    0.06 2.26 -7.81  5.93 13.73 -0.24
+## .std.resid    5 928  0.00 1.00   0.02    0.03 1.01 -3.49  2.65  6.14 -0.24
 ## .hat          6 928  0.00 0.00   0.00    0.00 0.00  0.00  0.01  0.01  1.99
 ## .sigma        7 928  2.24 0.00   2.24    2.24 0.00  2.22  2.24  0.01 -2.39
 ## .cooksd       8 928  0.00 0.00   0.00    0.00 0.00  0.00  0.02  0.02  3.44
-## .std.resid    9 928  0.00 1.00   0.02    0.03 1.01 -3.49  2.65  6.14 -0.24
 ##            kurtosis   se
 ## child         -0.35 0.08
 ## parent         0.05 0.06
 ## .fitted        0.05 0.04
-## .se.fit        1.50 0.00
 ## .resid        -0.23 0.07
+## .std.resid    -0.23 0.03
 ## .hat           3.47 0.00
 ## .sigma         8.62 0.00
 ## .cooksd       17.34 0.00
-## .std.resid    -0.23 0.03
 ```
 
 ???
@@ -539,7 +540,7 @@ model_info %&gt;% rename(y = child, x = parent) %&gt;% select(x,y,.fitted,.resid
 
 ## Residuals Summary
 
-- Residuals are not correlated with `\(X\)` and `\(\hat{Y}\)` because those two are perfectly correlated with one another (that is, `\(r(\text{fitted and X}) = 1\)`  )
+- Residuals are not correlated with `\(X\)` and `\(\hat{Y}\)` because those two are perfectly correlated with one another (that is, `\(r_{\text{fitted,x}} = 1\)`  )
 - `\(X\)` and `\(\hat{Y}\)` represent the *same* information. We use our model ( `\(X\)` ) to make a prediction ( `\(\hat{Y}\)` ). These predictions are entirely based on the model.
 - There is no correlation between residuals with `\(X\)` and `\(\hat{Y}\)` because they are created by subtracting them out of `\(Y\)`. That is, ( `\(\epsilon = Y - \hat{Y}\)` )
 - Sigma ( `\(\sigma\)` ; the SD of residuals) can be thought of as how much left over in `\(Y\)` after we take out all of the information our model provides. 
