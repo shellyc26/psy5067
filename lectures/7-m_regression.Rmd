@@ -84,7 +84,7 @@ describe(stress.data$Stress)
 
 ---
 
-## #xample
+## Example
 
 ```{r, output.lines = c(9:19)}
 mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)

@@ -141,7 +141,7 @@ Pearson product moment correlation
 Semi-partial correlation
 - This correlation assess the extent to which the part of $X_1$ *that is independent of* of $X_2$ correlates with *all* of Y
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
-
+- Notation: $sr^2$ or $r_{Y(1.2)}$ 
 ---
 
 ![](images/venn/Slide4.jpeg)
@@ -156,7 +156,7 @@ the semi-partial correlation between parent SES and GPA controlling for peer rel
 $$\large sr_1 = r_{Y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{12}}{\sqrt{1-r^2_{12}}}$$
 
 $$\large sr_1^2 = R^2_{Y.12}-r^2_{Y2}$$
-
+.small[Notation: $R^2_{Y.12}$ is your standard $R^2$ -- variance explained in what is before the dot by what is after the dot. *"Variance exlained in Y by X1 and X2"*]
 ---
 
 ### Types of correlations
@@ -168,11 +168,13 @@ Pearson product moment correlation
 Semi-partial correlation
 - This correlation assess the extent to which the part of $X_1$ *that is independent of* of $X_2$ correlates with all of Y
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
+- Notation: $sr^2$ or $r_{Y(1.2)}$
 
 --
 
 Partial correlation
 - The extent to which the part of $X_1$ *that is independent* of $X_2$ is correlated with *the part of Y that is also independent of* $X_2$. 
+- Notation: $pr^2$ or $r_{Y1.2}$
 ---
 
 ![](images/venn/Slide5.jpeg)

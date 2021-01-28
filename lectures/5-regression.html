@@ -3,6 +3,7 @@
   <head>
     <title>Univariate regression II</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -120,6 +121,8 @@ To the extent that we can generate different predicted values of Y based on the 
 ---
 ## Example
 
+.small[]
+
 ```r
 fit.1 = lm(child ~ parent, data = galton.data)
 summary(fit.1) 
@@ -168,6 +171,7 @@ NA
 NA
 NA
 *NA```
+]
 
 ---
 ## Example
@@ -197,6 +201,8 @@ cor(galton.data$parent, galton.data$child)^2
 
 `$$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$`
 `$$\Large SS_{Model} = R^2({SS_{Y})}$$`
+$$\Large SS_{Y} = SS_{Model} + SS_{residual} $$
+
 `$$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$`
 
 `$$\Large  SS_{residual} = (1- R^2){SS_{Y}}$$`
@@ -273,6 +279,11 @@ head(fit.1$residuals)
 
 ```r
 mse = mean(fit.1$residuals ^ 2)
+mse
+```
+
+```
+## [1] 5.000294
 ```
 
 ---
@@ -283,6 +294,11 @@ mse = mean(fit.1$residuals ^ 2)
 
 ```r
 mse = (summary(fit.1)[["sigma"]]) ^2
+mse
+```
+
+```
+## [1] 5.011094
 ```
 
 ---
@@ -839,7 +855,7 @@ Partial Correlations
 - Can you take the output from `R` and write a regression equation?
 - Can you tell me if you have a "good" model?
 - Is a coefficient meaningful? How do you know and can you calculate it?
-- Can you plot a regression, confidence band, and prediction band?
+- Can you plot a regression, confidence band, and prediction band? 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

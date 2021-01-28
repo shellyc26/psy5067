@@ -116,7 +116,7 @@ d1.f %>%
   geom_smooth(se = F, method = "lm")+
   geom_point(shape = 1, size = 4) +
   geom_point(aes(y = .fitted), color = "red", size = 4)+
-  theme_bw(base_size = 35)
+  theme_bw(base_size = 35) 
 ```
 ]
 
@@ -137,12 +137,15 @@ d1.f %>%
 
 ---
 ## Example
+
+.small[]
 ```{r, echo = 2:4, highlight.output = 17}
 galton.data <- psychTools::galton
 fit.1 = lm(child ~ parent, data = galton.data)
 summary(fit.1) 
 summary(fit.1)$r.squared
 ```
+]
 
 ---
 ## Example
@@ -162,6 +165,8 @@ cor(galton.data$parent, galton.data$child)^2
 
 $$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$
 $$\Large SS_{Model} = R^2({SS_{Y})}$$
+$$\Large SS_{Y} = SS_{Model} + SS_{residual} $$
+
 $$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$
 
 $$\Large  SS_{residual} = (1- R^2){SS_{Y}}$$
@@ -233,6 +238,7 @@ ggplot(d1.f , aes(x=x.1, y=y.1)) +
 ```{r}
 head(fit.1$residuals)
 mse = mean(fit.1$residuals ^ 2)
+mse
 ```
 
 ---
@@ -242,6 +248,7 @@ mse = mean(fit.1$residuals ^ 2)
 
 ```{r}
 mse = (summary(fit.1)[["sigma"]]) ^2
+mse
 ```
 
 ---
