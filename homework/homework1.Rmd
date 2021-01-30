@@ -1,0 +1,69 @@
+---
+title: 'Homework #1'
+output: 
+  html_document
+---
+
+## Instructions
+
+Please complete this assignment by creating a new RMarkdown (or RNotebook) file (one that has the extension .Rmd). Be sure to include your name in the preamble. Please submit both your .Rmd and your .html files to Canvas.
+
+#### Formatting
+
+- All code should be in a code chunk (gray boxes)
+- All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks. 
+- You may make comments in your code within the code chunks. However, no long form sentences should be in there.
+- Make use of headers! Question number should be the #1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpreations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+
+Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand. 
+
+You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
+
+All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else’s code**. If we believe one student has copied another’s work, both students will receive a 0 on the homework assignment.
+
+In the instructions, when it says **_by hand_**, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
+
+**Data:** Please use the following dataset for questions 1 through 7.  [`hw1-data`](hw1-data.csv).
+
+Good luck!
+
+## Homework Questions
+
+1. Load the `hw1-data.csv` data into R. Create:
+
+  - an informative plot/figure of the study variables
+  - a informative descriptives table of the study variables
+  
+Note that these should be the types of figure and table that you could publish in a journal article.  
+
+2. Run the following tests:
+
+  - $t$-test
+  - one way anova
+  - linear model (regression) with dummy codes\*
+  - linear model with effect coding
+  - correlation between two variables
+  
+\* For the dummy code model, interpret the intercept and regression coefficient. 
+
+3. Decribe the similarities and differences across the tests you ran in question 2.
+
+4. What is the Coefficient of Determination for your dummy code model above? Interpret it. 
+
+5. "By hand," (using the output from  question 2 and the scores obtained from the dataframe) calculate the predicted (fitted) scores and the residuals for subject #3 and subject #5 using dummy coding. Then calculate their predicted and residual score with the effect codes. Are they the same? Explain why or why not. 
+
+6. For the dummy coded model, graph a distribution of the residuals. Then test whether the residuals correlated with X. Explain why they are/are not correlated with X.
+
+7. In #2, the $t$-test output gives you a confidence interval for the difference between the two groups. Using the dummy coded summary output, calculate this same confidence interval.  
+
+#### THE QUESTIONS BELOW DO NOT INVOLVE `hw1-data`:
+
+8. You are contacted by the deans office. They ran a correlation between Wash U SAT scores and happiness and found a correlation of $r = .21061$ with a sample of $N = 600$. They want to know if this is lower than a published meta-analytic estimate (.2554)? Do this "by hand". Treat the meta-analytic estimate as the "population". 
+
+4. Create a 95% confidence interval around $r = .30$ "by hand" for sample sizes of $N = 50$ and $N = 500$. Interpret each CI in your own words and compare and contrast the two CIs.   
+
+
+
+
+
+
