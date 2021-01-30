@@ -21,10 +21,10 @@ output:
 ## Week 2
 
 #### 2/2
-- Correlation
+- [Correlation](https://youtu.be/WHE4t5t1EhQ)
 
 #### 2/4
-- Univariate Regression
+- [Univariate Regression](https://youtu.be/EQgLnwxNv_4)
 - [Zoom Check-in with Violet](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
 
 ## Week 3
