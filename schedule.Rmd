@@ -58,7 +58,7 @@ Your final grade is comprised of three components:
 
 There will be 2 exams and 1 final, each worth 20% of your grade. They will test both your theoretical understanding of concepts, as well as your applied understanding of the material. You will not be expected to open R and code during these exams, however you will be expected to understand R code that has been provided. 
 
-Exams 1 & 2 will work the same way as they did last semester. They will open on Tuesday at 9:30am and will be due the following Thursday at 9:30am (that is, you have 48hrs to complete it).
+Exams 1 & 2 will work the same way as they did last semester. They will open on Tuesday at 10am and will be due the following Thursday at 10am (that is, you have 48hrs to complete it).
 
 The final exam will be cumulative, with an emphasis on the last third of the course. It will operate the same way the 3rd exam did last semester. You will have 10-14 day window to complete it, but as soon as you open the file, you have 50hrs to finish.
 
@@ -66,7 +66,7 @@ The final exam will be cumulative, with an emphasis on the last third of the cou
 
 Homework assignments are intended to gauge your ability to apply the topics covered in class to the practice of data analysis. Homework assignments are to be done using R and RMarkdown; completed assignments should be submitted to Canvas. Please submit BOTH your **.Rmd** and **.html** file. Please do *not* use PDF or Word documents. There will be 6 assignments in total, each worth 5% of your grade.
 
-HWs are due at their due date by 9:30am. *There will be no opportunity for resubmissions this semester*. Grading will go by the following rubric:
+HWs are due at their due date by 10am. *There will be no opportunity for resubmissions this semester*. Grading will go by the following rubric:
 
 - 5/5: Completed all parts of the assignment, and results/interpreations were mostly correct (with maybe a few minor errors along the way)
 - 4/5: Completed all parts of the assignment, and ~25% of the results/interpretations are incorrect
@@ -84,7 +84,7 @@ You may work with your peers on homework assignments, with the following caveats
 
 ## Check-ins
 
-There will be 10 Zoom check-ins held most Thursdays of the semester from 9:30am-11am central time. **You must attend 4 out of these 10 in order to get your 5% of participation points.** It does not matter which ones you attend -- just that you attend. This is a great opportunity to come prepared with questions or ask about concepts that are confusing or about any issues with your R code. We are here to help! Attendance at each of these will be worth 2%. Attendance on the 1st day of classes is also worth 2%, so your total attendance/participation grade adds to 10% of your final grade.
+There will be 10 Zoom check-ins held most Thursdays of the semester from 10am-11:30am central time. **You must attend 4 out of these 10 in order to get your 5% of participation points.** It does not matter which ones you attend -- just that you attend. This is a great opportunity to come prepared with questions or ask about concepts that are confusing or about any issues with your R code. We are here to help! Attendance at each of these will be worth 2%. Attendance on the 1st day of classes is also worth 2%, so your total attendance/participation grade adds to 10% of your final grade.
 
 Additionally, we have created a Slack channel for this class. You can use this forum to ask questions and talk to your classmates, as well as interact with us. We will respond to questions (assuming one of your classmates doesn't reply first!) about the content. This channel is NOT to be used to discuss your homework assignments or exams, however. Those tasks must be accomplished on your own. 
 

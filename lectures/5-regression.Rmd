@@ -165,7 +165,11 @@ cor(galton.data$parent, galton.data$child)^2
 
 $$\Large \frac{SS_{Model}}{SS_{Y}} = R^2$$
 $$\Large SS_{Model} = R^2({SS_{Y})}$$
-$$\Large SS_{Y} = SS_{Model} + SS_{residual} $$
+
+
+
+$$\Large SS_{Y} = SS_{Model} + SS_{residual}$$
+
 
 $$\Large SS_{residual} = SS_{Y} - R^2({SS_{Y})}$$
 
