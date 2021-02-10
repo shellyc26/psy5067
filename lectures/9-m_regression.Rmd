@@ -24,7 +24,7 @@ library(tidyverse)
 
 ### Today...
 
-*ANOVA (the 611 version)
+*ANOVA, the long way
 
 It's important to note that by covering dummy coding a categorical variable, we have already covered ANOVA -- there is nothing more you can learn from this technique that the omnibus test of that model will not tell you. 
 
@@ -352,16 +352,11 @@ This is typically called the Bonferroni correction and is very often used even t
 
 ---
 
-```{r}
-pc_1 = pairwise.t.test(x = rotate$Time, g = rotate$Group, 
-                       p.adjust.method = "none")
-pc_1
-```
+```{r, warning = FALSE, message = FALSE}
+library(rstatix)
 
-```{r}
-pc_2 = pairwise.t.test(x = rotate$Time, g = rotate$Group, 
-                       p.adjust.method = "bonferroni")
-pc_2
+rotate %>% 
+  pairwise_t_test(Time ~ Group, p.adjust.method = "bonferroni")
 ```
 
 ---
@@ -378,41 +373,31 @@ The Holm procedure does not make a constant adjustment to each per-test $\alpha$
 
 ---
 
-```{r,echo = F, results = 'asis'}
+```{r}
 
-data.frame(or = c(.0023, .0012, .0450, .0470, .0530, .2100),
-           rank = c(6:1)) %>%
-  mutate(rankp = or*rank,
-         holm = c(.0138, .0138, .1800, .1800, .1800, .2100)) %>%
-  kable(., 
-        col.names = c("Original p value", "Rank", 
-                      "Rank x p", "Holm")) %>% kable_styling()
+hp = rotate %>% 
+  pairwise_t_test(Time ~ Group, p.adjust.method = "holm") %>% 
+  arrange(p) %>% 
+  mutate(Rank = 6:1, rXp = Rank*p)
+
+hp[,c(2,3,6:11)]
+
 ```
 
 A single adjusted per-test a would be used with the Bonferroni procedure: .05/6 = .0083. We would compare each original p-value to this new criterion and claim as significant only those that are less. Or, we could multiply the original p-values by 6 and judge them against a =.05.
 
 ---
 
-Performing the test using the `lm()` function means that some of the possible pairwise comparisons are built in:
-
-```{r}
-rotate$Group = as.factor(rotate$Group)
-coef(summary(lm(Time~Group, data = rotate)))
-pairwise.t.test(x = rotate$Time, g = rotate$Group, 
-                       p.adjust.method = "holm")
-```
-
-
-
-
-
----
-
 class: inverse
 
-Assumptions and diagnostics
-
 ## Next time...
+
+- No new material for Thursday
+- Violet will be holding a Review Session Zoom Check-in
+- Wellness Week
+- Exam 1! 
+
+All material presented thus far, including this lecture, is fair game for Exam 1
 
 <!-- ## Contrasts  -->
 

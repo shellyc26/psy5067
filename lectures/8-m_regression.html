@@ -109,7 +109,7 @@ In the case of multiple regression:
 
 - what cannot be explained in `\(X_i\)` by other predictors  
 
-- Large tolerance (little overlap) means standard error will be small.   
+- large tolerance (little overlap) means standard error will be small.   
 
 - what does this mean for including a lot of variables in your model? 
 
@@ -117,7 +117,7 @@ In the case of multiple regression:
 
 ## Which variables to include
 
-- You goal should be to match the population model (theoretically)
+- Your goal should be to match the population model (theoretically)
 
 - Including many variables will not bias parameter estimates but will potentially increase degrees of freedom and standard errors; in other words, putting too many variables in your model may make it _more difficult_ to find a statistically significant result 
 
@@ -1497,6 +1497,28 @@ predict(mod.1, newdata = newdata, se.fit = T)
 ## 
 ## $residual.scale
 ## [1] 0.9389242
+```
+
+---
+
+From this equation, we can get the mean of every single group.
+
+```r
+solomon %&gt;% 
+  mutate_at("CONDITION", ~as.factor(.)) %&gt;% 
+  group_by(CONDITION) %&gt;% 
+  drop_na() %&gt;% 
+  summarize(meanWisdom = mean(WISDOM))
+```
+
+```
+## # A tibble: 4 x 2
+##   CONDITION meanWisdom
+## * &lt;fct&gt;          &lt;dbl&gt;
+## 1 1             -0.559
+## 2 2              0.122
+## 3 3              0.195
+## 4 4              0.334
 ```
 ---
 

@@ -314,7 +314,7 @@ $$\Large {SS_{residual}} = (1- R^2){SS_{Y}}$$
 
 - $R^2$ (omnibus)  
 - Regression Coefficients  
-- Increments to R2  
+- Increments to $R^2$  
     
 ---
 
@@ -332,8 +332,16 @@ $$\Large {SS_{residual}} = (1- R^2){SS_{Y}}$$
 
 ## Adjusted R-squared, $\text{Adj} R^2$
 
-$$\large R_{A}^2 = 1 - (1 -R^2)\frac{n-1}{n-p-1}$$
+$$\large R_{A}^2 = 1 - \frac{Var_{res}}{Var_{total}}$$
 
+
+$$\large R_{A}^2 = 1 - \frac{\frac{SS_{res}}{n-p-1}}{\frac{SS_{total}}{n-1}}$$
+$$\large R_{A}^2 = 1 - (1 -R^2)\frac{n-1}{n-p-1}$$
+---
+
+## Adjusted R-squared, $\text{Adj} R^2$
+
+$$\large R_{A}^2 = 1 - (1 -R^2)\frac{n-1}{n-p-1}$$
 - What happens if you add many IV's to your model that are uncorrelated with your DV?
 
 --

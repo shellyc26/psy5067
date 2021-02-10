@@ -309,6 +309,18 @@ newdata = data.frame(dummy_2 = c(0,1,0,0),
                      dummy_4 = c(0,0,0,1))
 predict(mod.1, newdata = newdata, se.fit = T)
 ```
+
+---
+
+From this equation, we can get the mean of every single group.
+```{r}
+solomon %>% 
+  mutate_at("CONDITION", ~as.factor(.)) %>% 
+  group_by(CONDITION) %>% 
+  drop_na() %>% 
+  summarize(meanWisdom = mean(WISDOM))
+
+```
 ---
 
 And the test of the coefficient represents the significance test of each group to the reference. This is an independent-samples *t*-test.
