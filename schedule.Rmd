@@ -29,8 +29,8 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | 7    | 3/9 | **Exam 1 Opens** |  |      |             
 | -    | 3/11 | **Exam 1 DUE** |     |            |             
 | 8    | 3/16 | Hierarchical/Multiple Models   |                    |            | 
-| -    | 3/18 | 3+ Groups/Levels |             |                    |
-| 9    | 3/23 | Assumptions and Diagnostics       |  | **HW 3 DUE** |          
+| -    | 3/18 | Assumptions and Diagnostics |             |                    |
+| 9    | 3/23 | Causal Models       |  | **HW 3 DUE** |          
 | -    | 3/25 | **Wellness Break 2**  |    |     |
 | 10   | 3/30 | Moderation/Interaction & Polynomials |    |   |
 | -    | 4/1  | Moderation/Interaction & Polynomials |    |   |    
@@ -42,7 +42,7 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | -    | 4/22 | Logistic Regression/GLM | [Cohen Logistic](readings/Logistic-Cohen.pdf) |       |             
 | 14    | 4/27 | Over/Underfitting & Validation | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf) |            |             
 | -    | 4/29 | Repeated Measures/MLM           |   |   **HW 5 DUE** |             
-| 15    | 5/4 | Repeated Measures/MLM    |  |      |  
+| 15   | 5/4 | Repeated Measures/MLM    |  |      |  
 | -    | 5/6  | No Class |  |  **HW 6 DUE** |
 | FINAL DUE | 5/12 | (like last semester) |  |  |
 

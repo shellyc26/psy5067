@@ -36,3 +36,39 @@ output:
 #### 2/11
 - [Partial Correlations](https://youtu.be/-r4sTHdZBCM) *Note: I say the words "correlation", "semi partial correlation", and "partial correlation" a million times in this video -- so it turns into a bit of a tongue twister! I have edited the video so that it's hopefully clear, but please reach out on Slack if there's any part that is confusing.*
 - [Zoom Check-in with Chan](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 4
+
+#### 2/16
+- Multiple Regression 1
+
+#### 2/18
+- Multiple Regression 2
+- [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 5
+
+#### 2/23
+- Multiple Regression 3
+
+#### 2/25
+- No new material
+- [Zoom Check-in with Violet]((https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09))
+  + Note that you may ask any questions during this review, but Violet will also come prepared with review questions for the upcoming exam
+  
+## Week 6
+
+#### 3/2
+- Wellness Week 1; no new material
+
+#### 3/4
+- Wellness Week 1; no new material
+- [Zoom Check-in with Shely](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 7
+
+#### 3/9
+- **Exam 1 Opens at 10am**
+
+#### 3/11
+- **Exam 1 DUE by 10am**
