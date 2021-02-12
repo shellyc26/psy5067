@@ -40,7 +40,7 @@ output:
 ## Week 4
 
 #### 2/16
-- Multiple Regression 1
+- [Multiple Regression 1](https://youtu.be/gIrE84p25Gk)
 
 #### 2/18
 - Multiple Regression 2
