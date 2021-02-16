@@ -43,13 +43,13 @@ output:
 - [Multiple Regression 1](https://youtu.be/gIrE84p25Gk)
 
 #### 2/18
-- Multiple Regression 2
+- [Multiple Regression 2](https://youtu.be/Tt5ygK2wunM)
 - [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
 
 ## Week 5
 
 #### 2/23
-- Multiple Regression 3
+- [Multiple Regression 3](https://youtu.be/qvl3AygycdQ)
 
 #### 2/25
 - No new material
