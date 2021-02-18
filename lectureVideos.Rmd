@@ -36,6 +36,7 @@ output:
 #### 2/11
 - [Partial Correlations](https://youtu.be/-r4sTHdZBCM) *Note: I say the words "correlation", "semi partial correlation", and "partial correlation" a million times in this video -- so it turns into a bit of a tongue twister! I have edited the video so that it's hopefully clear, but please reach out on Slack if there's any part that is confusing.*
 - [Zoom Check-in with Chan](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+- [Recording of Zoom Check-in with Chan](https://wustl.box.com/s/dlapv2fq0fqm2pbvmnf5z16ouhxgtyq9)
 
 ## Week 4
 
@@ -45,6 +46,7 @@ output:
 #### 2/18
 - [Multiple Regression 2](https://youtu.be/Tt5ygK2wunM)
 - [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+- [Recording of Zoom Check-in with Shelly](https://wustl.box.com/s/gyawifblek4bn7fnx02kqva37r2lfy1z)
 
 ## Week 5
 

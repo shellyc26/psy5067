@@ -16,6 +16,7 @@ output:
 - path diagrams
 - partial and semi-partial correlations
 
+**NOTE: Slides edited on 2/18 to clarify notation. Semi-partial and partial correlations will be denoted as _sr_ or _pr_. If you see _sr^2_ or _pr^2_, it means that the semi-partial and partial correlations are actually squared**
 ---
 
 ## Causal relationships
@@ -141,7 +142,7 @@ Pearson product moment correlation
 Semi-partial correlation
 - This correlation assess the extent to which the part of $X_1$ *that is independent of* of $X_2$ correlates with *all* of Y
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
-- Notation: $sr^2$ or $r_{Y(1.2)}$ 
+- Notation: $sr$ or $r_{Y(1.2)}$; $sr^2$ is the semi-partial correlation, squared 
 ---
 
 ![](images/venn/Slide4.jpeg)
@@ -168,13 +169,13 @@ Pearson product moment correlation
 Semi-partial correlation
 - This correlation assess the extent to which the part of $X_1$ *that is independent of* of $X_2$ correlates with all of Y
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
-- Notation: $sr^2$ or $r_{Y(1.2)}$
+- Notation: $sr$ or $r_{Y(1.2)}$; $sr^2$ is the semi-partial correlation, squared 
 
 --
 
 Partial correlation
 - The extent to which the part of $X_1$ *that is independent* of $X_2$ is correlated with *the part of Y that is also independent of* $X_2$. 
-- Notation: $pr^2$ or $r_{Y1.2}$
+- Notation: $pr$ or $r_{Y1.2}$; $pr^2$ is the partial correlation, squared
 ---
 
 ![](images/venn/Slide5.jpeg)
