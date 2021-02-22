@@ -19,3 +19,7 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 ## Homework 2
 - [Homework 2 is here](homework/homework2.html)
 - Due on 2/25 by 10am
+
+## Homework 3
+- [Homework 3 is here](homework/homework3.html)
+- Due on 3/23 by 10am
