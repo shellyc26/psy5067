@@ -57,6 +57,7 @@ output:
 - No new material
 - [Zoom Check-in with Violet]((https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09))
   + [Here are the review questions](readings/Review Session 1.pdf), created by Violet. You should do these practice problems *before* coming to Thursday's review. (You can still attend if you haven't completed them -- but to get the most out of it, it's best if you come prepared)
+  + [Here is the recording from this check-in](https://wustl.box.com/s/r0wve2vnweq1o4fd3a7x6zh8r9kybtdv) and [here is the transcript of this session](https://wustl.box.com/s/3v078ld75s18coenq0czjb42gp95i51n) (note that you'll need to download the transcript and open it as a text file)
   
 ## Week 6
 
