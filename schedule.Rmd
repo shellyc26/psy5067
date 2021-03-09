@@ -28,18 +28,18 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | -    | 3/4 | **Wellness Week 1**  |                    |                   |
 | 7    | 3/9 | **Exam 1 Opens** |  |      |             
 | -    | 3/11 | **Exam 1 DUE** |     |            |             
-| 8    | 3/16 | Hierarchical/Multiple Models   |                    |            | 
-| -    | 3/18 | Assumptions and Diagnostics |             |                    |
-| 9    | 3/23 | Causal Models       |  | **HW 3 DUE** |          
+| 8    | 3/16 | Assumptions and Diagnostics   |                    |            | 
+| -    | 3/18 | Causal Models |             |                    |
+| 9    | 3/23 | Interactions I       |  | **HW 3 DUE** |          
 | -    | 3/25 | **Wellness Break 2**  |    |     |
-| 10   | 3/30 | Moderation/Interaction & Polynomials |    |   |
-| -    | 4/1  | Moderation/Interaction & Polynomials |    |   |    
+| 10   | 3/30 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)   |   |
+| -    | 4/1  | Interactions III (Factorial ANOVA) | [Myers Ch. 10](readings/anova2-myers.pdf)   |   |    
 | 11   | 4/6  | **Exam 2 Opens** |  |  |
 | -    | 4/8  | **Exam 2 DUE**   |  |  |
-| 12   | 4/13 | Factorial ANOVA | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf) |    |            
-| -    | 4/15 | Factorial ANOVA |  | **HW 4 DUE** |
-| 13   | 4/20 | Continuous & Categorical Predictors | [Myers Ch. 10](readings/anova2-myers.pdf)  |  |
-| -    | 4/22 | Logistic Regression/GLM | [Cohen Logistic](readings/Logistic-Cohen.pdf) |       |             
+| 12   | 4/13 | Interactions IV (Power & Effect Size) |  |    |            
+| -    | 4/15 | Interactions V (Polynomials) |  | **HW 4 DUE** |
+| 13   | 4/20 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf)   |  |
+| -    | 4/22 | Bootstrapping |  |       |             
 | 14    | 4/27 | Over/Underfitting & Validation | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf) |            |             
 | -    | 4/29 | Repeated Measures/MLM           |   |   **HW 5 DUE** |             
 | 15   | 5/4 | Repeated Measures/MLM    |  |      |  
