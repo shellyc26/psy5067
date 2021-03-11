@@ -25,6 +25,8 @@ navbar:
         href: "lectures/8-m_regression.html"
       - text: "9-Multiple Regression 3"
         href: "lectures/9-m_regression.html"
+      - text: "10-Assumptions & Diagnostics"
+        href: "lectures/10-diagnostics.html"
     - text: Lecture Videos
       href: lectureVideos.html
     - text: Homework
