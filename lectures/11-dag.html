@@ -18,6 +18,7 @@ class: center, middle, inverse, title-slide
 ---
 
 
+
 ## Correlation does not imply
 
 --
@@ -75,7 +76,7 @@ Rebuke from mathematical community, including from Ronald Fisher
 
 **Thinking clearly about correlation and causation: Graphical causal models for observational data**
 
-Psychologists are interested in inherently causual relationships. 
+Psychologists are interested in inherently causal relationships. 
   * e.g., how does social class cause behavior?
   
 According to Rohrer, how have psychologists attempted to study causal relationships while avoiding issues of ethicality and feasibility?
@@ -89,7 +90,7 @@ It is impossible to infer causation from correlation without background knowledg
  "surrogate interventions" -- e.g., perceived social class with subjective ladder
  * these lack external validity
  Avoiding causal language
- * Doesn't stop lay persons or other researchers from inferring; also, maybe that's based in probematic assumptions
+ * Doesn't stop lay persons or other researchers from inferring; also, maybe that's based in problematic assumptions
  Controlling for 3rd variables
  * How do we know what to control for?
  
@@ -158,14 +159,14 @@ Chains can transmit associations from the node at the beginning to the node at t
 
 
 ```r
+set.seed(1234)
 dag.obj = dagify(edu ~ iq,
                  income ~ edu,
-                 labels = c("edu" = "Education",
-                            "iq" = "Intelligence",
-                            "income" = "Income"))
+                 labels = c("edu" = "Edu",
+                         "iq" = "Intel",
+                         "income" = "Inc"))
 ggdag(dag.obj, text = FALSE, use_labels = "label", 
       label_size = 25) + 
-  geom_dag_text(nudge_y = 1) +
   theme_bw()
 ```
 
@@ -187,13 +188,15 @@ Forks can transmit associations but they are not causal. They are the structure 
 
 
 ```r
+set.seed(1234)
 dag.obj = dagify(edu ~ iq,
                  income ~ iq,
-                 labels = c("edu" = "Education",
-                            "iq" = "Intelligence",
-                            "income" = "Income"))
+                 labels = c("edu" = "Edu",
+                            "iq" = "Intel",
+                            "income" = "Inc"))
 ggdag(dag.obj, text = FALSE, use_labels = "label", 
-      label_size = 25) + 
+      label_size = 25) +
+  geom_dag_text(nudge_y = -1) +
   theme_bw()
 ```
 
@@ -215,11 +218,12 @@ Inverted forks cannot transmit associations. In other words, if this is the true
 
 
 ```r
+set.seed(1234)
 dag.obj = dagify(income ~ edu,
                  income ~ iq,
-                 labels = c("edu" = "Education",
-                            "iq" = "Intelligence",
-                            "income" = "Income"))
+                 labels = c("edu" = "Edu",
+                            "iq" = "Intel",
+                            "income" = "Inc"))
 ggdag(dag.obj, text = FALSE, use_labels = "label", 
       label_size = 25) + 
   theme_bw()
@@ -240,19 +244,21 @@ In reality, the causal pathways between the constructs in your model will be ver
 
 
 ```r
+set.seed(1234)
 dag.obj = dagify(gpa ~ iq,
                  edu ~ gpa + iq, 
                  income ~ edu + iq,
-                 labels = c("edu" = "Education",
-                            "iq" = "Intelligence",
+                 labels = c("edu" = "Edu",
+                            "iq" = "Intel",
                             "gpa" = "Grades",
-                            "income" = "Income"))
+                            "income" = "Inc"))
 ```
 
+
 ```r
+set.seed(1234)
 ggdag(dag.obj, text = FALSE, use_labels = "label", 
       label_size = 25) + 
-  geom_dag_text(nudge_y = 3) +
   theme_bw()
 ```
 ---
@@ -267,11 +273,11 @@ ggdag(dag.obj, text = FALSE, use_labels = "label",
 
 ## Confounding
 
-DAG models are most useful for psychological scientists thinking about which variables to include in a regression model. Recall that one of the uses of regression is to statisically control for variables when estimating the relationship between an X and Y in our research question. Which variables should we be statistically controlling for?
+DAG models are most useful for psychological scientists thinking about which variables to include in a regression model. Recall that one of the uses of regression is to statistically control for variables when estimating the relationship between an X and Y in our research question. Which variables should we be statistically controlling for?
 
 --
 
-We can see with DAG models that we should be controlling for constructs create forks, or a construct that causes both our X and Y variable. These constructs are known as **confounds**, or constructs that represent common causes of our variables of interest. 
+We can see with DAG models that we should be **controlling for constructs that create forks** such that it **causes both our X and Y variable**. These constructs are known as _**confounds**_, or constructs that represent common causes of our variables of interest. 
 
 Importantly, we don't need to control for variables that causes just X and not Y (think of the issue of suppression).
 
@@ -280,15 +286,17 @@ Importantly, we don't need to control for variables that causes just X and not Y
 
 
 ```r
+set.seed(1234)
 dag.obj = dagify(gpa ~ iq,
                  edu ~ gpa + iq, 
                  income ~ edu + iq,
-                 labels = c("edu" = "Education",
-                            "iq" = "Intelligence",
+                 labels = c("edu" = "Edu",
+                            "iq" = "Intel",
                             "gpa" = "Grades",
-                            "income" = "Income"), 
+                            "income" = "Inc"), 
                  exposure = "edu", outcome = "income")
-ggdag_paths(dag.obj, text = FALSE, use_labels = "label")+theme_bw()
+ggdag_paths(dag.obj, text = FALSE, use_labels = "label")+
+  theme_bw()
 ```
 
 ---
@@ -338,9 +346,9 @@ What happens if we control for a mediating variable, like education?
 ```r
 dag.obj = dagify(m ~ x,
                  y ~ m,
-                 labels = c("x" = "Intelligence",
-                            "m" = "Education",
-                            "y" = "Income"), 
+                 labels = c("x" = "Intel",
+                            "m" = "Edu",
+                            "y" = "Inc"), 
                  exposure = "x", outcome = "y")
 ```
 
@@ -363,17 +371,22 @@ ggdag_dseparated(dag.obj,
 ggdag_dseparated(dag.obj, 
                  controlling_for = "m", 
                  text = FALSE, 
-                 use_labels = "label") + theme_bw()
+                 use_labels = "label") +
+  theme_bw()
 ```
 
 ![](11-dag_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ]
 
----
+--
 
 Controlling for mediators removes the association of interest from the model -- you may be removing the variance you most want to study!
 
-Inverted forks also teach us what not to control for: colliders. A **collider** for a pair of construct is any third construct that is caused by both constructs in the pair. Controlling for (or conditioning on) these variables introduces bias into your estimates. 
+---
+
+
+
+Inverted forks also teach us what not to control for: colliders. A **collider** for a pair of constructs is any third construct that is caused by both constructs in the pair. Controlling for (or conditioning on) these variables introduces bias into your estimates. 
 
 Intelligence &amp;rarr; Income attainment &amp;larr; Educational
 
@@ -383,9 +396,9 @@ What happens if we control for the collider?
 ```r
 dag.obj = dagify(c ~ x,
                  c ~ y,
-                 labels = c("x" = "Intelligence",
-                            "c" = "Income",
-                            "y" = "Education"), 
+                 labels = c("x" = "Intel",
+                            "c" = "Inc",
+                            "y" = "Edu"), 
                  exposure = "x", outcome = "y")
 ```
 
@@ -469,7 +482,7 @@ ggdag_dseparated(dag.obj,
 
 ## Example
 
-A health researcher is interested in studying the relationship between dieting and weight loss. She collects a sample of participants, mesaures their weight, and then asks whether they are on a diet. She returns to these participants two months later and assess weight again. What should the researcher control when assessing the relationship between dieting and weight loss?
+A health researcher is interested in studying the relationship between dieting and weight loss. She collects a sample of participants, measures their weight, and then asks whether they are on a diet. She returns to these participants two months later and assess weight again. What should the researcher control when assessing the relationship between dieting and weight loss?
 
 ---
 
@@ -489,16 +502,25 @@ dag.obj = dagify(diet ~ wi,
 
 
 ```r
-ggdag_adjustment_set(dag.obj, text = FALSE, use_labels = "label") + theme_bw()
+ggdag_paths(dag.obj, text = FALSE, use_labels = "label") + theme_bw()
 ```
 
 ![](11-dag_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 ---
 
-What should be controlled here?
+
+```r
+ggdag_adjustment_set(dag.obj, text = FALSE, use_labels = "label") + theme_bw()
+```
 
 ![](11-dag_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+
+What should be controlled here?
+
+![](11-dag_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 ---
 
 
@@ -507,7 +529,7 @@ What should be controlled here?
 ggdag_adjustment_set(dag.obj) + theme_bw()
 ```
 
-![](11-dag_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](11-dag_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ---
 There is a **strong** assumption of DAG models, and that it's that no relevant variables have been omitted from the graph and that causal pathways have been correctly specified. This is a tall order, and potentially impossible to meet. Moreover, two different researchers may reasonably disagree with what the true model looks like. 
 

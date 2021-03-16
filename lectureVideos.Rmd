@@ -75,3 +75,11 @@ output:
 
 #### 3/11
 - **Exam 1 DUE by 10am**
+
+## Week 8
+
+#### 3/16
+- [Assumptions & Diagnostics](https://youtu.be/t9AE_tSzAbk)
+
+#### 3/18
+- Causal Models
