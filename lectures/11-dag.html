@@ -277,7 +277,7 @@ DAG models are most useful for psychological scientists thinking about which var
 
 --
 
-We can see with DAG models that we should be **controlling for constructs that create forks** such that it **causes both our X and Y variable**. These constructs are known as _**confounds**_, or constructs that represent common causes of our variables of interest. 
+We can see with DAG models that we should be **controlling for constructs that create forks**, or a construct **causes both our X and Y variable**. These constructs are known as _**confounds**_, or constructs that represent common causes of our variables of interest. 
 
 Importantly, we don't need to control for variables that causes just X and not Y (think of the issue of suppression).
 
@@ -316,12 +316,15 @@ ggdag_adjustment_set(dag.obj, text = FALSE, use_labels = "label") + theme_bw()
 
 ---
 
-Confounds open "back-doors" between variables that act like causal pathways, but are not. But closing off the back doors, we isolate the true causal pathways, if there are any, and our regression models will estimate those. 
+Confounds open "back-doors" between variables that act like causal pathways, but are not. By closing off the back doors, we isolate the true causal pathways, if there are any, and our regression models will estimate those. 
 
 Based on the causal structure I hypothesized last slide, if I want to estimate how much education causes income, I should control for intelligence, but I don't need to control for grades. 
 
-`$$\large \hat{\text{Income}} = b_0 + b_1(\text{Education}) + b_2(\text{Intelligence}) + e$$`
+If you also controlled for grades, that would change the meaning of education. So you'd still get a causal effect of education on income, but it would be a different effect than what you might imagine (because we've partialled out grades &amp; intelligence now). 
 
+If we keep grades in, our question might be "does having higher grades lead to students wanting to continue on with schooling which in turn gets them higher incomes?"
+
+If we control for grades, our question might be "if everyone has the same level of grades, then do those that choose more schooling earn more money?"
 ---
 
 ## More control is not always better
@@ -380,7 +383,7 @@ ggdag_dseparated(dag.obj,
 
 --
 
-Controlling for mediators removes the association of interest from the model -- you may be removing the variance you most want to study!
+Controlling for mediators removes the association of interest from the model -- you may be removing the variance you most want to study! It cuts off the flow of information from X to Y, so you wouldn't find a causal effect.
 
 ---
 
@@ -428,7 +431,15 @@ ggdag_dseparated(dag.obj,
 ![](11-dag_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 ]
 
+Edu and Intel are not related to one another *causally* (left). However, if you control for income, you now see a spurious relationship between edu and intel
+
+???
+(ie we lived in socialist obamaland, then the more intelligent would go to more schooling, but if we live in capitalist trumpland intelligence and edu are not related because the smart ones who need money can get it without extra schooling like us phd suckers). 
+
+We get at the original question based on theory. Do the more intelligent undergo more schooling? Then by specifying a dag you can tell what variables you should and should not control for if you want to address your causal q. Of course in reality the questions are so much more complex and reality is more complex than this so it is hard to come up with a good dag. 
 ---
+
+
 
 
 ## Collider bias
