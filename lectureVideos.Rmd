@@ -83,3 +83,71 @@ output:
 
 #### 3/18
 - [Causal Models](https://youtu.be/PFVzK_swzG8)
+- Zoom Check-in with Chan -- *so sorry I forgot to post the link!* 
+- [Recording of Zoom Check-in with Chan](https://wustl.zoom.us/rec/share/CpESLyoQuwA5ONP5BxfPqDJa4Dyyaj5cfqh-ktUNVpT46EYmxsECsTERZcTod1HB.DM5bE46mD_Nnam1X?startTime=1616079736000)
+
+## Week 9
+
+#### 3/23
+- Interactions I
+- **HW 3 Due by 10am**
+
+#### 3/25
+- Wellness Break #2
+- No Zoom Check-in
+
+## Week 10
+
+#### 3/30
+- Interactions II (Factorial ANOVA)
+
+#### 4/1
+- Interactions II (Factorial ANOVA)
+- [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 11
+
+#### 4/6
+- **Exam 2 Opens at 10am**
+
+#### 4/8
+- **Exam 2 DUE by 10am**
+
+## Week 12
+
+#### 4/13
+- Interactions IV (Power & Effect Size)
+
+#### 4/15
+- Interactions V (Polynomials)
+- [Zoom Check-in with Violet](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+- **HW 4 Due by 10am**
+
+## Week 13
+
+#### 4/20
+- Logistic Regression/GLM
+
+#### 4/22
+- Bootstrapping
+- [Zoom Check-in with Chan](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+## Week 14
+
+#### 4/27
+- Over/Underfitting & Validation
+
+#### 4/29
+- Repeated Measures/MLM
+- **HW 5 Due by 10am**
+
+## Week 15
+
+#### 5/4 -- Last Day of Class!
+- Repeated Measures/MLM
+- [Zoom Check-in with Shelly -- last one!](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+
+#### 5/6 -- No Class
+- - **HW 6 Due by 10am**
+
+
