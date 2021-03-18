@@ -82,4 +82,4 @@ output:
 - [Assumptions & Diagnostics](https://youtu.be/t9AE_tSzAbk)
 
 #### 3/18
-- Causal Models
+- [Causal Models](https://youtu.be/PFVzK_swzG8)
