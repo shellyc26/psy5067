@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Interactions</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -34,7 +35,7 @@ When we have two variables, A and B, in a regression model, we are testing wheth
 ---
 
 ## What are interactions?
-However, we may hypothesis that two variables have **joint effects**, or interact with each other. In this case, the effect of A on Y changes as a function of B. 
+However, we may hypothesize that two variables have **joint effects**, or interact with each other. In this case, the effect of A on Y changes as a function of B. 
 - Example: Chronic stress has a negative impact on health but only for individuals who receive little or no social support; for individuals with high social support, chronic stress has no impact on health. 
 - This is also referred to as **moderation.** 
 
@@ -42,26 +43,26 @@ However, we may hypothesis that two variables have **joint effects**, or interac
 .pull-left[
 ### Univariate regression
 
-![](14-interactions_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
 
 ]
 .pull-right[
 ### Multivariate regression
 
-![](14-interactions_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 ]
 ---
 
 ### Multivariate regression with an interaction
 
-![](14-interactions_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
 ---
 
 ### Example
 
-We shall return to the data we used in the multiple regression model with two continuous variables. Here we have an outcome (Stress) that we are interested in predicting from trait Anxiety and levels of social Support.
+We shall return to the data we used in the multiple regression model with two continuous variables. Here we have an outcome (Stress) that we are interested in predicting from trait Anxiety and levels of Social Support.
 
 
 ```r
@@ -296,13 +297,13 @@ Often we graph the simple slopes as a way to understand the interaction. Interpr
 ## Interaction shapes
 ### Ordinal interactions
 
-![](14-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ---
 ## Interaction shapes
 ### Cross-over (disordinal) interactions
 
-![](14-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -313,7 +314,7 @@ library(sjPlot)
 plot_model(imodel, type = "int")
 ```
 
-![](14-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -322,7 +323,15 @@ plot_model(imodel, type = "int")
 plot_model(imodel, type = "int", mdrt.values = "meansd")
 ```
 
-![](14-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+plot_model(imodel, type = "pred", terms = c("Support", "Anxiety[5,10]"))
+```
+
+![](12-interactions_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -331,7 +340,17 @@ plot_model(imodel, type = "int", mdrt.values = "meansd")
 plot_model(imodel, type = "pred", terms = c("Support", "Anxiety"), mdrt.values = "meansd")
 ```
 
-![](14-interactions_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](12-interactions_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+
+# Pop Quiz
+
+You are interested in the effects of "brain games" (or cognitive training) and sleep on the development of Alzheimer's disease. You hypothesize that cognitive training might aid in slowing the progression of AD if participants are well rested. 
+
+- Write out the regression equation. Which variable is the moderator?
+- Interpret the coefficients.
+- Sketch out a plot of the simple slopes. There are different ways of doing this reflecting different hypotheses, but make sure the hypothesis stated above is somehow shown. You can do this on a post-it/scratch paper (I don't have real data for this, so there's nothing to make in R unless you want to simulate your own data...but that's a bit much for a 0-point pop quiz)
 
 ---
 
@@ -620,6 +639,11 @@ summary(zmodel)
 ```
 
 ---
+# Pop Quiz
+
+Go back to the first pop quiz. Assume you have now centered the appropriate variables, and now re-interpret your coefficients.
+
+---
 class: inverse
 
 ## Next time...
@@ -674,6 +698,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -691,17 +741,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

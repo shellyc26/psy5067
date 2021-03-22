@@ -28,7 +28,7 @@ When we have two variables, A and B, in a regression model, we are testing wheth
 ---
 
 ## What are interactions?
-However, we may hypothesis that two variables have **joint effects**, or interact with each other. In this case, the effect of A on Y changes as a function of B. 
+However, we may hypothesize that two variables have **joint effects**, or interact with each other. In this case, the effect of A on Y changes as a function of B. 
 - Example: Chronic stress has a negative impact on health but only for individuals who receive little or no social support; for individuals with high social support, chronic stress has no impact on health. 
 - This is also referred to as **moderation.** 
 
@@ -73,7 +73,7 @@ visreg2d(mr.model2,"x1", "x2", plot.type = "persp")
 
 ### Example
 
-We shall return to the data we used in the multiple regression model with two continuous variables. Here we have an outcome (Stress) that we are interested in predicting from trait Anxiety and levels of social Support.
+We shall return to the data we used in the multiple regression model with two continuous variables. Here we have an outcome (Stress) that we are interested in predicting from trait Anxiety and levels of Social Support.
 
 ```{r, message=FALSE}
 library(here)
@@ -255,6 +255,11 @@ plot_model(imodel, type = "int")
 
 ```{r, results = 'hide', message = F, warning = F}
 plot_model(imodel, type = "int", mdrt.values = "meansd")
+
+```
+
+---
+```{r, results = 'hide', message=F, warning=F}
 plot_model(imodel, type = "pred", terms = c("Support", "Anxiety[5,10]"))
 ```
 
@@ -263,6 +268,16 @@ plot_model(imodel, type = "pred", terms = c("Support", "Anxiety[5,10]"))
 ```{r, results = 'hide', message = F, warning = F}
 plot_model(imodel, type = "pred", terms = c("Support", "Anxiety"), mdrt.values = "meansd")
 ```
+
+---
+
+# Pop Quiz
+
+You are interested in the effects of "brain games" (or cognitive training) and sleep on the development of Alzheimer's disease. You hypothesize that cognitive training might aid in slowing the progression of AD if participants are well rested. 
+
+- Write out the regression equation. Which variable is the moderator?
+- Interpret the coefficients.
+- Sketch out a plot of the simple slopes. There are different ways of doing this reflecting different hypotheses, but make sure the hypothesis stated above is somehow shown. You can do this on a post-it/scratch paper (I don't have real data for this, so there's nothing to make in R unless you want to simulate your own data...but that's a bit much for a 0-point pop quiz)
 
 ---
 
@@ -406,6 +421,11 @@ stress.data = stress.data %>%
 zmodel = lm(zStress ~ zAnxiety + zSupport + zAxS, stress.data)
 summary(zmodel)
 ```
+
+---
+# Pop Quiz
+
+Go back to the first pop quiz. Assume you have now centered the appropriate variables, and now re-interpret your coefficients.
 
 ---
 class: inverse

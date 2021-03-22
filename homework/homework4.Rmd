@@ -1,0 +1,61 @@
+---
+title: "Homework #4"
+output: html_document
+---
+
+## Instructions
+
+Please complete this assignment by creating a new RMarkdown (or RNotebook) file (one that has the extension .Rmd). Be sure to include your name in the preamble. Please submit both your .Rmd and your .html files to Canvas.
+
+#### Formatting
+
+-   All code should be in a code chunk (gray boxes)
+-   All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks.
+-   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
+-   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpreations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+
+Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand.
+
+You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
+
+All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
+
+In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
+
+**Data:** The dataset looks at happiness in college as a relationship with school success, friendship quality, SES, and an intervention group (1= control, 2 = study skills training, 3 = social skills training). (Note that the variable names have spaces in them, which may make it tricky to work with. I suggest renaming the variables). The data are here: [`th-project-4.csv`](th-project-4.csv)
+
+Good luck!
+
+## Homework Questions
+
+1. Run a two-predictor regression predicting happiness by friendship and school success and the interaction between the two.
+    - Describe your hypothesis for the interaction using the study variables
+    - Describe in words what exactly the b1, b2, and b3 coefficients are telling us in this model. 
+
+2. What is the mean and SD of your Y, X1, X2, and interaction variables that you used in your regression model?
+
+3. Compute the following 3 simple regression equations. Your choice of moderating variable depends on your hypothesis. Write out and interpret each of these simple slope equations. 
+    a) The regression of Y on X at the mean of X2
+    b) At one standard deviation above the mean of X2 (X2hi)
+    c) At one standard deviation below the mean of X2 (X2low). 
+
+4. Graph the three simple slopes from question 3 within a single plot.
+
+5. Are any of these simple slopes significantly different from 0? How do you know? (i.e., I want a little more info than just "yes" or "no")
+
+6. How much variance is explained by the interaction?
+
+7. Now run the interaction again, but instead of using the raw/unstandardized metric, use standardized variables. Compute simple slopes. Describe the differences between the standardized and unstandardized models. 
+
+8. Imagine you are concerned with non-linear effects masquerading as an interaction. Test this concern. 
+
+9. Run a new regression model, this time with the group variable interacting with friendship. Interpret each of the coefficients in this model and provide a graph of the results.
+
+10. What are the estimated values for each of the groups in #9 controlling for friendship? 
+
+11. Use a different coding scheme than the one you chose to use in #9. How did this change the results? Interpret each of the regression coefficients. 
+
+12. For the model you tested in #1, check each of the six assumptions discussed in class. Note: not every assumption may be directly examined. Describe how you *would* test the assumption. 
+
+13.	Examine possible outliers. Directly state what each plot tells you. Are there any cases that are suspicious?  What is the impact on the analysis of these cases, if any? 
+
