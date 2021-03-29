@@ -11,6 +11,11 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r, warning=FALSE, message=FALSE, include=FALSE}
+library(sjPlot)
+library(tidyverse)
+```
+
 ## Last time...
 
 Introduction to interactions with two continuous predictors
@@ -36,16 +41,19 @@ summary(cars_model)
 ---
 ### Recap: Simple slopes
 
-```{r, message = F}
+```{r, message=FALSE, warning=FALSE}
 library(reghelper)
 simple_slopes(cars_model, levels = list(hp = c(78, 147, 215)))
 ```
+
 ---
+
 ### Recap: Plot simple slopes
 
-```{r, message=FALSE, fig.width = 10, fig.height = 6}
-library(sjPlot)
+```{r, message=FALSE, warning=FALSE, fig.width = 10, fig.height = 6}
+
 plot_model(cars_model, type = "int", mdrt.values = "meansd")
+
 ```
 
 
@@ -123,7 +131,7 @@ ggplot(df, aes(X,Y, color = as.factor(D))) +
 
 ---
 ### Visualizing
-```{r, echo = F}
+```{r, echo = F, warning=FALSE, message=FALSE}
 mod = lm(Y ~ X + D, data = df)
 df$pmod = predict(mod)
 
@@ -143,7 +151,8 @@ ggplot(df, aes(X,Y, color = as.factor(D))) +
 
 ---
 ### Visualizing
-```{r, echo = F}
+
+```{r, echo = F, warning=FALSE, message=FALSE}
 mod = lm(Y ~ X + D, data = df)
 df$pmod = predict(mod)
 
@@ -162,6 +171,7 @@ ggplot(df, aes(X,Y, color = as.factor(D))) +
                inherit.aes = F, size = 1.5)+
   cowplot::theme_cowplot()
 ```
+
 ---
 
 ### 3 or more groups
@@ -217,7 +227,7 @@ $b_3$ is the difference in slopes between the reference group and the other grou
 
 ### Visualizing
 
-```{r, echo = F, fig.width=10, fig.height=6}
+```{r, echo = F, fig.width=10, fig.height=6, warning=FALSE, message=FALSE}
 ggplot(df, aes(X,Y, color = as.factor(D))) +
   geom_point(size = 3) +
   geom_smooth(method = "lm", se = F)+
@@ -252,60 +262,32 @@ inc_data$income[inc_data$income < 21] = rnorm(n = length(which(inc_data$income <
                                               m = 55, sd = 10)
 ```
 
-The University of Oregon is interested in understanding how undergraduates' academic performance and choice of major impacts their career success. They contact 150 alumni between the ages of 25 and 35 and collect their current salary (in thousands of dollars), their primary undergarduate major, and their GPA upon graduating. 
+Wash U is interested in understanding how undergraduates' academic performance and choice of major impacts their career success. They contact 150 alumni between the ages of 25 and 35 and collect their current salary (in thousands of dollars), their primary undergraduate major, and their GPA upon graduating. 
 
-
-
-<!-- A recent study by [Craig, Nelson, & Dixson, 2019](https://journals.sagepub.com/doi/full/10.1177/0956797619834876) examined whether the presence or absence of a beard made it easier to decode a man's facial expression. In this study, participants were presented with photographs of bearded and clean-shaven men making expressive faces. -->
-
-<!-- ![](images/beard photos.png) -->
-
-<!-- Participants were asked to categorize each face as "happy" or "angry" as quickly as possible. Reaction time (in ms) was the outcome.  -->
-
-<!-- I want to know whether men who are good at identifying angry expressions of clean-shaven men are also good at identifying angry expressions of bearded men.  -->
-<!-- I also want to know if that relationship differs among men (participants) who are bearded. -->
-<!-- ![](images/beard photos.png) -->
-
-
----
-
-### `R` code
-
-```{r, message = F, warning = F, echo = F, eval = F}
-library(here)
-beards = read.csv(here("data/beards.csv"), stringsAsFactors = F)
-```
-
-
-```{r, echo = F, eval = F}
-beards = beards %>% 
-  filter(beard %in% c("No","Yes")) %>%
-  mutate(beard = factor(beard, levels = c("No", "Yes")))
-```
-
-```{r, message = F, warning = F, echo = F, eval = F}
-library(psych)
-table(beards$beard)
-describe(beards[,c("BA_mean", "CA_mean")], fast = T)
-```
 
 ```{r, message = F, warning = F}
 library(psych)
 table(inc_data$major)
 describe(inc_data[,c("gpa", "income")], fast = T)
 ```
+
 ---
 ### Model summary
-
-```{r, echo = F, eval = F}
-beard.mod = lm(BA_mean ~ CA_mean*beard, data = beards)
-summary(beard.mod)
-```
 
 ```{r}
 career.mod = lm(income ~ gpa*major, data = inc_data)
 summary(career.mod)
 ```
+
+---
+
+### Pop Quiz
+
+For the model just defined in the previous slide...
+
+- Write out the regression equation
+- Interpret each term
+- Where is Econ? 
 
 ---
 ### Model summary: centering predictors
@@ -318,17 +300,61 @@ summary(career.mod_c)
 
 ---
 
+### Pop Quiz 2
+
+Now re-interpret each term for for the model where `gpa` is centered. What changes?
+
+---
+
 ### Plotting results
 
-```{r, message = F, warning = F, fig.width=10, fig.height=6, echo = F, eval = F}
-library(sjPlot)
-plot_model(beard.mod, type = "int", show.data = T, axis.title = c("Response to clean-shaven faces (in milliseconds)", "Response to bearded faces (in milliseconds)"), legend.title = "Participant beard?", title = "Smaller difference in reaction to clean-shaven and bearded faces among clean-shaven participants", wrap.title = T)
+```{r, message = F, warning = F, fig.width=10, fig.height=6, eval = FALSE}
+
+library(ggeffects)
+predictedvals = ggpredict(model = career.mod, terms = c("gpa", "major"))
+
+ggplot(data = predictedvals, aes(x = x, y = predicted, group = group)) +
+  geom_smooth(aes(ymin = conf.low,
+                  ymax = conf.high,
+                  color = group,
+                  fill = group),
+              stat = "identity",
+              alpha = .2) +
+  labs(x = "GPA",
+       y = "Income (in thousands of dollars)",
+       title = "I am in the wrong profession",
+       color = "Undergraduate Major",
+       fill = "Undergraduate Major",
+       group = "Undergraduate Major")
+
 ```
 
-```{r, message = F, warning = F, fig.width=10, fig.height=6}
-library(sjPlot)
-plot_model(career.mod, type = "int", show.data = T, axis.title = c("Grade Point Average", "Income (in thousands of dollars)"), legend.title = "Undergraduate Major", title = "I'm in the wrong profession", wrap.title = T)
+
+---
+
+### Plotting Results
+
+```{r, message = F, warning = F, fig.width=10, fig.height=6, echo=FALSE}
+
+library(ggeffects)
+predictedvals = ggpredict(model = career.mod, terms = c("gpa", "major"))
+
+ggplot(data = predictedvals, aes(x = x, y = predicted, group = group)) +
+  geom_smooth(aes(ymin = conf.low,
+                  ymax = conf.high,
+                  color = group,
+                  fill = group),
+              stat = "identity",
+              alpha = .2) +
+  labs(x = "GPA",
+       y = "Income (in thousands of dollars)",
+       title = "I am in the wrong profession",
+       color = "Undergraduate Major",
+       fill = "Undergraduate Major",
+       group = "Undergraduate Major")
+
 ```
+
 ---
 
 ## Two categorical predictors
@@ -337,17 +363,33 @@ If both X and M are categorical variables, the interpretation of coefficients is
 
 Recall our Solomon's paradox example from a few weeks ago:
 
-```{r}
+```{r, warning=F, message=FALSE}
 library(here)
 solomon = read.csv(here("data/solomon.csv"))
 ```
+
 ```{r, echo = F}
 solomon$PERSPECTIVE = ifelse(solomon$CONDITION %in% c(1,2), "self", "other")
 solomon$DISTANCE = ifelse(solomon$CONDITION %in% c(1,3), "immersed", "distanced")
 ```
+
 ```{r}
 head(solomon[,c("PERSPECTIVE", "DISTANCE", "WISDOM")])
+
+solomon$PERSPECTIVE = factor(solomon$PERSPECTIVE)
+solomon$DISTANCE = factor(solomon$DISTANCE)
 ```
+
+---
+
+### Model Means
+
+```{r, warning = FALSE, message = FALSE}
+solomon %>% 
+  group_by(DISTANCE, PERSPECTIVE) %>% 
+  summarize(meanWISDOM = mean(WISDOM, na.rm = TRUE))
+```
+
 ---
 
 ### Model summary
@@ -490,7 +532,10 @@ mean.summary = Data %>%
 mean.summary$Noise = as.character(mean.summary$Noise)
 mean.summary$Marginal = rowMeans(mean.summary[2:4])
 mean.summary[4,1] = "Marginal"
-mean.summary[4,2:5] = colMeans(mean.summary[2:5], na.rm=T)
+mean.summary[4,2] = colMeans(mean.summary[2:5], na.rm=T)[1]
+mean.summary[4,3] = colMeans(mean.summary[2:5], na.rm=T)[2]
+mean.summary[4,4] = colMeans(mean.summary[2:5], na.rm=T)[3]
+mean.summary[4,5] = colMeans(mean.summary[2:5], na.rm=T)[4]
 library(knitr)
 library(kableExtra)
 kable(mean.summary, digits = 2) %>% kable_styling() %>% group_rows(start_row = 1, end_row = 3)

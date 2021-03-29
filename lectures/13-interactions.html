@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Interactions (II)</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -16,6 +18,8 @@ class: center, middle, inverse, title-slide
 # Interactions (II)
 
 ---
+
+
 
 
 ## Last time...
@@ -79,16 +83,17 @@ simple_slopes(cars_model, levels = list(hp = c(78, 147, 215)))
 ## 2 sstest 147       -0.0307     0.0064 -4.8207 28 4.528e-05  ***
 ## 3 sstest 215       -0.0110     0.0086 -1.2782 28    0.2117
 ```
+
 ---
+
 ### Recap: Plot simple slopes
 
 
 ```r
-library(sjPlot)
 plot_model(cars_model, type = "int", mdrt.values = "meansd")
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -134,15 +139,17 @@ This, by the way, is ANCOVA.
 
 ### Visualizing
 
-![](15-interactions_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ---
 ### Visualizing
-![](15-interactions_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ---
 ### Visualizing
-![](15-interactions_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+![](13-interactions_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
 ---
 
 ### 3 or more groups
@@ -211,7 +218,7 @@ What is the interpretation of `\(b_3?\)`
 
 ### Visualizing
 
-![](15-interactions_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 Where should we draw the segment to compare means?
 
@@ -225,30 +232,7 @@ Where you draw the segment changes the difference in means. That's why `\(b_1\)`
 
 
 
-The University of Oregon is interested in understanding how undergraduates' academic performance and choice of major impacts their career success. They contact 150 alumni between the ages of 25 and 35 and collect their current salary (in thousands of dollars), their primary undergarduate major, and their GPA upon graduating. 
-
-
-
-&lt;!-- A recent study by [Craig, Nelson, &amp; Dixson, 2019](https://journals.sagepub.com/doi/full/10.1177/0956797619834876) examined whether the presence or absence of a beard made it easier to decode a man's facial expression. In this study, participants were presented with photographs of bearded and clean-shaven men making expressive faces. --&gt;
-
-&lt;!-- ![](images/beard photos.png) --&gt;
-
-&lt;!-- Participants were asked to categorize each face as "happy" or "angry" as quickly as possible. Reaction time (in ms) was the outcome.  --&gt;
-
-&lt;!-- I want to know whether men who are good at identifying angry expressions of clean-shaven men are also good at identifying angry expressions of bearded men.  --&gt;
-&lt;!-- I also want to know if that relationship differs among men (participants) who are bearded. --&gt;
-&lt;!-- ![](images/beard photos.png) --&gt;
-
-
----
-
-### `R` code
-
-
-
-
-
-
+Wash U is interested in understanding how undergraduates' academic performance and choice of major impacts their career success. They contact 150 alumni between the ages of 25 and 35 and collect their current salary (in thousands of dollars), their primary undergraduate major, and their GPA upon graduating. 
 
 
 
@@ -272,10 +256,9 @@ describe(inc_data[,c("gpa", "income")], fast = T)
 ## gpa       1 150  3.36  0.4  2.44   4.19   1.74 0.03
 ## income    2 150 84.35 34.0 24.67 160.27 135.60 2.78
 ```
+
 ---
 ### Model summary
-
-
 
 
 ```r
@@ -307,6 +290,16 @@ summary(career.mod)
 ## Multiple R-squared:  0.8142,	Adjusted R-squared:  0.8077 
 ## F-statistic: 126.2 on 5 and 144 DF,  p-value: &lt; 2.2e-16
 ```
+
+---
+
+### Pop Quiz
+
+For the model just defined in the previous slide...
+
+- Write out the regression equation
+- Interpret each term
+- Where is Econ? 
 
 ---
 ### Model summary: centering predictors
@@ -345,17 +338,41 @@ summary(career.mod_c)
 
 ---
 
+### Pop Quiz 2
+
+Now re-interpret each term for for the model where `gpa` is centered. What changes?
+
+---
+
 ### Plotting results
 
 
-
-
 ```r
-library(sjPlot)
-plot_model(career.mod, type = "int", show.data = T, axis.title = c("Grade Point Average", "Income (in thousands of dollars)"), legend.title = "Undergraduate Major", title = "I'm in the wrong profession", wrap.title = T)
+library(ggeffects)
+predictedvals = ggpredict(model = career.mod, terms = c("gpa", "major"))
+
+ggplot(data = predictedvals, aes(x = x, y = predicted, group = group)) +
+  geom_smooth(aes(ymin = conf.low,
+                  ymax = conf.high,
+                  color = group,
+                  fill = group),
+              stat = "identity",
+              alpha = .2) +
+  labs(x = "GPA",
+       y = "Income (in thousands of dollars)",
+       title = "I am in the wrong profession",
+       color = "Undergraduate Major",
+       fill = "Undergraduate Major",
+       group = "Undergraduate Major")
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+
+### Plotting Results
+
+![](13-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
 ---
 
 ## Two categorical predictors
@@ -367,15 +384,10 @@ Recall our Solomon's paradox example from a few weeks ago:
 
 ```r
 library(here)
-```
-
-```
-## here() starts at /Users/sweston2/Google Drive/Work/Teaching/Courses/Graduate/Statistics and Methods Sequence/psy612
-```
-
-```r
 solomon = read.csv(here("data/solomon.csv"))
 ```
+
+
 
 
 ```r
@@ -391,6 +403,34 @@ head(solomon[,c("PERSPECTIVE", "DISTANCE", "WISDOM")])
 ## 5        self distanced  0.62299793
 ## 6        self distanced -1.99578129
 ```
+
+```r
+solomon$PERSPECTIVE = factor(solomon$PERSPECTIVE)
+solomon$DISTANCE = factor(solomon$DISTANCE)
+```
+
+---
+
+### Model Means
+
+
+```r
+solomon %&gt;% 
+  group_by(DISTANCE, PERSPECTIVE) %&gt;% 
+  summarize(meanWISDOM = mean(WISDOM, na.rm = TRUE))
+```
+
+```
+## # A tibble: 4 x 3
+## # Groups:   DISTANCE [2]
+##   DISTANCE  PERSPECTIVE meanWISDOM
+##   &lt;fct&gt;     &lt;fct&gt;            &lt;dbl&gt;
+## 1 distanced other            0.334
+## 2 distanced self             0.122
+## 3 immersed  other            0.195
+## 4 immersed  self            -0.559
+```
+
 ---
 
 ### Model summary
@@ -565,7 +605,7 @@ summary(solomon.mod)
 plot_model(solomon.mod, type = "int")
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 class:inverse
@@ -635,21 +675,21 @@ In this case, we have a 3 x 3 ANOVA ("three by three"), because our first factor
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -689,21 +729,21 @@ Regardless of dot speed, does noise condition affect performance?
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -733,7 +773,7 @@ library(ggpubr)
 ggbarplot(data = Data, x = "Speed", y = "Time", add = c("mean_ci"), fill = "#562457", xlab = "Speed Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nspeed condition") + cowplot::theme_cowplot(font_size = 20)
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 
 Looks like the mean differences are substantial.  The ANOVA will be able to tell us if the means are significantly different  and the magnitude of those differences in terms of variance accounted for.
 
@@ -754,21 +794,21 @@ Looks like the mean differences are substantial.  The ANOVA will be able to tell
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -795,7 +835,7 @@ Here, too adding information about variability allows us a sense of whether thes
 ggbarplot(data = Data, x = "Noise", y = "Time", add = c("mean_ci"), fill = "#562457", xlab = "Noise Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nnoise condition") + cowplot::theme_cowplot(font_size = 20)
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+![](13-interactions_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 
 The mean differences are not as apparent for this factor. The ANOVA will be particularly important for informing us about statistical significance and effect size.
 
@@ -816,21 +856,21 @@ The mean differences are not as apparent for this factor. The ANOVA will be part
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -935,6 +975,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -952,17 +1018,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
