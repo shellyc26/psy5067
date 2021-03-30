@@ -99,7 +99,7 @@ output:
 ## Week 10
 
 #### 3/30
-- Interactions II (Factorial ANOVA)
+- [Interactions II (Factorial ANOVA)](https://youtu.be/FpTZ1KmQz_o)
 
 #### 4/1
 - Interactions III (Factorial ANOVA)
