@@ -358,7 +358,7 @@ An interaction.]
 | No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
 | Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
 | Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
 
 The two main effects and the interaction represent three independent questions we can ask about the data. We have three null hypotheses to test.
 
@@ -366,7 +366,7 @@ One null hypothesis refers to the marginal row means.
 
 $$
 `\begin{aligned}
-\large H_0&amp;: \mu_{1.} = \mu_{2.} = \dots = \mu_{R.}\\
+H_0&amp;: \mu_{1.} = \mu_{2.} = \dots = \mu_{R.}\\
 H_1&amp;: \text{Not true that }\mu_{1.} = \mu_{2.} = \dots = \mu_{R.}
 \end{aligned}`
 $$
@@ -380,14 +380,14 @@ $$
 | No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
 | Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
 | Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
 
 We can state this differently (it will make stating the interaction null hypothesis easier when we get to it).
 
 $$
 `\begin{aligned}
-\large \alpha_r&amp;= \mu_{r.} - \mu_{..} \\
-\large H_0&amp;: \alpha_1 = \alpha_2 = \dots = \alpha_R = 0\\
+\alpha_r&amp;= \mu_{r.} - \mu_{g} \\
+H_0&amp;: \alpha_1 = \alpha_2 = \dots = \alpha_R = 0\\
 H_1&amp;: \text{At least one }\alpha_r \neq 0
 \end{aligned}`
 $$
@@ -402,15 +402,15 @@ $$
 | No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
 | Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
 | Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
 
 The main effect for dot speed (column marginal means) can be stated similarly:
 
 
 $$
 `\begin{aligned}
-\large \beta_c&amp;= \mu_{.c} - \mu_{..} \\
-\large H_0&amp;: \beta_1 = \beta_2 = \dots = \beta_C = 0\\
+\beta_c&amp;= \mu_{.c} - \mu_{g} \\
+H_0&amp;: \beta_1 = \beta_2 = \dots = \beta_C = 0\\
 H_1&amp;: \text{At least one }\beta_c \neq 0
 \end{aligned}`
 $$
@@ -423,19 +423,15 @@ $$
 | No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
 | Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
 | Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
 
-The interaction is the difference between each cell mean ( `\(\mu_{rc}\)`) and the grand mean ( `\(\mu_g\)` or `\(\mu_{..}\)`) that remains after you remove the effects of A and B...
+The interaction is the difference between each cell mean ( `\(\mu_{rc}\)`) and the grand mean ( `\(\mu_g\)` or `\(\mu_{..}\)`) that remains *after* you remove the effects of A and B.
 
-$$
-(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)
-$$
+`$$(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)$$`
 
 This simplifies down to:
 
-$$
-(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g
-$$
+`$$(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g$$`
 
 ---
 
@@ -447,43 +443,53 @@ $$
 | No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
 | Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
 | Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
 
 The interaction null hypothesis can then be stated as follows:
 
 $$
 `\begin{aligned}
-\large (\alpha\beta)_{rc}&amp;= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
-\large H_0&amp;: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
+(\alpha\beta)_{rc}&amp;= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
+H_0&amp;: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
 H_1&amp;: \text{At least one }(\alpha\beta)_{rc} \neq 0
 \end{aligned}`
 $$
 ---
 
-### Variability 
+### Putting it all together
 
-As was true for the simpler one-way ANOVA, we will partition the total variability in the data matrix into two basic parts. 
+`\(\alpha_r\)` = row marginal means - grand mean; main effect of variable A (noise)
 
-One part will represent variability **within groups**.  This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
+`\(\beta_c\)` = column marginal means - grand mean; main effect of variable B (speed)
 
-The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
+`\((\alpha\beta)_{rc}\)` = cell mean - `\(\alpha_r\)` - `\(\beta_c\)` + grand mean; interaction
+
+`\(\epsilon_{irc}\)` = error component (independent, normally distributed)
 
 ---
-
-### Revisting Regression Equation
+### Putting it all together
 
 
 `$$\large Y_{irc} = \mu + \alpha_r + \beta_c + (\alpha\beta)_{rc} + \epsilon_{irc}$$`
+
+--
+
 If you subtract the grand mean ( `\(\mu_g\)`) from both sides and substitute in the treatment population means, you get...
 
 
 `$$Y_{irc} - \mu_g = (\mu_r - \mu_g) + (\mu_c - \mu_g) + (\mu_{rc} - \mu_r - \mu_c + \mu_g) + \epsilon_{irc}$$`
+--
+
+Now, above is working with population parameters. We don't have those. We have sample estimates. Let's replace with the notation for sample estimates: 
+
+`$$(Y_{irc} - \bar{Y}_g) = (\bar{Y}_r - \bar{Y}_g) + (\bar{Y}_c - \bar{Y}_g) + (\bar{Y}_{rc} - \bar{Y}_r - \bar{Y}_c + \bar{Y}_g) + (\bar{Y}_{irc} - \bar{Y}_{rc})$$`
+--
+
 In words, this translates to:
 
 &gt; score - grand mean = main effect of A + main effect of B + interaction term + residual error
 
 ---
-
 ### Variability 
 
 
@@ -496,7 +502,19 @@ SS_C &amp;= RN\sum_{c=1}^C(\bar{Y}_{.c.}-\bar{Y}_{...})^2\\
 \large SS_{RC} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(\bar{Y}_{rc.}-\bar{Y}_{r..}-\bar{Y}_{.c.}+\bar{Y}_{...})^2 \\
 \end{aligned}`
 $$
+
 ---
+
+### Variability 
+
+As was true for the simpler one-way ANOVA, we will partition the total variability in the data matrix into two basic parts. 
+
+One part will represent variability **within groups**. This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
+
+The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
+
+---
+
 
 ### Variability 
 
