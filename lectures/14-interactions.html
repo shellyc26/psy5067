@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Interactions (III)</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -21,9 +23,12 @@ class: center, middle, inverse, title-slide
 ## Last time
 
 Mixing categorical and continuous variables
-- [New example](https://uopsych.github.io/psy612/lectures/15-interactions.html#23)
 
-- Starting factorial ANOVA
+Starting factorial ANOVA
+
+## This time
+
+Continuing with factorial ANOVA
 ---
 class:inverse
 ## Factorial ANOVA
@@ -68,21 +73,21 @@ The outcome was the time of the 10th failure. The experiment used a completely c
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -117,21 +122,21 @@ Regardless of noise condition, does speed of the moving dot affect performance?
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -167,21 +172,21 @@ Regardless of dot speed, does noise condition affect performance?
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -218,21 +223,21 @@ The remaining effect in a factorial design, and it primary advantage over separa
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 268.16 &lt;/td&gt;
@@ -255,7 +260,7 @@ If not, then we would need to say that the noise condition effect depends upon (
 ---
 
 
-![](16-interactions_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 
 
 The noise condition means are most distinctly different in the medium speed condition. The noise condition means are clearly not different in the fast speed condition. 
@@ -268,7 +273,7 @@ The presence of an interaction qualifies any main effect conclusions, leading to
 
 .pull-left[
 
-![](16-interactions_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -296,21 +301,21 @@ Does noise condition affect failure time?
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;background-color: #EECACA !important;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;background-color: #EECACA !important;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;background-color: white !important;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;background-color: #B2D4EB !important;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;background-color: #B2D4EB !important;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;background-color: white !important;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;background-color: #FFFFC5 !important;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;background-color: #FFFFC5 !important;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 268.16 &lt;/td&gt;
@@ -343,7 +348,7 @@ An interaction.]
 
 ]
 
-![](16-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 ---
 
 ### Null Hypotheses
@@ -409,6 +414,28 @@ $$
 H_1&amp;: \text{At least one }\beta_c \neq 0
 \end{aligned}`
 $$
+---
+### Null Hypothesis
+
+
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
+| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
+| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
+| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` |
+
+The interaction is the difference between each cell mean ( `\(\mu_{rc}\)`) and the grand mean ( `\(\mu_g\)` or `\(\mu_{..}\)`) that remains after you remove the effects of A and B...
+
+$$
+(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)
+$$
+
+This simplifies down to:
+
+$$
+(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g
+$$
 
 ---
 
@@ -426,7 +453,7 @@ The interaction null hypothesis can then be stated as follows:
 
 $$
 `\begin{aligned}
-\large (\alpha\beta)_{rc}&amp;= \mu_{rc} - \alpha_r - \beta_c  - \mu_{..} \\
+\large (\alpha\beta)_{rc}&amp;= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
 \large H_0&amp;: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
 H_1&amp;: \text{At least one }(\alpha\beta)_{rc} \neq 0
 \end{aligned}`
@@ -440,6 +467,20 @@ As was true for the simpler one-way ANOVA, we will partition the total variabili
 One part will represent variability **within groups**.  This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
 
 The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
+
+---
+
+### Revisting Regression Equation
+
+
+`$$\large Y_{irc} = \mu + \alpha_r + \beta_c + (\alpha\beta)_{rc} + \epsilon_{irc}$$`
+If you subtract the grand mean ( `\(\mu_g\)`) from both sides and substitute in the treatment population means, you get...
+
+
+`$$Y_{irc} - \mu_g = (\mu_r - \mu_g) + (\mu_c - \mu_g) + (\mu_{rc} - \mu_r - \mu_c + \mu_g) + \epsilon_{irc}$$`
+In words, this translates to:
+
+&gt; score - grand mean = main effect of A + main effect of B + interaction term + residual error
 
 ---
 
@@ -460,21 +501,6 @@ $$
 ### Variability 
 
 
-$$
-`\begin{aligned}
-\large SS_{\text{total}} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{...})^2 \\
-\large SS_{\text{Within}} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{rc.})^2 \\
-\large SS_R &amp;= CN\sum_{r=1}^R(\bar{Y}_{r..}-\bar{Y}_{...})^2\\
-SS_C &amp;= RN\sum_{c=1}^C(\bar{Y}_{.c.}-\bar{Y}_{...})^2\\
-\large SS_{RC} &amp;= N\sum_{r=1}^R\sum_{c=1}^C(\bar{Y}_{rc.}-\bar{Y}_{r..}-\bar{Y}_{.c.}+\bar{Y}_{...})^2 \\
-\end{aligned}`
-$$
----
-
-
-### Variability 
-
-
 If the design is balanced (equal cases in all conditions), then:
 
 `$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
@@ -482,11 +508,12 @@ If the design is balanced (equal cases in all conditions), then:
 `\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
 $$
 `\begin{aligned}
+\large df_{Total} &amp;= N-1 \\
+\large df_{Total} &amp;= abn - 1 \\
 \large df_R &amp;= R-1 \\
 \large df_C &amp;= C-1 \\
 \large df_{RxC} &amp;= (R-1)(C-1) \\
-\large df_{within} &amp;= N-G \\
-&amp;= N-(R-1)-(C-1)-[(R-1)(C-1)]-1\\
+\large df_{within} &amp;= ab(n-1) \\
 &amp;= df_{total} - df_{R} - df_C - df_{RxC}
 \end{aligned}`
 $$
@@ -627,7 +654,7 @@ Interactions are tests of the differences of differences of means -- is the diff
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
 ???
 No effect of A
@@ -637,7 +664,7 @@ No interaction
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 ???
 Main effect of A
 Main effect of B
@@ -646,7 +673,7 @@ Interaction
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
 ???
 No effect of A
@@ -654,7 +681,7 @@ No effect of B
 Interaction
 ---
 
-### Visualizing main effects and interactions
+### Pop Quiz
 
 How would you plot....
 
@@ -810,6 +837,14 @@ Partial `\(\eta^2\)` is sometimes described as the expected effect size in a stu
 Partial `\(\eta^2\)` will be larger than `\(\eta^2\)` if the ignored effects account for any variability.
 
 The sum of partial `\(\eta^2\)` does not have a meaningful interpretation.
+
+---
+class: inverse
+
+## Next Time
+
+Exam 2! You got this!
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -857,6 +892,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -874,17 +935,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

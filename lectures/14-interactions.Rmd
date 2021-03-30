@@ -14,9 +14,12 @@ output:
 ## Last time
 
 Mixing categorical and continuous variables
-- [New example](https://uopsych.github.io/psy612/lectures/15-interactions.html#23)
 
-- Starting factorial ANOVA
+Starting factorial ANOVA
+
+## This time
+
+Continuing with factorial ANOVA
 ---
 class:inverse
 ## Factorial ANOVA
@@ -91,7 +94,10 @@ mean.summary = Data %>%
 mean.summary$Noise = as.character(mean.summary$Noise)
 mean.summary$Marginal = rowMeans(mean.summary[2:4])
 mean.summary[4,1] = "Marginal"
-mean.summary[4,2:5] = colMeans(mean.summary[2:5], na.rm=T)
+mean.summary[4,2] = colMeans(mean.summary[2:5], na.rm=T)[1]
+mean.summary[4,3] = colMeans(mean.summary[2:5], na.rm=T)[2]
+mean.summary[4,4] = colMeans(mean.summary[2:5], na.rm=T)[3]
+mean.summary[4,5] = colMeans(mean.summary[2:5], na.rm=T)[4]
 
 kable(mean.summary, digits = 2) %>% 
   kable_styling() %>% 
@@ -299,6 +305,28 @@ $$
 H_1&: \text{At least one }\beta_c \neq 0
 \end{aligned}
 $$
+---
+### Null Hypothesis
+
+
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ |
+
+The interaction is the difference between each cell mean ( $\mu_{rc}$) and the grand mean ( $\mu_g$ or $\mu_{..}$) that remains after you remove the effects of A and B...
+
+$$
+(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)
+$$
+
+This simplifies down to:
+
+$$
+(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g
+$$
 
 ---
 
@@ -316,7 +344,7 @@ The interaction null hypothesis can then be stated as follows:
 
 $$
 \begin{aligned}
-\large (\alpha\beta)_{rc}&= \mu_{rc} - \alpha_r - \beta_c  - \mu_{..} \\
+\large (\alpha\beta)_{rc}&= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
 \large H_0&: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
 H_1&: \text{At least one }(\alpha\beta)_{rc} \neq 0
 \end{aligned}
@@ -330,6 +358,20 @@ As was true for the simpler one-way ANOVA, we will partition the total variabili
 One part will represent variability **within groups**.  This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
 
 The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
+
+---
+
+### Revisting Regression Equation
+
+
+$$\large Y_{irc} = \mu + \alpha_r + \beta_c + (\alpha\beta)_{rc} + \epsilon_{irc}$$
+If you subtract the grand mean ( $\mu_g$) from both sides and substitute in the treatment population means, you get...
+
+
+$$Y_{irc} - \mu_g = (\mu_r - \mu_g) + (\mu_c - \mu_g) + (\mu_{rc} - \mu_r - \mu_c + \mu_g) + \epsilon_{irc}$$
+In words, this translates to:
+
+> score - grand mean = main effect of A + main effect of B + interaction term + residual error
 
 ---
 
@@ -350,21 +392,6 @@ $$
 ### Variability 
 
 
-$$
-\begin{aligned}
-\large SS_{\text{total}} &= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{...})^2 \\
-\large SS_{\text{Within}} &= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{rc.})^2 \\
-\large SS_R &= CN\sum_{r=1}^R(\bar{Y}_{r..}-\bar{Y}_{...})^2\\
-SS_C &= RN\sum_{c=1}^C(\bar{Y}_{.c.}-\bar{Y}_{...})^2\\
-\large SS_{RC} &= N\sum_{r=1}^R\sum_{c=1}^C(\bar{Y}_{rc.}-\bar{Y}_{r..}-\bar{Y}_{.c.}+\bar{Y}_{...})^2 \\
-\end{aligned}
-$$
----
-
-
-### Variability 
-
-
 If the design is balanced (equal cases in all conditions), then:
 
 $$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$
@@ -372,11 +399,12 @@ $$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$
 $df$, $MS$, and $F$ ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
 $$
 \begin{aligned}
+\large df_{Total} &= N-1 \\
+\large df_{Total} &= abn - 1 \\
 \large df_R &= R-1 \\
 \large df_C &= C-1 \\
 \large df_{RxC} &= (R-1)(C-1) \\
-\large df_{within} &= N-G \\
-&= N-(R-1)-(C-1)-[(R-1)(C-1)]-1\\
+\large df_{within} &= ab(n-1) \\
 &= df_{total} - df_{R} - df_C - df_{RxC}
 \end{aligned}
 $$
@@ -549,7 +577,7 @@ No effect of B
 Interaction
 ---
 
-### Visualizing main effects and interactions
+### Pop Quiz
 
 How would you plot....
 
@@ -654,4 +682,10 @@ Partial $\eta^2$ will be larger than $\eta^2$ if the ignored effects account for
 
 The sum of partial $\eta^2$ does not have a meaningful interpretation.
 
+---
+class: inverse
+
+## Next Time
+
+Exam 2! You got this!
 
