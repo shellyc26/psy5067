@@ -102,7 +102,7 @@ output:
 - [Interactions II (Factorial ANOVA)](https://youtu.be/FpTZ1KmQz_o)
 
 #### 4/1
-- Interactions III (Factorial ANOVA)
+- [Interactions III (Factorial ANOVA)](https://youtu.be/wBFd76bzMfQ)
 - [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
 
 ## Week 11
