@@ -104,6 +104,11 @@ output:
 #### 4/1
 - [Interactions III (Factorial ANOVA)](https://youtu.be/wBFd76bzMfQ)
 - [Zoom Check-in with Shelly](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
+- [Recording of Zoom Check-in with Shelly](https://wustl.zoom.us/rec/play/61MhJhiniDkFQvTddA-tfHOTLkwrlJ4_16kD-fFybbRngBw_KwVfz8cFMCZ6xKkQte6kq4sZSTO5v0I.Blww4NZNDcIngxdL?continueMode=true&_x_zm_rtaid=nLhY4gNnQmOS2mXeRPzJbw.1617289194500.2c3de2c2dc2ffd3d0143db06c7d88ef6&_x_zm_rhtaid=171)
+  - **_I STRONGLY SUGGEST WATCHING THIS BEFORE EXAM 2_**
+  - Screenshots from our check-in: 
+  ![](lectures/images/table.png)
+  ![](lectures/images/code.png)
 
 ## Week 11
 
