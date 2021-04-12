@@ -121,7 +121,7 @@ output:
 ## Week 12
 
 #### 4/13
-- Interactions IV (Power & Effect Size)
+- [Interactions IV (Power & Effect Size)](https://youtu.be/palpl67VR60)
 
 #### 4/15
 - Interactions V (Polynomials)
