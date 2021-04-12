@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Interactions (IV)</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -22,6 +24,10 @@ class: center, middle, inverse, title-slide
 
 - Factorial ANOVA
 
+## This time
+
+- Wrapping up Factorial ANOVA
+- Power
 
 
 
@@ -54,21 +60,21 @@ The outcome was the time of the 10th failure. The experiment used a completely c
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 268.16 &lt;/td&gt;
@@ -167,21 +173,21 @@ In a factorial design, marginal means or cell means must be calculated in order 
 &lt;tbody&gt;
   &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left; padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
+   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
@@ -261,19 +267,14 @@ summary(time_rg)
 ##  Fast   Uncontrollable        268 25.3 171
 ```
 
+Takes in a model that's already been fitted, and makes a reference grid needed to calculate the estimated marginal means.
+
 ---
-The lsmeans( ) function produces marginal and cell means along with their confidence intervals. These are the marginal means for the Noise main effect.
+The `lsmeans( )` function produces marginal and cell means along with their confidence intervals. These are the marginal means for the Noise main effect.
 
 
 ```r
 noise_lsm = emmeans::lsmeans(time_rg, "Noise")
-```
-
-```
-## NOTE: Results may be misleading due to involvement in interactions
-```
-
-```r
 noise_lsm
 ```
 
@@ -302,7 +303,7 @@ library(ggpubr)
 ggarrange(noise_m, speed_m, ncol = 2)
 ```
 
-![](17-interactions_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](15-interactions_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -312,7 +313,7 @@ plot_model(fit, type = "pred", terms = c("Speed", "Noise")) +
   theme_sjplot(base_size = 20) + theme(legend.position = "bottom")
 ```
 
-![](17-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](15-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ---
 
 ### Precision
@@ -398,13 +399,6 @@ The `emmeans` package makes these comparisons very easy to conduct.
 
 ```r
 noise_lsm = emmeans::lsmeans(time_rg, "Noise")
-```
-
-```
-## NOTE: Results may be misleading due to involvement in interactions
-```
-
-```r
 pairs(noise_lsm, adjust = "holm")
 ```
 
@@ -480,22 +474,38 @@ In a Venn diagram, the overlap represents the variance shared by the variables. 
 .pull-right[
 There are three basic ways that overlapping variance accounted for in the outcome can be handled.  These are known as Type I, Type II, and Type III sums of squares. 
 
-Type III sums of squares is the easiest to understand—the overlapping variance accounted for goes unclaimed by any variable.  Effects can only account for the unique variance that they share with the outcome.
+All credit for the following goes to Matt Cooper (no relation!) and this great blog post. I'm going to paraphrase from his post since I think he does a great job making it clear -- you can check it out [here](https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/). 
 ]
 
 ---
+### Sums of Squares
 
-### Sums of Squares (I)
+`\(SS(A, B, AB)\)` is sum of squares for both main effects and interaction
+`\(SS(A, B)\)` is sum of squares for a model with no interaction
+`\(SS(B, AB)\)` is sum of squares for model that does not account for the effects from factor A
 
-.pull-left[
-Type I sums of squares allocates the overlapping variance according to some priority rule.  All of the variance is claimed, but the rule needs to be justified well or else suspicions about p-hacking are likely.  The rule might be based on theory or causal priority or methodological argument.
-]
+--
 
-.pull-right[
-![](images/eta_sq_unbalanced_i.jpg)]
+&gt; The influence of particular factors (including interactions) can be tested by examining the differences between models. For example, to determine the presence of an interaction effect, an F-test of the models `\(SS(A, B, AB)\)` and the no-interaction model `\(SS(A, B)\)` would be carried out.
+
+--
+
+Read the pipe `|` as "after; `\(SS(AB | A,B)\)` is *"the sum of squares for interaction after the main effects"* 
 
 ---
 
+### Type 1 SS (aka sequential)
+
+Test for main effect of A, followed by main effect of B, followed by interaction. ORDER MATTERS! The overlapping part of the venn diagram goes to whichever factor is listed first (a priority rule). Rule needs to be justified or else you might be p-hacking. The rule might be based on theory or causal priority or methodological argument.
+
+
+| Effect | Type I            | Type II           | Type III            |
+|--------|-------------------|-------------------|---------------------|
+| A      | SS(A)         |       | |
+| B      | SS(B&amp;#124;A)       |       | |
+| A:B    | SS(AB&amp;#124;A,B)    |     |   |
+
+---
 ### Sums of Squares (I)
 If a design is quite unbalanced, different orders of effects can produce quite different results.
 
@@ -554,46 +564,21 @@ lsr::etaSquared(fit_1, type = 1)
 ```
 
 ---
-### Sums of Squares (II)
+### Type 2 SS (aka hierarchical)
 
-Type II sums of squares are the most commonly used but also a bit more complex to understand.  
+Test for each of the main effects after the other main effect. **No signifiant interaction is assumed**. So you'll need to first test for your interaction. If it's not significant, then you can examine your main effects with Type 2 SS.
 
-An approximately true description is that an effect is allocated the proportion of variance in the outcome that is unshared with effects at a similar or lower level.
-
-A technically correct description is that a target effect is allocated the proportion of variance in the outcome that is unshared with other effects that do not contain the target.
-
----
-### Sums of Squares (II)
-
-In an A x B design, the A effect is the proportion of variance that is accounted for by A after removing the variance accounted for by B.
-
-The A x B interaction is allocated the proportion of variance that is accounted for by A x B after removing the variance accounted for by A and B.
-
-There is no convenient way to illustrate this in a Venn diagram.
-
----
-
-### Sums of Squares
-
-Let R(·) represent the residual sum of squares for a model, so for example R(A,B,AB) is
-the residual sum of squares fitting the whole model, R(A) is the residual sum of squares 
-fitting just the main effect of A, and R(1) is the residual sum of squares fitting just the
-mean. 
 
 | Effect | Type I            | Type II           | Type III            |
 |--------|-------------------|-------------------|---------------------|
-| A      | R(1)-R(A)         | R(B)-R(A,B)       | R(B,A:B)-R(A,B,A:B) |
-| B      | R(A)-R(A,B)       | R(A)-R(A,B)       | R(A,A:B)-R(A,B,A:B) |
-| A:B    | R(A,B)-R(A,B,A:B) | R(A,B)-R(A,B,A:B) | R(A,B)-R(A,B,A:B)   |
+| A      | SS(A)         | SS(A&amp;#124;B)       |  |
+| B      | SS(B&amp;#124;A)       | SS(B&amp;#124;A)       ||
+| A:B    | SS(AB&amp;#124;A,B)    | ---    |    |
 
 ---
 
-### Sums of Squares
-
-Let R(·) represent the residual sum of squares for a model, so for example R(A,B,AB) is
-the residual sum of squares fitting the whole model, R(A) is the residual sum of squares 
-fitting just the main effect of A, and R(1) is the residual sum of squares fitting just the
-mean. 
+### Type 3 SS
+Tests the presence of a main effect after the other main effect and interaction. Basically, the overlapping area of the venn diagram goes unclaimed. Useful for interactions. Less useful for main effect (what does a main effect tell you if you have a significant interaction?)
 
 | Effect | Type I            | Type II           | Type III            |
 |--------|-------------------|-------------------|---------------------|
@@ -603,7 +588,7 @@ mean.
 
 ---
 
-The `aov( )` function in R produces Type I sums of squares. The `Anova( )` function from the car package provides Type II and Type III sums of squares.
+The `aov( )` function in R produces Type I sums of squares. The `Anova( )` function from the `car` package provides Type II and Type III sums of squares.
 
 These work as expected provided the predictors are factors.
 
@@ -626,7 +611,6 @@ Anova(aov(fit), type = "II")
 ```
 
 
-
 ---
 
 All of the between-subjects variance is accounted for by an effect in Type I sums of squares.  The sums of squares for each effect and the residual will equal the total sum of squares.
@@ -635,7 +619,7 @@ For Type II and Type III sums of squares, the sums of squares for effects and re
 
 The highest order effect (assuming standard ordering) has the same SS in all three models.
 
-When a design is balanced, Type I, II, and III sums of squares are equivalent.
+**When a design is balanced, Type I, II, and III sums of squares are equivalent.**
 
 ---
 
@@ -678,7 +662,7 @@ The likelihood of finding an effect *if the effect actually exists.* Power gets 
 
 ---
 
-![](17-interactions_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](15-interactions_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -719,7 +703,7 @@ pwr.f2.test(u = 3, # number of predictors in the model
 ##           power = 0.9
 ```
 
-`v` is the denominator df of freedom, so the number of participants needed is v + p + 1.
+`v` is the denominator df of freedom, so the number of participants needed is v + k (number of predictors) + 1.
 
 ---
 
@@ -760,7 +744,7 @@ pwr.f2.test(u = 3, # number of predictors in the model
 ##           power = 0.9
 ```
 
-`v` is the denominator df of freedom, so the number of participants needed is v + p + 1.
+`v` is the denominator df of freedom, so the number of participants needed is v + k + 1.
 ---
 
 class: inverse
@@ -817,6 +801,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -834,17 +844,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
