@@ -15,15 +15,6 @@ output:
 library(tidyverse)
 ```
 
-## Reminder
-
-Go to lab on Friday!!!
-
-  * Download LaTex before lab starts.
-
-Homework 2 due on Monday (9 am)
-
----
 
 ## Last time...
 
@@ -31,6 +22,10 @@ Factorial ANOVA
 * Estimated marginal means
 * Estimated cell means
 * Sums of squares
+
+Power
+* Omnibus test
+* Coefficients
 
 ---
 
@@ -84,198 +79,24 @@ Interaction tests whether slope changes.
 **Simple slopes** -- the slope of Variable A at a specific level of Variable B
 ]
 
-
----
-
-```{r, message = F, warning = F}
-library(car) 
-fit = lm(Time~Speed*Noise, data = Data)
-summary(aov(fit))
-Anova(fit, type = 2)
-```
----
-```{r}
-fit = lm(Time~Speed*Noise, data = Data)
-summary(fit)
-```
----
-```{r, message = F}
-library(emmeans)
-fit.grid = ref_grid(fit)
-pairs(fit.grid, adjust = "holm")
-```
-
----
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't give it all of M, it will choose every possible value.
-
-.pull-left[
-```{r pred2.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise", "Speed")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred2.plot", message = F, echo = F}
-
-```
-
-]
----
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
-
-.pull-left[
-```{r pred.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred.plot", message = F, echo = F}
-
-```
-
-]---
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
-
-.pull-left[
-```{r pred.plot2, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise", "Speed[Fast]")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred.plot2", message = F, echo = F}
-
-```
-
-]
-
-
-
----
-
-In `sjPlot()`, estimated marginal means are the expected value of Y given all possible values of X, **ignoring M**. 
-
-.pull-left[
-```{r emm.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "emm", 
-           terms = c("Noise")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "emm.plot", message = F, echo = F}
-
-```
-
-]
-
 ---
 
 ## Power
-
-
 The likelihood of finding an effect *if the effect actually exists.* Power gets larger as we:
 * increase our sample size
 * reduce (error) variance
 * raise our Type I error rate
 * study larger effects
 
+--
+
+When calculating power for the omnibus test, use the expected multiple $R^2$ value to calculate an effect size: $f^2 = \frac{R^2}{1-R^2}$
+
+--
+
+To estimate power for a single coefficient, you need to consider (1) how much variance is accounted for by just the variable and (2) how much variance you'll account for in Y overall. $f^2 = \frac{R^2_Y-R^2_{Y.X}}{1-R_Y^2}$
 
 ---
-
-```{r, echo = F, fig.width = 10, fig.height = 8, message = F}
-library(tidyverse)
-mu = 100
-s = 20
-mean = 110
-n = 20
-sem = s/sqrt(n)
-cv = qnorm(mean = mu, sd = sem, p = .05, lower.tail = F)
-
-ggplot(data.frame(x = seq(70, 130)), aes(x)) +
-  stat_function(fun = function(x) dnorm(x, m = mu, sd = sem)) +
-  stat_function(fun = function(x) dnorm(x, m = mean, sd = sem)) +
-  stat_function(fun = function(x) dnorm(x, m = mean, sd = sem),
-                geom = "area", xlim = c(cv, 130), 
-                aes(fill = "Power"), alpha = .5) +
-  #geom_vline(aes(xintercept = mu))+
-  #geom_vline(aes(xintercept = mean))+
-  geom_hline(aes(yintercept = 0))+
-  scale_x_continuous("Means", breaks = seq(70,130,10)) +
-  scale_y_continuous(NULL, breaks = NULL) + 
-  guides(color = F)+
-  theme_bw()+
-  theme( text = element_text(size = 20))
-```
-
----
-
-## Power in multiple regression (additive effects)
-
-When calculating power for the omnibus test, use the expected multiple $R^2$ value to calculate an effect size:
-
-$$\large f^2 = \frac{R^2}{1-R^2}$$
----
-
-### Omnibus power
-```{r}
-R2 = .10
-(f = R2/(1-R2))
-library(pwr)
-pwr.f2.test(u = 3, # number of predictors in the model
-            f2 = f, 
-            sig.level = .05, #alpha
-            power =.90) # desired power
-```
-
-`v` is the denominator df of freedom, so the number of participants needed is v + p + 1.
-
----
-
-### Coefficient power
-
-To estimate power for a single coefficient, you need to consider (1) how much variance is accounted for by just the variable and (2) how much variance you'll account for in Y overall.
-
-$$\large f^2 = \frac{R^2_Y-R^2_{Y.X}}{1-R_Y^2}$$
----
-### Coefficient power
-
-```{r}
-R2 = .10
-RX1 = .03
-(f = (R2-RX1)/(1-R2))
-pwr.f2.test(u = 3, # number of predictors in the model
-            f2 = f, 
-            sig.level = .05, #alpha
-            power =.90) # desired power
-```
-
-`v` is the denominator df of freedom, so the number of participants needed is v + p + 1.
----
-
 ## Effect sizes (interactions)
 
 To start our discussion on powering interaction terms, we need to first consider the effect size of an interaction. 
@@ -337,7 +158,7 @@ table(X,Z)
 
 ### McClelland and Judd's simulation
 
-For the field study simulations, we used values of X and Z that varied between the extreme values of +1 and —1. More specifically, in the field study simulations, values of X and Z were each sampled independently from a normal distribution with a mean of 0 and a standard deviation of 0.5. Values of X and Z were rounded to create equally spaced 9-point scales ranging from -1 to +1 because ranges in field studies are always finite and because ratings are often on scales with discrete intervals.
+For the field study simulations, they used values of X and Z that varied between the extreme values of +1 and —1. More specifically, in the field study simulations, values of X and Z were each sampled independently from a normal distribution with a mean of 0 and a standard deviation of 0.5. Values of X and Z were rounded to create equally spaced 9-point scales ranging from -1 to +1 because ranges in field studies are always finite and because ratings are often on scales with discrete intervals.
 
 ```{r}
 X = rnorm(n = 100, mean = 0, sd = .5)
@@ -358,7 +179,7 @@ summary(lm(Y ~ X*Z))
 
 ---
 
-From 100 simulations each, estimates of the model parameter $\beta_{XZ}$ the moderator or interaction effect equaled 0.977 and 0.979 for the field studies and experiments, respectively.
+From 100 simulations each, estimates of the model parameter $\beta_{XZ}$ the moderator or interaction effect equaled 0.944 and 1.175 for the field studies and experiments, respectively.
 ```{r}
 set.seed(0305)
 ```
@@ -551,7 +372,19 @@ $$
 \large \textbf{Cubic: } \hat{Y} &= b_0 + b_1X + b_2X^2 + b_3X^3\\
 \end{aligned}
 $$
+---
 
+![](images/polynomials.jpeg)
+---
+
+.left-column[
+### How do you know if something is up?
+What if you ran a linear regression and looked at the diagnostics?
+]
+
+<img src="images/polynomial.png", width = "70%">
+
+.small[https://online.stat.psu.edu/stat501/book/export/html/962]
 ---
 ### Example
 
@@ -572,7 +405,7 @@ head(football)
 ```
 ]
 .pull-right[
-```{r, warning = F}
+```{r, warning = F, message=FALSE}
 ggplot(football, aes(x = talent, y = points)) +
   geom_point() + 
   geom_smooth(se = F) +
@@ -713,23 +546,6 @@ Polynomial terms should mostly be dictated by theory -- if you don't have a good
 And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
 ---
 
-```{r, warning = F, message = F, fig.width=10, fig.height=5}
-aug2 = augment(mod2)
-ggplot(aug2, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-
-```
-
----
-
-```{r, warning = F, message = F, fig.width=10, fig.height=7}
-plot_model(mod2, type = "pred", show.data = T)
-```
-
----
-
 class: inverse
 
 ## Three-way interactions and beyond
@@ -837,6 +653,11 @@ $$
 
 3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test (more on this later). 
 
+<center>
+
+<img src="images/interactions pic.jpeg", width = "35%">  
+
+</center>
 ---
 
 Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
@@ -851,4 +672,112 @@ class: inverse
 
 ## Next time...
 
-Statistical power and wrapping up interactions
+Logistic Regression
+
+(everything after this slide is extra or code-based; feel free to play around, but you won't be tested on it)
+
+---
+```{r, message = F, warning = F}
+library(car) 
+fit = lm(Time~Speed*Noise, data = Data)
+summary(aov(fit))
+Anova(fit, type = 2)
+```
+---
+```{r}
+fit = lm(Time~Speed*Noise, data = Data)
+summary(fit)
+```
+---
+```{r, message = F}
+library(emmeans)
+fit.grid = ref_grid(fit)
+pairs(fit.grid, adjust = "holm")
+```
+
+---
+
+In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't give it all of M, it will choose every possible value.
+
+.pull-left[
+```{r pred2.plot, message = F, eval = F}
+library(sjPlot)
+plot_model(fit, type = "pred", 
+           terms = c("Noise", "Speed")) + 
+  theme_sjplot(base_size = 20) + 
+  theme(legend.position = "bottom")
+```
+
+]
+
+.pull-left[
+```{r, ref.label = "pred2.plot", message = F, echo = F}
+
+```
+
+]
+---
+
+In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
+
+.pull-left[
+```{r pred.plot, message = F, eval = F}
+library(sjPlot)
+plot_model(fit, type = "pred", 
+           terms = c("Noise")) + 
+  theme_sjplot(base_size = 20) + 
+  theme(legend.position = "bottom")
+```
+
+]
+
+.pull-left[
+```{r, ref.label = "pred.plot", message = F, echo = F}
+
+```
+
+]---
+
+In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
+
+.pull-left[
+```{r pred.plot2, message = F, eval = F}
+library(sjPlot)
+plot_model(fit, type = "pred", 
+           terms = c("Noise", "Speed[Fast]")) + 
+  theme_sjplot(base_size = 20) + 
+  theme(legend.position = "bottom")
+```
+
+]
+
+.pull-left[
+```{r, ref.label = "pred.plot2", message = F, echo = F}
+
+```
+
+]
+
+
+
+---
+
+In `sjPlot()`, estimated marginal means are the expected value of Y given all possible values of X, **ignoring M**. 
+
+.pull-left[
+```{r emm.plot, message = F, eval = F}
+library(sjPlot)
+plot_model(fit, type = "emm", 
+           terms = c("Noise")) + 
+  theme_sjplot(base_size = 20) + 
+  theme(legend.position = "bottom")
+```
+
+]
+
+.pull-left[
+```{r, ref.label = "emm.plot", message = F, echo = F}
+
+```
+
+]
