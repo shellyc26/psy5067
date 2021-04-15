@@ -124,7 +124,7 @@ output:
 - [Interactions IV (Power & Effect Size)](https://youtu.be/palpl67VR60)
 
 #### 4/15
-- Interactions V (Polynomials)
+- [Interactions V (Polynomials)](https://youtu.be/6XrAj-vMB3g)
 - [Zoom Check-in with Violet](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
 - **HW 4 Due by 10am**
 
