@@ -1,0 +1,37 @@
+---
+title: "Homework #6"
+output: html_document
+---
+
+## Instructions
+
+Please complete this assignment by creating a new RMarkdown (or RNotebook) file (one that has the extension .Rmd). Be sure to include your name in the preamble. Please submit both your .Rmd and your .html files to Canvas.
+
+#### Formatting
+
+-   All code should be in a code chunk (gray boxes)
+-   All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks.
+-   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
+-   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+
+Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand.
+
+You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
+
+All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
+
+In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
+
+**Data:** Use this mortality dataset to answer the questions below. [`mortality.csv`](mortality.csv)
+
+Good luck!
+
+## Homework Questions
+
+1. Using the `glm` function, run a multiple regression with IQ to predict and mortality status. Past studies have found that higher levels of IQ are assocaited with longer life. Use this information to make sure you interpret the direction of your results correctly. Then run the same function using the `lm` function. What are the similarities, what are the differences between these two approaches? Look at both the `anova` and the `summary` outputs. 
+
+2. Now control for risky behavior. Interpret all of the coefficients. 
+
+3. Graph the relationship between IQ and mortality. To do so you create predicted probabilities across the range of IQ.
+
+4. Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice? 
