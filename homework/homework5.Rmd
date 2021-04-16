@@ -32,15 +32,11 @@ Good luck!
 
 ## Homework Questions
 
-1. What are the sample sizes for each group? Compute using R, not the information from the paper. 
+1. Run the factorial ANOVA from Experiment 1. Interpret each of the $SS$s and $F$s. 
 
-2. Run the factorial ANOVA from Experiment 1. Interpret each of the $SS$s and $F$s. 
+2. What is the effect size associated with each of your terms? What is the $R^2$ for the model? 
 
-3. What is the effect size associated with each of your terms? What is the $R^2$ for the model? 
+3. Conduct a series of post hoc tests that address the author's hypotheses. Provide effect sizes and confidence intervals in addition to NHST. Interpret. Do your conclusions line up with the authors? Or do you disagree with them?  
 
-4. Conduct a series of post hoc tests that address the author's hypotheses. Provide effect sizes and confidence intervals in addition to NHST. Interpret. Do your conclusions line up with the authors? Or do you disagree with them?  
-
-5. Graph the results in a manner that you think best conveys that data (it may not be the same as in the article). Make sure you include 95% CIs. Include raw data points and/or the distribution of scores if possible. 
-
-6. Run a power analysis to determine sample size needed for the effect sizes found in #2. (note: `pwr` package is a nice one to use but be sure to use the glm/regression functions as opposed to the one-way anova. Also, pay close attention to the effect size requested.)
+4. Run a power analysis to determine sample size needed for the effect sizes found in #2. (note: `pwr` package is a nice one to use but be sure to use the glm/regression functions as opposed to the one-way anova. Also, pay close attention to the effect size requested.)
 

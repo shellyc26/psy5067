@@ -28,3 +28,11 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 - [Homework 4 is here](homework/homework4.html)
 - Due on 4/15 by 10am
 - *Note: __DO NOT PUT THIS ONE OFF__. It's on the longer side and on interactions, which can be tricky. Best to not procrastinate this time.*
+
+## Homework 5
+- [Homework 5 is here](homework/homework5.html)
+- Due on 4/29
+
+## Homework 6
+- [Homework 6 is here](homework/homework6.html)
+- Due on 5/6

@@ -32,6 +32,4 @@ Good luck!
 
 2. Now control for risky behavior. Interpret all of the coefficients. 
 
-3. Graph the relationship between IQ and mortality. To do so you create predicted probabilities across the range of IQ.
-
-4. Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice? 
+3. Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice? 
