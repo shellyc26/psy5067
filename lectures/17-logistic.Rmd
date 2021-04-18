@@ -12,6 +12,13 @@ output:
 ---
 
 ```{r xaringan-themer, include = FALSE}
+
+hook_source <- knitr::knit_hooks$get('source')
+knitr::knit_hooks$set(source = function(x, options) {
+  x <- stringr::str_replace(x, "^[[:blank:]]?([^*].+?)[[:blank:]]*#<<[[:blank:]]*$", "*\\1")
+  hook_source(x, options)
+})
+
 library(tidyverse)
 library(broom)
 ```
@@ -29,41 +36,77 @@ library(broom)
   font-size: 65% !important;
 }
 </style>
+
+## This whole semester...
+
+- We've had continuous IVs (regression)
+
+- We've had categoical IVs (factorial ANOVA)
+
+- We've had a mixture of continuous/categorical IVs (more regression)
+
+--
+- But we've never had a DV variable that is categorical... in comes Logistic Regression
+
+---
+
 ## Logistic Regression
 
 Used when your DV is binary (0,1)  
-    - Clinical diagnosis   
-    - Disease prevalence    
-    - Experiences (Yes/No)    
+- Clinical diagnosis   
+- Disease prevalence    
+- Experiences (Yes/No)
+- Correct/Incorrect
+
+--
+
+The mean of the distribution is the same as the proportion of 1's in the distribution. 
+- Out of 100 people, 27 have PTSD (1) and 73 do not have PTSD (0)
+- The mean of the distribution is .27
+- Probability of getting a 1 is .27
+
 ---
 
-## Assumption violations
-    
-Violates:      
-    - Correctly specified form  
-    - Homoscedasticity   
-    - Normality of the errors  
-    
----
-```{r out.width = '80%', echo = FALSE}
+.left-column[ 
+If we plotted these points, they are either 1's or 0's. Looks like this...
+]
+```{r out.width = '75%', echo = FALSE}
 
 knitr::include_graphics("images/Log.1.png")
 ```
 
 
 ---
-```{r out.width = '80%', echo = FALSE}
+.left-column[
+If we plotted our OLS regression line, we get this. But it doesn't make sense! Predicted values can go above 1 or below 0...yikes
+]
+```{r out.width = '75%', echo = FALSE}
 
 knitr::include_graphics("images/Log.2.png")
 ```
 
 ---
-```{r out.width = '80%', echo = FALSE}
+.left-column[
+Instead, we fit this non-linear function. None of our data fall on the line!   
+]
+```{r out.width = '75%', echo = FALSE}
 
 knitr::include_graphics("images/Log.3.png")
 ```
 
 ---
+
+## Assumption violations
+
+When our outcome is binary, we violate OLS regression assumptions
+    
+Violates:      
+- Correctly specified form  (not linear)
+- Homoscedasticity (as P approaches 1 or 0, variance approaches 0)
+- Normality of the errors (lol nope)
+
+---
+
 ## Need to think in terms of probabilities
 
 - If we use OLS, we violate assumptions and have predicted values that go outside 0 & 1   
@@ -74,12 +117,13 @@ $$\hat{p}_{i} \leftrightsquigarrow b_{0} + b_{1}X_{1} + b_{2}X_{2}... b_{3}X_{p}
 ---
 ## Generalized linear models 
 
-- extend the general linear model framework
-- used to describe different Data Generating Processes (DGPs) other than gausian normal
-- need to use if we cannot use the Gaussian normal e.g. the range of Y is restricted (e.g. binary, count) and/or the variance of Y depends on the mean, etcetera
-- in other words, what is your DGP?
-<br>
+- Extends the general linear model framework
 
+- Used to describe different Data Generating Processes (DGPs) other than Gaussian normal
+
+- Need to use if we cannot use the Gaussian normal e.g. the range of Y is restricted (e.g. binary, count) and/or the variance of Y depends on the mean, etc...
+
+- In other words, what is your DGP?
 
 ---
 ## Generalized linear models 
@@ -98,7 +142,7 @@ $$f(p_i) = \alpha + \beta x_i$$
 ]
 
 ---
--GLM components
+## GLM components
 
 1. Describe Family. What distribution is your DGP? 
 
@@ -108,55 +152,79 @@ It is not common to have an average outcome $\mu$ (other than in a normal distri
 
 ---
 ## Logistic regression
+
+.pull-left[
 $$y_i \sim  Binomial(n, p_i)$$
 
 $$f(p_i) = \alpha + \beta x_i$$
  
- Our number of trials is N, (here it is 1, technically a Bernoulli) so we are predicting the probability of y. Probabilities are bounded between zero and one. 
+Our number of trials is $N$, so we are predicting the probability of $y$. Probabilities are bounded between zero and one. 
+]
+
+.pull-right[
+Because our variables are not in probability units we need to "link" them via a function. The linear right side of the equation is not in the same units as the non-linear left side. 
  
- Because our variables are not in probability units we need to "link" them via a function. The linear right side of the equation is not in the same units as the non-linear left side  
- 
- Two most popular are logit and log. Others are available too: probit, negative inverse, cloglog. Typically, if you define your distribution there is a link that is recommended. 
+Two most popular are logit and log. Others are available too: probit, negative inverse, cloglog...
+]
 
 ---
 ## Link function for logistic
 
-- we need to map (0,1) to $(-\infty, \infty)$
+- We need to map (0,1) to $(-\infty, \infty)$
+
 - Logistic regression uses the logistic function to link the predicted probabilities to the predictors   
-- Think of it as a transformation of Y-hats
-$$g(\mu) = logit(\mu) = log (\frac {\mu_{i}}{1-\mu_{i}})$$
+
+- Think of it as a transformation of $\hat{Y}$s
 
 ---
+## Sigmoid function
+
 .pull-left[
 $$f(x) = \frac{1}{1+e^{-X}}$$
+
+... where $e$ is Euler's number
+
+
+```{r}
+exp(1)
+```
 ]
+
 
 .pull-right[
 ```{r out.width = '80%', echo = FALSE}
 
 knitr::include_graphics("images/Log.4.png")
 ```
- ]
- 
+
+The y-axis is the "rolling mean" of the DV (or the proportion of 1's). This logistic curve relates $X$ (the IV) to our $P(\bar{Y})$
+]
+
 ---
 $$f(x) = \frac{1}{1+e^{-X}}$$
 $$\hat{p} = \frac{1}{1+e^{-b_{0}+b_{1}X}}$$
 - The form of the logistic function is still nonlinear (because probabilities can only range from 0 to 1)  
-- Solution is to convert probabilities into odds 
+
+- Since it's nonlinear, $b$ can't be interpreted as easily as we've been doing with OLS regression.
+
+- So in order to interpret our model parameter, we need to conver to **odds**
+
+???
+where P is the probability of a 1 (the proportion of 1s, the mean of Y), e is the base of the natural logarithm (about 2.718) and a and b are the parameters of the model. The value of a yields P when X is zero, and b adjusts how quickly the probability changes with changing X a single unit (we can have standardized and unstandardized b weights in logistic regression, just as in ordinary linear regression). Because the relation between X and P is nonlinear, b does not have a straightforward interpretation in this model as it does in ordinary linear regression
 
 ---
-## odds
+## Odds
 
 - Odds are defined as the probability of being a case divided by the probability of being a noncase
 - Not bound between 0 and 1 
 - Range from 0 to infinity
-- less than one is less than 50% probability
+- Less than one is less than 50% probability
 $$odds = \frac {\hat{p}}{1-\hat{p}}$$
 
 $$probability= \frac{\hat{odds}}{1+\hat{odds}}$$
 
 ---
-## linear probability model
+## Linear Probability Model
 
 $$f(x) = \frac{1}{1+e^{-X}}$$
 $$\hat{p} = \frac{1}{1+e^{-b_{0}+b_{1}X}}$$
@@ -165,68 +233,155 @@ $$odds = \frac {\hat{p}}{1-\hat{p}}=e^{b_{0}+b_{1}X}$$
 $$logit= Log(odds)=ln(\frac{\hat{p}}{1-\hat{p}}) = b_{0}+b_{1}X$$
 
 ---
+## Logit
 $$logit= Log(odds)=ln(\frac{\hat{p}}{1-\hat{p}}) = b_{0}+b_{1}X$$
+- DV is a logit, the natural log of odds
 
--Predicted scores are not dichotomous   
--Instead of predicting probabilities directly, we are instead predicting the log of the odds.
+- Predicted scores are not dichotomous   
 
+- Instead of predicting probabilities directly, we are instead predicting the log of the odds.
 
----
-## other distributions
-
-- Exponential, which normal, gamma, binomial, Possion are apart of
-- Exgaussian, beta, multi-nomial, zero inflated poisson...
+- The regression we are used to is not predicting $\hat{Y}$, because we're predicting (or relating our IV) to *logits*
 
 ---
-## estimation  
 
-- Maximum likelihood 
-- OLS minimizes the errors, which also maximize R   
+## Now what?
+
+- In order to get the probability of a value of X being 1 or 0 based on some model parameters ( $b_0$, $b_1$ etc. ), we rearrange our equation so that we actually get the predicted logit (log of odds) given our model parameters. 
+
+- How the hell do you interpret a logit? Not easily...
+
+- Convert back into odds
+
+- Convert your odds back into probabilities
+
+---
+## Estimation with Maximum Likelihood
+
+- OLS minimizes the errors ( $SS_{res}$), which maximizes ( $SS_{reg}$)   
 - In logistic regression we are not so lucky  
-- Need to rely on iterative procedure, ML Estimation
-- Asymptotic standard errors (approximations)  
-- Interpret test statistics as z’s, not t’s  
-- Wald test = chi square with 1 df = z^2 when F(1, infinity)
+
+- Need to rely on iterative procedure, ML Estimation:
+
+  - Pick parameters of your model ( $b_0$, $b_1$ etc. ), and calculate the *likelihood* of the data, given those parameters. We do this iteratively until we find the best parameters -- the ones that *maximize* the *likelihood* of your data. 
+
+---
+## Estimation with Maximum Likelihood
+
+- So we get model parameters, estimated via MLE (instead of OLS)
+
+- Same but different:
+
+  - Asymptotic standard errors (approximations)  
+
+  - Interpret test statistics as $z$’s, not $t$’s  
+
+  - No $t$-tests; instead a Wald test = $\chi^2$ test with 1 df = $(\frac{coef}{se})^2$
+
+???
+asymptotic se's are just approximations since we finite-sample dist of the estimator isn't known
 
 ---
 ## GLM in R
 
+.pull-left[
 ```{r, eval=FALSE}
 
-glm(formula, family = gaussian(link="identity"), data, weights, subset, na.action, start = NULL, etastart, mustart, offset, 
-    control = glm.control(...), model = TRUE,
-  method = ”glm.fit”, x = FALSE, y = TRUE, contrasts = NULL, ...)
+glm(formula,
+    family = gaussian(link="identity"), #<<
+    data,
+    weights,
+    subset,
+    na.action,
+    start = NULL,
+    etastart,
+    mustart,
+    offset, 
+    control = glm.control(...),
+    model = TRUE,
+    method = ”glm.fit”,
+    x = FALSE, 
+    y = TRUE,
+    contrasts = NULL, ...)
 ```
+]
 
-- Family Argument
-The family argument specifies the distribution. While link specifies link. In R, families have default links. 
+.pull-right[
+The `family` argument specifies the distribution. In R, families have default links. 
+
+![](images/glmfamily.png)
+]
 
 ---
+## GLM in R
+
+.pull-left[
 ```{r, eval=FALSE}
 
-glm(y ~ X1+ X2 + X3 , family = binomial, data = dataset)
+glm(y ~ X1+ X2 + X3 , #<<
+    family = binomial,
+    data = dataset)
 
-  binomial(link = "logit")
-  gaussian(link = "identity")
-  Gamma(link = "inverse")
-  inverse.gaussian(link = "1/mu2")  
-  poisson(link = "log")
 ```
+]
+
+.pull-right[
+Specify the model like you would with `lm`
+]
 
 ---
-## how to interpret
-- b1 is the predicted change in the logit for a 1-unit change in X, holding the other predictors constant 
+## GLM in R
 
-- For a one-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$   
+.pull-left[
+```{r, eval=FALSE}
 
-- e.g,. $b_{1}$ = .4, $e^{.4}$ = 1.49 
+glm(y ~ X1+ X2 + X3 , 
+    family = binomial, #<<
+    data = dataset)
 
-- for fitted values, need to use entire equation
-$$\hat{Y} = e^{b_{0}+b_{1}X_{1}}$$
+```
+]
 
-- turn to probabilities by: odds/(1+odds)
+.pull-right[
+
+Specify the distribution you're working with. When binary outcomes, we'll use the binomial. 
+
+]
 
 ---
+## GLM in R
+
+.pull-left[
+```{r, eval=FALSE}
+
+glm(y ~ X1+ X2 + X3 , 
+    family = binomial, 
+    data = dataset) #<<
+
+```
+]
+
+.pull-right[
+
+Specify your dataset.
+
+]
+
+---
+## How to interpret
+- $b_1$ is the predicted change in the logit for a 1-unit change in X, holding the other predictors constant 
+
+- For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$   
+
+  - e.g,. $b_{1}$ = .4, $e^{.4}$ = 1.49 
+
+- For fitted values, need to use entire equation
+$\hat{Y} = e^{b_{0}+b_{1}X_{1}}$
+
+- Turn to probabilities by: $\frac{\text{odds}}{(1 + \text{odds})}$
+
+---
+## Example
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 library(readr)
@@ -290,23 +445,59 @@ summary(death.3)
 ```
 ]
 ---
+.pull-left[
+For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$
+
 ```{r}
 exp(1)^.08012
+```
 
-#For every 1 unit increase in Intelligence 
-#the odds of living increase by 8%.
+*For every 1-unit increase in Intelligence, the odds of living increase by 8%*
+]
 
-#prob = 
-1.083417/(1+1.083417)
+--
 
-exp(1)^(.08012*20 + 0.28695)
+.pull-right[
+Now convert back into probabilities $\frac{\text{odds}}{(1 + \text{odds})}$
+
+```{r}
+1.083417 / (1+1.083417)
+```
+
+
+*For every 1-unit increase in Intelligence, the probability of living increases by .52* 
+
+Probability greater than .5 indicates success is more likely than failure.
+]
+---
+
+## Specific Values?
+
+What if you want the probability of being a premature death for a given level of Intelligence? (Now that we've run our model and have parameters...)
+
+For fitted values, need to use entire equation
+$\hat{Y} = e^{b_{0}+b_{1}X_{1}}$
+
+```{r}
+# get fitted value with a given value of X (here 20)
+exp(1)^(0.28695 + (.08012*20))
  
-6.615067/ (1+6.615067)
-
+# now get odds
+6.615067 / (1+6.615067)
 ```
 
 ---
-## probit 
+## Probit 
+
+We can have different link functions. When your response variable (DV) is truly binary -- the data generating process generates legit binary data -- logit is your pick.
+
+--
+
+What if your response variable is binary, but the underlying construct you are trying to measure is likely Gaussian? Ex: depressed vs. not depressed. But the underlying latent construct is continuous. More appropriate then is the **probit** link function.
+
+[Stack exchange thread if you're going down this route](https://stats.stackexchange.com/questions/20523/difference-between-logit-and-probit-models)
+---
+## Probit
 
 .tiny[
 ```{r}
@@ -317,16 +508,11 @@ summary(death.4)
 ]
 
 ---
-.tiny[
-```{r}
-both <- glm(NOT.premature ~ Intelligence_Mate +Intelligence_Self, 
-                 family = binomial, data = mortality)
-summary(both)
-```
-]
+class:inverse
 
----
+## 4 more to go... 
 
-```{r}
-cor(mortality$Intelligence_Self, mortality$Intelligence_Mate)
-```
+Bootstrapping! 
+
+Read [Yarkoni & Westfall](../readings/Yarkoni Westfall PPS.pdf) before watching Thursday's lecture on Over/Under-fitting. The *only* **required** reading of the whole semester...you can do it. 
+
