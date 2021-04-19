@@ -132,7 +132,7 @@ output:
 ## Week 13
 
 #### 4/20
-- Logistic Regression/GLM
+- [Logistic Regression/GLM](https://youtu.be/thzz0UsJ-vQ) *Note that the video feed cut out half way through the recording, so my face disappears! Sorry about that! The audio should work just fine, though.*
 
 #### 4/22
 - Bootstrapping
