@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Bootstrapping</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -20,621 +21,13 @@ class: center, middle, inverse, title-slide
 
 
 
-#Last time...
+## Last time...
 
-Wrapping up interactions
+- Bootstrapping
 
-* Power
+## Today
 
-# Today
-
-Finish polynomials and 3-way interactions
-
-Robust estimation
-* Weighted Least Squares
-* Boostrapping
-
----
-## Polynomial regression 
- 
-Polynomial regression is most often a form of hierarchical regressoin that systematically tests a series of higher order functions for a single variable.
-
-$$
-`\begin{aligned}
-\large \textbf{Linear: } \hat{Y} &amp;= b_0 + b_1X \\
-\large \textbf{Quadtratic: } \hat{Y} &amp;= b_0 + b_1X + b_2X^2 \\
-\large \textbf{Cubic: } \hat{Y} &amp;= b_0 + b_1X + b_2X^2 + b_3X^3\\
-\end{aligned}`
-$$
-
----
-### Example
-
-Can a team have too much talent? Researchers hypothesized that teams with too many talented players have poor intrateam coordination and therefore perform worse than teams with a moderate amount of talent. To test this hypothesis, they looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
-
-
-```r
-library(here)
-football = read.csv(here("data/swaab.csv"))
-```
-
-.small[Swaab, R.I., Schaerer, M, Anicich, E.M., Ronay, R., and Galinsky, A.D. (2014). [The too-much-talent effect: Team
-interdependence determines when more talent is too much or not enough.](https://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Too%20much%20talent%20PS.pdf) _Psychological Science 25_(8), 1581-1591.]
-
----
-
-
-```r
-mod1 = lm(points ~ talent, data = football)
-library(broom)
-aug1 = augment(mod1)
-ggplot(aug1, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-```
-
-![](19-bootstrapping_files/figure-html/mod1-1.png)&lt;!-- --&gt;
-
----
-
-```r
-mod2 = lm(points ~ talent + I(talent^2), data = football)
-summary(mod2)
-```
-
-```
-## 
-## Call:
-## lm(formula = points ~ talent + I(talent^2), data = football)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -384.66 -193.82  -35.34  152.11  729.66 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 305.34402   17.62668  17.323  &lt; 2e-16 ***
-## talent       54.89787    5.46864  10.039  &lt; 2e-16 ***
-## I(talent^2)  -0.57022    0.07499  -7.604 1.01e-12 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 236.3 on 205 degrees of freedom
-## Multiple R-squared:  0.4644,	Adjusted R-squared:  0.4592 
-## F-statistic: 88.87 on 2 and 205 DF,  p-value: &lt; 2.2e-16
-```
-
----
-
-
-```r
-library(sjPlot)
-plot_model(mod2, type = "pred")
-```
-
-```
-## $talent
-```
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
-
----
-## Interpretation
-
-The intercept is the predicted value of Y when x = 0 -- this is always the interpretation of the intercept, no matter what kind of regression model you're running. 
-
-The `\(b_1\)` coefficient is the tangent to the curve when X=0. In other words, this is the rate of change when X is equal to 0. If 0 is not a meaningful value on your X, you may want to center, as this will tell you the rate of change at the mean of X.
-
----
-
-## Interpretation
-
-The `\(b_2\)` coefficient indexes the acceleration, which is how much the slope is going to change. More specifically, `\(2 \times b_2\)` is the acceleration: the rate of change in `\(b_1\)` for a 1-unit change in X.
-
-You can use this to calculate the slope of the tangent line at any value of X you're interested in:
-`$$\large b_1 + (2\times b_2\times X)$$`
-
----
-
-
-```r
-tidy(mod2)
-```
-
-```
-## # A tibble: 3 x 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)  305.      17.6        17.3  5.22e-42
-## 2 talent        54.9      5.47       10.0  1.53e-19
-## 3 I(talent^2)   -0.570    0.0750     -7.60 1.01e-12
-```
-
-.pull-left[
-**At X = 10**
-
-```r
-54.9 + (2*-.570*10)
-```
-
-```
-## [1] 43.5
-```
-
-]
-.pull-right[
-**At X = 70**
-
-```r
-54.9 + (2*-.570*70)
-```
-
-```
-## [1] -24.9
-```
-
-]
-
----
-
-## Polynomials are interactions
-
-An term for `\(X^2\)` is a term for `\(X \times X\)` or the multiplication of two independent variables holding the same values. 
-
-
-```r
-football$talent_2 = football$talent*football$talent
-tidy(lm(points ~ talent + talent_2, data = football))
-```
-
-```
-## # A tibble: 3 x 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)  305.      17.6        17.3  5.22e-42
-## 2 talent        54.9      5.47       10.0  1.53e-19
-## 3 talent_2      -0.570    0.0750     -7.60 1.01e-12
-```
----
-
-## Polynomials are interactions
-
-Put another way:
-
-`$$\large \hat{Y} = b_0 + b_1X + b_2X^2$$`
-
-`$$\large \hat{Y} = b_0 + \frac{b_1}{2}X + \frac{b_1}{2}X + b_2(X \times X)$$`
-
-The interaction term in another model would be interpreted as "how does the slope of X change as I move up in Z?" -- here, we ask "how does the slope of X change as we move up in X?"
----
-
-## When should you use polynomial terms?
-
-You may choose to fit a polynomial term after looking at a scatterplot of the data or looking at residual plots. A U-shaped curve may be indicative that you need to fit a quadratic form -- although, as we discussed before, you may actually be measuring a different kind of non-linear relationship. 
-
-Polynomial terms should mostly be dictated by theory -- if you don't have a good reason for thinking there will be a change in sign, then a polynomial is not right for you.
-
-And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
----
-
-
-```r
-aug2 = augment(mod2)
-ggplot(aug2, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-```
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
-
----
-
-
-```r
-plot_model(mod2, type = "pred", show.data = T)
-```
-
-```
-## $talent
-```
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
-
----
-
-class: inverse
-
-## Three-way interactions and beyond
-
----
-
-
-### Three-way interactions (regression)
-
-**Regression equation**
-
-`$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$`
-The three-way interaction qualifies the three main effects (and any two-way interactions). 
-
-Like a two-way interaction, the three-way interaction is a conditional effect.  And it is symmetrical, meaning there are several equally correct ways of interpreting it.
-
-**Factorial ANOVA**
-
-We describe the factorial ANOVA design by the number of levels of each factor. "X by Z by W" (e.g., 2 by 3 by 4, or 2x3x4)
----
-A two-way  (A x B) interaction means that the magnitude of one main effect (e.g., A main effect) depends on levels of the other variable (B).  But, it is equally correct to say that the magnitude of the B main effect depends on levels of A. In regression, we refer to these as **conditional effects** and in ANOVA, they are called **simple main effects.**
-
-A three-way interaction means that the magnitude of one two-way interaction (e.g., A x B) depends on levels of the remaining variable (C). 
-
-It is equally correct to say that the magnitude of the A x C interaction depend on levels of B. Or, that the magnitude of the B x C interaction depends on levels of A. These are known as **simple interaction effects**.
-
----
-### Example (regression)
-
-
-
-
-
-```r
-psych::describe(stress_data, fast = T)
-```
-
-```
-## Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf
-```
-
-```
-## Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf
-```
-
-```
-##         vars   n  mean    sd min  max range   se
-## gender     1 150   NaN    NA Inf -Inf  -Inf   NA
-## bad_day    2 150  2.95  1.29   1    5     4 0.11
-## talk       3 150  2.57  1.20   1    5     4 0.10
-## stress     4 150 30.15 10.00   1   51    50 0.82
-```
-
-```r
-table(stress_data$gender)
-```
-
-```
-## 
-## female   male 
-##     67     83
-```
-
----
-
-
-```r
-mod_stress = lm(stress ~ bad_day*talk*gender, data = stress_data)
-summary(mod_stress)
-```
-
-```
-## 
-## Call:
-## lm(formula = stress ~ bad_day * talk * gender, data = stress_data)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -10.6126  -3.2974   0.0671   3.1129  10.7774 
-## 
-## Coefficients:
-##                         Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              20.3385     4.5181   4.502 1.39e-05 ***
-## bad_day                   2.5273     1.6596   1.523  0.13003    
-## talk                      2.4870     1.3234   1.879  0.06227 .  
-## gendermale               -0.1035     5.7548  -0.018  0.98568    
-## bad_day:talk             -1.4220     0.4564  -3.116  0.00222 ** 
-## bad_day:gendermale       -0.1244     2.0069  -0.062  0.95067    
-## talk:gendermale           1.9797     2.2823   0.867  0.38718    
-## bad_day:talk:gendermale   1.5260     0.7336   2.080  0.03931 *  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 4.733 on 142 degrees of freedom
-## Multiple R-squared:  0.7865,	Adjusted R-squared:  0.776 
-## F-statistic: 74.72 on 7 and 142 DF,  p-value: &lt; 2.2e-16
-```
-
----
-
-
-```r
-library(reghelper)
-simple_slopes(mod_stress)
-```
-
-```
-##     bad_day     talk gender Test Estimate Std. Error t value  df  Pr(&gt;|t|) Sig.
-## 1  1.661455 1.365903 sstest        5.8571     1.7437  3.3590 142 0.0010045   **
-## 2  2.953333 1.365903 sstest        8.3892     1.5671  5.3535 142 3.386e-07  ***
-## 3  4.245211 1.365903 sstest       10.9214     2.5606  4.2651 142 3.627e-05  ***
-## 4  1.661455 2.566667 sstest       11.2788     1.4571  7.7406 142 1.687e-12  ***
-## 5  2.953333 2.566667 sstest       16.1781     1.0985 14.7274 142 &lt; 2.2e-16  ***
-## 6  4.245211 2.566667 sstest       21.0775     1.6775 12.5647 142 &lt; 2.2e-16  ***
-## 7  1.661455 3.767431 sstest       16.7004     2.3888  6.9912 142 9.806e-11  ***
-## 8  2.953333 3.767431 sstest       23.9670     1.4830 16.1608 142 &lt; 2.2e-16  ***
-## 9  4.245211 3.767431 sstest       31.2335     2.0578 15.1784 142 &lt; 2.2e-16  ***
-## 10 1.661455   sstest female        0.1245     0.7221  0.1724 142 0.8633621     
-## 11 2.953333   sstest female       -1.7125     0.5996 -2.8558 142 0.0049366   **
-## 12 4.245211   sstest female       -3.5495     0.9450 -3.7561 142 0.0002511  ***
-## 13   sstest 1.365903 female        0.5850     1.0725  0.5455 142 0.5862803     
-## 14   sstest 2.566667 female       -1.1224     0.6181 -1.8160 142 0.0714796    .
-## 15   sstest 3.767431 female       -2.8299     0.4630 -6.1115 142 9.006e-09  ***
-## 16 1.661455   sstest   male        4.6396     1.0195  4.5510 142 1.137e-05  ***
-## 17 2.953333   sstest   male        4.7741     0.6463  7.3862 142 1.177e-11  ***
-## 18 4.245211   sstest   male        4.9085     0.9474  5.1813 142 7.418e-07  ***
-## 19   sstest 1.365903   male        2.5451     0.5036  5.0533 142 1.315e-06  ***
-## 20   sstest 2.566667   male        2.6700     0.6116  4.3655 142 2.427e-05  ***
-## 21   sstest 3.767431   male        2.7950     1.2025  2.3244 142 0.0215233    *
-```
-
----
-
-
-```r
-plot_model(mod_stress, type = "int", mdrt.values = "meansd")
-```
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
-
----
-
-As a reminder, centering will change all but the highest-order terms in a model. 
-
-
-```r
-stress_data = stress_data %&gt;%
-  mutate(bad_day_c = bad_day - mean(bad_day),
-         talk_c = talk - mean(talk))
-newmod = lm(stress ~ bad_day_c*talk_c*gender, data = stress_data)
-```
-
----
-
-```r
-tidy(mod_stress)
-```
-
-```
-## # A tibble: 8 x 5
-##   term                    estimate std.error statistic   p.value
-##   &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)               20.3       4.52     4.50   0.0000139
-## 2 bad_day                    2.53      1.66     1.52   0.130    
-## 3 talk                       2.49      1.32     1.88   0.0623   
-## 4 gendermale                -0.104     5.75    -0.0180 0.986    
-## 5 bad_day:talk              -1.42      0.456   -3.12   0.00222  
-## 6 bad_day:gendermale        -0.124     2.01    -0.0620 0.951    
-## 7 talk:gendermale            1.98      2.28     0.867  0.387    
-## 8 bad_day:talk:gendermale    1.53      0.734    2.08   0.0393
-```
-
-```r
-tidy(newmod)
-```
-
-```
-## # A tibble: 8 x 5
-##   term                        estimate std.error statistic  p.value
-##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                    23.4      0.845     27.7  3.89e-59
-## 2 bad_day_c                      -1.12     0.618     -1.82 7.15e- 2
-## 3 talk_c                         -1.71     0.600     -2.86 4.94e- 3
-## 4 gendermale                     16.2      1.10      14.7  2.20e-30
-## 5 bad_day_c:talk_c               -1.42     0.456     -3.12 2.22e- 3
-## 6 bad_day_c:gendermale            3.79     0.870      4.36 2.47e- 5
-## 7 talk_c:gendermale               6.49     0.882      7.36 1.38e-11
-## 8 bad_day_c:talk_c:gendermale     1.53     0.734      2.08 3.93e- 2
-```
-
-
----
-### Four-way? 
-
-
-$$
-`\begin{aligned}
-\hat{Y} &amp;= b_0 + b_1X + b_{2}Z + b_{3}W + b_{4}Q + b_{5}XW\\
-&amp;+ b_{6}ZW + b_{7}XZ + b_{8}QX + b_{9}QZ + b_{10}QW\\
-&amp;+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ + b_{15}XZWQ\\
-\end{aligned}`
-$$
-
---
-
-3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test (more on this later). 
-
----
-
-Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
-
-Best practice for 3-way (and higher) interactions is to use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator.
-
-Even better if one of these moderators is experimenter manipulated, which increases the likelihood of balanced conditions. 
-
----
-class: inverse
-
-no more interactions
----
-
-## Homoscedasticity
-
-Homoscedasticity is the assumption that the variance of Y is constant across all levels of a predictor.
-
-
-
-
-```r
-library(tidyverse)
-ggplot(Data, aes(x = calm, y = problems)) +
-  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1))
-```
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
-
----
-
-## Weighted least squares
-
-Weighted least squares (WLS) is a commonly used remedial procedure for heteroscedasticity (or failiing to meet the assumptino of homoscedasticity).
-
-In an ordinary least squares (OLS) approach, each case in the dataset is given equal weight. WLS assigns each case a weight `\(w_i\)`, depending upon the precision of the observation of Y in that case. For observations for which the variance around the residuals around the regression line is low, the case is given a high weight.
-
----
-
-Recall that an OLS estimation chooses values of `\(b_0\)` and `\(b_1\)` that minimizes the sum of squared residuals:
-
-`$$\large \text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$`
-
-In a WLS approach, weights are taken into account, such that the values of `\(b_0\)` and `\(b_1\)` are chosen to minimize the sum of the **weighted** squared residuals:
-
-`$$\large \text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$`
-
-The value of the weights is the inverse of the conditional variance of the residuals in the population corresponding to the specified value of X:
-
-`$$\large w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$`
----
-
-The value of `\(\sigma^2_{Y-\hat{Y}|X}\)`, the variance of the residuals in the population conditional on X, is not known and must be estimated. A common procedure for estimating weights is to estimate the usual OLS regression equation, square the residuals, and then regress the squared residuals onto X. The weight is then estimated as the inverse of the predicted value for a case. 
-
-Using our own data:
-
-
-```r
-ols.model = lm(problems ~ calm, data = Data)
-library(broom)
-ols_aug = augment(ols.model)
-head(ols_aug)
-```
-
-```
-## # A tibble: 6 x 9
-##   problems  calm .fitted .se.fit .resid   .hat .sigma .cooksd .std.resid
-##      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
-## 1        4 1.06     4.87   0.121 -0.872 0.0326  0.665 0.0296      -1.33 
-## 2        5 1.24     4.70   0.111  0.304 0.0278  0.671 0.00306      0.462
-## 3        6 1.30     4.63   0.108  1.37  0.0263  0.653 0.0581       2.07 
-## 4        4 0.852    5.08   0.132 -1.08  0.0391  0.660 0.0558      -1.66 
-## 5        5 1.12     4.82   0.118  0.180 0.0311  0.672 0.00120      0.273
-## 6        5 0.715    5.22   0.140 -0.223 0.0438  0.672 0.00266     -0.341
-```
----
-
-
-```r
-# square residuals
-ols_aug$resid_sq = ols_aug$.resid^2
-# regress squared resid on predictor
-weight.mod = lm(resid_sq ~ calm, data = ols_aug)
-```
-
-.pull-left[
-
-```r
-coef(ols.model)
-```
-
-```
-## (Intercept)        calm 
-##    5.941940   -1.005699
-```
-
-]
-
-.pull-right[
-
-```r
-coef(weight.mod)
-```
-
-```
-## (Intercept)        calm 
-##   1.0739505  -0.2591579
-```
-
-]
-
-
-```r
-# extract predicted values
-pred.resid = predict(weight.mod)
-head(pred.resid)
-```
-
-```
-##         1         2         3         4         5         6 
-## 0.7982546 0.7527584 0.7366885 0.8530291 0.7849316 0.8886457
-```
-
-```r
-# find inverse of predicted values
-# use absolute value if some of your predicted values are negative  
-est.weights = 1/abs(pred.resid) 
-head(est.weights)
-```
-
-```
-##        1        2        3        4        5        6 
-## 1.252733 1.328447 1.357426 1.172293 1.273996 1.125308
-```
-
-
----
-
-
-```r
-wls.model = lm(problems ~ calm, data = Data, weights = est.weights)
-```
-
-
-#### OLS solution
-
-```r
-tidy(ols.model)
-```
-
-```
-## # A tibble: 2 x 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)     5.94    0.182       32.6 3.54e-47
-## 2 calm           -1.01    0.0675     -14.9 1.58e-24
-```
-
-#### WLS solution
-
-```r
-tidy(wls.model)
-```
-
-```
-## # A tibble: 2 x 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)    5.64     0.182       30.9 1.60e-45
-## 2 calm          -0.884    0.0451     -19.6 7.58e-32
-```
-
----
-
-![](19-bootstrapping_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
-
-
----
-
-WLS is a robust method for dealing with heteroscedasticity. What if you violate the normality assumption of regression?
-
---
-
-A **bootstrapping** approach is useful when the theoretical sampling distribution for an estimate is unknown or unverifiable. In other words, if you have reason to suspect that either the variables in your model are not normally distributed, or that they're non-normally distributed, then bootstrapping can help ensure non-bias estimation and appropriately sized confidence intervals. 
+* Lessons from machine learning
 
 ---
 
@@ -652,7 +45,15 @@ Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, an
 
 
 ```
-## [1] "Chandler" "Ross"     "Phoebe"   "Monica"   "Rachel"   "Monica"
+## [1] "Rachel"   "Chandler" "Rachel"   "Chandler" "Chandler" "Chandler"
+```
+
+```
+## [1] 69.66667
+```
+
+```
+## [1] "Monica"   "Phoebe"   "Phoebe"   "Chandler" "Joey"     "Rachel"
 ```
 
 ```
@@ -660,23 +61,15 @@ Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, an
 ```
 
 ```
-## [1] "Rachel"   "Ross"     "Rachel"   "Chandler" "Ross"     "Monica"
+## [1] "Monica"   "Joey"     "Joey"     "Ross"     "Ross"     "Chandler"
 ```
 
 ```
-## [1] 68.83333
+## [1] 70.5
 ```
 
 ```
-## [1] "Rachel"   "Chandler" "Chandler" "Phoebe"   "Monica"   "Monica"
-```
-
-```
-## [1] 67.83333
-```
-
-```
-## [1] "Phoebe" "Phoebe" "Ross"   "Joey"   "Phoebe" "Phoebe"
+## [1] "Phoebe"   "Monica"   "Joey"     "Chandler" "Joey"     "Joey"
 ```
 
 ```
@@ -684,35 +77,35 @@ Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, an
 ```
 
 ```
-## [1] "Chandler" "Ross"     "Ross"     "Joey"     "Rachel"   "Chandler"
+## [1] "Ross"     "Chandler" "Chandler" "Rachel"   "Monica"   "Monica"
 ```
 
 ```
-## [1] 70.83333
+## [1] 68.66667
 ```
 
 ```
-## [1] "Rachel"   "Chandler" "Ross"     "Chandler" "Rachel"   "Joey"
+## [1] "Rachel" "Rachel" "Rachel" "Joey"   "Rachel" "Joey"
 ```
 
 ```
-## [1] 69.5
+## [1] 66.66667
 ```
 
 ```
-## [1] "Phoebe"   "Rachel"   "Chandler" "Ross"     "Monica"   "Joey"
+## [1] "Chandler" "Rachel"   "Monica"   "Rachel"   "Joey"     "Phoebe"
 ```
 
 ```
-## [1] 68.83333
+## [1] 67.5
 ```
 
 ```
-## [1] "Ross"     "Chandler" "Phoebe"   "Chandler" "Rachel"   "Rachel"
+## [1] "Ross"     "Ross"     "Ross"     "Joey"     "Chandler" "Phoebe"
 ```
 
 ```
-## [1] 69.16667
+## [1] 71.5
 ```
 ???
 
@@ -745,7 +138,7 @@ for(i in 1:boot){
 ---
 
 ## Illustration 
-![](19-bootstrapping_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+![](19-bootstrapping_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ---
 ### Example
@@ -757,7 +150,7 @@ There are several candidates for central tendency (e.g., mean, median) and for v
 For the mean and standard deviation, we have theoretical sampling distributions to help us, provided we think the mean and standard deviation are the best indices. For the others, we can use bootstrapping.
 
 ---
-![](19-bootstrapping_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+![](19-bootstrapping_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ---
 ### Bootstrapping
@@ -780,7 +173,7 @@ for(i in 1:boot){
 }
 ```
 
-![](19-bootstrapping_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+![](19-bootstrapping_files/figure-html/fig.height5-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -815,6 +208,8 @@ What about something like the median?
 
 ---
 
+### bootstrapped distribution of the median
+
 
 ```r
 boot = 10000
@@ -825,7 +220,7 @@ for(i in 1:boot){
 }
 ```
 .pull-left[
-![](19-bootstrapping_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
+![](19-bootstrapping_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 
@@ -857,6 +252,8 @@ quantile(response_med,
 ]
 ---
 
+### bootstrapped distribution of the standard deviation
+
 
 ```r
 boot = 10000
@@ -867,7 +264,7 @@ for(i in 1:boot){
 }
 ```
 .pull-left[
-![](19-bootstrapping_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+![](19-bootstrapping_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 
@@ -899,13 +296,601 @@ quantile(response_sd,
 ]
 
 ---
+
+You can bootstrap estimates and 95% confidence intervals for *any* statistics you'll need to estimate. 
+
+The `boot` function provides some functions to speed this process along.
+
+
+```r
+library(boot)
+
+# function to obtain R-Squared from the data
+rsq &lt;- function(data, indices) {
+  d &lt;- data[indices,] # allows boot to select sample
+  
+  fit &lt;- lm(mpg~wt+disp, data=d) # this is the code you would have run
+  
+  return(summary(fit)$r.square)
+}
+# bootstrapping with 10000 replications
+results &lt;- boot(data=mtcars, statistic=rsq,
+   R=10000)
+```
+
+---
+.pull-left[
+
+```r
+data.frame(rsq = results$t) %&gt;%
+  ggplot(aes(x = rsq)) +
+  geom_histogram(color = "white", bins = 30) 
+```
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+median(results$t)
+```
+
+```
+## [1] 0.7962501
+```
+
+```r
+boot.ci(results, type = "perc")
+```
+
+```
+## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+## Based on 10000 bootstrap replicates
+## 
+## CALL : 
+## boot.ci(boot.out = results, type = "perc")
+## 
+## Intervals : 
+## Level     Percentile     
+## 95%   ( 0.6871,  0.8773 )  
+## Calculations and Intervals on Original Scale
+```
+]
+
+---
+
+### Example 2
+
+Samples of service waiting times for Verizon’s (ILEC) versus other carriers (CLEC) customers. In this district, Verizon must provide line service to all customers or else face a fine. The question is whether the non-Verizon customers are getting ignored or facing greater variability in waiting times.
+
+
+```r
+Verizon = read.csv(here("data/Verizon.csv"))
+```
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+```
+## 
+## CLEC ILEC 
+##   23 1664
+```
+
+---
+
+There's no world in which these data meet the typical assumptions of an independent samples t-test. To estimate mean differences we can use boostrapping. Here, we'll resample with replacement separately from the two samples. 
+
+
+```r
+boot = 10000
+difference = numeric(length = boot)
+
+subsample_CLEC = Verizon %&gt;% filter(Group == "CLEC")
+subsample_ILEC = Verizon %&gt;% filter(Group == "ILEC")
+
+for(i in 1:boot){
+  sample_CLEC = sample(subsample_CLEC$Time, 
+                       size = nrow(subsample_CLEC), 
+                       replace = T)
+  sample_ILEC = sample(subsample_ILEC$Time, 
+                       size = nrow(subsample_ILEC), 
+                       replace = T)
+  
+  difference[i] = mean(sample_CLEC) - mean(sample_ILEC)
+}
+```
+
+---
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+The difference in means is 7.62 `\([1.64,16.72]\)`.
+
+---
+
+### Bootstrapping Summary
+
+Bootstrapping can be a useful tool to estimate parameters when 
+1. you've violated assumptions of the test (i.e., normality, homoskedasticity)
+2. you have good reason to believe the sampling distribution is not normal, but don't know what it is
+3. there are other oddities in your data, like very unbalanced samples 
+
+This allows you to create a confidence interval around any statistic you want -- Cronbach's alpha, ICC, Mahalanobis Distance, `\(R^2\)`, AUC, etc. 
+* You can test whether these statistics are significantly different from any other value -- how?
+
+---
+
+### Bootstrapping Summary
+
+Bootstrapping will NOT help you deal with:
+
+* dependence between observations -- for this, you'll need to explicity model dependence (e.g., multilevel model, repeated measures ANOVA)
+
+* improperly specified models or forms -- use theory to guide you here
+
+* measurement error -- why bother?
+
+---
+
+## Yarkoni and Westfall (2017)
+
+Y&amp;W describe the goals of explanation and prediction in science; how are these goals similar to each other and how are they in opposition to each other? 
+
+According to Y&amp;W, how should psychologists change their research, in terms of explanation and prediction, and why?
+
+How do regression models fit into the goals of explanation and prediction? Where do they fall short on one or other or both?
+
+???
+
+Explanation: describe causal underpinnings of behaviors/outcomes
+Prediction: accurately forecast behaviors/outcomes
+
+Similar: both goals of science; good prediction can help us develop theory of explanation and vice versa
+
+Statistical tension with one another: statistical models that accurately describe causal truths often have poor prediction and are complex; predictive models are often very different from the data-generating processes. 
+
+Y&amp;W: we should spend more time and resources developing predictive models than we do not (not necessarily than explanation models, although they probably think that's true)
+
+---
+
+## Yarkoni and Westfall (2017)
+
+What is **overfitting** and where does this occur in terms of the models we have discussed in class thus far?
+
+What is **bias** and **variance**, and how does the bias-variance trade-off relate to overfitting?
+
+* How concerned are you about overfitting in your own area of research? How about in the studies you'd like to do in the next couple of years?
+
+???
+
+Overfitting: mistakenly fitting sample-specific noise as if it were signal
+
+OLS models tend to be overfit because they minimize error for a specific sample
+
+Bias: systematically over or under estimating parameters
+Variance: how much estimates tend to jump around
+
+Model-fits tend to prioritizie minimizing bias or variance, and choosing to minimize one inflates the other; OLS models minimize one of these
+
+
+---
+
+## Yarkoni and Westfall (2017)
+
+How do Y&amp;W propose adjusting our current statistical practices to be more successful at prediction? 
+
+???
+
+big data sets
+
+Cross-validation
+
+regularization
+
+---
+
+## Yarkoni and Westfall (2017)
+
+
+**Big Data**
+* Reduce the likelihood of overfitting -- more data means less error
+
+**Cross-validation**
+* Is my model overfit?
+
+**Regularization**
+* Constrain the model to be less overfit 
+
+---
+
+### Big Data Sets
+
+"Every pattern that could be observed in a given dataset reflects some... unknown combination of signal and error" (page 1104). 
+
+Error is random, so it cannot correlate with anything; as we aggregate many pieces of information together, we reduce error. 
+
+Thus, as we get bigger and bigger datasets, the amount of error we have gets smaller and smaller
+
+---
+
+### Cross-validation
+
+**Cross-validation** is a family of techniques that involve testing and training a model on different samples of data. 
+* Replication
+* Hold-out samples
+* K-fold
+    * Split the original dataset into 2(+) datasets, train a model on one set, test it in the other
+    * Recycle: each dataset can be a training AND a testing; average model fit results to get better estimate of fit
+    * Can split the dataset into more than 2 sections
+    
+---
+
+
+```r
+library(here)
+stress.data = read.csv(here("data/stress.csv"))
+library(psych)
+describe(stress.data, fast = T)
+```
+
+```
+##         vars   n   mean     sd  min    max  range    se
+## id         1 118 488.65 295.95 2.00 986.00 984.00 27.24
+## Anxiety    2 118   7.61   2.49 0.70  14.64  13.94  0.23
+## Stress     3 118   5.18   1.88 0.62  10.32   9.71  0.17
+## Support    4 118   8.73   3.28 0.02  17.34  17.32  0.30
+## group      5 118    NaN     NA  Inf   -Inf   -Inf    NA
+```
+
+```r
+model.lm = lm(Stress ~ Anxiety*Support*group, 
+              data = stress.data)
+summary(model.lm)$r.squared
+```
+
+```
+## [1] 0.4126943
+```
+
+---
+
+### Example: 10-fold cross validation
+
+
+```r
+# new package!
+library(caret)
+# set control parameters
+ctrl &lt;- trainControl(method="cv", number=10)
+# use train() instead of lm()
+cv.model &lt;- train(Stress ~ Anxiety*Support*group, 
+               data = stress.data, 
+               trControl=ctrl, # what are the control parameters
+               method="lm") # what kind of model
+cv.model
+```
+
+```
+## Linear Regression 
+## 
+## 118 samples
+##   3 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 106, 106, 106, 106, 107, 106, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   1.541841  0.3438326  1.237663
+## 
+## Tuning parameter 'intercept' was held constant at a value of TRUE
+```
+
+---
+
+### Regularization
+
+Penalizing a model as it grows more complex. 
+* Usually involves shrinking coefficient estimates -- the model will fit less well in-sample but may be more predictive
+
+*lasso regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
+- coefficients are more biased (tend to underestimate coefficients) but produce less variability in results
+
+The coefficient `\(\lambda\)` is used to penalize the model.
+
+---
+
+The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term. How could you do that manually?
+
+--
+
+Luckily, the function `model.matrix()` can do this for you.
+
+---
+
+
+```r
+# provide your original lm model to get matrix of predictors
+X.matrix &lt;- model.matrix.lm(model.lm) 
+head(X.matrix)
+```
+
+```
+##   (Intercept)  Anxiety Support groupTx Anxiety:Support Anxiety:groupTx
+## 1           1 10.18520  6.1602       1        62.74287         10.1852
+## 2           1  5.58873  8.9069       0        49.77826          0.0000
+## 3           1  6.58500 10.5433       1        69.42763          6.5850
+## 4           1  8.95430 11.4605       1       102.62076          8.9543
+## 5           1  7.59910  5.5516       0        42.18716          0.0000
+## 6           1  8.15600  7.5117       1        61.26543          8.1560
+##   Support:groupTx Anxiety:Support:groupTx
+## 1          6.1602                62.74287
+## 2          0.0000                 0.00000
+## 3         10.5433                69.42763
+## 4         11.4605               102.62076
+## 5          0.0000                 0.00000
+## 6          7.5117                61.26543
+```
+
+```r
+library(glmnet)
+lasso.mod &lt;- glmnet(x = X.matrix[,-1], #don't need the intercept 
+                    y = stress.data$Stress)
+```
+
+---
+
+
+```r
+lasso.mod
+```
+
+```
+## 
+## Call:  glmnet(x = X.matrix[, -1], y = stress.data$Stress) 
+## 
+##    Df  %Dev  Lambda
+## 1   0  0.00 0.97920
+## 2   1  4.66 0.89220
+## 3   1  8.54 0.81300
+## 4   1 11.75 0.74080
+## 5   1 14.42 0.67500
+## 6   1 16.64 0.61500
+## 7   1 18.48 0.56040
+## 8   1 20.00 0.51060
+## 9   1 21.27 0.46520
+## 10  1 22.32 0.42390
+## 11  1 23.20 0.38620
+## 12  2 24.11 0.35190
+## 13  2 24.98 0.32070
+## 14  2 25.70 0.29220
+## 15  2 26.29 0.26620
+## 16  3 27.40 0.24260
+## 17  2 29.39 0.22100
+## 18  2 30.44 0.20140
+## 19  2 31.31 0.18350
+## 20  2 32.03 0.16720
+## 21  2 32.63 0.15230
+## 22  2 33.13 0.13880
+## 23  2 33.54 0.12650
+## 24  2 33.88 0.11520
+## 25  2 34.17 0.10500
+## 26  2 34.41 0.09567
+## 27  2 34.60 0.08717
+## 28  2 34.76 0.07943
+## 29  2 34.90 0.07237
+## 30  3 35.40 0.06594
+## 31  3 36.32 0.06009
+## 32  3 37.09 0.05475
+## 33  3 37.72 0.04988
+## 34  3 38.25 0.04545
+## 35  3 38.69 0.04141
+## 36  4 39.06 0.03774
+## 37  4 39.35 0.03438
+## 38  4 39.61 0.03133
+## 39  4 39.81 0.02855
+## 40  4 39.99 0.02601
+## 41  4 40.13 0.02370
+## 42  4 40.25 0.02159
+## 43  4 40.35 0.01968
+## 44  6 40.45 0.01793
+## 45  5 40.57 0.01633
+## 46  5 40.65 0.01488
+## 47  5 40.72 0.01356
+## 48  5 40.78 0.01236
+## 49  5 40.83 0.01126
+## 50  6 40.88 0.01026
+## 51  6 40.95 0.00935
+## 52  6 41.00 0.00852
+## 53  6 41.04 0.00776
+## 54  6 41.08 0.00707
+## 55  6 41.11 0.00644
+## 56  6 41.13 0.00587
+## 57  6 41.15 0.00535
+## 58  6 41.17 0.00487
+## 59  6 41.18 0.00444
+## 60  6 41.19 0.00405
+## 61  6 41.20 0.00369
+## 62  6 41.21 0.00336
+## 63  6 41.22 0.00306
+## 64  6 41.22 0.00279
+## 65  6 41.23 0.00254
+## 66  6 41.23 0.00231
+## 67  6 41.24 0.00211
+## 68  7 41.24 0.00192
+## 69  7 41.24 0.00175
+## 70  7 41.24 0.00160
+## 71  7 41.25 0.00145
+## 72  7 41.25 0.00132
+## 73  7 41.25 0.00121
+## 74  7 41.25 0.00110
+## 75  7 41.25 0.00100
+## 76  7 41.26 0.00091
+## 77  7 41.26 0.00083
+## 78  7 41.26 0.00076
+## 79  7 41.26 0.00069
+## 80  7 41.26 0.00063
+## 81  7 41.26 0.00057
+## 82  7 41.26 0.00052
+## 83  7 41.26 0.00048
+## 84  7 41.26 0.00043
+## 85  7 41.26 0.00040
+## 86  7 41.26 0.00036
+## 87  7 41.26 0.00033
+```
+
+???
+
+DF = number of non-zero coefficients
+dev = `\(R^2\)`
+lambda = complexity parameter (how much to downweight, between 0 and 1)
+
+---
+### What value of `\(\lambda\)` to choose?
+
+
+```r
+plot(lasso.mod, xvar = "dev", label = T)
+```
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+
+Looks like coefficients 1, 2, and 3 have high values even with shrinkage.
+
+---
+### What value of `\(\lambda\)` to choose?
+
+```r
+plot(lasso.mod, xvar = "lambda", label = TRUE)
+```
+
+![](19-bootstrapping_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+
+I might look for lambda values where those coefficients are still different from 0. 
+
+---
+.pull-left[
+
+```r
+coef = coef(lasso.mod, s = exp(-5))
+coef
+```
+
+```
+## 8 x 1 sparse Matrix of class "dgCMatrix"
+##                                    1
+## (Intercept)             -2.211802705
+## Anxiety                  0.572946040
+## Support                  0.621714623
+## groupTx                 -0.487719327
+## Anxiety:Support         -0.038680253
+## Anxiety:groupTx          .          
+## Support:groupTx          0.029353883
+## Anxiety:Support:groupTx  0.003006013
+```
+]
+
+.pull-left[
+
+```r
+coef = coef(lasso.mod, s = exp(-4))
+coef
+```
+
+```
+## 8 x 1 sparse Matrix of class "dgCMatrix"
+##                                     1
+## (Intercept)             -1.8538689387
+## Anxiety                  0.5028481785
+## Support                  0.5837254774
+## groupTx                 -0.0044703271
+## Anxiety:Support         -0.0302949960
+## Anxiety:groupTx         -0.0034894821
+## Support:groupTx          0.0009984811
+## Anxiety:Support:groupTx  .
+```
+]
+
+
+---
+
+
+```r
+coef = coef(lasso.mod, s = 0)
+coef
+```
+
+```
+## 8 x 1 sparse Matrix of class "dgCMatrix"
+##                                    1
+## (Intercept)             -2.373766131
+## Anxiety                  0.612812455
+## Support                  0.650290859
+## groupTx                 -1.044285344
+## Anxiety:Support         -0.045146588
+## Anxiety:groupTx          0.025299852
+## Support:groupTx          0.048852216
+## Anxiety:Support:groupTx  0.005913829
+```
+
+`\(\lambda = 0\)` is pretty close to our OLS solution
+
+---
+
+
+```r
+coef = coef(lasso.mod, s = 1)
+coef
+```
+
+```
+## 8 x 1 sparse Matrix of class "dgCMatrix"
+##                                1
+## (Intercept)             5.180003
+## Anxiety                 .       
+## Support                 .       
+## groupTx                 .       
+## Anxiety:Support         .       
+## Anxiety:groupTx         .       
+## Support:groupTx         .       
+## Anxiety:Support:groupTx .
+```
+
+`\(\lambda = 1\)` is a huge penalty
+
+---
+### NHST no more
+
+Once you've imposed a shrinkage penalty on your coefficients, you've wandered far from the realm of null hypothesis significance testing. In general, you'll find that very few machine learning techniques are compatible with probability theory (including Bayesian), because they're focused on different goals. Instead of asking, "how does random chance factor into my result?", machine learning optimizes (out of sample) prediction. Both methods explicity deal with random variability. In NHST and Bayesian probability, we're trying to estimate the degree of randomness; in machine learning, we're trying to remove it. 
+
+---
+
+## Summary: Yarkoni and Westfall (2017)
+
+
+**Big Data**
+* Reduce the likelihood of overfitting -- more data means less error
+
+**Cross-validation**
+* Is my model overfit?
+
+**Regularization**
+* Constrain the model to be less overfit 
+
+---
+
 class: inverse
 
 ## Next time...
 
-Finish bootstrapping
+PSY 613 with Elliot Berkman!
 
-Yarkoni and Westfall (2017) and the lessons of machine learning
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -953,6 +938,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -970,17 +981,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

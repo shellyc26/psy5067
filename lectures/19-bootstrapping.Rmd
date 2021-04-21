@@ -16,408 +16,13 @@ library(tidyverse)
 ```
 
 
-#Last time...
+## Last time...
 
-Wrapping up interactions
+- Bootstrapping
 
-* Power
+## Today
 
-# Today
-
-Finish polynomials and 3-way interactions
-
-Robust estimation
-* Weighted Least Squares
-* Boostrapping
-
----
-## Polynomial regression 
- 
-Polynomial regression is most often a form of hierarchical regressoin that systematically tests a series of higher order functions for a single variable.
-
-$$
-\begin{aligned}
-\large \textbf{Linear: } \hat{Y} &= b_0 + b_1X \\
-\large \textbf{Quadtratic: } \hat{Y} &= b_0 + b_1X + b_2X^2 \\
-\large \textbf{Cubic: } \hat{Y} &= b_0 + b_1X + b_2X^2 + b_3X^3\\
-\end{aligned}
-$$
-
----
-### Example
-
-Can a team have too much talent? Researchers hypothesized that teams with too many talented players have poor intrateam coordination and therefore perform worse than teams with a moderate amount of talent. To test this hypothesis, they looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
-
-```{r, message=F}
-library(here)
-football = read.csv(here("data/swaab.csv"))
-```
-
-.small[Swaab, R.I., Schaerer, M, Anicich, E.M., Ronay, R., and Galinsky, A.D. (2014). [The too-much-talent effect: Team
-interdependence determines when more talent is too much or not enough.](https://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Too%20much%20talent%20PS.pdf) _Psychological Science 25_(8), 1581-1591.]
-
----
-
-```{r mod1, warning = F, message = F, fig.width = 10, fig.height = 5}
-mod1 = lm(points ~ talent, data = football)
-library(broom)
-aug1 = augment(mod1)
-ggplot(aug1, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-```
-
----
-```{r mod2}
-mod2 = lm(points ~ talent + I(talent^2), data = football)
-summary(mod2)
-```
-
----
-
-```{r, message = F}
-library(sjPlot)
-plot_model(mod2, type = "pred")
-```
-
----
-## Interpretation
-
-The intercept is the predicted value of Y when x = 0 -- this is always the interpretation of the intercept, no matter what kind of regression model you're running. 
-
-The $b_1$ coefficient is the tangent to the curve when X=0. In other words, this is the rate of change when X is equal to 0. If 0 is not a meaningful value on your X, you may want to center, as this will tell you the rate of change at the mean of X.
-
----
-
-## Interpretation
-
-The $b_2$ coefficient indexes the acceleration, which is how much the slope is going to change. More specifically, $2 \times b_2$ is the acceleration: the rate of change in $b_1$ for a 1-unit change in X.
-
-You can use this to calculate the slope of the tangent line at any value of X you're interested in:
-$$\large b_1 + (2\times b_2\times X)$$
-
----
-
-```{r}
-tidy(mod2)
-```
-
-.pull-left[
-**At X = 10**
-```{r}
-54.9 + (2*-.570*10)
-```
-
-]
-.pull-right[
-**At X = 70**
-```{r}
-54.9 + (2*-.570*70)
-```
-
-]
-
----
-
-## Polynomials are interactions
-
-An term for $X^2$ is a term for $X \times X$ or the multiplication of two independent variables holding the same values. 
-
-```{r}
-football$talent_2 = football$talent*football$talent
-tidy(lm(points ~ talent + talent_2, data = football))
-```
----
-
-## Polynomials are interactions
-
-Put another way:
-
-$$\large \hat{Y} = b_0 + b_1X + b_2X^2$$
-
-$$\large \hat{Y} = b_0 + \frac{b_1}{2}X + \frac{b_1}{2}X + b_2(X \times X)$$
-
-The interaction term in another model would be interpreted as "how does the slope of X change as I move up in Z?" -- here, we ask "how does the slope of X change as we move up in X?"
----
-
-## When should you use polynomial terms?
-
-You may choose to fit a polynomial term after looking at a scatterplot of the data or looking at residual plots. A U-shaped curve may be indicative that you need to fit a quadratic form -- although, as we discussed before, you may actually be measuring a different kind of non-linear relationship. 
-
-Polynomial terms should mostly be dictated by theory -- if you don't have a good reason for thinking there will be a change in sign, then a polynomial is not right for you.
-
-And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
----
-
-```{r, warning = F, message = F, fig.width=10, fig.height=5}
-aug2 = augment(mod2)
-ggplot(aug2, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-
-```
-
----
-
-```{r, warning = F, message = F, fig.width=10, fig.height=7}
-plot_model(mod2, type = "pred", show.data = T)
-```
-
----
-
-class: inverse
-
-## Three-way interactions and beyond
-
----
-
-
-### Three-way interactions (regression)
-
-**Regression equation**
-
-$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$
-The three-way interaction qualifies the three main effects (and any two-way interactions). 
-
-Like a two-way interaction, the three-way interaction is a conditional effect.  And it is symmetrical, meaning there are several equally correct ways of interpreting it.
-
-**Factorial ANOVA**
-
-We describe the factorial ANOVA design by the number of levels of each factor. "X by Z by W" (e.g., 2 by 3 by 4, or 2x3x4)
----
-A two-way  (A x B) interaction means that the magnitude of one main effect (e.g., A main effect) depends on levels of the other variable (B).  But, it is equally correct to say that the magnitude of the B main effect depends on levels of A. In regression, we refer to these as **conditional effects** and in ANOVA, they are called **simple main effects.**
-
-A three-way interaction means that the magnitude of one two-way interaction (e.g., A x B) depends on levels of the remaining variable (C). 
-
-It is equally correct to say that the magnitude of the A x C interaction depend on levels of B. Or, that the magnitude of the B x C interaction depends on levels of A. These are known as **simple interaction effects**.
-
----
-### Example (regression)
-
-```{r, echo = F}
-set.seed(03032020)
-gender = sample(c("male", "female"), size = 150, replace = T)
-bad_day = sample(x = c(1:5), size = 150, replace = T)
-talk = round(2*(gender == "female") + .2*(bad_day) + rnorm(n = 150))
-talk = talk + 1
-talk[talk < 1] = 1
-talk[talk > 5] = 5
-stress = bad_day + talk - (bad_day*talk) + round(rnorm(n = 150, sd = 5))
-stress_m = bad_day + talk + (bad_day*talk)+ round(rnorm(n = 150, sd = 5))
-stress[gender == "male"] = stress_m[gender == "male"]
-stress = stress+1+abs(min(stress))
-
-stress_data = data.frame(gender, bad_day, talk, stress)
-```
-
-
-```{r}
-psych::describe(stress_data, fast = T)
-table(stress_data$gender)
-```
-
----
-
-```{r}
-mod_stress = lm(stress ~ bad_day*talk*gender, data = stress_data)
-summary(mod_stress)
-```
-
----
-
-```{r, message = F}
-library(reghelper)
-simple_slopes(mod_stress)
-```
-
----
-
-```{r, fig.width=10, fig.height = 7}
-plot_model(mod_stress, type = "int", mdrt.values = "meansd")
-```
-
----
-
-As a reminder, centering will change all but the highest-order terms in a model. 
-
-```{r}
-stress_data = stress_data %>%
-  mutate(bad_day_c = bad_day - mean(bad_day),
-         talk_c = talk - mean(talk))
-newmod = lm(stress ~ bad_day_c*talk_c*gender, data = stress_data)
-```
-
----
-```{r}
-tidy(mod_stress)
-```
-```{r}
-tidy(newmod)
-```
-
-
----
-### Four-way? 
-
-
-$$
-\begin{aligned}
-\hat{Y} &= b_0 + b_1X + b_{2}Z + b_{3}W + b_{4}Q + b_{5}XW\\
-&+ b_{6}ZW + b_{7}XZ + b_{8}QX + b_{9}QZ + b_{10}QW\\
-&+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ + b_{15}XZWQ\\
-\end{aligned}
-$$
-
---
-
-3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test (more on this later). 
-
----
-
-Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
-
-Best practice for 3-way (and higher) interactions is to use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator.
-
-Even better if one of these moderators is experimenter manipulated, which increases the likelihood of balanced conditions. 
-
----
-class: inverse
-
-no more interactions
----
-
-## Homoscedasticity
-
-Homoscedasticity is the assumption that the variance of Y is constant across all levels of a predictor.
-
-```{r, echo = F}
-set.seed(031020)
-N = 80
-n.per = round(N/4)
-y.x1 = rnorm(n = n.per, mean = 50, sd = 10)
-y.x2 = rnorm(n = n.per, mean = 40, sd = 7)
-y.x3 = rnorm(n = n.per, mean = 30, sd = 5)
-y.x4 = rnorm(n = n.per, mean = 20, sd = 2)
-
-y = c(y.x1, y.x2, y.x3, y.x4)
-
-x.list = sapply(c(1:4), function(x) rnorm(n = n.per, mean = x, sd = .2))
-xvar = as.vector(x.list)
-
-Data = data.frame(calm = xvar, 
-                  problems = round(y/10))
-```
-
-```{r, message = F, fig.height = 4}
-library(tidyverse)
-ggplot(Data, aes(x = calm, y = problems)) +
-  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1))
-```
-
----
-
-## Weighted least squares
-
-Weighted least squares (WLS) is a commonly used remedial procedure for heteroscedasticity (or failiing to meet the assumptino of homoscedasticity).
-
-In an ordinary least squares (OLS) approach, each case in the dataset is given equal weight. WLS assigns each case a weight $w_i$, depending upon the precision of the observation of Y in that case. For observations for which the variance around the residuals around the regression line is low, the case is given a high weight.
-
----
-
-Recall that an OLS estimation chooses values of $b_0$ and $b_1$ that minimizes the sum of squared residuals:
-
-$$\large \text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$
-
-In a WLS approach, weights are taken into account, such that the values of $b_0$ and $b_1$ are chosen to minimize the sum of the **weighted** squared residuals:
-
-$$\large \text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$
-
-The value of the weights is the inverse of the conditional variance of the residuals in the population corresponding to the specified value of X:
-
-$$\large w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$
----
-
-The value of $\sigma^2_{Y-\hat{Y}|X}$, the variance of the residuals in the population conditional on X, is not known and must be estimated. A common procedure for estimating weights is to estimate the usual OLS regression equation, square the residuals, and then regress the squared residuals onto X. The weight is then estimated as the inverse of the predicted value for a case. 
-
-Using our own data:
-
-```{r}
-ols.model = lm(problems ~ calm, data = Data)
-library(broom)
-ols_aug = augment(ols.model)
-head(ols_aug)
-```
----
-
-```{r}
-# square residuals
-ols_aug$resid_sq = ols_aug$.resid^2
-# regress squared resid on predictor
-weight.mod = lm(resid_sq ~ calm, data = ols_aug)
-```
-
-.pull-left[
-```{r}
-coef(ols.model)
-```
-
-]
-
-.pull-right[
-```{r}
-coef(weight.mod)
-```
-
-]
-
-```{r}
-# extract predicted values
-pred.resid = predict(weight.mod)
-head(pred.resid)
-# find inverse of predicted values
-# use absolute value if some of your predicted values are negative  
-est.weights = 1/abs(pred.resid) 
-head(est.weights)
-```
-
-
----
-
-```{r}
-wls.model = lm(problems ~ calm, data = Data, weights = est.weights)
-```
-
-
-#### OLS solution
-```{r}
-tidy(ols.model)
-```
-
-#### WLS solution
-```{r}
-tidy(wls.model)
-```
-
----
-
-```{r, echo = F, fig.width=10, fig.height=8}
-Data %>%
-  ggplot(aes(x = calm, y = problems)) +
-  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1)) +
-  geom_smooth(method = "lm", se = F, aes(color = "OLS")) +
-  geom_smooth(method = "lm", se = F, aes(color = "WLS", weight = est.weights))
-```
-
-
----
-
-WLS is a robust method for dealing with heteroscedasticity. What if you violate the normality assumption of regression?
-
---
-
-A **bootstrapping** approach is useful when the theoretical sampling distribution for an estimate is unknown or unverifiable. In other words, if you have reason to suspect that either the variables in your model are not normally distributed, or that they're non-normally distributed, then bootstrapping can help ensure non-bias estimation and appropriately sized confidence intervals. 
+* Lessons from machine learning
 
 ---
 
@@ -558,7 +163,7 @@ for(i in 1:boot){
 }
 ```
 
-```{r, echo = F, message = F, fig.width = 10, fig.height=6}
+```{r, echo = F, message = F, fig.width = 10, fig.height5}
 data.frame(means = response_means) %>%
   ggplot(aes(x = means)) + 
   geom_histogram(color = "white") +
@@ -583,6 +188,8 @@ quantile(response_means, probs = c(.025, .975))
 What about something like the median?
 
 ---
+
+### bootstrapped distribution of the median
 
 ```{r}
 boot = 10000
@@ -616,6 +223,8 @@ quantile(response_med,
 ]
 ---
 
+### bootstrapped distribution of the standard deviation
+
 ```{r}
 boot = 10000
 response_sd = numeric(length = boot)
@@ -647,11 +256,249 @@ quantile(response_sd,
 ]
 
 ---
+
+
+---
+
+## Yarkoni and Westfall (2017)
+
+Y&W describe the goals of explanation and prediction in science; how are these goals similar to each other and how are they in opposition to each other? 
+
+According to Y&W, how should psychologists change their research, in terms of explanation and prediction, and why?
+
+How do regression models fit into the goals of explanation and prediction? Where do they fall short on one or other or both?
+
+???
+
+Explanation: describe causal underpinnings of behaviors/outcomes
+Prediction: accurately forecast behaviors/outcomes
+
+Similar: both goals of science; good prediction can help us develop theory of explanation and vice versa
+
+Statistical tension with one another: statistical models that accurately describe causal truths often have poor prediction and are complex; predictive models are often very different from the data-generating processes. 
+
+Y&W: we should spend more time and resources developing predictive models than we do not (not necessarily than explanation models, although they probably think that's true)
+
+---
+
+## Yarkoni and Westfall (2017)
+
+What is **overfitting** and where does this occur in terms of the models we have discussed in class thus far?
+
+What is **bias** and **variance**, and how does the bias-variance trade-off relate to overfitting?
+
+* How concerned are you about overfitting in your own area of research? How about in the studies you'd like to do in the next couple of years?
+
+???
+
+Overfitting: mistakenly fitting sample-specific noise as if it were signal
+
+OLS models tend to be overfit because they minimize error for a specific sample
+
+Bias: systematically over or under estimating parameters
+Variance: how much estimates tend to jump around
+
+Model-fits tend to prioritizie minimizing bias or variance, and choosing to minimize one inflates the other; OLS models minimize one of these
+
+
+---
+
+## Yarkoni and Westfall (2017)
+
+How do Y&W propose adjusting our current statistical practices to be more successful at prediction? 
+
+???
+
+big data sets
+
+Cross-validation
+
+regularization
+
+---
+
+## Yarkoni and Westfall (2017)
+
+
+**Big Data**
+* Reduce the likelihood of overfitting -- more data means less error
+
+**Cross-validation**
+* Is my model overfit?
+
+**Regularization**
+* Constrain the model to be less overfit 
+
+---
+
+### Big Data Sets
+
+"Every pattern that could be observed in a given dataset reflects some... unknown combination of signal and error" (page 1104). 
+
+Error is random, so it cannot correlate with anything; as we aggregate many pieces of information together, we reduce error. 
+
+Thus, as we get bigger and bigger datasets, the amount of error we have gets smaller and smaller
+
+---
+
+### Cross-validation
+
+**Cross-validation** is a family of techniques that involve testing and training a model on different samples of data. 
+* Replication
+* Hold-out samples
+* K-fold
+    * Split the original dataset into 2(+) datasets, train a model on one set, test it in the other
+    * Recycle: each dataset can be a training AND a testing; average model fit results to get better estimate of fit
+    * Can split the dataset into more than 2 sections
+    
+---
+
+```{r, message=FALSE, warning = F}
+library(here)
+stress.data = read.csv(here("data/stress.csv"))
+library(psych)
+describe(stress.data, fast = T)
+
+model.lm = lm(Stress ~ Anxiety*Support*group, 
+              data = stress.data)
+summary(model.lm)$r.squared
+```
+
+---
+
+### Example: 10-fold cross validation
+
+```{r, message = F}
+# new package!
+library(caret)
+# set control parameters
+ctrl <- trainControl(method="cv", number=10)
+# use train() instead of lm()
+cv.model <- train(Stress ~ Anxiety*Support*group, 
+               data = stress.data, 
+               trControl=ctrl, # what are the control parameters
+               method="lm") # what kind of model
+cv.model
+```
+
+---
+
+### Regularization
+
+Penalizing a model as it grows more complex. 
+* Usually involves shrinking coefficient estimates -- the model will fit less well in-sample but may be more predictive
+
+*lasso regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
+- coefficients are more biased (tend to underestimate coefficients) but produce less variability in results
+
+The coefficient $\lambda$ is used to penalize the model.
+
+---
+
+The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term. How could you do that manually?
+
+--
+
+Luckily, the function `model.matrix()` can do this for you.
+
+---
+
+```{r, message = F, warning = F}
+# provide your original lm model to get matrix of predictors
+X.matrix <- model.matrix.lm(model.lm) 
+head(X.matrix)
+library(glmnet)
+lasso.mod <- glmnet(x = X.matrix[,-1], #don't need the intercept 
+                    y = stress.data$Stress)
+```
+
+---
+
+```{r}
+lasso.mod
+```
+
+???
+
+DF = number of non-zero coefficients
+dev = $R^2$
+lambda = complexity parameter (how much to downweight, between 0 and 1)
+
+---
+### What value of $\lambda$ to choose?
+
+```{r}
+plot(lasso.mod, xvar = "dev", label = T)
+```
+
+Looks like coefficients 1, 2, and 3 have high values even with shrinkage.
+
+---
+### What value of $\lambda$ to choose?
+```{r, fig.height=5}
+plot(lasso.mod, xvar = "lambda", label = TRUE)
+```
+
+I might look for lambda values where those coefficients are still different from 0. 
+
+---
+.pull-left[
+```{r}
+coef = coef(lasso.mod, s = exp(-5))
+coef
+```
+]
+
+.pull-left[
+```{r}
+coef = coef(lasso.mod, s = exp(-4))
+coef
+```
+]
+
+
+---
+
+```{r}
+coef = coef(lasso.mod, s = 0)
+coef
+```
+
+$\lambda = 0$ is pretty close to our OLS solution
+
+---
+
+```{r}
+coef = coef(lasso.mod, s = 1)
+coef
+```
+
+$\lambda = 1$ is a huge penalty
+
+---
+### NHST no more
+
+Once you've imposed a shrinkage penalty on your coefficients, you've wandered far from the realm of null hypothesis significance testing. In general, you'll find that very few machine learning techniques are compatible with probability theory (including Bayesian), because they're focused on different goals. Instead of asking, "how does random chance factor into my result?", machine learning optimizes (out of sample) prediction. Both methods explicity deal with random variability. In NHST and Bayesian probability, we're trying to estimate the degree of randomness; in machine learning, we're trying to remove it. 
+
+---
+
+## Summary: Yarkoni and Westfall (2017)
+
+
+**Big Data**
+* Reduce the likelihood of overfitting -- more data means less error
+
+**Cross-validation**
+* Is my model overfit?
+
+**Regularization**
+* Constrain the model to be less overfit 
+
+---
+
 class: inverse
 
 ## Next time...
 
-Finish bootstrapping
-
-Yarkoni and Westfall (2017) and the lessons of machine learning
+PSY 613 with Elliot Berkman!
 
