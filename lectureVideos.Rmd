@@ -135,7 +135,7 @@ output:
 - [Logistic Regression/GLM](https://youtu.be/thzz0UsJ-vQ) *Note that the video feed cut out half way through the recording, so my face disappears! Sorry about that! The audio should work just fine, though.*
 
 #### 4/22
-- Bootstrapping
+- [Bootstrapping](https://youtu.be/DZKphcItBf8)
 - [Zoom Check-in with Chan](https://wustl.zoom.us/j/92420044586?pwd=S2ZxSms4UTRuc2xsMXZzVXRGQ3J4UT09)
 
 ## Week 14
