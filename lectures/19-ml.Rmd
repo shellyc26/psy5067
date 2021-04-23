@@ -334,6 +334,26 @@ coef
 $\lambda = 1$ is a huge penalty
 
 ---
+
+.pull-left[
+
+Choosing a lambda based on eyeballing can be hard. We can use cross-validation instead to help us choose!
+
+```{r}
+cvfit <- cv.glmnet(x = X.matrix[,-1], y = stress.data$Stress, type.measure = "deviance")
+cvfit
+```
+
+]
+
+.pull-right[
+```{r}
+plot(cvfit)
+```
+]
+
+
+---
 ## NHST no more
 
 Once you've imposed a shrinkage penalty on your coefficients, you've wandered far from the realm of null hypothesis significance testing.
