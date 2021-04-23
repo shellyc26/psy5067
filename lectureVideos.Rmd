@@ -142,7 +142,7 @@ output:
 ## Week 14
 
 #### 4/27
-- Over/Underfitting & Validation
+- [Over/Underfitting & Validation](https://youtu.be/J1Tqq0Y_b08)
 
 #### 4/29
 - Repeated Measures/MLM
