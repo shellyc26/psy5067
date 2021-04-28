@@ -145,7 +145,7 @@ output:
 - [Over/Underfitting & Validation](https://youtu.be/J1Tqq0Y_b08)
 
 #### 4/29
-- Repeated Measures/MLM
+- [Repeated Measures/MLM](https://www.youtube.com/watch?v=3OFXxh4yORU) Lecture given by our very own Violet Brown! Link takes you to her YouTube page.
 - **HW 5 Due by 10am**
 
 ## Week 15
