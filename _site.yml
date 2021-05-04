@@ -47,6 +47,8 @@ navbar:
         href: "lectures/19-ml.html"
       - text: "20-MLM I"
         href: "lectures/20-MLM_Day1_Violet.pdf"
+      - text: "21-MLM II"
+        href: "lectures/21-MLM_Day2_Violet.pdf"
       - text: "Wrapping Up"
         href: "lectures/wrappingUp.html"
     - text: Lecture Videos
