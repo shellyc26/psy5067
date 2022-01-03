@@ -1,0 +1,787 @@
+---
+title: "General Linear Model"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+
+## Last time
+
+```{r setup,echo=FALSE}
+knitr::opts_chunk$set(fig.retina = 3, warning = FALSE, message = FALSE)
+
+options(scipen=999)
+```
+
+
+Reviewed last semester and previewed this semester
+
+---
+
+## Thinking in terms of models
+
+- Thus far you have used chi-square, t-tests, and ANOVA to test basic questions about the world.  
+
+- These types of tests can be thought of as a model for how you think "the world works"
+
+- Our DV (here forth Y) is what we are trying to understand 
+
+- We hypothesize it has some relationship with your IV(s) (here forth Xs), with what is left over described as error (E)
+
+- Y = X + E
+
+
+---
+
+## See this in our R code
+
+Independent samples t-test
+```{r, eval=FALSE}
+
+t.1 <- t.test(y ~ x, data = d) 
+# y is cont and x is a categoriocal/nominal (dichotomous) factor
+```
+
+One-way ANOVA
+```{r, eval = FALSE}
+a.1 <- aov(y ~ x, data=d)
+# y is cont and x is a categoriocal/nominal factor
+
+```
+
+---
+
+
+## General linear model (GLM)
+
+- This model (equation) can be very simple as in a treatment/control experiment  
+
+- It can be very complex in terms of trying to understand something like academic achievement  
+
+- The majority of our models fall under the umbrella of a general(ized) linear model
+
+- Models imply our theory about how the data are generated (ie how the world works)
+
+---
+
+## Regression Equation
+
+$$Y_i = b_{0} + b_{1}X_i +e_i$$
+
+---
+
+## Regression terms
+- Y / DV / Outcome / Response / Criterion
+- X / IV / Predictor / Explanatory variable
+- Regression coefficient (weight) / b / b* / $\beta$
+- Intercept $b_0$ / $\beta_{0}$
+- Error / Residuals $e$
+- Predictions  $\hat{Y}$
+
+
+- $Y_i \sim Normal(\mu, \sigma)$
+- The DV, $Y$ for each person $i$ is distributed normaly, with a mean of $\mu$ and a standard deviation of $\sigma$
+
+---
+
+## Regression models
+
+- These models are a way to convey the relationship between two (or more) variables. They translate our hypotheses into math. 
+
+- We can use these models to get information we may be interested in (e.g. means, SEs) and test hypotheses about the relationship among variables
+
+- *"All models are wrong but some are useful (and some are better than others)"* - George Box
+
+---
+class: clear
+
+.pull-left[
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readr)
+example.data <- read_csv("../data/exampleData.csv")
+
+```
+Example data can be found on GitHub, or here: [`exampleData.csv`](../data/exampleData.csv)
+
+]
+.pull-right[
+```{r}
+example.data
+```
+]
+
+---
+class: clear
+.pull-left[
+```{r, warning=FALSE, fig.show='hide'}
+ggplot(example.data,
+       aes(x = as.factor(tx),
+           y = traffic.risk)) +
+  geom_violin(aes(fill = as.factor(tx)),
+              alpha = .3,
+              show.legend = FALSE) +
+  geom_boxplot(aes(color = as.factor(tx)),
+               fill = "white",
+               width = .2) +
+  geom_jitter(aes(color = as.factor(tx))) +
+  labs(x = "Treatment",
+       y = "Traffic Risk")
+```
+]
+
+.pull-right[
+```{r, warning=FALSE, echo=FALSE}
+ggplot(example.data,
+       aes(x = as.factor(tx),
+           y = traffic.risk)) +
+  geom_violin(aes(fill = as.factor(tx)),
+              alpha = .3,
+              show.legend = FALSE) +
+  geom_boxplot(aes(color = as.factor(tx)),
+               fill = "white",
+               width = .2) +
+  geom_jitter(aes(color = as.factor(tx))) +
+  labs(x = "Treatment",
+       y = "Traffic Risk")
+```
+]
+
+---
+class: clear
+.small[
+```{r}
+t.test(traffic.risk ~ tx, data = example.data, 
+              var.equal = TRUE) 
+```
+]
+---
+class: clear
+.small[
+```{r}
+a.1 <- aov(traffic.risk ~ tx, data = example.data) 
+summary(a.1)
+```
+]
+---
+class: clear
+
+```{r}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+summary(mod.1)
+```
+
+
+---
+.small[
+```{r}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+anova(mod.1)
+```
+]
+---
+## Example summary
+Same *p*-values for each test; same SS; same test!   
+<br>    
+
+- *t*-test gives you a *t* & df (output may also give you group mean and SD)    
+- ANOVA gives you an SSs, dfs, MS and *F*s  
+- Linear model (regression) gives you an equation (and SSs and *F*s)
+--
+
+- Which one is more useful? 
+
+---
+## ANOVA as regression
+
+$$Y_i = b_{0} + b_{1}X_i + e_i$$
+$$T.risk_i = b_{0} + b_{1}TX_i + e_i$$ 
+
+- Each individual has a unique Y value an X value and a residual/error term  
+
+- The model only has a single $b_{0}$ and $b_{1}$ term. These are the regression parameters. $b_{0}$ is the intercept and $b_{1}$ quantifies the relationship between your model of the world and the DV. 
+
+---
+
+## What do the estimates tell us? 
+
+```{r, echo = FALSE}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+library(broom)
+tidy(mod.1)
+```
+
+---
+class: clear
+
+```{r}
+example.data %>% 
+  group_by(tx) %>% 
+  summarise(mean(traffic.risk, na.rm=TRUE))
+```
+
+---
+
+## How to interpret regression estimates
+
+- Intercept is the mean of group of variable tx that is coded 0
+- Regression coefficient is the slope or rise over run, scaled as a 1 unit on the x axis
+- **"For a one unit change in X, there is a b1 predicted change in Y."**
+- Regression coefficient is the difference in means between the groups, given that we coded our groups as 0 and 1. 
+
+---
+class: clear
+.pull-left[
+```{r, fig.show='hide'}
+library(ggstatsplot)
+ggstatsplot::ggbetweenstats(
+  data = example.data,
+  x = tx,
+  y = traffic.risk,
+  xlab = "Traffic Risk Score", # label for the x-axis variable
+  ylab = "Treatment group", # label for the y-axis variable
+  bf.message = FALSE, 
+  messages = FALSE
+) 
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+library(ggstatsplot)
+ggstatsplot::ggbetweenstats(
+  data = example.data,
+  x = tx,
+  y = traffic.risk,
+  xlab = "Traffic Risk Score", # label for the x-axis variable
+  ylab = "Treatment group", # label for the y-axis variable
+  bf.message = FALSE,
+  messages = FALSE
+) 
+```
+]
+---
+class: clear
+.pull-left[
+```{r, echo=FALSE, cache=TRUE, warning= FALSE}
+library(ggplot2)
+ggplot(example.data, aes(x=tx, y=traffic.risk)) +
+    geom_point() +    
+    geom_smooth(method=lm,   # Add linear regression line
+                se=FALSE)    # Don't add shaded confidence region
+    
+```
+]
+
+.pull-right[
+This is what it looks like if we wanted to put a "regression line" to the data. 
+Note that the same interpretation for a regression line holds: for a 1 unit change in X (tx) there is a predicted b change in Y (traffic risk)
+]
+---
+
+## How to interpret regression estimates
+- The entire class will go over different ways to interpret these estimates/parameters/coefficients
+
+- Intercept (b0) signifies the level of Y when your model IVs (Xs) are zero 
+- Regression (b1) signifies the difference for a one unit change in your X
+
+- As with last semester you have estimates (like $\bar{x}$) and standard errors, which you can then ask whether they are likely assuming a null or create a CI
+
+---
+## Predicted scores
+
+- Based on the output how do I calculate means for each group? 
+```{r}
+tidy(mod.1)
+```
+
+---
+## ANOVA as regression
+- "For a one unit change in X, there is a b1 predicted change in Y" will always be true. 
+- Nominal/categorical variables do not have any inherent numbers associated with them so we need to assign them numbers
+- What numbers you assign will impact the equation/estimates/hypothesis you can test  
+- Behoove you to code them as useful numbers. O and 1 are useful and are the default in R. 
+
+---
+## ANOVA as regression
+.center[
+$$T.risk_i = b_{0} + b_{1}TX_i + e_i$$
+
+```{r, echo =FALSE}
+example.data
+```
+]
+
+---
+class: clear
+```{r, echo = FALSE}
+library(dplyr)
+example.data$tx.r <- as.factor(example.data$tx)
+example.data$tx.r <- recode_factor(example.data$tx.r, "0" = "control", "1" = "treatment") 
+```
+Create a new variable that is not numeric
+```{r}
+example.data
+```
+
+
+---
+class: clear
+.small[
+```{r}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+tidy(mod.1)
+```
+
+```{r}
+mod.1r <- lm(traffic.risk ~ tx.r, data = example.data)
+tidy(mod.1r)
+```
+]
+---
+## What if we changed 0 and 1 to other values? 
+
+- Infinite number of ways to code categorical/nominal variables, only a few meaningful ways  
+- The R default is called "dummy coding"  
+- Uses 0s and 1s to put numbers to categories. We will soon see what this looks like when you have more than 2 groups. 
+- Changing the numbers changes...?
+
+---
+## Effect coding
+.small[
+```{r}
+example.data$tx.effect <- dplyr::recode(example.data$tx, '0' = -1, '1' = 1) 
+```
+]
+
+.tiny[
+```{r}
+example.data
+```
+]
+---
+## Effect coding
+
+```{r}
+mod.1.eff <- lm(traffic.risk ~ tx.effect, data = example.data)
+tidy(mod.1.eff)
+```
+- systematically changes both the intercept and the regression estimate
+
+---
+class: clear
+
+```{r, echo = FALSE}
+effect <- tidy(mod.1.eff)
+effect
+dummy <- tidy(mod.1)
+dummy
+```
+- Intercept: value when your predictor X is zero
+
+- Regression coefficient: one unit increase in X is associated with a (regression estimate) predicted increase in Y
+
+
+---
+## Effect coding
+Consists of -1, 1s (And zeros for more than 2 groups)
+
+1. The intercept is the "grand mean" or "mean of means" if unbalanced
+2. The regression coefficient represents the group "effect" ie the difference between the grand mean and the group labeled 1 (we will revisit this when we have more than 2 groups as it will make more sense)
+
+- Common to use for Factorial ANOVA models 
+
+---
+## Effect coding
+Consists of -1, 1s (And zeros for more than 2 groups)
+
+1. The intercept is the "grand mean" or "mean of means" if unbalanced
+2. The regression coefficient represents the group "effect" ie the difference between the grand mean and the group labeled 1 (we will revisit this when we have more than 2 groups as it will make more sense)
+
+- Common to use for Factorial ANOVA models 
+
+- How do you calculate the predicted value of each group? 
+
+---
+## Dummy coding
+- More appropriate when you are interested in comparing to a specific group rather than an "average person"  
+
+- Intercept: value of the group coded zero 
+- Regression coefficient: mean difference between groups 
+
+---
+## Contrast coding
+
+- As our models get more complex our coding schemes can too
+- What happens if you code the groups -.5 and .5? 
+- These make more sense when we have more groups. More groups require more independent variables, however. 
+
+---
+
+## Statistical Inference
+- The way the world is = our model + error
+- How good is our model? Is it a good representation of reality? Does it "fit" the data well? 
+- Need to go beyond asking if it is significant, because what does that mean? Remember, all models are wrong
+- We are going to make predictions and see if the predictions (based on our model) matches our data
+- We can then compare one model to another to see which one matches our data better ie which one is a better representation of reality. 
+
+---
+## Predictions
+- predictions $\hat{Y}$ are of the form of E(Y|X)
+- They are created by simply plugging a persons Xs into the created model
+- If you have bs and have Xs you can create a prediction 
+
+$\hat{Y}_{i}$ = 2.65064 + -0.48111* $X_{i}$
+
+- You have already done this with dummy codes above
+
+---
+class: clear
+.small[
+```{r, echo = FALSE}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+summary(mod.1)
+```
+]
+---
+
+## Predictions
+- We want our predictions to be close to our actual data for each person ( $Y_{i}$ )
+- The difference between the actual data and our our prediction ( $Y_{i}  - \hat{Y}_{i} = e$ ) is the residual, how far we are "off". This tells us how good our fit is. 
+- You can have the same estimates for two models but completely different fit. 
+- Previously you have evaluated fit by looking at Eta Squared, SS Error and visualizing observations around group means
+
+
+---
+
+## Which one has better fit? 
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+twogroup_fun = function(nrep = 100, b0 = 6, b1 = -2, sigma = 1) {
+     ngroup = 2
+     group = rep( c("group1", "group2"), each = nrep)
+     eps = rnorm(ngroup*nrep, 0, sigma)
+     traffic = b0 + b1*(group == "group2") + eps
+     growthfit = lm(traffic ~ group)
+     growthfit
+}
+
+
+twogroup_fun2 = function(nrep = 100, b0 = 6, b1 = -2, sigma = 2) {
+     ngroup = 2
+     group = rep( c("group1", "group2"), each = nrep)
+     eps = rnorm(ngroup*nrep, 0, sigma)
+     traffic = b0 + b1*(group == "group2") + eps
+     growthfit = lm(traffic ~ group)
+     growthfit
+}
+
+set.seed(16)
+library(broom)
+lm1 <- augment(twogroup_fun())
+
+set.seed(16)
+lm2 <- augment(twogroup_fun2())
+
+plot1<- ggplot(lm1) +
+  aes(x = group, y = traffic) +
+  geom_violin() + geom_boxplot() + geom_jitter() + ylim(-1, 11)
+
+plot2<- ggplot(lm2) +
+  aes(x = group, y = traffic) +
+  geom_violin() + geom_boxplot() + geom_jitter() + ylim(-1, 11)
+
+
+library(gridExtra)
+ grid.arrange(plot1, plot2, ncol=2)
+```
+
+
+
+---
+
+## Easy to examine fit with `lm` objects
+- These are automatically created anytime you run a `lm` in R
+```{r}
+mod.1 <- lm(traffic.risk ~ tx, data = example.data)
+```
+
+
+```{r, eval=FALSE}
+coefficients(mod.1)       # coefficients
+residuals(mod.1)          # residuals
+fitted.values(mod.1)      # fitted values ie predicted
+summary(mod.1)$r.squared  # R-sq for the model
+summary(mod.1)$sigma      # sd of residuals
+```
+
+---
+class: clear
+```{r}
+coefficients(mod.1)
+```
+
+---
+class: clear
+
+```{r}
+fitted.values(mod.1)
+```
+
+---
+class: clear
+
+```{r}
+residuals(mod.1)
+```
+
+---
+# Pop quiz 
+ 
+$$\hat{Y}_{i} = b_{0} + b_{1}X_{i}$$ 
+
+
+$$Y_{i} = b_{0} + b_{1}X_{i} +e_{i}$$ 
+
+$$Y_{i}  - \hat{Y}_{i} = e$$ 
+
+- Can you plug in numbers and calculate subject 3's predicted and residual scores without explicitly asking for lm object residuals and fitted values? (using the same model from slide 41 on)
+
+- Post answers in Slack -- see if you and your peers get the same results!
+
+---
+class: clear
+
+```{r}
+example.data
+```
+
+---
+
+## Residuals
+```{r, echo=FALSE, warnings=FALSE, message=FALSE, include = FALSE}
+fit.1.data <- augment(mod.1) 
+
+```
+
+.small[.pull-left[
+```{r, fig.show='hide'}
+ggplot(fit.1.data, aes(.resid)) +
+    geom_density()    
+   
+```
+]]
+
+.pull-right[
+```{r, echo = FALSE}
+ggplot(fit.1.data, aes(.resid)) +
+    geom_density()    
+   
+```
+]
+---
+## An aside concerning `lm` objects
+.pull-left[
+- `lm` objects consist of the information embedded in your linear model
+- R often handles model objects poorly due to them not necessarily being in a usable data frame (lists!)
+- the `broom` package makes model objects into dataframes
+]
+
+.pull-right[
+```{r}
+library(broom)
+fit.1.tidy <- tidy(mod.1)  
+fit.1.tidy
+```
+]
+---
+class: clear
+
+- `Augment` function from the `broom` package amends the original dataset with lm object content. The new variable names of have a "." in front of the name to distinguish
+
+```{r, warning=FALSE}
+fit.1.data <- augment(mod.1) 
+head(fit.1.data)
+
+```
+
+---
+.pull-left[
+- `tidy` function from the `broom` package creates a new data frame based on summary statistics. `glance` is similar but for model fit measures
+
+- `augment` = adds to existing dataset
+- `tidy` = model components like $\beta$
+- `glance` = model fit like $\eta^2$ or $R^2$ 
+]
+
+.pull-right[
+```{r, warning=FALSE}
+tidy(mod.1) 
+```
+
+
+```{r, warning=FALSE}
+glance(mod.1) 
+```
+
+
+]
+---
+## Pop quiz #2
+- For a two group ANOVA how many different predicted values will we have? Residuals? 
+
+- Post your answer in Slack and see how you compare to your peers!
+
+---
+## Statistical Inference
+- In making predictions, we have to compare our prediction to some alternative prediction to see if we are doing well or not. 
+
+- What is our best guess (ie prediction) if we didn't collect any data? 
+
+$$ \hat{Y} = \bar{Y} $$
+- Regression can be thought of as: is E(Y|X) better than E(Y)?
+
+---
+## Statistical Inference
+- To the extent that we can generate different predicted values of Y based on the values of the predictors, our model is doing well
+
+- Said differently, the closer our model is to the "actual" data generating model, our guesses ( $\hat{Y}$ ) will be closer to our actual data ( $Y$ )  
+
+---
+
+class: clear
+
+- We formally test how well we are doing with our guesses by partitioning variation
+
+$$ Y = \hat{Y} + e$$
+
+$$ Y = \hat{Y} + (Y - \hat{Y}) $$
+
+$$ Y - \bar{Y} = (\hat{Y} -\bar{Y}) + (Y - \hat{Y}) $$
+
+$$ (Y - \bar{Y})^2 = [(\hat{Y} -\bar{Y}) + (Y - \hat{Y})]^2 $$
+
+$$ \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2 $$
+
+---
+
+
+```{r, echo=FALSE}
+ggstatsplot::ggbetweenstats(
+  data = example.data,
+  x = tx,
+  y = traffic.risk,
+  xlab = "Traffic Risk Score", # label for the x-axis variable
+  ylab = "Treatment group", # label for the y-axis variable
+  bf.message = FALSE,
+  mean.plotting = TRUE,
+  plot.type = "violin",
+  messages = FALSE
+) +
+  geom_hline(yintercept = 2.35)+
+  geom_text(aes(.55,2.5,label = "Average"))
+```
+
+---
+# Partitioning the variation in Y
+$$ \sum (Y_i - \bar{Y})^2 = \sum (\hat{Y}_i -\bar{Y})^2 + \sum(Y_i - \hat{Y}_i)^2 $$
+
+- SS total = SS between + SS within
+
+- SS total = SS regression + SS residual (or error)
+
+- Completely the same as last semester because REGRESSION IS ANOVA
+
+---
+# What can we do with this? 
+
+- Last semester you did omnibus F tests
+- What hypothesis does the omnibus F test test, generally? 
+
+$$s_{y}^2 = s_{regression}^2 + s_{residual}^2$$
+
+$$1 = \frac{s_{regression}^2}{s_{y}^2} + \frac{s_{residual}^2}{s_{y}^2}$$
+
+---
+## Coefficient of Determination
+
+$$\frac{s_{regression}^2}{s_{y}^2} = \frac{SS_{regression}}{SS_{Y}} = R^2$$
+
+- Percent (of total) variance explained by your model...which currently are groups
+- Another way of asking how much variance group status explains
+
+---
+## $R^2$ and Eta squared
+
+```{r}
+summary(mod.1)$r.squared
+```
+
+
+```{r}
+library(lsr)
+etaSquared(mod.1)
+```
+
+---
+## $R^2$ for different coding schemes
+.small[
+```{r}
+glance(mod.1)
+```
+
+```{r}
+glance(mod.1.eff)
+```
+]
+---
+.small[
+## Note the $R^2$ *p*-value
+```{r,echo=FALSE}
+summary(mod.1)
+```
+]
+---
+## Summary
+
+![](images/regMeme.jpeg)
+
+---
+
+## Summary
+
+- We are using linear models to do the exact same tests as *t*-tests and ANOVAs
+- It is the exact same because *t*-tests and ANOVAs are part of the general linear model
+- Looking at these tests through the perspective of a linear model provides us with all the information you got from last semester - and more! 
+- Plus it provides a more systematic way at 1) building and testing your theoretical model and 2) comparing between alternative theoretical models
+- You can get 1) estimates and 2) fit statistics from the model. Both are important. 
+
+---
+class: inverse
+
+## Next time
+
+
+Revisiting correlations, and turning those into regression

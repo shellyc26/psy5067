@@ -22,21 +22,14 @@ All homeworks are **independent projects**. You may not share code or answers wi
 
 In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
-**Data:** These come from experiment 1 in Maglio & Polman (2014) where they examined whether a person’s spatial orientation would affect perceived distance (Also see article). They conducted the experiment on a train. Half of the participants were headed eastbound whereas the other half were headed westbound. Participants were also randomly assigned to indicate the subjective distance of one of the four subway stations.
-
-The data are here: [`th-project-5.csv`](th-project-5.csv)
-
-The paper is here: [Maglio-and-Polman-2014.pdf](Maglio-and-Polman-2014.pdf)
+**Data:** Use this mortality dataset to answer the questions below. [`mortality.csv`](mortality.csv)
 
 Good luck!
 
 ## Homework Questions
 
-1. Run the factorial ANOVA from Experiment 1. Interpret each of the $SS$s and $F$s. 
+1. Using the `glm` function, run a multiple regression with IQ to predict and mortality status. Past studies have found that higher levels of IQ are assocaited with longer life. Use this information to make sure you interpret the direction of your results correctly. Then run the same function using the `lm` function. What are the similarities, what are the differences between these two approaches? Look at both the `anova` and the `summary` outputs. 
 
-2. What is the effect size associated with each of your terms? What is the $R^2$ for the model? 
+2. Now control for risky behavior. Interpret all of the coefficients. 
 
-3. Conduct a series of post hoc tests that address the author's hypotheses. Provide effect sizes and confidence intervals in addition to NHST. Interpret. Do your conclusions line up with the authors? Or do you disagree with them?  
-
-4. Run a power analysis to determine sample size needed for the effect sizes found in #2. (note: `pwr` package is a nice one to use but be sure to use the glm/regression functions as opposed to the one-way anova. Also, pay close attention to the effect size requested.)
-
+3. Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice? 

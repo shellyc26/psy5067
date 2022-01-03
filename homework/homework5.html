@@ -183,19 +183,16 @@ pre code {
 <p>You are allowed to Google things. <em>However</em>, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a <strong>working link</strong> to the website you used. You don’t need to use APA formatting or anything. Just a working url.</p>
 <p>All homeworks are <strong>independent projects</strong>. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should <strong>not simply copy someone else’s code</strong>. If we believe one student has copied another’s work, both students will receive a 0 on the homework assignment.</p>
 <p>In the instructions, when it says <strong><em>by hand</em></strong>, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean <em>by hand</em>, you should <strong>not</strong> use the <code>mean()</code> function. However, you can (and should!) use your variables. So for instance, if I ask you to find the <code>mean()</code> by hand, you may do something like <code>sum(variableX)/length(variableX)</code>. This would be an appropriate <em>by hand</em> calculation. (You don’t need to type <code>(3 + 5 + 5 + 17) / 4</code>…you can still use your variables). If we do <em>not</em> specify <em>by hand</em>, then you may of course use a R function.</p>
-<p><strong>Data:</strong> These come from experiment 1 in Maglio &amp; Polman (2014) where they examined whether a person’s spatial orientation would affect perceived distance (Also see article). They conducted the experiment on a train. Half of the participants were headed eastbound whereas the other half were headed westbound. Participants were also randomly assigned to indicate the subjective distance of one of the four subway stations.</p>
-<p>The data are here: <a href="th-project-5.csv"><code>th-project-5.csv</code></a></p>
-<p>The paper is here: <a href="Maglio-and-Polman-2014.pdf">Maglio-and-Polman-2014.pdf</a></p>
+<p><strong>Data:</strong> Use this mortality dataset to answer the questions below. <a href="mortality.csv"><code>mortality.csv</code></a></p>
 <p>Good luck!</p>
 </div>
 </div>
 <div id="homework-questions" class="section level2">
 <h2>Homework Questions</h2>
 <ol style="list-style-type: decimal">
-<li><p>Run the factorial ANOVA from Experiment 1. Interpret each of the <span class="math inline">\(SS\)</span>s and <span class="math inline">\(F\)</span>s.</p></li>
-<li><p>What is the effect size associated with each of your terms? What is the <span class="math inline">\(R^2\)</span> for the model?</p></li>
-<li><p>Conduct a series of post hoc tests that address the author’s hypotheses. Provide effect sizes and confidence intervals in addition to NHST. Interpret. Do your conclusions line up with the authors? Or do you disagree with them?</p></li>
-<li><p>Run a power analysis to determine sample size needed for the effect sizes found in #2. (note: <code>pwr</code> package is a nice one to use but be sure to use the glm/regression functions as opposed to the one-way anova. Also, pay close attention to the effect size requested.)</p></li>
+<li><p>Using the <code>glm</code> function, run a multiple regression with IQ to predict and mortality status. Past studies have found that higher levels of IQ are assocaited with longer life. Use this information to make sure you interpret the direction of your results correctly. Then run the same function using the <code>lm</code> function. What are the similarities, what are the differences between these two approaches? Look at both the <code>anova</code> and the <code>summary</code> outputs.</p></li>
+<li><p>Now control for risky behavior. Interpret all of the coefficients.</p></li>
+<li><p>Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice?</p></li>
 </ol>
 </div>
 

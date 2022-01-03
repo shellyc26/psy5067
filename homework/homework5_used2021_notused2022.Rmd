@@ -1,0 +1,42 @@
+---
+title: "Homework #5"
+output: html_document
+---
+
+## Instructions
+
+Please complete this assignment by creating a new RMarkdown (or RNotebook) file (one that has the extension .Rmd). Be sure to include your name in the preamble. Please submit both your .Rmd and your .html files to Canvas.
+
+#### Formatting
+
+-   All code should be in a code chunk (gray boxes)
+-   All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks.
+-   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
+-   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+
+Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand.
+
+You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
+
+All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
+
+In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
+
+**Data:** These come from experiment 1 in Maglio & Polman (2014) where they examined whether a person’s spatial orientation would affect perceived distance (Also see article). They conducted the experiment on a train. Half of the participants were headed eastbound whereas the other half were headed westbound. Participants were also randomly assigned to indicate the subjective distance of one of the four subway stations.
+
+The data are here: [`th-project-5.csv`](th-project-5.csv)
+
+The paper is here: [Maglio-and-Polman-2014.pdf](Maglio-and-Polman-2014.pdf)
+
+Good luck!
+
+## Homework Questions
+
+1. Run the factorial ANOVA from Experiment 1. Interpret each of the $SS$s and $F$s. 
+
+2. What is the effect size associated with each of your terms? What is the $R^2$ for the model? 
+
+3. Conduct a series of post hoc tests that address the author's hypotheses. Provide effect sizes and confidence intervals in addition to NHST. Interpret. Do your conclusions line up with the authors? Or do you disagree with them?  
+
+4. Run a power analysis to determine sample size needed for the effect sizes found in #2. (note: `pwr` package is a nice one to use but be sure to use the glm/regression functions as opposed to the one-way anova. Also, pay close attention to the effect size requested.)
+
