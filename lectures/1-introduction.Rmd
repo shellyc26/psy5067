@@ -40,11 +40,11 @@ output:
 
 - [Class Website](https://shellyc26.github.io/psy5067/index.html); where slides, lecture videos, homeworks, and announcements will be posted
 
-- [Slack Workspace](https://app.slack.com/client/T01JKD0RYBV); here for answering questions, posting stats/`R` memes and gifs, building community
+- [Slack Workspace](https://app.slack.com/client/T02T7RKUMEU/); here for answering questions, posting stats/`R` memes and gifs, building community
 
-- [Canvas](https://wustl.instructure.com/courses/61765); where you'll turn in your homeworks, where exams are posted, where you'll submit exams
+- [Canvas](https://wustl.instructure.com/courses/83830); where you'll turn in your homeworks and complete peer reviews and exams
 
-- [LSR](https://learningstatisticswithr.com/book/); textbook
+- [LSR](https://learningstatisticswithr.com/book/) & [ISLR](https://www.statlearning.com/); textbooks
 
 - Example data from class can be found on our [GitHub site](https://github.com/shellyc26/psy5067/tree/master/data) in the `data` folder. 
 
@@ -54,6 +54,7 @@ output:
 - **Most important information is on the slides**
 
 - Readings serve to *supplement* and enhance
+  * There are some exceptions; 2-3 readings will be required
 
 - Important equations will be presented via slides
 
@@ -67,11 +68,22 @@ output:
 - If too slow: ASK QUESTIONS AND COME TO CHECK-INS. There are lots of interesting extensions to these models. I can give you extra readings, or at least point you down a cool path. 
 
 ---
+## Two AIs
+
+- AJ Wright, MA
+
+- Mary Painter, PhD
+
+Both incredible. USE THEM TO YOUR ADVANTAGE! Set up meetings with them. Ask them `R` questions.
+
+---
 ## Goals for today  
 
-- Review of last semester
+- Quick Review of last semester
 
 - Overview of this semester
+
+- Syllabus
 
 ---
 ## Pragmatics
@@ -103,21 +115,13 @@ What you *should* know or strive to learn:
   5. If possible include raw data and/or the distribution (as dispersion only can hide oddities)
 
 ---
-class: clear
-ANOVA vs Welch's ANOVA
-.small[
-```{r}
-summary(aov(Sepal.Length ~ Species, data = iris))
+## What did we cover last semester?
 
-```
-
-
-```{r}
-
-oneway.test(Sepal.Length ~ Species, data = iris, var.equal=FALSE)
-
-```
-]
+- A lot!
+- Lots of theoretical probability distributions
+- Lots of NHST, the good the bad and the ugly
+- Lots of statistical tests
+  * All had assumptions, most had some modifications (homogeneity of variances etc.)
 
 ---
 ## Running models
@@ -200,6 +204,17 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 ## Looking forward
 
 -  This semester's themes are Relationships and Models
+
+---
+class: inverse
+## Next time
+
+**REQUIRED READING** 
+
+- You *must* read the Human Fallibility paper. Come prepared. We are not critiquing methods here/trying to tear it apart. We are going to use it as a jumping off point for introspection on how we do our own research.
+- We will meet on GATHERTOWN. Use this link [https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w](https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w)
+- You will need your cameras and microphones ON
+- When you arrive, find me. Click on Participants > right click on my name > Locate. Follow the line with your arrow keys until you find me
 
 
 

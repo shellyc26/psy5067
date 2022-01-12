@@ -3,6 +3,7 @@
   <head>
     <title>Introduction</title>
     <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -46,11 +47,11 @@ class: center, middle, inverse, title-slide
 
 - [Class Website](https://shellyc26.github.io/psy5067/index.html); where slides, lecture videos, homeworks, and announcements will be posted
 
-- [Slack Workspace](https://app.slack.com/client/T01JKD0RYBV); here for answering questions, posting stats/`R` memes and gifs, building community
+- [Slack Workspace](https://app.slack.com/client/T02T7RKUMEU/); here for answering questions, posting stats/`R` memes and gifs, building community
 
-- [Canvas](https://wustl.instructure.com/courses/61765); where you'll turn in your homeworks, where exams are posted, where you'll submit exams
+- [Canvas](https://wustl.instructure.com/courses/83830); where you'll turn in your homeworks and complete peer reviews and exams
 
-- [LSR](https://learningstatisticswithr.com/book/); textbook
+- [LSR](https://learningstatisticswithr.com/book/) &amp; [ISLR](https://www.statlearning.com/); textbooks
 
 - Example data from class can be found on our [GitHub site](https://github.com/shellyc26/psy5067/tree/master/data) in the `data` folder. 
 
@@ -60,6 +61,7 @@ class: center, middle, inverse, title-slide
 - **Most important information is on the slides**
 
 - Readings serve to *supplement* and enhance
+  * There are some exceptions; 2-3 readings will be required
 
 - Important equations will be presented via slides
 
@@ -73,11 +75,22 @@ class: center, middle, inverse, title-slide
 - If too slow: ASK QUESTIONS AND COME TO CHECK-INS. There are lots of interesting extensions to these models. I can give you extra readings, or at least point you down a cool path. 
 
 ---
+## Two AIs
+
+- AJ Wright, MA
+
+- Mary Painter, PhD
+
+Both incredible. USE THEM TO YOUR ADVANTAGE! Set up meetings with them. Ask them `R` questions.
+
+---
 ## Goals for today  
 
-- Review of last semester
+- Quick Review of last semester
 
 - Overview of this semester
+
+- Syllabus
 
 ---
 ## Pragmatics
@@ -109,36 +122,13 @@ What you *should* know or strive to learn:
   5. If possible include raw data and/or the distribution (as dispersion only can hide oddities)
 
 ---
-class: clear
-ANOVA vs Welch's ANOVA
-.small[
+## What did we cover last semester?
 
-```r
-summary(aov(Sepal.Length ~ Species, data = iris))
-```
-
-```
-##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
-## Species       2  63.21  31.606   119.3 &lt;2e-16 ***
-## Residuals   147  38.96   0.265                   
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-
-
-```r
-oneway.test(Sepal.Length ~ Species, data = iris, var.equal=FALSE)
-```
-
-```
-## 
-## 	One-way analysis of means (not assuming equal variances)
-## 
-## data:  Sepal.Length and Species
-## F = 138.91, num df = 2.000, denom df = 92.211, p-value &lt; 2.2e-16
-```
-]
+- A lot!
+- Lots of theoretical probability distributions
+- Lots of NHST, the good the bad and the ugly
+- Lots of statistical tests
+  * All had assumptions, most had some modifications (homogeneity of variances etc.)
 
 ---
 ## Running models
@@ -221,6 +211,21 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 ## Looking forward
 
 -  This semester's themes are Relationships and Models
+
+---
+class: inverse
+## Next time
+
+**REQUIRED READING** 
+
+- You *must* read the Human Fallibility paper. Come prepared. We are not critiquing methods here/trying to tear it apart. We are going to use it as a jumping off point for introspection on how we do our own research.
+- We will meet on GATHERTOWN. Use this link [https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w](https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w)
+- You will need your cameras and microphones ON
+- When you arrive, find me. Click on Participants &gt; right click on my name &gt; Locate. Follow the line with your arrow keys until you find me
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

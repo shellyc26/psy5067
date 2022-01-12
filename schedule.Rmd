@@ -46,7 +46,7 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | -    | 4/21 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
 | 15    | 4/26 | TBD |  |            |             
 | -    | 4/28 | TBD  |   |   **HW 5 DUE** |    5/1         
-| FINAL | 5/6 | 1-3pm |  |  |
+| **FINAL** | 5/6 | 1-3pm |  |  |
 
 # Overview
 
@@ -74,18 +74,19 @@ Homework assignments are intended to gauge your ability to apply the topics cove
 
 HWs are due at their due date by 9:30am. Grading will go by the following rubric:
 
-- 5/5: Completed all parts of the assignment, and results/interpretations were mostly correct (with maybe a few minor errors along the way)
-- 4/5: Completed all parts of the assignment, and ~25% of the results/interpretations are incorrect
-- 3/5: Completed all parts of the assignment, however ~50% of the results/interpretations are incorrect
-- 2/5: Either parts of the assignment are missing but what is there is correct, OR all parts have been completed but there are substantial issues with the results/interpretation
-- 1/5: Parts of the assignment are missing, and there are substantial issues with the results/interpretation
-- 0/5: No assignment submitted
+- 6/6: Completed all parts of the assignment, and results/interpretations were mostly correct (with maybe a few minor errors along the way)
+- 5/6: Completed all parts of the assignment, and ~25% of the results/interpretations are incorrect
+- 4/6: Completed all parts of the assignment, however ~50% of the results/interpretations are incorrect
+- 4/6: Either parts of the assignment are missing but what is there is correct, OR all parts have been completed but there are substantial issues with the results/interpretation
+- 2/6: Parts of the assignment are missing, and there are substantial issues with the results/interpretation
+- 1/6: Nearly all of the assignment is missing, but something was turned in
+- 0/6: No assignment submitted
 
-All of this to say that you can still get a 5 out of 5 even if you get a few things wrong here and there. HW assignments should boost your grades, not hurt them.
+All of this to say that you can still get a 6 out of 6 even if you get a few things wrong here and there. HW assignments should boost your grades, not hurt them.
 
 You may work with your peers on homework assignments, with the following caveats:
 
-1. Your code cannot be 100% identical to your peer's code (trust me, I can tell). It’s one thing to work together and consult, but it’s another thing to copy someone else’s assignment. If it is determined that someone copied an entire homework assignment, both parties will be given automatic zero.
+1. Your code cannot be 100% identical to your peer's code (trust me, we can tell). It’s one thing to work together and consult, but it’s another thing to copy someone else’s assignment. If it is determined that someone copied an entire homework assignment, both parties will be given automatic zero.
 2. If you work with someone, you *must* acknowledge them in the assignment itself.
 
 ## Peer Reviews
@@ -138,10 +139,10 @@ All assignments and examinations are mandatory. If you need to miss an exam you 
 
 - I expect all students to be in class if they are able (not sick, not at a conference etc.). Students find that the content from this semester is far more challenging than the previous semester. The best way to succeed is to come to class.
 - I will take attendance this semester. **If you are absent for 2 class periods in a row, _and you have not reached out to either the instructor or the AIs_, I will assume that something is wrong.** When I have concerns about a graduate student, I contact their PI. I will do the same here. 
-  * If you reach out and say you need to miss class for whatever reason, then there is no need for me to contact your PI. I know you are alive and well. 
+  * If you reach out and say you need to miss class for whatever reason, then there is no need for me to contact your PI. I know you are alive and well (or at least getting well). 
   * This policy comes out of concern for you! It's hard to succeed if you aren't in class, and I really want you to succeed! 
   * You are adults. Come to class when you can. Let me know when you can't (quick email or Slack is OK). 
-- **If you are not feeling well, don't come to class!!** I have recorded lectures from last year, you have access to the slides, and you can ask a friend for notes. 
+- **If you are not feeling well, don't come to class!!** I have recorded lectures from last year, you have access to the slides, and you can ask a friend for notes.
 - If there is even a *hint* of being sick, I prefer you stay home. If you are 100% sure it's nothing contagious -- like allergies, I still ask that you wear a mask and sit away from other students. 
 - WUSTL makes you fill out a COVID screening form before coming to campus. If you are in quarantine because of COVID exposure, or you fail the screening form because you are showing symptoms, please forward the screening form to me! Having a paper trail is extremely helpful for everyone. 
 
@@ -153,7 +154,7 @@ The 2020-2021 academic year sucked. But instead of burying our heads in the sand
 
 Last year was lonely. Although we're back in person, we still might feel that residual loneliness. On top of that, learning stats, learning to code, and grad school in general can be really scary -- impostor syndrome is real! The best thing we can do to combat these feelings is to stay connected to one another. Here's how we'll accomplish this in our class:
 
--	Your peer review will be with the same person. This way, you will get to know your buddy over the course of the semester. Make a friend! 
+-	Your peer review will be with the same person (different from last semester, if possible, though). This way, you will get to know your buddy over the course of the semester. Make a friend! 
 
 -	We will have a dedicated class Slack work space (see upper right corner of website for link). You can post questions that everyone can see, or make use of direct messaging. Shelly or the AIs will respond to your questions on Slack (if your peers don't respond first!). This is really great for one-off questions, or if you need some quick clarification on something. We will also have a dedicated channel for silly programming and stats memes, because humor is important when you're learning a skill like coding, in which you’ll repeatedly fail. Slack is not required *per se*, but it is **highly encouraged**.
 
