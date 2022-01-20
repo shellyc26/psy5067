@@ -11,6 +11,8 @@ navbar:
         href: "lectures/1-introduction.html"
       - text: "2-Data Management"
         href: "lectures/2-dataManagement.html"
+      - text: "3-GLM"
+        href: "lectuers/3-glm.html"
     - text: Homework
       href: homework.html
   right:
