@@ -229,9 +229,8 @@ ggplot(d1.f , aes(x=x.1, y=y.1)) +
 
 ---
 
-## Mean Square Error (MSE)
+## Mean Square Error (MSE) (msw/msr)
 
-- AKA means square residual/within
 - AKA square of residual standard error/deviation (sigma)
 - *Unbiased* estimate of error variance
 - Measure of discrepancy between the data and the model
@@ -241,7 +240,7 @@ ggplot(d1.f , aes(x=x.1, y=y.1)) +
 
 ```{r}
 head(fit.1$residuals)
-mse = mean(fit.1$residuals ^ 2)
+mse = round(mean(fit.1$residuals ^ 2), digits = 2)
 mse
 ```
 
@@ -251,7 +250,7 @@ mse
 - It is the square of the residual standard error/deviation (sigma) aka RSE
 
 ```{r}
-mse = (summary(fit.1)[["sigma"]]) ^2
+mse = round((summary(fit.1)[["sigma"]]) ^2, digits = 2)
 mse
 ```
 
@@ -277,7 +276,8 @@ $$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y
 
 ---
 
-## residual standard error/deviation or standard error of the estimate
+
+## Residual standard error/deviation or standard error of the estimate
 
 
 ```{r}
@@ -288,6 +288,19 @@ sd(galton.data$child)
 ```
 
 Because the size of $\hat{\sigma}$ depends on both how well the model does as well as the original units of measurement, it is important to compare it to Y to evaluate! 
+
+---
+
+## RSE vs MSE
+
+Residual standard error = square root of the mean square error
+
+Both measuring error, but RSE is a little more useful
+
+```{r}
+sqrt(mse)
+```
+
 
 ---
 ## Residual Standard Error and Sigma
@@ -490,13 +503,13 @@ summary(fit.1)
 
 ---
 ## Model Comparisons
-- So the omnibus F-statistic is the ratio of MSregression to MSresidual
+- So the omnibus $F$-statistic is the ratio of MSregression to MSresidual
 - Test of overall significance. Does your model give a better fit to the data than a model that contains no independent variables? 
 - This is truly a question of model comparisons!
 
 --
 
-- The basic idea is askign how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
+- The basic idea is asking how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
 - Every model you report implies that you are favoring that model over an alternative model, typically the null. Taking a more formal model comparison approach allows you to be more flexible, explicit, and deliberate. 
 
 ---
@@ -616,21 +629,7 @@ plot_grid(p1, p2, ncol=2, labels = c("N = 1000", "N = 100"))
 ```
 
 ---
-.pull-left[
-- Compare mean estimate for height of 70 based on regression vs binning
-- Model uses all data where binning uses much less
-]
 
-.pull-right[
-```{r, echo=FALSE, warning=F, message=F}
-ggplot(galton.data, aes(x=child, y=parent)) +
-      geom_point() +   
-  geom_smooth(method=lm,   # Add linear regression line
-                se=TRUE) 
-```
-]
-
----
 ## Confidence Bands
 
 $$\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$

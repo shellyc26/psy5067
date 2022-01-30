@@ -142,11 +142,10 @@ summary(fit.1)
 ## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
 ## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-*## Residual standard error: 2.239 on 926 degrees of freedom
-## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+## Residual standard error: 2.239 on 926 degrees of freedom
+*## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
 ## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
 ```
 
@@ -235,8 +234,7 @@ fit.1.anova
 ## parent        1   1237    1237   246.8 &lt;2e-16 ***
 ## Residuals   926   4640       5                   
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```r
@@ -256,8 +254,8 @@ ssResidual
 
 
 ```
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated.
-## Please use `guides(&lt;scale&gt; = "none")` instead.
+## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+## "none")` instead.
 ```
 
 ```
@@ -268,9 +266,8 @@ ssResidual
 
 ---
 
-## Mean Square Error (MSE)
+## Mean Square Error (MSE) (msw/msr)
 
-- AKA means square residual/within
 - AKA square of residual standard error/deviation (sigma)
 - *Unbiased* estimate of error variance
 - Measure of discrepancy between the data and the model
@@ -284,19 +281,17 @@ head(fit.1$residuals)
 ```
 
 ```
-##         1         2         3         4         5 
-## -7.805016 -6.512435 -4.573563 -3.927273 -3.604127 
-##         6 
-## -5.366144
+##         1         2         3         4         5         6 
+## -7.805016 -6.512435 -4.573563 -3.927273 -3.604127 -5.366144
 ```
 
 ```r
-mse = mean(fit.1$residuals ^ 2)
+mse = round(mean(fit.1$residuals ^ 2), digits = 2)
 mse
 ```
 
 ```
-## [1] 5.000294
+## [1] 5
 ```
 
 ---
@@ -306,12 +301,12 @@ mse
 
 
 ```r
-mse = (summary(fit.1)[["sigma"]]) ^2
+mse = round((summary(fit.1)[["sigma"]]) ^2, digits = 2)
 mse
 ```
 
 ```
-## [1] 5.011094
+## [1] 5.01
 ```
 
 ---
@@ -333,10 +328,9 @@ mse
 ## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
 ## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-*## 
-## Residual standard error: 2.239 on 926 degrees of freedom
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+*## Residual standard error: 2.239 on 926 degrees of freedom
 ## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
 ## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
 ```
@@ -355,7 +349,8 @@ mse
 
 ---
 
-## residual standard error/deviation or standard error of the estimate
+
+## Residual standard error/deviation or standard error of the estimate
 
 
 
@@ -373,10 +368,8 @@ psych::describe(galton.data.1$.resid)
 ```
 
 ```
-##    vars   n mean   sd median trimmed  mad   min  max
-## X1    1 928    0 2.24   0.05    0.06 2.26 -7.81 5.93
-##    range  skew kurtosis   se
-## X1 13.73 -0.24    -0.23 0.07
+##    vars   n mean   sd median trimmed  mad   min  max range  skew kurtosis   se
+## X1    1 928    0 2.24   0.05    0.06 2.26 -7.81 5.93 13.73 -0.24    -0.23 0.07
 ```
 
 ```r
@@ -388,6 +381,24 @@ sd(galton.data$child)
 ```
 
 Because the size of `\(\hat{\sigma}\)` depends on both how well the model does as well as the original units of measurement, it is important to compare it to Y to evaluate! 
+
+---
+
+## RSE vs MSE
+
+Residual standard error = square root of the mean square error
+
+Both measuring error, but RSE is a little more useful
+
+
+```r
+sqrt(mse)
+```
+
+```
+## [1] 2.238303
+```
+
 
 ---
 ## Residual Standard Error and Sigma
@@ -444,8 +455,7 @@ summary(m.1)
 ## (Intercept)  0.51599    0.03100   16.64   &lt;2e-16 ***
 ## x.1          0.60571    0.03109   19.48   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 0.9801 on 998 degrees of freedom
 ## Multiple R-squared:  0.2755,	Adjusted R-squared:  0.2748 
@@ -454,7 +464,7 @@ summary(m.1)
 ]
 ---
 
-![](6-regression_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ---
 Again, but with a larger sigma
@@ -489,8 +499,7 @@ summary(m.2)
 ## (Intercept)  0.52137    0.06345   8.217 6.43e-16 ***
 ## x.1          0.59823    0.06363   9.402  &lt; 2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 2.006 on 998 degrees of freedom
 ## Multiple R-squared:  0.08136,	Adjusted R-squared:  0.08044 
@@ -498,7 +507,7 @@ summary(m.2)
 ```
 ]
 ---
-![](6-regression_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 
 ---
 ## `\(R^2\)` and residual standard deviation
@@ -512,7 +521,7 @@ summary(m.2)
 - for example if variance in Y is changed but with the same regression model and residual standard error, `\(R^2\)` could increase or decrease
 
 ---
-![](6-regression_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ---
 ## Inferential tests
 
@@ -605,8 +614,7 @@ anova(fit.1)
 ## parent      1 1236.9 1236.93  246.84 &lt; 2.2e-16 ***
 ## Residuals 926 4640.3    5.01                      
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
@@ -630,23 +638,22 @@ summary(fit.1)
 ## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
 ## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 2.239 on 926 degrees of freedom
-*## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
-## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
+## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
+*## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
 ```
 
 ---
 ## Model Comparisons
-- So the omnibus F-statistic is the ratio of MSregression to MSresidual
+- So the omnibus `\(F\)`-statistic is the ratio of MSregression to MSresidual
 - Test of overall significance. Does your model give a better fit to the data than a model that contains no independent variables? 
 - This is truly a question of model comparisons!
 
 --
 
-- The basic idea is askign how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
+- The basic idea is asking how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
 - Every model you report implies that you are favoring that model over an alternative model, typically the null. Taking a more formal model comparison approach allows you to be more flexible, explicit, and deliberate. 
 
 ---
@@ -673,8 +680,7 @@ summary(fit.0)
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
 ## (Intercept) 68.08847    0.08266   823.8   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 2.518 on 927 degrees of freedom
 ```
@@ -695,8 +701,7 @@ summary(fit.0)
 ## (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
 ## parent       0.64629    0.04114  15.711   &lt;2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 2.239 on 926 degrees of freedom
 ## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
@@ -732,8 +737,7 @@ anova(fit.1)
 ## parent      1 1236.9 1236.93  246.84 &lt; 2.2e-16 ***
 ## Residuals 926 4640.3    5.01                      
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ]
@@ -755,8 +759,7 @@ anova(fit.1, fit.0)
 ## 1    926 4640.3                                  
 ## 2    927 5877.2 -1   -1236.9 246.84 &lt; 2.2e-16 ***
 ## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
@@ -816,19 +819,10 @@ anova(fit.1, fit.0)
 
 ---
 ## Confidence bands for regression line
-![](6-regression_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
-
----
-.pull-left[
-- Compare mean estimate for height of 70 based on regression vs binning
-- Model uses all data where binning uses much less
-]
-
-.pull-right[
 ![](6-regression_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
-]
 
 ---
+
 ## Confidence Bands
 
 `$$\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
