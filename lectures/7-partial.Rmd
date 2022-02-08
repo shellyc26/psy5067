@@ -11,6 +11,20 @@ output:
       countIncrementalSlides: false
 ---
 
+## Warm up
+
+.code-small[
+```{r}
+irisModel <- lm(Sepal.Length ~ Species, data = iris)
+summary(irisModel)
+```
+]
+
+- Interpret all 3 coefficients
+- What is the mean of each of the 3 categories?
+- Is it a good model? How do you know?
+
+---
 ## Today
 
 - path diagrams
@@ -131,6 +145,19 @@ can be thought of as overlapping venn diagrams
 $\large R^2_{Y.12} = a + b + c$
 ]
 
+---
+## How do we control for something?
+
+**Experimental Control**
+- Control variances (via equal groups)
+- Randomly assign people to a group
+- Conditions are the same except the IV
+
+--
+
+**Statistical Control**
+- Control variance by removing unwanted variance from the other variables
+- Control by "partialling" 
 
 ---
 
@@ -172,6 +199,32 @@ Notation:
 - $R^2_{Y.12}$ is your standard $R^2$ -- variance explained in what is before the dot by what is after the dot. *"Variance explained in Y by X1 and X2"*
 
 - $r_{Y(1.2)}$ is another way to write the semi-partial correlation. 
+---
+
+## Numbers to these correlations
+$r_{Y1} = .3$
+$r_{Y2} = .3$
+$r_{12} = .2$
+
+```{r}
+sr1 = (.3 - (.3*.2)) / sqrt(1 - (.2^2))
+```
+
+
+$r_{Y1} = .3$
+$r_{Y2} = .3$
+$r_{12} = .5$
+
+```{r}
+sr2 = (.3 - (.3*.5)) / sqrt(1 - (.5^2))
+sr1
+sr2
+```
+
+
+
+
+
 ---
 
 ## Types of correlations
@@ -281,46 +334,46 @@ the latter is true bc you've removed variance in y...so there's no way for it to
 
 ## When we use these?
 
-The semi-partial correlation is most often used when we want to show that some variable adds incremental variance in Y above and beyond another X variable.
+The semi-partial correlation is most often used when we want to show that some variable adds incremental variance in Y above and beyond another X variable. How much unique variance an IV adds to the TOTAL amount of variance.
 
 - e.g., predicting Alzheimer's
 
-The partial correlations most often used when some third variable, Z, is a plausible explanation of the correlation between X and Y
+The partial correlations most often used when some third variable, Z, is a plausible explanation of the correlation between X and Y. How much unique variance adds to the unaccounted variance in Y.sq 
 
 - e.g., predicting grades
 
 ---
 
-## Example
+## Example with Flowers
 
-We have a dataset called `expertise` which measures a person's perception of their knowledge of personal finance (`self_perceived_knowledge`) and their performance on an objective measures of knowledge (`overclaiming_perception`). 
+Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
 
-Participants also completed a test called the FINRA, which is an actual financial literacy test. 
-
-```{r,  message = F}
-library(here)
-expertise = read.csv(here("data/expertise.csv"))
+```{r, warning=FALSE, message=FALSE}
+library(ppcor)
+# zero-order correlation
+round(cor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")]), digits = 2)
 ```
 
 ---
+## Example with Flowers
 
-```{r, warning=FALSE, message=FALSE}
-round(cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")]), digits = 2)
-library(ppcor)
-round(spcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")])$estimate, digits = 2)
+Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
+
+```{r}
+# semi-partial correlation
+round(spcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, digits = 2)
 ```
-???
-spcor gets the semipartial correlation
+
 ---
+## Example with Flowers
 
-```{r, warning=FALSE, message=FALSE}
-round(cor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")]),2)
-library(ppcor)
-round(pcor(expertise[,c("self_perceived_knowledge", "overclaiming_proportion", "FINRA_score")])$estimate,2)
+Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
+
+```{r}
+# partial correlation
+# semi-partial correlation
+round(pcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, digits = 2)
 ```
-
-???
-pcor gets partial cor
 
 ---
 
@@ -357,18 +410,22 @@ $$\Large r_{e_{X_1},e_{Y}} = r_{Y1.2}$$
 ## Example
 
 ```{r}
-# create measure of perceived knowledge *independent* of FINRA score
-mod.know = lm(self_perceived_knowledge ~ FINRA_score, data = expertise)
-expertise.know = broom::augment(mod.know)
+# create measure of Sepal.Length *independent* of Sepal.Width
+# model where X1 = SLength, X2 = SWidth
+# error is part of SLength that is independent of SWidth
+mod.sepals = lm(Sepal.Length ~ Sepal.Width, data = iris)
+indep.Sepals = broom::augment(mod.sepals)
 
-# create measure of overclaiming independent of FINRA score
-mod.over = lm(overclaiming_proportion ~ FINRA_score, data = expertise)
-expertise.over = broom::augment(mod.over)
+# correlate with Y = PLength to get semi-partial
+round(cor(indep.Sepals$.resid, iris$Petal.Length), digits = 2)
 
-#semi-parital
-cor(expertise.know$.resid, expertise$overclaiming_proportion)
-#parital
-cor(expertise.know$.resid, expertise.over$.resid)
+# Measure of Y = PLength that is also independent of X2 = SWidth
+# create measure of Petal.Length independent of Sepal.Width score
+mod.petals = lm(Petal.Length ~ Sepal.Width, data = iris)
+indep.Petals = broom::augment(mod.petals)
+
+# Correlate those residuals with other residuals to get partial correlation
+round(cor(indep.Sepals$.resid, indep.Petals$.resid), digits = 2)
 ```
 
 ---
@@ -394,5 +451,5 @@ Multiple regression!!
 #### Can you...
 
 - interpret a partial correlation and a semi-partial correlation?
-- think of scenarios where one is preferable to the other?
+- calculate a partial and semipartial correlation from 
 - you will get practice on this in the hw!
