@@ -392,71 +392,72 @@ class: inverse
 
 ## Next time...
 
-- No new material for Thursday
-- Violet will be holding a Review Session Zoom Check-in
-- Wellness Week
-- Exam 1! 
+- Assumptions & diagnostics
+- Review problems
+- Exam 1 on 3/1!
 
-All material presented thus far, including this lecture, is fair game for Exam 1
+(we will cover remaining slides if time)
+---
 
-<!-- ## Contrasts  -->
+## Contrasts
 
-<!-- You can change which group is the reference: -->
-<!-- ```{r```{r} -->
-<!-- contrasts(rotate$Group) = contr.treatment(n = 4, base = 3) -->
-<!-- coef(summary(lm(Time~Group, data = rotate))) -->
-<!-- ```} -->
-<!-- contrasts(rotate$Group) = contr.treatment(n = 4, base = 3) -->
-<!-- coef(summary(lm(Time~Group, data = rotate))) %>% kable(., digits = c(2,2,2,3)) %>% kable_styling() -->
-<!-- ``` -->
+You can change which group is the reference:
+```{r}
+rotate$Group = factor(rotate$Group)
+contrasts(rotate$Group) = contr.treatment(n = 4, base = 3)
+coef(summary(lm(Time~Group, data = rotate)))
+```
 
-<!-- You're not restricted to simple dummy coding. Choosing another variant of contrast codes allows you to test more specific hypotheses. There are some common coding schemes.  -->
-<!-- --- -->
-<!-- For example, **deviation coding** (sometimes called **"effect coding"**): -->
+You're not restricted to simple dummy coding. Choosing another variant of contrast codes allows you to test more specific hypotheses. There are some common coding schemes.
+---
+For example, **deviation coding** (sometimes called **"effect coding"**):
 
-<!-- ```{r} -->
-<!-- contr.sum(4) -->
-<!-- ``` -->
+```{r}
+contr.sum(4)
+```
 
-<!-- ```{r, results='asis'} -->
-<!-- contrasts(rotate$Group) = contr.sum(n = 4) -->
-<!-- coef(summary(lm(Time~Group, data = rotate))) %>% kable(., digits = c(2,2,2,3)) %>% kable_styling() -->
-<!-- ``` -->
+```{r, results='asis'}
+contrasts(rotate$Group) = contr.sum(n = 4)
+coef(summary(lm(Time~Group, data = rotate))) %>% kable(., digits = c(2,2,2,3)) %>% kable_styling()
+```
 
-<!-- --- -->
+---
 
-<!-- ### Contrasts -->
+### Contrasts
 
-<!-- You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. The rules for setting up contrast codes are: -->
+You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. The rules for setting up contrast codes are:
 
-<!-- 1. The sum of the weights across all groups for each code variable must equal 0. (Sum down the column = 0). -->
+1. The sum of the weights across all groups for each code variable must equal 0. (Sum down the column = 0).
 
-<!-- 2. The sum of the product of each pair of code variables, $C_1C_2,$ must equal 0. (This is challenging when your groups are unequal sizes). -->
+2. The sum of the product of each pair of code variables, $C_1C_2,$ must equal 0. (This is challenging when your groups are unequal sizes).
 
-<!-- 3. The difference between the value of the set of positive weights and the set of negative weights should equal 1 for each code variable (column). -->
+3. The difference between the value of the set of positive weights and the set of negative weights should equal 1 for each code variable (column).
+
+---
+
+One benefit* to using the ANOVA framework instead of the regression framework is that you can estimate the total variability captured by one categorical variable controlling for another categorical or continuous variable with ease.
+
+$\eta^2$ (eta-squared) is a standardized measure of effect size used in analyses of variance. This effect size is the **proportion of variance in Y that is accounted for by one independent variable.**
+
+$$\eta^2 = \frac{SS_{variable}}{SS_{total}}$$
+
+For example, what if we believed gender was associated with performance on the noise burst task.
+
+.small[\* No difference when using R though.]
+---
+
+```{r, echo = F}
+set.seed(200620)
+hightime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.75,.25))
+lowtime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.25,.75))
+rotate$gender = hightime
+rotate$gender[rotate$Time < 425] = lowtime[rotate$Time < 425]
+```
+
+```{r}
+mod2 = aov(Time ~ Group + gender, data = rotate)
+anova(mod2)
+```
 
 
-<!-- One benefit* to using the ANOVA framework instead of the regression framework is that you can estimate the total variability captured by one categorical variable controlling for another categorical or continuous variable with ease.  -->
-
-<!-- $\eta^2$ (eta-squared) is a standardized measure of effect size used in analyses of variance. This effect size is the **proportion of variance in Y that is accounted for by one independent variable.** -->
-
-<!-- $$\eta^2 = \frac{SS_{variable}}{SS_{total}}$$ -->
-
-<!-- For example, what if we believed gender was associated with performance on the noise burst task.  -->
-
-<!-- .small[* No difference when using R though.] -->
-<!-- --- -->
-
-<!-- ```{r, echo = F} -->
-<!-- set.seed(200620) -->
-<!-- hightime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.75,.25)) -->
-<!-- lowtime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.25,.75)) -->
-<!-- rotate$gender = hightime -->
-<!-- rotate$gender[rotate$Time < 425] = lowtime[rotate$Time < 425] -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- mod2 = aov(Time ~ Group + gender, data = rotate) -->
-<!-- anova(mod2) -->
-<!-- ``` -->
 

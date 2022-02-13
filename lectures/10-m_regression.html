@@ -3,7 +3,7 @@
   <head>
     <title>Multiple Regression III</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -109,7 +109,7 @@ library(ggpubr)
 ggboxplot(data = rotate, x = "Group_lab", y = "Time", xlab = F)
 ```
 
-![](9-m_regression_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](10-m_regression_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 --
 The pattern of means indicates that performance degrades with either uncontrollable noise or unpredictable noise. Noise that is both uncontrollable and unpredictable appears to be particularly disruptive.
 
@@ -120,7 +120,7 @@ The pattern of means indicates that performance degrades with either uncontrolla
 ggbarplot(data = rotate, x = "Group_lab", y = "Time", xlab = F, add = c("mean_ci"), fill = "purple")
 ```
 
-![](9-m_regression_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](10-m_regression_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 Addition of the confidence intervals indicates that the two extreme conditions are likely different from all of the other conditions.
 
@@ -318,7 +318,7 @@ As the treatment effect gets larger, the `\(F\)` statistic departs from 1.00. If
 
 ---
 
-![](9-m_regression_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](10-m_regression_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 For 3 and 196 degrees of freedom, an `\(F\)` statistic of 2.65 or greater will indicate between-groups variability relative to within-group variability that is unusual if the null hypothesis is true.
 
 
@@ -384,7 +384,7 @@ These pairwise comparisons can quickly grow in number as the number of condition
 As the number of groups in the ANOVA grows, the number of possible pairwise comparisons increases dramatically. 
 
 
-![](9-m_regression_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](10-m_regression_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -407,7 +407,7 @@ As the number of comparisons grows, the inflation of the Type I error rate can b
 
 The Type I error inflation that accompanies multiple comparisons motivates the large number of "correction" procedures that have been developed.
 
-![](9-m_regression_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](10-m_regression_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -434,14 +434,14 @@ rotate %&gt;%
 ```
 
 ```
-## # A tibble: 6 x 9
+## # A tibble: 6 × 9
 ##   .y.   group1 group2    n1    n2        p p.signif    p.adj p.adj.signif
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;       
 ## 1 Time  1      2         47    52 1.33e-31 ****     7.99e-31 ****        
 ## 2 Time  1      3         47    45 2.27e-24 ****     1.36e-23 ****        
 ## 3 Time  2      3         52    45 5.52e- 2 ns       3.31e- 1 ns          
 ## 4 Time  1      4         47    56 7.93e-52 ****     4.76e-51 ****        
-## 5 Time  2      4         52    56 1.53e-10 ****     9.20e-10 ****        
+## 5 Time  2      4         52    56 1.53e-10 ****     9.2 e-10 ****        
 ## 6 Time  3      4         45    56 5.92e-15 ****     3.55e-14 ****
 ```
 
@@ -470,7 +470,7 @@ hp[,c(2,3,6:11)]
 ```
 
 ```
-## # A tibble: 6 x 8
+## # A tibble: 6 × 8
 ##   group1 group2        p p.signif    p.adj p.adj.signif  Rank      rXp
 ##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt;
 ## 1 1      4      7.93e-52 ****     4.76e-51 ****             6 4.76e-51
@@ -489,73 +489,142 @@ class: inverse
 
 ## Next time...
 
-- No new material for Thursday
-- Violet will be holding a Review Session Zoom Check-in
-- Wellness Week
-- Exam 1! 
+- Assumptions &amp; diagnostics
+- Review problems
+- Exam 1 on 3/1!
 
-All material presented thus far, including this lecture, is fair game for Exam 1
+(we will cover remaining slides if time)
+---
 
-&lt;!-- ## Contrasts  --&gt;
+## Contrasts
 
-&lt;!-- You can change which group is the reference: --&gt;
-&lt;!-- ```{r```{r} --&gt;
-&lt;!-- contrasts(rotate$Group) = contr.treatment(n = 4, base = 3) --&gt;
-&lt;!-- coef(summary(lm(Time~Group, data = rotate))) --&gt;
-&lt;!-- ```} --&gt;
-&lt;!-- contrasts(rotate$Group) = contr.treatment(n = 4, base = 3) --&gt;
-&lt;!-- coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3)) %&gt;% kable_styling() --&gt;
-&lt;!-- ``` --&gt;
+You can change which group is the reference:
 
-&lt;!-- You're not restricted to simple dummy coding. Choosing another variant of contrast codes allows you to test more specific hypotheses. There are some common coding schemes.  --&gt;
-&lt;!-- --- --&gt;
-&lt;!-- For example, **deviation coding** (sometimes called **"effect coding"**): --&gt;
+```r
+rotate$Group = factor(rotate$Group)
+contrasts(rotate$Group) = contr.treatment(n = 4, base = 3)
+coef(summary(lm(Time~Group, data = rotate)))
+```
 
-&lt;!-- ```{r} --&gt;
-&lt;!-- contr.sum(4) --&gt;
-&lt;!-- ``` --&gt;
+```
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)  379.04444   9.944788 38.114882 1.388406e-92
+## Group1       162.99811  13.913633 11.714993 2.267662e-24
+## Group2       -26.19829  13.582501 -1.928827 5.519687e-02
+## Group4      -113.06230  13.355564 -8.465558 5.923855e-15
+```
 
-&lt;!-- ```{r, results='asis'} --&gt;
-&lt;!-- contrasts(rotate$Group) = contr.sum(n = 4) --&gt;
-&lt;!-- coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3)) %&gt;% kable_styling() --&gt;
-&lt;!-- ``` --&gt;
-
-&lt;!-- --- --&gt;
-
-&lt;!-- ### Contrasts --&gt;
-
-&lt;!-- You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. The rules for setting up contrast codes are: --&gt;
-
-&lt;!-- 1. The sum of the weights across all groups for each code variable must equal 0. (Sum down the column = 0). --&gt;
-
-&lt;!-- 2. The sum of the product of each pair of code variables, `\(C_1C_2,\)` must equal 0. (This is challenging when your groups are unequal sizes). --&gt;
-
-&lt;!-- 3. The difference between the value of the set of positive weights and the set of negative weights should equal 1 for each code variable (column). --&gt;
+You're not restricted to simple dummy coding. Choosing another variant of contrast codes allows you to test more specific hypotheses. There are some common coding schemes.
+---
+For example, **deviation coding** (sometimes called **"effect coding"**):
 
 
-&lt;!-- One benefit* to using the ANOVA framework instead of the regression framework is that you can estimate the total variability captured by one categorical variable controlling for another categorical or continuous variable with ease.  --&gt;
+```r
+contr.sum(4)
+```
 
-&lt;!-- `\(\eta^2\)` (eta-squared) is a standardized measure of effect size used in analyses of variance. This effect size is the **proportion of variance in Y that is accounted for by one independent variable.** --&gt;
+```
+##   [,1] [,2] [,3]
+## 1    1    0    0
+## 2    0    1    0
+## 3    0    0    1
+## 4   -1   -1   -1
+```
 
-&lt;!-- `$$\eta^2 = \frac{SS_{variable}}{SS_{total}}$$` --&gt;
 
-&lt;!-- For example, what if we believed gender was associated with performance on the noise burst task.  --&gt;
+```r
+contrasts(rotate$Group) = contr.sum(n = 4)
+coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3)) %&gt;% kable_styling()
+```
 
-&lt;!-- .small[* No difference when using R though.] --&gt;
-&lt;!-- --- --&gt;
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; t value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|t|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 384.98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81.31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Group1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 157.06 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Group2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -32.13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Group3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5.93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.485 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;!-- ```{r, echo = F} --&gt;
-&lt;!-- set.seed(200620) --&gt;
-&lt;!-- hightime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.75,.25)) --&gt;
-&lt;!-- lowtime = sample(x = c("Male", "Female"), size = nrow(rotate), replace = T, prob = c(.25,.75)) --&gt;
-&lt;!-- rotate$gender = hightime --&gt;
-&lt;!-- rotate$gender[rotate$Time &lt; 425] = lowtime[rotate$Time &lt; 425] --&gt;
-&lt;!-- ``` --&gt;
+---
 
-&lt;!-- ```{r} --&gt;
-&lt;!-- mod2 = aov(Time ~ Group + gender, data = rotate) --&gt;
-&lt;!-- anova(mod2) --&gt;
-&lt;!-- ``` --&gt;
+### Contrasts
+
+You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. The rules for setting up contrast codes are:
+
+1. The sum of the weights across all groups for each code variable must equal 0. (Sum down the column = 0).
+
+2. The sum of the product of each pair of code variables, `\(C_1C_2,\)` must equal 0. (This is challenging when your groups are unequal sizes).
+
+3. The difference between the value of the set of positive weights and the set of negative weights should equal 1 for each code variable (column).
+
+---
+
+One benefit* to using the ANOVA framework instead of the regression framework is that you can estimate the total variability captured by one categorical variable controlling for another categorical or continuous variable with ease.
+
+`\(\eta^2\)` (eta-squared) is a standardized measure of effect size used in analyses of variance. This effect size is the **proportion of variance in Y that is accounted for by one independent variable.**
+
+`$$\eta^2 = \frac{SS_{variable}}{SS_{total}}$$`
+
+For example, what if we believed gender was associated with performance on the noise burst task.
+
+.small[\* No difference when using R though.]
+---
+
+
+
+
+```r
+mod2 = aov(Time ~ Group + gender, data = rotate)
+anova(mod2)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: Time
+##            Df  Sum Sq Mean Sq  F value Pr(&gt;F)    
+## Group       3 2000252  666751 150.2832 &lt;2e-16 ***
+## gender      1    7145    7145   1.6105 0.2059    
+## Residuals 195  865142    4437                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

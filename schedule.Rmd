@@ -44,9 +44,9 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | -    | 4/14 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE** | 4/17
 | 14   | 4/19 | ML 2 (Bootstrapping)  |    |  |
 | -    | 4/21 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
-| 15    | 4/26 | TBD |  |            |             
-| -    | 4/28 | TBD  |   |   **HW 5 DUE** |    5/1         
-| **FINAL** | 5/6 | 1-3pm |  |  |
+| 15    | 4/26 | Review Problems |  |            |             
+| -    | 4/28 | **FINAL**  |   |   **HW 5 DUE** |    5/1         
+
 
 # Overview
 

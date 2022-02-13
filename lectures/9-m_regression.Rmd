@@ -15,6 +15,18 @@ output:
 library(tidyverse)
 ```
 
+## Warm Up
+```{r, echo = FALSE}
+library(here)
+nhanes = read.csv(here("data/nhanes_small.csv"))
+
+summary(lm(Weight ~ Age + Poverty, data = nhanes))
+```
+
+- Interpret all coefficients
+- Interpret all significance tests of coefficients
+- Is it a good model?
+---
 ## Last time
 
 * Introduction to multiple regression
@@ -32,7 +44,6 @@ library(tidyverse)
 ---
 
 ```{r, message=FALSE}
-library(here)
 stress.data = read.csv(here("data/stress.csv"))
 library(psych)
 describe(stress.data$Stress)
@@ -235,7 +246,7 @@ solomon = read.csv(here("data/solomon.csv"))
 ```
 
  
-.small[Grossmann, I., & Kross, E. (2014). Exploring Solomon’s paradox: Self-distancing eliminates self-other
+.tiny[Grossmann, I., & Kross, E. (2014). Exploring Solomon’s paradox: Self-distancing eliminates self-other
 asymmetry in wise reasoning about close relationships in younger and older adults. _Psychological Science, 25_, 1571-1580.]
 
 ---

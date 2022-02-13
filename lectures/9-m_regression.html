@@ -3,7 +3,7 @@
   <head>
     <title>Multiple Regression II</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -22,6 +22,39 @@ class: center, middle, inverse, title-slide
 
 
 
+## Warm Up
+
+```
+## here() starts at /Users/coop/psy5067
+```
+
+```
+## 
+## Call:
+## lm(formula = Weight ~ Age + Poverty, data = nhanes)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -47.54 -19.90   0.82  16.96  65.53 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  58.8926     7.0353   8.371 8.69e-13 ***
+## Age           0.3537     0.1310   2.699  0.00835 ** 
+## Poverty      -0.3501     1.5890  -0.220  0.82612    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.93 on 87 degrees of freedom
+##   (10 observations deleted due to missingness)
+## Multiple R-squared:  0.07949,	Adjusted R-squared:  0.05833 
+## F-statistic: 3.756 on 2 and 87 DF,  p-value: 0.02724
+```
+
+- Interpret all coefficients
+- Interpret all significance tests of coefficients
+- Is it a good model?
+---
 ## Last time
 
 * Introduction to multiple regression
@@ -40,7 +73,6 @@ class: center, middle, inverse, title-slide
 
 
 ```r
-library(here)
 stress.data = read.csv(here("data/stress.csv"))
 library(psych)
 describe(stress.data$Stress)
@@ -359,7 +391,7 @@ solomon = read.csv(here("data/solomon.csv"))
 ```
 
  
-.small[Grossmann, I., &amp; Kross, E. (2014). Exploring Solomon’s paradox: Self-distancing eliminates self-other
+.tiny[Grossmann, I., &amp; Kross, E. (2014). Exploring Solomon’s paradox: Self-distancing eliminates self-other
 asymmetry in wise reasoning about close relationships in younger and older adults. _Psychological Science, 25_, 1571-1580.]
 
 ---
@@ -1512,9 +1544,9 @@ solomon %&gt;%
 ```
 
 ```
-## # A tibble: 4 x 2
+## # A tibble: 4 × 2
 ##   CONDITION meanWisdom
-## * &lt;fct&gt;          &lt;dbl&gt;
+##   &lt;fct&gt;          &lt;dbl&gt;
 ## 1 1             -0.559
 ## 2 2              0.122
 ## 3 3              0.195
