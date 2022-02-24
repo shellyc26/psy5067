@@ -1,0 +1,115 @@
+---
+title: 'Review for Exam 1'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = F, results = 'hide', message=FALSE}
+library(tidyverse)
+library(broom)
+library(palmerpenguins)
+penguins = penguins
+```
+
+### Review Problem 1a
+
+```{r problem-1a, echo = F}
+summary(lm(body_mass_g ~ species, data = penguins))
+```
+
+- Write the corresponding equation
+- Interpret all coefficients as well as interpret any NHST procedures
+- Interpret the overall model. Is it a good model? Why/why not?
+- What is the mean body mass for each penguin type? 
+
+---
+### Review Problem 1b
+
+```{r problem-1b, echo = F}
+summary(aov(body_mass_g ~ species, data = penguins))
+```
+
+What are the similarities and differences between this output and the output on the previous page?
+
+---
+
+### Review Problem 2a
+
+```{r problem-2a, echo = F}
+summary(lm(body_mass_g ~ bill_length_mm, data = penguins))
+```
+
+- Write the corresponding equation
+- Interpret all coefficients as well as interpret any NHST procedures
+- Interpret the overall model. Is it a good model? Why/why not?
+
+---
+
+### Review Problem 2b
+
+```{r problem-2b, echo = F}
+summary(lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = penguins))
+```
+
+- Interpret all coefficients
+- What are the similarities and differences between the previous model (2a) and the current model (2b)? Which is better?
+
+---
+
+### Review Problem 2c
+
+```{r problem-2c, echo = F}
+zPenguins = as.data.frame(scale(penguins[,c(3,5,6)]))
+summary(lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = zPenguins))
+```
+
+- What are the similarities and differences between the previous model (2a) and the current model (2b)? Which is better?
+- Interpret all coefficients
+
+---
+
+### Review Problem 3
+
+.pull-left[
+```{r problem-3, warning = FALSE, message = FALSE, echo=FALSE}
+model = lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = penguins)
+model = augment(model)
+
+ggplot(data = model, aes(x = .fitted, y = .resid)) +
+  geom_point(color = "cornflowerblue") +
+  geom_smooth(color = "black", method = "lm") +
+  theme_classic(base_size = 20)
+
+```
+]
+
+.pull-right[
+- This plot corresponds to the model in problem 2b
+- Based on this, what assumptions can we check?
+- Did this model satisfy the assumptions?
+]
+
+---
+
+### Review Problem 4
+
+- What is multiple R correlation?
+
+- What is $R^2$?
+
+- What is Adjusted $R^2$?
+
+- What is tolerance?
+
+- What does a semi-partial correlation tell you? What about a partial correlation?
+Why do we care about either of these?
+
+
+

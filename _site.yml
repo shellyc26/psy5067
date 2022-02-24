@@ -29,6 +29,8 @@ navbar:
         href: "lectures/10-m_regression.html"
       - text: "11-Assumptions"
         href: "lectures/11-diagnostics.html"
+      - text: "12-Exam 1 Review"
+        href: "lectures/12-reviewExam1.html"
     - text: Homework
       href: homework.html
   right:
