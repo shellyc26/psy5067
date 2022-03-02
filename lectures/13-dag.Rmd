@@ -11,6 +11,10 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r setup, include = FALSE, message=FALSE}
+library(ggplot2)
+```
+
 
 ## Correlation does not imply
 

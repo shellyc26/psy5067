@@ -14,11 +14,7 @@ Please complete this assignment by creating a new RMarkdown (or RNotebook) file 
 -   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
 -   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpreations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
 
-Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand.
-
 You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
-
-All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
 
 In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
@@ -28,22 +24,18 @@ Good luck!
 
 ## Homework Questions
 
-1. Calculate the semi-partial and a partial correlation for health and friends, controlling for SES and happiness using a series of multiple regression analyses (e.g., do not use a function for semi-partial and partial correlations). 
+1. Perform a multiple regression where health is regressed on (predicted by) friends, SES, and happiness. Interpret each regresion coefficient. 
 
-2. Perform a multiple regression where health is regressed on (predicted by) friends, SES, and happiness. Interpret each regresion coefficient. 
+2. Graph the (2-d) relationship between health and happiness as found in the above regression. Make sure the association controls for the remaining variables in the model. Include data points in your graph and a confidence band. 
 
-3. What is similar and what is different between the partial correlation in #1 and the friends regression coefficient in #2? 
+3. Describe why the confidence band looks like a bow tie in the above graph. 
 
-4. Graph the (2-d) relationship between health and happiness as found in the above regression. Make sure the association controls for the remaining variables in the model. Include data points in your graph and a confidence band. 
+4. For the above regression, calculate the variance explained using the ANOVA table and interpret the residual standard error.  
 
-5. Describe why the confidence band looks like a bow tie in the above graph. 
-
-6. For the above regression, calculate the variance explained using the ANOVA table and interpret the residual standard error.  
-
-7. Add the group variable `mood.group` into the regression model from #2. Then answer the following:
+5. Add the group variable `mood.group` into the regression model from #2. Then answer the following:
 
     a. Interpret the coefficients
-    b. Is there a significant increase in variance explained compared to the initial regression in #2? If so, what is the estimate? 
+    b. Is there a significant increase in variance explained compared to the initial regression in #1? If so, what is the estimate? 
     c. Recode the group contrasts into effect coding (-1, 0, and 1). Rerun the model. Interpret each regression coefficient including the intercept. 
-    d. For the model you ran in 7c, is the change in variance explained different from the change in variance explained from question 7b? Why or why not? 
+    d. For the model you ran in 5c, is the change in variance explained different from the change in variance explained from question 5b? Why or why not? 
 
