@@ -1,868 +1,656 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Interactions (III)</title>
+    <title>Interactions</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
-    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
-    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Interactions (III)
+# Interactions
 
 ---
 
 
 ## Last time
 
-Mixing categorical and continuous variables
+Causal models as a tool for model building
 
-Starting factorial ANOVA
+## Today
 
-## This time
-
-Continuing with factorial ANOVA
----
-class:inverse
-## Factorial ANOVA
-
-
-The interaction of two or more categorical variables in a general linear model is formally known as **Factorial ANOVA**.
-
-A factorial design is used when there is an interest in how two or more variables (or factors) affect the outcome. 
-
-* Rather than conduct separate one-way ANOVAs for each factor, they are all included in one analysis. 
-
-* The unique and important advantage to a factorial ANOVA over separate one-way ANOVAs is the ability to examine interactions.
-
+Interactions/moderation
 
 ---
 
+## What are interactions?
 
+When we have two variables, A and B, in a regression model, we are testing whether these variables have **additive effects** on our outcome, Y. That is, the effect of A on Y is constant over all values of B. 
+- Example: Drinking coffee and hours of sleep have additive effects on alertness; no matter how any hours I slept the previous night, drinking one cup of coffee will make me .5 SD more awake than not drinking coffee. 
+---
 
+## What are interactions?
+However, we may hypothesize that two variables have **joint effects**, or interact with each other. In this case, the effect of A on Y changes as a function of B. 
+- Example: Chronic stress has a negative impact on health but only for individuals who receive little or no social support; for individuals with high social support, chronic stress has no impact on health. 
+- This is also referred to as **moderation.** 
+
+---
 .pull-left[
-The example data are from a simulated study in which 180 participants performed an eye-hand coordination task in which they were required to keep a mouse pointer on a red dot that moved in a circular motion.  
+### Univariate regression
+
+![](14-interactions_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
 ]
 .pull-right[
-![](images/dot.jpg)
-]
+### Multivariate regression
 
-The outcome was the time of the 10th failure. The experiment used a completely crossed, 3 x 3 factorial design. One factor was dot speed: .5, 1, or 1.5 revolutions per second.  The second factor was noise condition: no noise, controllable noise, and uncontrollable noise.  The design was balanced. 
-
----
-
-### Marginal means
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Noise &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Slow &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Medium &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Fast &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Marginal &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 389.08 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; Marginal &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 600.61 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 440.88 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 294.89 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 445.46 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-Regardless of noise condition, does speed of the moving dot affect performance?
-
----
-
-### Marginal means
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Noise &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Slow &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Medium &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Fast &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Marginal &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 495.10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 452.21 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 389.08 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Marginal &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 600.61 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 440.88 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 294.89 &lt;/td&gt;
-   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #562457 !important;"&gt; 445.46 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-Regardless of dot speed, does noise condition affect performance?
-
-
----
-
-### Marginal means
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Noise &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Slow &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Medium &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Fast &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Marginal &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 630.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 525.29 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 329.28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 495.10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 576.67 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 492.72 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 287.23 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 452.21 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 594.44 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 304.62 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 268.16 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 389.08 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Marginal &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 600.61 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 440.88 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 294.89 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 445.46 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-The **marginal mean differences** correspond to main effects. They tell us what impact a particular factor has, ignoring the impact of the other factor. 
-
-The remaining effect in a factorial design, and it primary advantage over separate one-way ANOVAs, is the ability to examine **conditional mean differences**. 
-
----
-
-
-### Mean differences
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Noise &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Slow &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Medium &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Fast &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Marginal &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; None &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 630.72 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 525.29 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 329.28 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 495.10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Controllable &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 576.67 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 492.72 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 287.23 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 452.21 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 594.44 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 304.62 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 268.16 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 389.08 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;background-color: white !important;"&gt; Marginal &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;background-color: white !important;"&gt; 600.61 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;background-color: white !important;"&gt; 440.88 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;background-color: white !important;"&gt; 294.89 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;background-color: white !important;"&gt; 445.46 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-Are the marginal mean differences for noise condition a good representation of what is happening within each of the dot speed conditions?
-
-If not, then we would need to say that the noise condition effect depends upon (is conditional on) dot speed.  We would have an interaction between noise condition and dot speed condition.
-
----
-
-
-![](14-interactions_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
-
-
-The noise condition means are most distinctly different in the medium speed condition. The noise condition means are clearly not different in the fast speed condition. 
-
----
-
-### Interpretation of interactions
-
-The presence of an interaction qualifies any main effect conclusions, leading to "yes, but" or "it depends" kinds of inferences.
-
-.pull-left[
-
-![](14-interactions_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](14-interactions_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 ]
+---
 
-.pull-right[
+### Multivariate regression with an interaction
 
-Does noise condition affect failure time? 
-
-"Yes, but the magnitude of the effect is strongest for the medium speed condition, weaker for the fast speed condition, and mostly absent for the slow speed condition."
-]
+![](14-interactions_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
 ---
 
-### Interactions are symmetrical
+### Example
 
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Noise &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Slow &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Medium &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Fast &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Marginal &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="3"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;background-color: #EECACA !important;" indentlevel="1"&gt; None &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 630.72 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 525.29 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;"&gt; 329.28 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #EECACA !important;background-color: white !important;"&gt; 495.10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;background-color: #B2D4EB !important;" indentlevel="1"&gt; Controllable &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 576.67 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 492.72 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;"&gt; 287.23 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #B2D4EB !important;background-color: white !important;"&gt; 452.21 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;padding-left: 2em;background-color: #FFFFC5 !important;" indentlevel="1"&gt; Uncontrollable &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 594.44 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 304.62 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;"&gt; 268.16 &lt;/td&gt;
-   &lt;td style="text-align:right;background-color: #FFFFC5 !important;background-color: white !important;"&gt; 389.08 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;color: white !important;background-color: grey !important;"&gt; Marginal &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 600.61 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 440.88 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;"&gt; 294.89 &lt;/td&gt;
-   &lt;td style="text-align:right;color: white !important;background-color: grey !important;background-color: white !important;"&gt; 445.46 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-Are the marginal mean differences for speed condition a good representation of what is happening within each of the noise conditions?
-
-If not, then we would need to say that the speed condition effect depends upon (is conditional on) noise condition.  
-
-
----
-
-.left-column[
-.small[
-The speed condition means are clearly different in each noise condition, but the pattern of those differences is not the same. 
-
-The marginal speed condition means do not represent well the means in each noise condition.
-
-An interaction.]
-
-]
-
-![](14-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
----
-
-### Null Hypotheses
-
-| | Slow | Medium | Fast | Marginal |
-|:-|:-:|:-:|:-:|:-:|
-| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
-| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
-| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
-
-The two main effects and the interaction represent three independent questions we can ask about the data. We have three null hypotheses to test.
-
-One null hypothesis refers to the marginal row means.
-
-$$
-`\begin{aligned}
-H_0&amp;: \mu_{1.} = \mu_{2.} = \dots = \mu_{R.}\\
-H_1&amp;: \text{Not true that }\mu_{1.} = \mu_{2.} = \dots = \mu_{R.}
-\end{aligned}`
-$$
-
----
-
-### Null Hypotheses
-
-| | Slow | Medium | Fast | Marginal |
-|:-|:-:|:-:|:-:|:-:|
-| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
-| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
-| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
-
-We can state this differently (it will make stating the interaction null hypothesis easier when we get to it).
-
-$$
-`\begin{aligned}
-\alpha_r&amp;= \mu_{r.} - \mu_{g} \\
-H_0&amp;: \alpha_1 = \alpha_2 = \dots = \alpha_R = 0\\
-H_1&amp;: \text{At least one }\alpha_r \neq 0
-\end{aligned}`
-$$
-
----
-
-### Null Hypotheses
-
-
-| | Slow | Medium | Fast | Marginal |
-|:-|:-:|:-:|:-:|:-:|
-| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
-| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
-| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
-
-The main effect for dot speed (column marginal means) can be stated similarly:
-
-
-$$
-`\begin{aligned}
-\beta_c&amp;= \mu_{.c} - \mu_{g} \\
-H_0&amp;: \beta_1 = \beta_2 = \dots = \beta_C = 0\\
-H_1&amp;: \text{At least one }\beta_c \neq 0
-\end{aligned}`
-$$
----
-### Null Hypothesis
-
-
-| | Slow | Medium | Fast | Marginal |
-|:-|:-:|:-:|:-:|:-:|
-| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
-| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
-| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
-
-The interaction is the difference between each cell mean ( `\(\mu_{rc}\)`) and the grand mean ( `\(\mu_g\)` or `\(\mu_{..}\)`) that remains *after* you remove the effects of A and B.
-
-`$$(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)$$`
-
-This simplifies down to:
-
-`$$(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g$$`
-
----
-
-### Null Hypothesis
-
-
-| | Slow | Medium | Fast | Marginal |
-|:-|:-:|:-:|:-:|:-:|
-| No Noise |             `\(\mu_{11}\)` | `\(\mu_{12}\)` | `\(\mu_{13}\)` | `\(\mu_{1.}\)` |
-| Controllable Noise |   `\(\mu_{21}\)` | `\(\mu_{22}\)` | `\(\mu_{23}\)` | `\(\mu_{2.}\)` |
-| Uncontrollable Noise | `\(\mu_{31}\)` | `\(\mu_{32}\)` | `\(\mu_{33}\)` | `\(\mu_{3.}\)` |
-| Marginal | `\(\mu_{.1}\)` | `\(\mu_{.2}\)` | `\(\mu_{.3}\)` | `\(\mu_{..}\)` `\((\mu_g)\)` |
-
-The interaction null hypothesis can then be stated as follows:
-
-$$
-`\begin{aligned}
-(\alpha\beta)_{rc}&amp;= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
-H_0&amp;: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
-H_1&amp;: \text{At least one }(\alpha\beta)_{rc} \neq 0
-\end{aligned}`
-$$
----
-
-### Putting it all together
-
-`\(\alpha_r\)` = row marginal means - grand mean; main effect of variable A (noise)
-
-`\(\beta_c\)` = column marginal means - grand mean; main effect of variable B (speed)
-
-`\((\alpha\beta)_{rc}\)` = cell mean - `\(\alpha_r\)` - `\(\beta_c\)` + grand mean; interaction
-
-`\(\epsilon_{irc}\)` = error component (independent, normally distributed)
-
----
-### Putting it all together
-
-
-`$$\large Y_{irc} = \mu + \alpha_r + \beta_c + (\alpha\beta)_{rc} + \epsilon_{irc}$$`
-
---
-
-If you subtract the grand mean ( `\(\mu_g\)`) from both sides and substitute in the treatment population means, you get...
-
-
-`$$Y_{irc} - \mu_g = (\mu_r - \mu_g) + (\mu_c - \mu_g) + (\mu_{rc} - \mu_r - \mu_c + \mu_g) + \epsilon_{irc}$$`
---
-
-Now, above is working with population parameters. We don't have those. We have sample estimates. Let's replace with the notation for sample estimates: 
-
-`$$(Y_{irc} - \bar{Y}_g) = (\bar{Y}_r - \bar{Y}_g) + (\bar{Y}_c - \bar{Y}_g) + (\bar{Y}_{rc} - \bar{Y}_r - \bar{Y}_c + \bar{Y}_g) + (\bar{Y}_{irc} - \bar{Y}_{rc})$$`
---
-
-In words, this translates to:
-
-&gt; score - grand mean = main effect of A + main effect of B + interaction term + residual error
-
----
-### Variability 
-
-
-$$
-`\begin{aligned}
-\large SS_{\text{total}} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{...})^2 \\
-\large SS_{\text{Within}} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{rc.})^2 \\
-\large SS_R &amp;= CN\sum_{r=1}^R(\bar{Y}_{r..}-\bar{Y}_{...})^2\\
-SS_C &amp;= RN\sum_{c=1}^C(\bar{Y}_{.c.}-\bar{Y}_{...})^2\\
-\large SS_{RC} &amp;= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(\bar{Y}_{rc.}-\bar{Y}_{r..}-\bar{Y}_{.c.}+\bar{Y}_{...})^2 \\
-\end{aligned}`
-$$
-
----
-
-### Variability 
-
-As was true for the simpler one-way ANOVA, we will partition the total variability in the data matrix into two basic parts. 
-
-One part will represent variability **within groups**. This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
-
-The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
-
----
-
-
-### Variability 
-
-
-If the design is balanced (equal cases in all conditions), then:
-
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
-
-`\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
-$$
-`\begin{aligned}
-\large df_{Total} &amp;= N-1 \\
-\large df_{Total} &amp;= abn - 1 \\
-\large df_R &amp;= R-1 \\
-\large df_C &amp;= C-1 \\
-\large df_{RxC} &amp;= (R-1)(C-1) \\
-\large df_{within} &amp;= ab(n-1) \\
-&amp;= df_{total} - df_{R} - df_C - df_{RxC}
-\end{aligned}`
-$$
-
----
-
-### Variability 
-
-If the design is balanced (equal cases in all conditions), then:
-
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
-
-`\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
-
-.pull-left[
-$$
-`\begin{aligned}
-\large MS_R &amp;= \frac{SS_R}{df_R} \\
-\large MS_C &amp;= \frac{SS_C}{df_C} \\
-\large MS_{RxC} &amp;= \frac{SS_{RxC}}{df_{RxC}} \\
-\large MS_{within} &amp;= \frac{SS_{within}}{df_{within}} \\
-\end{aligned}`
-$$
-]
-
-.pull-right[
-
-Each mean square is a variance estimate.  `\(MS_{within}\)`  is the pooled estimate of the within-groups variance.  It represents only random or residual variation.  `\(MS_R\)`, `\(MS_C\)`, and `\(MS_{RxC}\)` also contain random variation, but include systematic variability too.
-
-]
-
----
-
-### F-statistics 
-
-
-If the design is balanced (equal cases in all conditions), then:
-
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
-
-`\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
-
-.pull-left[
-$$
-`\begin{aligned}
-\large F_R &amp;= \frac{MS_R}{MS_{within}} \\
-\\
-\large F_C &amp;= \frac{MS_C}{MS_{within}} \\
-\\
-\large F_{RxC} &amp;= \frac{MS_{RxC}}{MS_{within}} \\
-\end{aligned}`
-$$
-
-]
-
-.pull-right[
-If the null hypotheses are true, these ratios will be ~1.00 because the numerator and denominator of each estimate the same thing. Departures from 1.00 indicate that systematic variability is present. If large enough, we reject the null hypothesis (each considered separately).
-]
-
----
-
-### Degrees of freedom
-
-The degrees of freedom for the different F ratios might not be the same. Different degrees of freedom define different theoretical F density distributions for determining what is an unusual value under the null hypothesis.
-
-
-Which is to say, you might get the same F-ratio for two different tests, but they could have different p-values, if they represent different numbers of groups. 
-
----
-
-### Interpretation of significance tests
+We shall return to the data we used in the multiple regression model with two continuous variables. Here we have an outcome (Stress) that we are interested in predicting from trait Anxiety and levels of Social Support.
 
 
 ```r
-fit = lm(Time ~ Speed*Noise, data = Data)
-anova(fit)
+library(here)
+stress.data = read.csv(here("data/stress.csv"))
+library(psych)
+describe(stress.data)
 ```
 
 ```
-## Analysis of Variance Table
-## 
-## Response: Time
-##              Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
-## Speed         2 2805871 1402936 109.3975 &lt; 2.2e-16 ***
-## Noise         2  341315  170658  13.3075 4.252e-06 ***
-## Speed:Noise   4  295720   73930   5.7649 0.0002241 ***
-## Residuals   171 2192939   12824                       
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##         vars   n   mean     sd median trimmed    mad  min    max  range  skew
+## id         1 118 488.65 295.95 462.50  485.76 372.13 2.00 986.00 984.00  0.10
+## Anxiety    2 118   7.61   2.49   7.75    7.67   2.26 0.70  14.64  13.94 -0.18
+## Stress     3 118   5.18   1.88   5.27    5.17   1.65 0.62  10.32   9.71  0.08
+## Support    4 118   8.73   3.28   8.52    8.66   3.16 0.02  17.34  17.32  0.18
+## group*     5 118   1.53   0.50   2.00    1.53   0.00 1.00   2.00   1.00 -0.10
+##         kurtosis    se
+## id         -1.29 27.24
+## Anxiety     0.28  0.23
+## Stress      0.22  0.17
+## Support     0.19  0.30
+## group*     -2.01  0.05
 ```
 
-Interpretation?
 
---
-All three null hypotheses are rejected.  This only tells us that systemic differences among the means are present; follow-up comparisons are necessary to determine the nature of the differences. 
 ---
 
-### Interpretation of significance tests
+```r
+i.model1 = lm(Stress ~ Anxiety + Support + Anxiety:Support, 
+              data = stress.data)
+i.model2 = lm(Stress ~ Anxiety*Support, data = stress.data)
+```
+
+Both methods of specifying the interaction above will work in R. Using the `*` tells R to create both the (partial) main effects and interaction effect. Note, however that the following code *gives you the wrong results*:
 
 
 ```r
-fit = lm(Time ~ Speed*Noise, data = Data)
-anova(fit)
+imodel_bad = lm(Stress ~ Anxiety:Support, 
+                data = stress.data) # this does not create main effects. 
+#It is VERY WRONG
+```
+
+
+---
+
+```r
+i.model1 = lm(Stress ~ Anxiety*Support, data = stress.data)
+summary(i.model1)
 ```
 
 ```
-## Analysis of Variance Table
 ## 
-## Response: Time
-##              Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
-## Speed         2 2805871 1402936 109.3975 &lt; 2.2e-16 ***
-## Noise         2  341315  170658  13.3075 4.252e-06 ***
-## Speed:Noise   4  295720   73930   5.7649 0.0002241 ***
-## Residuals   171 2192939   12824                       
+## Call:
+## lm(formula = Stress ~ Anxiety * Support, data = stress.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8163 -1.0783  0.0373  0.9200  3.6109 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     -2.73966    1.12101  -2.444  0.01606 *  
+## Anxiety          0.61561    0.13010   4.732 6.44e-06 ***
+## Support          0.66697    0.09547   6.986 2.02e-10 ***
+## Anxiety:Support -0.04174    0.01309  -3.188  0.00185 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.462 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+---
+
+### Conceptual interpretation 
+
+`$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}XZ$$`
+
+You can interpret the interaction term in the same way you normally interpret a slope coefficient -- this is the effect of the interaction controlling for other variables in the model. 
+
+You can also interpret the intercept the same way as before (the expected value of Y when all predictors are 0).
+
+But here, `\(b_1\)` is the effect of X on Y when Z is equal to 0.
+
+---
+
+### Conceptual interpretation
+`$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}XZ$$`
+
+**Lower-order terms** change depending on the values of the higher-order terms. The value of `\(b_1\)` and `\(b_2\)` will change depending on the value of `\(b_3\)`. 
+- These values represent "conditional effects" (because the value is conditional on the level of the other variable). In many cases, the value and significance test with these terms is either meaningless (if Z is never equal to 0) or unhelpful, as these values and significance change across the data. 
+
+**Higher-order terms** are those terms that represent interactions. `\(b_3\)` is a higher-order term. 
+- This value represents how much the slope of X changes for every 1-unit increase in Z AND how much the slope of Z changes for everyone 1-unit increase in X. 
+
+???
+
+Is `\(b_0\)` a higher-order or lower-order term?
+
+Ask what values `\(b_0\)` depends on -- both intercept and slope. Maybe be helpful to use paper to represent plane. 
+
+---
+### Conceptual interpretation
+
+Higher-order interaction terms represent:
+- the change in the slope of X as a function of Z
+- the degree of curvature in the regression plane
+- the linear effect of the product of independent variables
+
+
+```r
+stress.data$AxS = stress.data$Anxiety*stress.data$Support
+head(stress.data[,c("Anxiety", "Support", "AxS")])
 ```
 
-Both main effects and the interaction are significant.
-
-The significant interaction qualifies the main effects:
-
-- The magnitude of the speed main effect varies across the noise conditions.
-
-- The magnitude of the noise main effect varies across the speed conditions.
-
----
-
-### Visualizing main effects and interactions
-
-Different combinations of main effects and interactions yield different shapes when plotted. An important skill is recognizing how plots will change based on the presence or absence of specific effects. 
-
-Main effects are tests of differences in means; a significant main effect will yield a difference -- the mean of Group 1 will be different than the mean of Group 2, for example.
-
-Interactions are tests of the differences of differences of means -- is the difference between Group 1 and Group 2 different in Condition A than that difference is in Condition B, for example.
+```
+##    Anxiety Support       AxS
+## 1 10.18520  6.1602  62.74287
+## 2  5.58873  8.9069  49.77826
+## 3  6.58500 10.5433  69.42763
+## 4  8.95430 11.4605 102.62076
+## 5  7.59910  5.5516  42.18716
+## 6  8.15600  7.5117  61.26543
+```
 
 ---
 
-### Visualizing main effects and interactions
+
+```r
+summary(lm(Stress ~ Anxiety + Support + AxS, data = stress.data))
+```
+
+```
+## 
+## Call:
+## lm(formula = Stress ~ Anxiety + Support + AxS, data = stress.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8163 -1.0783  0.0373  0.9200  3.6109 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.73966    1.12101  -2.444  0.01606 *  
+## Anxiety      0.61561    0.13010   4.732 6.44e-06 ***
+## Support      0.66697    0.09547   6.986 2.02e-10 ***
+## AxS         -0.04174    0.01309  -3.188  0.00185 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.462 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+
+---
+
+
+```r
+summary(lm(Stress ~ Anxiety*Support, data = stress.data))
+```
+
+```
+## 
+## Call:
+## lm(formula = Stress ~ Anxiety * Support, data = stress.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8163 -1.0783  0.0373  0.9200  3.6109 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     -2.73966    1.12101  -2.444  0.01606 *  
+## Anxiety          0.61561    0.13010   4.732 6.44e-06 ***
+## Support          0.66697    0.09547   6.986 2.02e-10 ***
+## Anxiety:Support -0.04174    0.01309  -3.188  0.00185 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.462 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+
+They're the same!!
+---
+
+## Conditional effects and simple slopes
+
+The regression line estimated in this model is quite difficult to interpret on its own. A good strategy is to decompose the regression equation into **simple slopes**, which are determined by calculating the conditional effects at a specific level of the moderating variable.
+
+- Simple slope: the equation for Y on X at differnt levels of Z; but also refers to only the coefficient for X in this equation
+
+- Conditional effect: the slope coefficients in the full regression model which can change. These are the lower-order terms associated with a variable. E.g., X has a conditional effect on Y. 
+
+Which variable is the "predictor" (X) and which is the "moderator" (Z)?
+
+---
+
+The conditional nature of these effects is easiest to see by "plugging in" different values for one of your variables. Return to the regression equation estimated in our stress data:
+
+
+
+`$$\hat{Stress} = -2.74 + 0.62(\text{Anx})+ 0.67(\text{Sup})+ -0.04(\text{Anx} \times \text{Sup})$$`
+--
+**Set Support to 5**
+$$
+`\begin{aligned}
+\hat{Stress} &amp;= -2.74 + 0.62(\text{Anx})+ 0.67(5)+ -0.04(\text{Anx} \times 5) \\
+&amp;= -2.74 + 0.62(\text{Anx})+ 3.35+ -0.2(\text{Anx}) \\
+&amp;= 0.61 + 0.42(\text{Anx})
+\end{aligned}`
+$$
+--
+**Set Support to 10**
+$$
+`\begin{aligned}
+\hat{Stress} &amp;= -2.74 + 0.62(\text{Anx})+ 0.67(10)+ -0.04(\text{Anx} \times 10) \\
+&amp;= -2.74 + 0.62(\text{Anx})+ 6.7+ -0.4(\text{Anx}) \\
+&amp;= 3.96 + 0.22(\text{Anx})
+\end{aligned}`
+$$
+
+---
+
+## Interaction shapes
+
+Often we graph the simple slopes as a way to understand the interaction. Interpreting the shape of an interaction can be done using the numbers alone, but it requires a lot of calculation and mental rotation. For those reasons, consider it a requirement that you graph interactions in order to interpret them. 
+
+---
+## Interaction shapes
+### Ordinal interactions
+
+![](14-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+## Interaction shapes
+### Cross-over (disordinal) interactions
 
 ![](14-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 
-???
-No effect of A
-Main effect of B
-No interaction
+
 ---
 
-### Visualizing main effects and interactions
+
+```r
+library(sjPlot)
+plot_model(imodel, type = "int")
+```
 
 ![](14-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
-???
-Main effect of A
-Main effect of B
-Interaction
+
 ---
 
-### Visualizing main effects and interactions
+
+```r
+plot_model(imodel, type = "int", mdrt.values = "meansd")
+```
 
 ![](14-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
-???
-No effect of A
-No effect of B
-Interaction
 ---
 
-### Pop Quiz
+```r
+plot_model(imodel, type = "pred", terms = c("Support", "Anxiety[5,10]"))
+```
 
-How would you plot....
-
-* A main effect of A, no main effect of B, and no interaction?
-* A main effect of A, a main effect of B, and no interaction?
-* No main effect of A, a main effect of B, and an interaction?
+![](14-interactions_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ---
 
-## Effect size
 
-All of the effects in the ANOVA are statistically significant, but how big are they?  An effect size, `\(\eta^2\)`, provides a simple way of indexing effect magnitude for ANOVA designs, especially as they get more complex.
+```r
+plot_model(imodel, type = "pred", terms = c("Support", "Anxiety"), mdrt.values = "meansd")
+```
 
-`$$\large \eta^2 = \frac{SS_{\text{effect}}}{SS_{\text{total}}}$$`
-If the design is balanced...
-
-`$$\large SS_{\text{total}} = SS_{\text{speed}} + SS_{\text{noise}}+SS_{\text{speed:noise}}+SS_{\text{within}}$$`
----
-
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; SS &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; `\(\eta^2\)` &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; `\(\text{partial }\eta^2\)` &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Speed &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2805871.4 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.50 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Noise &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 341315.2 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.06 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.13 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Speed:Noise &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 295719.7 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2192938.9 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-The Speed main effect accounts for 8 to 9 times as much variance in the outcome as the Noise main effect and the Speed x Noise interaction.
+![](14-interactions_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 ---
 
-![](images/eta_sq.jpg)
+# Pop Quiz
+
+You are interested in the effects of "brain games" (or cognitive training) and sleep on the development of Alzheimer's disease. You hypothesize that cognitive training might aid in slowing the progression of AD if participants are well rested. 
+
+- Write out the regression equation. Which variable is the moderator?
+- Interpret the coefficients.
+- Sketch out a plot of the simple slopes. There are different ways of doing this reflecting different hypotheses, but make sure the hypothesis stated above is somehow shown. You can do this on a post-it/scratch paper (I don't have real data for this, so there's nothing to make in R unless you want to simulate your own data...but that's a bit much for a 0-point pop quiz)
+
 ---
 
-### `\(\eta^2\)`
+### Simple slopes - Significance tests
+
+Recall that the slope at any particular value is a combination of both `\(b_1\)` and `\(b_3\)` 
+`$$\large \hat{Y} = (b_{0} + b_{2}Z) + (b_{1} + b_{3}Z)X$$`
+`$$\large se_{b@z} = \sqrt{se_{b_1}^2 + (2 * Z * cov_{b_1b_3})+ (Z^2 se_{b_3}^2)}$$`
+In this formula, `\(cov_{b_1b_3}\)` refers to the covariance of the coefficients, not the covariance of the variables. This may seem a strange concept, as we only ever have one value for `\(b_1\)` and `\(b_3\)` -- the covariance of these coefficients refer to idea that if we randomly sample from a population, estimate the coefficients each time, and then examine the covariance of coefficients across random samples, it will not be 0.
+
+---
+### Simple slopes - Significance tests
+
+
+```r
+round(vcov(imodel),4)
+```
+
+```
+##                 (Intercept) Anxiety Support Anxiety:Support
+## (Intercept)          1.2567 -0.1330 -0.0966          0.0100
+## Anxiety             -0.1330  0.0169  0.0110         -0.0015
+## Support             -0.0966  0.0110  0.0091         -0.0011
+## Anxiety:Support      0.0100 -0.0015 -0.0011          0.0002
+```
+
+We can use the standard error of the slope to estimate whether or not it is significanly different from 0. 
 
 .pull-left[
-**If the design is balanced:**
+`$$\large \hat{Y} = (b_{0} + b_{2}Z) + (b_{1} + b_{3}Z)X$$`
+`$$\large t = \frac{(b_{1} + b_{3}Z)}{se_{b@z}}$$`
+`$$df = N-p-1$$`
+]
 
-There is no overlap among the independent variables. They are uncorrelated.
+---
 
-The variance accounted for by any effect is unique. There is no ambiguity about the source of variance accounted for in the outcome.
+#### Example
 
-The sum of the `\(\eta^2\)` for effects and residual is 1.00.
+
+`$$\hat{Stress} = -2.74 + 0.62(\text{Anx})+ 0.67(\text{Sup})+ -0.04(\text{Anx} \times \text{Sup})$$`
+
+We want to know whether anxiety is a significant predictor of stress at different levels of support.
+
+
+```r
+library(reghelper)
+simple_slopes(imodel, levels = list(Support = c(4,6,8,10,12)))
+```
+
+```
+##   Anxiety Support Test Estimate Std. Error t value  df  Pr(&gt;|t|) Sig.
+## 1  sstest       4        0.4486     0.0886  5.0617 114 1.610e-06  ***
+## 2  sstest       6        0.3652     0.0733  4.9791 114 2.289e-06  ***
+## 3  sstest       8        0.2817     0.0654  4.3095 114 3.488e-05  ***
+## 4  sstest      10        0.1982     0.0674  2.9424 114  0.003946   **
+## 5  sstest      12        0.1147     0.0786  1.4600 114  0.147036
+```
+
+If you don't list levels, then this function will test simple slopes at the mean and 1 SD above and below the mean. 
+---
+## Simple slopes - Significance tests
+
+What if you want to compare slopes to each other? How would we test this?
+
+--
+
+The test of the interaction coefficient is equivalent to the test of the difference in slopes at levels of Z separated by 1 unit. 
+
+
+```r
+coef(summary(imodel))
+```
+
+```
+##                    Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)     -2.73966246 1.12100519 -2.443934 1.606052e-02
+## Anxiety          0.61561220 0.13010161  4.731780 6.435373e-06
+## Support          0.66696689 0.09547464  6.985802 2.017698e-10
+*## Anxiety:Support -0.04174076 0.01309328 -3.187954 1.849736e-03
+```
+
+---
+
+## Centering
+
+The regression equation built using the raw data is not only diffiuclt to interpret, but often the terms displayed are not relevant to the hypotheses we're interested. 
+- `\(b_0\)` is the expected value when all predictors are 0, but this may never happen in real life
+- `\(b_1\)` is the slope of X when Z is equal to 0, but this may not ever happen either. 
+
+**Centering** your variables by subracting the mean from all values can improve the interpretation of your results. 
+- Remember, a linear transformation does not change associations (correlations) between variables. In this case, it only changes the interpretation for some coefficients
+---
+
+
+```r
+stress.data = stress.data %&gt;%
+  mutate(Anxiety.c = Anxiety - mean(Anxiety),
+         Support.c = Support - mean(Support))
+head(stress.data[,c("Anxiety", "Anxiety.c", "Support", "Support.c")])
+```
+
+```
+##    Anxiety   Anxiety.c Support  Support.c
+## 1 10.18520  2.57086873  6.1602 -2.5697997
+## 2  5.58873 -2.02560127  8.9069  0.1769003
+## 3  6.58500 -1.02933127 10.5433  1.8133003
+## 4  8.95430  1.33996873 11.4605  2.7305003
+## 5  7.59910 -0.01523127  5.5516 -3.1783997
+## 6  8.15600  0.54166873  7.5117 -1.2182997
+```
+
+Why did we not center Y (Stress)?
+
+---
+
+
+```r
+summary(lm(Stress ~ Anxiety.c*Support.c, data = stress.data))
+```
+
+```
+## 
+## Call:
+## lm(formula = Stress ~ Anxiety.c * Support.c, data = stress.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8163 -1.0783  0.0373  0.9200  3.6109 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          4.99580    0.14647  34.108  &lt; 2e-16 ***
+## Anxiety.c            0.25122    0.06489   3.872 0.000181 ***
+## Support.c            0.34914    0.05238   6.666 9.82e-10 ***
+## Anxiety.c:Support.c -0.04174    0.01309  -3.188 0.001850 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.462 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+
+---
+
+
+```r
+summary(imodel)
+```
+
+```
+## 
+## Call:
+## lm(formula = Stress ~ Anxiety * Support, data = stress.data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8163 -1.0783  0.0373  0.9200  3.6109 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     -2.73966    1.12101  -2.444  0.01606 *  
+## Anxiety          0.61561    0.13010   4.732 6.44e-06 ***
+## Support          0.66697    0.09547   6.986 2.02e-10 ***
+## Anxiety:Support -0.04174    0.01309  -3.188  0.00185 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.462 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+What changed? What stayed the same?
+
+
+---
+ 
+## Standardized regression equation
+
+So far, we've only discussed the unstandardized regression equation. If you're interested in getting the standardized regression equation, you can follow the same procedure of standardizing your variables first and then entering them into your linear model.
+
+An important note: You must take the product of the Z-scores, not the Z-score of the products to get the correct regression model. 
+
+.pull-left[
+#### This is OK
+
+```r
+Y ~ z(X) + z(Z) + z(X)*z(Z) 
+
+Y ~ z(X)*z(Z) 
+```
+
 ]
 
 .pull-right[
-![](images/eta_sq.jpg)
+#### This is not OK
+
+
+```r
+Y ~ z(X) + z(Z) + z(X*Z) 
+```
+
 ]
 
 ---
 
-### `\(\eta^2\)`
 
-One argument against `\(\eta^2\)` is that its magnitude depends in part on the magnitude of the other effects in the design. If the amount of variability due to Noise or Speed x Noise changes, so to does the effect size for Speed.
+```r
+stress.data = stress.data %&gt;%
+  mutate(zStress = scale(Stress), 
+         zAnxiety = scale(Anxiety), 
+         zSupport = scale(Support))
+head(stress.data[,c("zStress", "zAnxiety", "zSupport")])
+```
 
-`$$\large \eta^2_{\text{speed}} = \frac{SS_{\text{speed}}}{SS_{\text{speed}} + SS_{\text{noise}} + SS_{\text{speed:noise}}+ SS_{\text{within}}}$$`
-
-An alternative is to pretend the other effects do not exist and reference the effect sum of squares to residual variability.
-
-`$$\large \text{partial }\eta^2_{\text{speed}} = \frac{SS_{\text{speed}}}{SS_{\text{speed}} + SS_{\text{within}}}$$`
+```
+##       zStress     zAnxiety    zSupport
+## 1 -1.05630148  1.033649700 -0.78410538
+## 2  0.97450140 -0.814418147  0.05397639
+## 3  0.52978175 -0.413855421  0.55327992
+## 4  1.87547440  0.538751068  0.83313888
+## 5  0.04640497 -0.006123922 -0.96980334
+## 6 -0.02939564  0.217784639 -0.37173144
+```
 ---
 
-### `\(\eta^2\)`
+```r
+zmodel = lm(zStress ~ zAnxiety*zSupport, stress.data)
+summary(zmodel)
+```
 
-One rationale for partial `\(\eta^2\)` is that the residual variability represents the expected variability in the absence of any treatments or manipulations.  The presence of any treatments or manipulations only adds to total variability.  Viewed from that perspective, residual variability is a sensible benchmark against which to judge any effect.
-
-`$$\large \text{partial }\eta^2_{\text{effect}} = \frac{SS_{\text{effect}}}{SS_{\text{effect}} + SS_{\text{within}}}$$`
-
-Partial `\(\eta^2\)` is sometimes described as the expected effect size in a study in which the effect in question is the only effect present.
+```
+## 
+## Call:
+## lm(formula = zStress ~ zAnxiety * zSupport, data = stress.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.03400 -0.57471  0.01989  0.49037  1.92453 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       -0.09818    0.07807  -1.258 0.211093    
+## zAnxiety           0.33302    0.08602   3.872 0.000181 ***
+## zSupport           0.60987    0.09149   6.666 9.82e-10 ***
+## zAnxiety:zSupport -0.18134    0.05688  -3.188 0.001850 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7792 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
 
 ---
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; SS &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; `\(\eta^2\)` &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; `\(\text{partial }\eta^2\)` &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Speed &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2805871.4 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.50 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Noise &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 341315.2 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.06 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.13 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Speed:Noise &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 295719.7 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt; 0.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2192938.9 &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;width: 10em; "&gt;  &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
 
-Partial `\(\eta^2\)` will be larger than `\(\eta^2\)` if the ignored effects account for any variability.
 
-The sum of partial `\(\eta^2\)` does not have a meaningful interpretation.
+
+```r
+zmodel = lm(zStress ~ zAnxiety + zSupport + zAxS, stress.data)
+summary(zmodel)
+```
+
+```
+## 
+## Call:
+## lm(formula = zStress ~ zAnxiety + zSupport + zAxS, data = stress.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.03400 -0.57471  0.01989  0.49037  1.92453 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.833e-17  7.173e-02   0.000  1.00000    
+## zAnxiety     8.161e-01  1.725e-01   4.732 6.44e-06 ***
+## zSupport     1.165e+00  1.668e-01   6.986 2.02e-10 ***
+## zAxS        -5.003e-01  1.569e-01  -3.188  0.00185 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7792 on 114 degrees of freedom
+## Multiple R-squared:  0.4084,	Adjusted R-squared:  0.3928 
+## F-statistic: 26.23 on 3 and 114 DF,  p-value: 5.645e-13
+```
+
+---
+# Pop Quiz
+
+Go back to the first pop quiz. Assume you have now centered the appropriate variables, and now re-interpret your coefficients.
 
 ---
 class: inverse
 
-## Next Time
+## Next time...
 
-Exam 2! You got this!
+Mixing categorical and continuous predictors
 
+Factorial ANOVA
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

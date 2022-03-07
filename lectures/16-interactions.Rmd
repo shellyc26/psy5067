@@ -1,5 +1,5 @@
 ---
-title: 'Interactions (V)'
+title: 'Interactions (III)'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -11,25 +11,34 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r, echo = F,message = F, warning = F}
+## Last time
+
+Mixing categorical and continuous variables
+
+Starting factorial ANOVA
+
+## This time
+
+Continuing with factorial ANOVA
+---
+class:inverse
+## Factorial ANOVA
+
+
+The interaction of two or more categorical variables in a general linear model is formally known as **Factorial ANOVA**.
+
+A factorial design is used when there is an interest in how two or more variables (or factors) affect the outcome. 
+
+* Rather than conduct separate one-way ANOVAs for each factor, they are all included in one analysis. 
+
+* The unique and important advantage to a factorial ANOVA over separate one-way ANOVAs is the ability to examine interactions.
+```{r, echo = F, message = F, warning = F}
 library(tidyverse)
+library(knitr)
+library(kableExtra)
 ```
 
-
-## Last time...
-
-Factorial ANOVA
-* Estimated marginal means
-* Estimated cell means
-* Sums of squares
-
-Power
-* Omnibus test
-* Coefficients
-
 ---
-
-## ANOVA vs Regression
 
 ```{r, echo = F}
 set.seed(23)
@@ -65,719 +74,636 @@ Data$Noise = factor(Data$Noise, levels = c("None", "Controllable", "Uncontrollab
 ```
 
 .pull-left[
-### Factorial ANOVA
-
-Interaction tests whether there are differences in differences.
-
-**Simple main effect** -- the effect of Factor A at a specific level of Factor B
+The example data are from a simulated study in which 180 participants performed an eye-hand coordination task in which they were required to keep a mouse pointer on a red dot that moved in a circular motion.  
 ]
 .pull-right[
-### Regression
-
-Interaction tests whether slope changes. 
-
-**Simple slopes** -- the slope of Variable A at a specific level of Variable B
+![](images/dot.jpg)
 ]
 
----
-
-## Power
-The likelihood of finding an effect *if the effect actually exists.* Power gets larger as we:
-* increase our sample size
-* reduce (error) variance
-* raise our Type I error rate
-* study larger effects
-
---
-
-When calculating power for the omnibus test, use the expected multiple $R^2$ value to calculate an effect size: $f^2 = \frac{R^2}{1-R^2}$
-
---
-
-To estimate power for a single coefficient, you need to consider (1) how much variance is accounted for by just the variable and (2) how much variance you'll account for in Y overall. $f^2 = \frac{R^2_Y-R^2_{Y.X}}{1-R_Y^2}$
-
----
-## Effect sizes (interactions)
-
-To start our discussion on powering interaction terms, we need to first consider the effect size of an interaction. 
-
-How big can we reasonably expect an interaction to be?
-
-- Interactions are always partialled effects; that is, we examine the relationship between the product of variables X and Z only after we have controlled for X and controlled for Z. How does this affect the size of the relationship between XZ and Y?
-
-???
-
-The effect of XZ and Y will be made smaller as X or Z (or both) is related to the product -- the semi-partial correlation is always smaller than or equal to the zero-order correlation. 
+The outcome was the time of the 10th failure. The experiment used a completely crossed, 3 x 3 factorial design. One factor was dot speed: .5, 1, or 1.5 revolutions per second.  The second factor was noise condition: no noise, controllable noise, and uncontrollable noise.  The design was balanced. 
 
 ---
 
-## McClelland and Judd (1993)
+### Marginal means
 
-Is it more difficult to find interaction effects in experimental studies or observational studies?
+```{r, echo = F, results = 'asis', message = F, warning = F}
+mean.summary = Data %>%
+  group_by(Noise, Speed) %>%
+  summarize(Time = mean(Time)) %>%
+  spread("Speed", "Time")
+mean.summary$Noise = as.character(mean.summary$Noise)
+mean.summary$Marginal = rowMeans(mean.summary[2:4])
+mean.summary[4,1] = "Marginal"
+mean.summary[4,2] = colMeans(mean.summary[2:5], na.rm=T)[1]
+mean.summary[4,3] = colMeans(mean.summary[2:5], na.rm=T)[2]
+mean.summary[4,4] = colMeans(mean.summary[2:5], na.rm=T)[3]
+mean.summary[4,5] = colMeans(mean.summary[2:5], na.rm=T)[4]
 
---
-
-What factors make it relatively easier to find interactions in experimental work?
-
----
-
-### Factors influencing power in experimental studies
-
-- No measurement error of IV 
-    * don't have to guess what condition a participant is in
-    * measurement error is exacerbated when two variables measured with error are multiplied by each other
-    
-- Experimentalists are more likely to find cross-over interactions; observational studies may be restricted to fan interactions
-    * cross-over interactions are easier to detect than fan interactions
-    
----
-
-### Factors influencing power in experimental studies
-
-- Experimentalists can concentrate scores on extreme ends on both X and Z
-    * in observational studies, data tends to cluster around the mean 
-    * increases variability in both X and Z, and in XZ
-
-- Experimentalists can also force orthognality in X and Z
-
-- Experimentalists can study the full range of X in an experiment
-
----
-
-### McClelland and Judd's simulation
-
-For the experiment simulations, we used 2 X 2 factorial designs, with values of X and Z equal to +1 and —1 and an equal number of observations at each of the four combinations of X and Z values.
-
-```{r}
-X = rep(c(-1,1), each = 50)
-Z = rep(c(-1,1), times = 50)
-table(X,Z)
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) %>%
+  row_spec(4, bold = T, color = "white", background = "#562457")
 ```
 
----
-
-### McClelland and Judd's simulation
-
-For the field study simulations, they used values of X and Z that varied between the extreme values of +1 and —1. More specifically, in the field study simulations, values of X and Z were each sampled independently from a normal distribution with a mean of 0 and a standard deviation of 0.5. Values of X and Z were rounded to create equally spaced 9-point scales ranging from -1 to +1 because ranges in field studies are always finite and because ratings are often on scales with discrete intervals.
-
-```{r}
-X = rnorm(n = 100, mean = 0, sd = .5)
-Z = rnorm(n = 100, mean = 0, sd = .5)
-X = round(X/.2)*.2
-Z = round(Z/.2)*.2
-
-psych::describe(data.frame(X,Z), fast = T)
-```
----
-
-For the simulations of both the field studies and the experiments, $\beta_0 = 0, \beta_X=\beta_Z=\beta_{XZ} = 1.$ There were 100 observations, and errors for the model were sampled from the same normal distribution with a mean of 0 and a standard deviation of 4.
-
-```{r}
-Y = 0 + 1*X + 1*Z + 1*X*Z + rnorm(n = 100, mean = 0, sd = 4)
-summary(lm(Y ~ X*Z))
-```
+Regardless of noise condition, does speed of the moving dot affect performance?
 
 ---
 
-From 100 simulations each, estimates of the model parameter $\beta_{XZ}$ the moderator or interaction effect equaled 0.944 and 1.175 for the field studies and experiments, respectively.
-```{r}
-set.seed(0305)
+### Marginal means
+
+```{r, echo = F, results = 'asis', message = F, warning = F}
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) %>% 
+  column_spec(5, bold = T, color = "white", background = "#562457")
 ```
+
+Regardless of dot speed, does noise condition affect performance?
+
+
+---
+
+### Marginal means
+
+```{r, echo = F, results = 'asis', message = F, warning = F}
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) 
+```
+The **marginal mean differences** correspond to main effects. They tell us what impact a particular factor has, ignoring the impact of the other factor. 
+
+The remaining effect in a factorial design, and it primary advantage over separate one-way ANOVAs, is the ability to examine **conditional mean differences**. 
+
+---
+
+
+### Mean differences
+
+```{r, echo = F, results = 'asis', message = F, warning = F}
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) %>%
+  column_spec(2, background = "#EECACA") %>%
+  column_spec(3, background = "#B2D4EB") %>%
+  column_spec(4, background = "#FFFFC5") %>%
+  column_spec(5, background = "grey", color = "white") %>%
+  row_spec(4, background = "white")
+```
+
+Are the marginal mean differences for noise condition a good representation of what is happening within each of the dot speed conditions?
+
+If not, then we would need to say that the noise condition effect depends upon (is conditional on) dot speed.  We would have an interaction between noise condition and dot speed condition.
+
+---
+
+
+```{r, message = F, warning = F, fig.width = 10, fig.height = 5, echo = F}
+library(sjPlot)
+library(tidyverse)
+model = lm(Time ~Speed*Noise, data = Data)
+model.data = plot_model(model, type = "int")$data
+model.data %>% ggplot(aes(x = x, y = predicted, fill = group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = .8), color = "black", width = .7) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3, position = position_dodge(width = .8)) +
+  scale_x_continuous("Speed Condition", breaks = c(1, 2,3), labels = c("Slow", "Medium", "Fast")) +
+  labs(y = "Mean Seconds (95% CI)", fill = "Noise Condition", title = "Failure time as a function of\nnoise condition and speed condition") +
+cowplot::theme_cowplot(font_size = 20)
+```
+
+
+The noise condition means are most distinctly different in the medium speed condition. The noise condition means are clearly not different in the fast speed condition. 
+
+---
+
+### Interpretation of interactions
+
+The presence of an interaction qualifies any main effect conclusions, leading to "yes, but" or "it depends" kinds of inferences.
 
 .pull-left[
-```{r}
-# for experimental studies
-sim = 100
-ebeta_xz = numeric(length = 100)
-et_xz = numeric(length = 100)
-for(i in 1:sim){
-  # simulate data
-  X = rep(c(-1,1), each = 50)
-  Z = rep(c(-1,1), times = 50)
- 
-  
-   Y = 0 + 1*X + 1*Z + 1*X*Z + 
-    rnorm(n = 100, mean = 0, sd = 4)
-  #run model
-  model = lm(Y ~ X*Z)
-  coef = coef(summary(model))
-  #extract coefficients
-  beta = coef["X:Z", "Estimate"]
-  t_val = coef["X:Z", "t value"]
-  #save to vectors
-  ebeta_xz[i] = beta
-  et_xz[i] = t_val
-}
-```
-]
-.pull-right[
-```{r}
-# for observational studies
 
-obeta_xz = numeric(length = 100)
-ot_xz = numeric(length = 100)
-for(i in 1:sim){
-  # simulate data
-  X = rnorm(n = 100, mean=0, sd = .5)
-  Z = rnorm(n = 100, mean=0, sd = .5)
-  X = round(X/.2)*.2
-  Z = round(Z/.2)*.2
-  Y = 0 + 1*X + 1*Z + 1*X*Z + 
-    rnorm(n = 100, mean = 0, sd = 4)
-  #run model
-  model = lm(Y ~ X*Z)
-  coef = coef(summary(model))
-  #extract coefficients
-  beta = coef["X:Z", "Estimate"]
-  t_val = coef["X:Z", "t value"]
-  #save to vectors
-  obeta_xz[i] = beta
-  ot_xz[i] = t_val
-}
-```
-]
----
-
-```{r}
-mean(ebeta_xz)
-mean(obeta_xz)
+```{r, message = F, warning = F, fig.width = 5, fig.height = 3,echo =F}
+model.data %>% ggplot(aes(x = x, y = predicted, fill = group)) +
+  geom_bar(stat = "identity", position = position_dodge(width = .8), color = "black", width = .7) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3, position = position_dodge(width = .8)) +
+  scale_x_continuous("Speed Condition", breaks = c(1, 2,3), labels = c("Slow", "Medium", "Fast")) +
+  labs(y = "Mean Seconds (95% CI)", fill = "Noise Condition", title = "Failure time as a function of\nnoise condition and speed condition") +
+cowplot::theme_cowplot(font_size = 10)
 ```
 
-```{r, echo = F, fig.width=10, fig.height=6}
-data.frame(sim = rep(c("experimental", "observational"), each = 100),
-           estimate = c(ebeta_xz, obeta_xz)) %>%
-  ggplot(aes(x = estimate)) + 
-  geom_density(aes(fill = sim, color = sim), alpha = .3) +
-  scale_color_discrete("") + scale_fill_discrete("")+
-  theme_bw() + theme(legend.position = "bottom")
-```
-
----
-
-```{r}
-mean(et_xz)
-mean(ot_xz)
-```
-
-```{r, echo = F, fig.width=10, fig.height=6}
-data.frame(sim = rep(c("experimental", "observational"), each = 100),
-           t_val = c(et_xz, ot_xz)) %>%
-  ggplot(aes(x = t_val)) + 
-  geom_density(aes(fill = sim, color = sim), alpha = .3) +
-  geom_vline(aes(xintercept = qt(p = .975, df = 100-3-1)))+
-  scale_x_continuous("t statistic") +
-  scale_color_discrete("") + scale_fill_discrete("")+
-  theme_bw() + theme(legend.position = "bottom")
-```
-
----
-
-```{r}
-cv = qt(p = .975, df = 100-3-1)
-esig = et_xz > cv
-sum(esig)
-
-osig = ot_xz > cv
-sum(osig)
-```
-
-In our simulation, `r sum(esig)`% of experimental studies were statistically significant, whereas only `r sum(osig)`% of observational studies were significant. Remember, we built our simulation based on data where there really is an interaction effect (i.e., the null is false). 
-
-McClelland and Judd found that 74% of experimental studies and 9% of observational studies were significant.
-
----
-
-### Efficiency
-
-```{r, echo = F, out.width='55%'}
-knitr::include_graphics("images/efficiency.png")
-```
-
-???
-Efficiency = the ratio of the variance of XZ (controlling for X and Z) of a design to the best possible design (upper right corner). High efficiency is better; best efficiency is 1. 
-
----
-
-### Efficiency
-
-.pull-left[
-If the optimal design has N obserations, then to have the same standard error (i.e., the same power), any other design needs to have N*(1/efficency). 
-
-So a design with .06 efficency needs $\frac{1}{.06} = 16.67$ times the sample size to detect the effect. 
 ]
 
 .pull-right[
-![](images/common.png)
+
+Does noise condition affect failure time? 
+
+"Yes, but the magnitude of the effect is strongest for the medium speed condition, weaker for the fast speed condition, and mostly absent for the slow speed condition."
 ]
 
-This particular point has been ["rediscovered"](https://statmodeling.stat.columbia.edu/2018/03/15/need-16-times-sample-size-estimate-interaction-estimate-main-effect/) as recently as 2018: 
-
-* you need 16 times the sample size to detect an interaction as you need for a main effect of the same size. 
-
-???
-
-This generalizes to higher-order interactions as well. If you have a three-way interaction, you need 16*16 (256 times the number of people). 
-
 ---
 
-## Observational studies: What NOT to do
+### Interactions are symmetrical
 
-Recode X and Z into more extreme values (e.g., median splits)
-    * while this increases variance in X and Z, it also increases measurement error
-
-Collect a random sample and then only perform analyses on the subsample with extreme values
-    * reduces sample size and also generalizability
-    
-#### What can be done?
-M&J suggest oversampling extremes and using weighted and unweighted samples
-
----
-
-## Experimental studies: What NOT to do
-
-Be mean to field researchers
-
-Forget about lack of external validity and generalizability
-
-Ignore power when comparing interaction between covariate and experimental predictors (ANCOVA or multiple regression with categorical and continuous predictors)
-
----
-
-## Non-linear relationships
-
-Linear lines often make bad predictions -- very few processes that we study actually have linear relationships. For example, effort had diminishing returns (e.g., log functions), or small advantages early in life can have significant effects on mid-life outcones (e.g., exponentional functions). In cases where the direction of the effect is constant but changing in magnitude, the best way to handle the data is to transform a variable (usually the outcome) and run linear analyses.
-
-```{r, eval = F}
-log_y = ln(y)
-lm(log_y ~ x)
+```{r, echo = F, results = 'asis', message = F, warning = F}
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) %>%
+  row_spec(1, background = "#EECACA") %>%
+  row_spec(2, background = "#B2D4EB") %>%
+  row_spec(3, background = "#FFFFC5") %>%
+  row_spec(4, background = "grey", color = "white") %>%
+  column_spec(5, background = "white")
 ```
----
 
-## Polynomial relationships
+Are the marginal mean differences for speed condition a good representation of what is happening within each of the noise conditions?
 
-Other processes represent changes in the directon of relationship -- for example, it is believed that a small amount of anxiety is benefitial for performance on some tasks (positive direction) but too much is detrimental (negative direction). When the shape of the effect includes change(s) in direction, then a polynomial term(s) may be more appropriate.
-
-It should be noted that polynomials are often a poor approximation for a non-linear effect of X on Y. However, correctly testing for non-linear effects usually requires (a) a lot of data and (b) making a number of assumptions about the data. Polynomial regression can be a useful tool for exploratory analysis and in cases when data are limited in terms of quantity and/or quality.
+If not, then we would need to say that the speed condition effect depends upon (is conditional on) noise condition.  
 
 
----
-## Polynomial regression 
- 
-Polynomial regression is most often a form of hierarchical regressoin that systematically tests a series of higher order functions for a single variable.
-
-$$
-\begin{aligned}
-\large \textbf{Linear: } \hat{Y} &= b_0 + b_1X \\
-\large \textbf{Quadtratic: } \hat{Y} &= b_0 + b_1X + b_2X^2 \\
-\large \textbf{Cubic: } \hat{Y} &= b_0 + b_1X + b_2X^2 + b_3X^3\\
-\end{aligned}
-$$
----
-
-![](images/polynomials.jpeg)
 ---
 
 .left-column[
-### How do you know if something is up?
-What if you ran a linear regression and looked at the diagnostics?
-]
+.small[
+The speed condition means are clearly different in each noise condition, but the pattern of those differences is not the same. 
 
-<img src="images/polynomial.png", width = "70%">
+The marginal speed condition means do not represent well the means in each noise condition.
 
-.small[https://online.stat.psu.edu/stat501/book/export/html/962]
----
-### Example
-
-Can a team have too much talent? Researchers hypothesized that teams with too many talented players have poor intrateam coordination and therefore perform worse than teams with a moderate amount of talent. To test this hypothesis, they looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
-
-```{r, message=F}
-library(here)
-football = read.csv(here("data/swaab.csv"))
-```
-
-.small[Swaab, R.I., Schaerer, M, Anicich, E.M., Ronay, R., and Galinsky, A.D. (2014). [The too-much-talent effect: Team
-interdependence determines when more talent is too much or not enough.](https://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Too%20much%20talent%20PS.pdf) _Psychological Science 25_(8), 1581-1591.]
-
----
-.pull-left[
-```{r, message = F, warning = F}
-head(football)
-```
-]
-.pull-right[
-```{r, warning = F, message=FALSE}
-ggplot(football, aes(x = talent, y = points)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-```
+An interaction.]
 
 ]
 
-
----
-
-```{r mod1, warning = F, message = F, fig.width = 10, fig.height = 5}
-mod1 = lm(points ~ talent, data = football)
-library(broom)
-aug1 = augment(mod1)
-ggplot(aug1, aes(x = .fitted, y = .resid)) +
-  geom_point() + 
-  geom_smooth(se = F) +
-  theme_bw(base_size = 20)
-```
-
----
-```{r mod2}
-mod2 = lm(points ~ talent + I(talent^2), data = football)
-summary(mod2)
-```
-
----
-
-```{r, message = F}
-library(sjPlot)
-plot_model(mod2, type = "pred")
-```
-
----
-## Interpretation
-
-The intercept is the predicted value of Y when x = 0 -- this is always the interpretation of the intercept, no matter what kind of regression model you're running. 
-
-The $b_1$ coefficient is the tangent to the curve when X=0. In other words, this is the rate of change when X is equal to 0. If 0 is not a meaningful value on your X, you may want to center, as this will tell you the rate of change at the mean of X.
-
-
-```{r}
-football$talent_c50 = football$talent - 50
-mod2_50 = lm(points ~ talent_c50 + I(talent_c50^2), data = football)
-```
-
----
-
-```{r}
-summary(mod2_50)
-```
-
----
-```{r, echo = FALSE, warning= FALSE}
-plot_model(mod2_50, type = "pred")
+```{r, message = F, warning = F, fig.width = 7, fig.height = 8.5, echo = F}
+model.data %>% ggplot(aes(x = group, y = predicted, fill = as.factor(x))) +
+  geom_bar(stat = "identity", position = position_dodge(width = .8), color = "black", width = .7) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .3, position = position_dodge(width = .8)) +
+  scale_x_discrete("Noise Condition") +
+  scale_fill_discrete("Speed Condition", labels = c("Slow", "Medium", "Fast"))+
+  labs(y = "Mean Seconds (95% CI)", title = "Failure time as a function of\nnoise condition and speed condition") +
+cowplot::theme_cowplot(font_size = 20) + theme(legend.position = "top")
 ```
 ---
 
-Or you can choose another value to center your predictor on, if there's a value that has a particular meaning or interpretation.
+### Null Hypotheses
 
-```{r}
-football$talent_c = football$talent - mean(football$talent)
-mod2_c = lm(points ~ talent_c + I(talent_c^2), data = football)
-```
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ $(\mu_g)$ |
 
----
+The two main effects and the interaction represent three independent questions we can ask about the data. We have three null hypotheses to test.
 
-```{r}
-mean(football$talent)
-summary(mod2_c)
-```
+One null hypothesis refers to the marginal row means.
 
----
-```{r, echo = FALSE, warning= FALSE}
-plot_model(mod2_c, type = "pred")
-```
----
-
-
-## Interpretation
-
-The $b_2$ coefficient indexes the acceleration, which is how much the slope is going to change. More specifically, $2 \times b_2$ is the acceleration: the rate of change in $b_1$ for a 1-unit change in X.
-
-You can use this to calculate the slope of the tangent line at any value of X you're interested in:
-$$\large b_1 + (2\times b_2\times X)$$
+$$
+\begin{aligned}
+H_0&: \mu_{1.} = \mu_{2.} = \dots = \mu_{R.}\\
+H_1&: \text{Not true that }\mu_{1.} = \mu_{2.} = \dots = \mu_{R.}
+\end{aligned}
+$$
 
 ---
 
-```{r}
-tidy(mod2)
-```
+### Null Hypotheses
 
-.pull-left[
-**At X = 10**
-```{r}
-54.9 + (2*-.570*10)
-```
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ $(\mu_g)$ |
 
-]
-.pull-right[
-**At X = 70**
-```{r}
-54.9 + (2*-.570*70)
-```
+We can state this differently (it will make stating the interaction null hypothesis easier when we get to it).
 
-]
-
----
-
-## Polynomials are interactions
-
-An term for $X^2$ is a term for $X \times X$ or the multiplication of two independent variables holding the same values. 
-
-```{r}
-football$talent_2 = football$talent*football$talent
-tidy(lm(points ~ talent + talent_2, data = football))
-```
----
-
-## Polynomials are interactions
-
-Put another way:
-
-$$\large \hat{Y} = b_0 + b_1X + b_2X^2$$
-
-$$\large \hat{Y} = b_0 + \frac{b_1}{2}X + \frac{b_1}{2}X + b_2(X \times X)$$
-
-The interaction term in another model would be interpreted as "how does the slope of X change as I move up in Z?" -- here, we ask "how does the slope of X change as we move up in X?"
----
-
-## When should you use polynomial terms?
-
-You may choose to fit a polynomial term after looking at a scatterplot of the data or looking at residual plots. A U-shaped curve may be indicative that you need to fit a quadratic form -- although, as we discussed before, you may actually be measuring a different kind of non-linear relationship. 
-
-Polynomial terms should mostly be dictated by theory -- if you don't have a good reason for thinking there will be a change in sign, then a polynomial is not right for you.
-
-And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
----
-
-class: inverse
-
-## Three-way interactions and beyond
+$$
+\begin{aligned}
+\alpha_r&= \mu_{r.} - \mu_{g} \\
+H_0&: \alpha_1 = \alpha_2 = \dots = \alpha_R = 0\\
+H_1&: \text{At least one }\alpha_r \neq 0
+\end{aligned}
+$$
 
 ---
 
-
-### Three-way interactions (regression)
-
-**Regression equation**
-
-$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$
-The three-way interaction qualifies the three main effects (and any two-way interactions). 
-
-Like a two-way interaction, the three-way interaction is a conditional effect.  And it is symmetrical, meaning there are several equally correct ways of interpreting it.
-
-**Factorial ANOVA**
-
-We describe the factorial ANOVA design by the number of levels of each factor. "X by Z by W" (e.g., 2 by 3 by 4, or 2x3x4)
----
-A two-way  (A x B) interaction means that the magnitude of one main effect (e.g., A main effect) depends on levels of the other variable (B).  But, it is equally correct to say that the magnitude of the B main effect depends on levels of A. In regression, we refer to these as **conditional effects** and in ANOVA, they are called **simple main effects.**
-
-A three-way interaction means that the magnitude of one two-way interaction (e.g., A x B) depends on levels of the remaining variable (C). 
-
-It is equally correct to say that the magnitude of the A x C interaction depend on levels of B. Or, that the magnitude of the B x C interaction depends on levels of A. These are known as **simple interaction effects**.
-
----
-### Example (regression)
-
-```{r, echo = F}
-set.seed(03032020)
-gender = sample(c("male", "female"), size = 150, replace = T)
-bad_day = sample(x = c(1:5), size = 150, replace = T)
-talk = round(2*(gender == "female") + .2*(bad_day) + rnorm(n = 150))
-talk = talk + 1
-talk[talk < 1] = 1
-talk[talk > 5] = 5
-stress = bad_day + talk - (bad_day*talk) + round(rnorm(n = 150, sd = 5))
-stress_m = bad_day + talk + (bad_day*talk)+ round(rnorm(n = 150, sd = 5))
-stress[gender == "male"] = stress_m[gender == "male"]
-stress = stress+1+abs(min(stress))
-
-stress_data = data.frame(gender, bad_day, talk, stress)
-```
+### Null Hypotheses
 
 
-```{r}
-psych::describe(stress_data, fast = T)
-table(stress_data$gender)
-```
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ $(\mu_g)$ |
 
----
-
-```{r}
-mod_stress = lm(stress ~ bad_day*talk*gender, data = stress_data)
-summary(mod_stress)
-```
-
----
-
-```{r, message = F}
-library(reghelper)
-simple_slopes(mod_stress)
-```
-
----
-
-```{r, fig.width=10, fig.height = 7}
-plot_model(mod_stress, type = "int", mdrt.values = "meansd")
-```
-
----
-
-As a reminder, centering will change all but the highest-order terms in a model. 
-
-```{r}
-stress_data = stress_data %>%
-  mutate(bad_day_c = bad_day - mean(bad_day),
-         talk_c = talk - mean(talk))
-newmod = lm(stress ~ bad_day_c*talk_c*gender, data = stress_data)
-```
-
----
-```{r}
-tidy(mod_stress)
-```
-```{r}
-tidy(newmod)
-```
-
-
----
-### Four-way? 
+The main effect for dot speed (column marginal means) can be stated similarly:
 
 
 $$
 \begin{aligned}
-\hat{Y} &= b_0 + b_1X + b_{2}Z + b_{3}W + b_{4}Q + b_{5}XW\\
-&+ b_{6}ZW + b_{7}XZ + b_{8}QX + b_{9}QZ + b_{10}QW\\
-&+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ + b_{15}XZWQ\\
+\beta_c&= \mu_{.c} - \mu_{g} \\
+H_0&: \beta_1 = \beta_2 = \dots = \beta_C = 0\\
+H_1&: \text{At least one }\beta_c \neq 0
 \end{aligned}
 $$
+---
+### Null Hypothesis
+
+
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ $(\mu_g)$ |
+
+The interaction is the difference between each cell mean ( $\mu_{rc}$) and the grand mean ( $\mu_g$ or $\mu_{..}$) that remains *after* you remove the effects of A and B.
+
+$$(\alpha\beta)_{rc} = (\mu_{rc} - \mu_g) - (\mu_r - \mu_g) - (\mu_c - \mu_g)$$
+
+This simplifies down to:
+
+$$(\alpha\beta)_{rc} = \mu_{rc} - \mu_r - \mu_c + \mu_g$$
+
+---
+
+### Null Hypothesis
+
+
+| | Slow | Medium | Fast | Marginal |
+|:-|:-:|:-:|:-:|:-:|
+| No Noise |             $\mu_{11}$ | $\mu_{12}$ | $\mu_{13}$ | $\mu_{1.}$ |
+| Controllable Noise |   $\mu_{21}$ | $\mu_{22}$ | $\mu_{23}$ | $\mu_{2.}$ |
+| Uncontrollable Noise | $\mu_{31}$ | $\mu_{32}$ | $\mu_{33}$ | $\mu_{3.}$ |
+| Marginal | $\mu_{.1}$ | $\mu_{.2}$ | $\mu_{.3}$ | $\mu_{..}$ $(\mu_g)$ |
+
+The interaction null hypothesis can then be stated as follows:
+
+$$
+\begin{aligned}
+(\alpha\beta)_{rc}&= \mu_{rc} - \alpha_r - \beta_c  + \mu_{..} \\
+H_0&: (\alpha\beta)_{11} = (\alpha\beta)_{12} = \dots = (\alpha\beta)_{RC} = 0\\
+H_1&: \text{At least one }(\alpha\beta)_{rc} \neq 0
+\end{aligned}
+$$
+---
+
+### Putting it all together
+
+$\alpha_r$ = row marginal means - grand mean; main effect of variable A (noise)
+
+$\beta_c$ = column marginal means - grand mean; main effect of variable B (speed)
+
+$(\alpha\beta)_{rc}$ = cell mean - $\alpha_r$ - $\beta_c$ + grand mean; interaction
+
+$\epsilon_{irc}$ = error component (independent, normally distributed)
+
+---
+### Putting it all together
+
+
+$$\large Y_{irc} = \mu + \alpha_r + \beta_c + (\alpha\beta)_{rc} + \epsilon_{irc}$$
 
 --
 
-3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test (more on this later). 
+If you subtract the grand mean ( $\mu_g$) from both sides and substitute in the treatment population means, you get...
 
-<center>
 
-<img src="images/interactions pic.jpeg", width = "35%">  
+$$Y_{irc} - \mu_g = (\mu_r - \mu_g) + (\mu_c - \mu_g) + (\mu_{rc} - \mu_r - \mu_c + \mu_g) + \epsilon_{irc}$$
+--
 
-</center>
+Now, above is working with population parameters. We don't have those. We have sample estimates. Let's replace with the notation for sample estimates: 
+
+$$(Y_{irc} - \bar{Y}_g) = (\bar{Y}_r - \bar{Y}_g) + (\bar{Y}_c - \bar{Y}_g) + (\bar{Y}_{rc} - \bar{Y}_r - \bar{Y}_c + \bar{Y}_g) + (\bar{Y}_{irc} - \bar{Y}_{rc})$$
+--
+
+In words, this translates to:
+
+> score - grand mean = main effect of A + main effect of B + interaction term + residual error
+
+---
+### Variability 
+
+
+$$
+\begin{aligned}
+\large SS_{\text{total}} &= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{...})^2 \\
+\large SS_{\text{Within}} &= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(Y_{rci}-\bar{Y}_{rc.})^2 \\
+\large SS_R &= CN\sum_{r=1}^R(\bar{Y}_{r..}-\bar{Y}_{...})^2\\
+SS_C &= RN\sum_{c=1}^C(\bar{Y}_{.c.}-\bar{Y}_{...})^2\\
+\large SS_{RC} &= \sum_{r=1}^R\sum_{c=1}^C\sum_{i=1}^{N_{rc}}(\bar{Y}_{rc.}-\bar{Y}_{r..}-\bar{Y}_{.c.}+\bar{Y}_{...})^2 \\
+\end{aligned}
+$$
+
 ---
 
-Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
+### Variability 
 
-Best practice for 3-way (and higher) interactions is to use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator.
+As was true for the simpler one-way ANOVA, we will partition the total variability in the data matrix into two basic parts. 
 
-Even better if one of these moderators is experimenter manipulated, which increases the likelihood of balanced conditions. 
+One part will represent variability **within groups**. This within-group variability is variability that has nothing to do with the experimental conditions (all participants within a particular group experience the same experimental conditions). 
+
+The other part will be **between-group variability**.  This part will include variability due to experimental conditions.  We will further partition this between-group variability into parts due to the two main effects and the interaction.
 
 ---
 
+
+### Variability 
+
+
+If the design is balanced (equal cases in all conditions), then:
+
+$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$
+
+$df$, $MS$, and $F$ ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
+$$
+\begin{aligned}
+\large df_{Total} &= N-1 \\
+\large df_{Total} &= abn - 1 \\
+\large df_R &= R-1 \\
+\large df_C &= C-1 \\
+\large df_{RxC} &= (R-1)(C-1) \\
+\large df_{within} &= ab(n-1) \\
+&= df_{total} - df_{R} - df_C - df_{RxC}
+\end{aligned}
+$$
+
+---
+
+### Variability 
+
+If the design is balanced (equal cases in all conditions), then:
+
+$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$
+
+$df$, $MS$, and $F$ ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
+
+.pull-left[
+$$
+\begin{aligned}
+\large MS_R &= \frac{SS_R}{df_R} \\
+\large MS_C &= \frac{SS_C}{df_C} \\
+\large MS_{RxC} &= \frac{SS_{RxC}}{df_{RxC}} \\
+\large MS_{within} &= \frac{SS_{within}}{df_{within}} \\
+\end{aligned}
+$$
+]
+
+.pull-right[
+
+Each mean square is a variance estimate.  $MS_{within}$  is the pooled estimate of the within-groups variance.  It represents only random or residual variation.  $MS_R$, $MS_C$, and $MS_{RxC}$ also contain random variation, but include systematic variability too.
+
+]
+
+---
+
+### F-statistics 
+
+
+If the design is balanced (equal cases in all conditions), then:
+
+$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$
+
+$df$, $MS$, and $F$ ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
+
+.pull-left[
+$$
+\begin{aligned}
+\large F_R &= \frac{MS_R}{MS_{within}} \\
+\\
+\large F_C &= \frac{MS_C}{MS_{within}} \\
+\\
+\large F_{RxC} &= \frac{MS_{RxC}}{MS_{within}} \\
+\end{aligned}
+$$
+
+]
+
+.pull-right[
+If the null hypotheses are true, these ratios will be ~1.00 because the numerator and denominator of each estimate the same thing. Departures from 1.00 indicate that systematic variability is present. If large enough, we reject the null hypothesis (each considered separately).
+]
+
+---
+
+### Degrees of freedom
+
+The degrees of freedom for the different F ratios might not be the same. Different degrees of freedom define different theoretical F density distributions for determining what is an unusual value under the null hypothesis.
+
+
+Which is to say, you might get the same F-ratio for two different tests, but they could have different p-values, if they represent different numbers of groups. 
+
+---
+
+### Interpretation of significance tests
+
+```{r}
+fit = lm(Time ~ Speed*Noise, data = Data)
+anova(fit)
+```
+
+Interpretation?
+
+--
+All three null hypotheses are rejected.  This only tells us that systemic differences among the means are present; follow-up comparisons are necessary to determine the nature of the differences. 
+---
+
+### Interpretation of significance tests
+
+```{r}
+fit = lm(Time ~ Speed*Noise, data = Data)
+anova(fit)
+```
+
+Both main effects and the interaction are significant.
+
+The significant interaction qualifies the main effects:
+
+- The magnitude of the speed main effect varies across the noise conditions.
+
+- The magnitude of the noise main effect varies across the speed conditions.
+
+---
+
+### Visualizing main effects and interactions
+
+Different combinations of main effects and interactions yield different shapes when plotted. An important skill is recognizing how plots will change based on the presence or absence of specific effects. 
+
+Main effects are tests of differences in means; a significant main effect will yield a difference -- the mean of Group 1 will be different than the mean of Group 2, for example.
+
+Interactions are tests of the differences of differences of means -- is the difference between Group 1 and Group 2 different in Condition A than that difference is in Condition B, for example.
+
+---
+
+### Visualizing main effects and interactions
+
+```{r, echo = F, fig.width=7, fig.height=7}
+data.frame(A = c(1,2,1,2), 
+           B = c("B1","B1","B2","B2"),
+           Y = c(10, 10, 20, 20)) %>%
+  ggplot(aes(x = A, y = Y, color =B)) +
+  geom_point(size = 3) +
+  geom_line() + 
+  scale_x_continuous(breaks = c(1,2), labels = c("A1", "A2")) +
+  scale_y_continuous(limits = c(5, 25), labels = NULL)+
+  cowplot::theme_cowplot(font_size = 20)
+
+```
+
+???
+No effect of A
+Main effect of B
+No interaction
+---
+
+### Visualizing main effects and interactions
+
+```{r, echo = F, fig.width=7, fig.height=7}
+data.frame(A = c(1,2,1,2), 
+           B = c("B1","B1","B2","B2"),
+           Y = c(10, 20, 20, 20)) %>%
+  ggplot(aes(x = A, y = Y, color =B)) +
+  geom_point(size = 3) +
+  geom_line() + 
+  scale_x_continuous(breaks = c(1,2), labels = c("A1", "A2")) +
+  scale_y_continuous(limits = c(5, 25), labels = NULL)+
+  cowplot::theme_cowplot(font_size = 20)
+
+```
+???
+Main effect of A
+Main effect of B
+Interaction
+---
+
+### Visualizing main effects and interactions
+
+```{r, echo = F, fig.width=7, fig.height=7}
+data.frame(A = c(1,2,1,2), 
+           B = c("B1","B1","B2","B2"),
+           Y = c(10, 20, 20, 10)) %>%
+  ggplot(aes(x = A, y = Y, color =B)) +
+  geom_point(size = 3) +
+  geom_line() + 
+  scale_x_continuous(breaks = c(1,2), labels = c("A1", "A2")) +
+  scale_y_continuous(limits = c(5, 25), labels = NULL)+
+  cowplot::theme_cowplot(font_size = 20)
+
+```
+
+???
+No effect of A
+No effect of B
+Interaction
+---
+
+### Pop Quiz
+
+How would you plot....
+
+* A main effect of A, no main effect of B, and no interaction?
+* A main effect of A, a main effect of B, and no interaction?
+* No main effect of A, a main effect of B, and an interaction?
+
+---
+
+## Effect size
+
+All of the effects in the ANOVA are statistically significant, but how big are they?  An effect size, $\eta^2$, provides a simple way of indexing effect magnitude for ANOVA designs, especially as they get more complex.
+
+$$\large \eta^2 = \frac{SS_{\text{effect}}}{SS_{\text{total}}}$$
+If the design is balanced...
+
+$$\large SS_{\text{total}} = SS_{\text{speed}} + SS_{\text{noise}}+SS_{\text{speed:noise}}+SS_{\text{within}}$$
+---
+
+
+```{r, echo = F, results = 'asis'}
+options(knitr.kable.NA = '') # print NA's as blank
+
+eta.tab = as.data.frame(lsr::etaSquared(fit))
+aov.fit = anova(fit)
+eta.tab$source = rownames(eta.tab)
+eta.tab[4, "source"] = "Residuals"
+eta.tab$SS = aov.fit$`Sum Sq`
+eta.tab[5, "source"] = "Total"
+eta.tab[5, "SS"] = sum(eta.tab$SS)
+eta.tab[,c("source", "SS", "eta.sq", "eta.sq.part")] %>%
+  kable(., digits = 2,  format = "html",
+        col.names = c("Source", "SS", "$\\eta^2$", '$\\text{partial }\\eta^2$'), 
+         row.names = F, escape = F) %>%
+  column_spec(3, width = "10em")
+```
+
+The Speed main effect accounts for 8 to 9 times as much variance in the outcome as the Noise main effect and the Speed x Noise interaction.
+
+---
+
+![](images/eta_sq.jpg)
+---
+
+### $\eta^2$
+
+.pull-left[
+**If the design is balanced:**
+
+There is no overlap among the independent variables. They are uncorrelated.
+
+The variance accounted for by any effect is unique. There is no ambiguity about the source of variance accounted for in the outcome.
+
+The sum of the $\eta^2$ for effects and residual is 1.00.
+]
+
+.pull-right[
+![](images/eta_sq.jpg)
+]
+
+---
+
+### $\eta^2$
+
+One argument against $\eta^2$ is that its magnitude depends in part on the magnitude of the other effects in the design. If the amount of variability due to Noise or Speed x Noise changes, so to does the effect size for Speed.
+
+$$\large \eta^2_{\text{speed}} = \frac{SS_{\text{speed}}}{SS_{\text{speed}} + SS_{\text{noise}} + SS_{\text{speed:noise}}+ SS_{\text{within}}}$$
+
+An alternative is to pretend the other effects do not exist and reference the effect sum of squares to residual variability.
+
+$$\large \text{partial }\eta^2_{\text{speed}} = \frac{SS_{\text{speed}}}{SS_{\text{speed}} + SS_{\text{within}}}$$
+---
+
+### $\eta^2$
+
+One rationale for partial $\eta^2$ is that the residual variability represents the expected variability in the absence of any treatments or manipulations.  The presence of any treatments or manipulations only adds to total variability.  Viewed from that perspective, residual variability is a sensible benchmark against which to judge any effect.
+
+$$\large \text{partial }\eta^2_{\text{effect}} = \frac{SS_{\text{effect}}}{SS_{\text{effect}} + SS_{\text{within}}}$$
+
+Partial $\eta^2$ is sometimes described as the expected effect size in a study in which the effect in question is the only effect present.
+
+---
+
+```{r, echo = F, results = 'asis'}
+options(knitr.kable.NA = '') # print NA's as blank
+
+eta.tab = as.data.frame(lsr::etaSquared(fit))
+aov.fit = anova(fit)
+eta.tab$source = rownames(eta.tab)
+eta.tab[4, "source"] = "Residuals"
+eta.tab$SS = aov.fit$`Sum Sq`
+eta.tab[5, "source"] = "Total"
+eta.tab[5, "SS"] = sum(eta.tab$SS)
+eta.tab[,c("source", "SS", "eta.sq", "eta.sq.part")] %>%
+  kable(., digits = 2,  format = "html",
+        col.names = c("Source", "SS", "$\\eta^2$", '$\\text{partial }\\eta^2$'), 
+         row.names = F, escape = F) %>%
+  column_spec(3, width = "10em")
+```
+
+Partial $\eta^2$ will be larger than $\eta^2$ if the ignored effects account for any variability.
+
+The sum of partial $\eta^2$ does not have a meaningful interpretation.
+
+---
 class: inverse
 
-## Next time...
+## Next Time
 
-Logistic Regression
+Exam 2! You got this!
 
-(everything after this slide is extra or code-based; feel free to play around, but you won't be tested on it)
-
----
-```{r, message = F, warning = F}
-library(car) 
-fit = lm(Time~Speed*Noise, data = Data)
-summary(aov(fit))
-Anova(fit, type = 2)
-```
----
-```{r}
-fit = lm(Time~Speed*Noise, data = Data)
-summary(fit)
-```
----
-```{r, message = F}
-library(emmeans)
-fit.grid = ref_grid(fit)
-pairs(fit.grid, adjust = "holm")
-```
-
----
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't give it all of M, it will choose every possible value.
-
-.pull-left[
-```{r pred2.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise", "Speed")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred2.plot", message = F, echo = F}
-
-```
-
-]
----
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
-
-.pull-left[
-```{r pred.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred.plot", message = F, echo = F}
-
-```
-
-]---
-
-In `sjPlot()`, predicted values are the expected value of Y given all possible values of X, **at specific values of M**. If you don't specify levels of M, it will choose the lowest possible value.
-
-.pull-left[
-```{r pred.plot2, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "pred", 
-           terms = c("Noise", "Speed[Fast]")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "pred.plot2", message = F, echo = F}
-
-```
-
-]
-
-
-
----
-
-In `sjPlot()`, estimated marginal means are the expected value of Y given all possible values of X, **ignoring M**. 
-
-.pull-left[
-```{r emm.plot, message = F, eval = F}
-library(sjPlot)
-plot_model(fit, type = "emm", 
-           terms = c("Noise")) + 
-  theme_sjplot(base_size = 20) + 
-  theme(legend.position = "bottom")
-```
-
-]
-
-.pull-left[
-```{r, ref.label = "emm.plot", message = F, echo = F}
-
-```
-
-]
