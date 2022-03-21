@@ -705,5 +705,7 @@ class: inverse
 
 ## Next Time
 
-Exam 2! You got this!
-
+- Power & effect sizes (interactions IV)
+- Polynomial regression (interactions V)
+- Review problems 
+- Exam 2 on **April 5** (2 weeks from today)

@@ -3,7 +3,7 @@
   <head>
     <title>Interactions (IV)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -303,7 +303,7 @@ library(ggpubr)
 ggarrange(noise_m, speed_m, ncol = 2)
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](17-interactions_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -313,7 +313,7 @@ plot_model(fit, type = "pred", terms = c("Speed", "Noise")) +
   theme_sjplot(base_size = 20) + theme(legend.position = "bottom")
 ```
 
-![](15-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](17-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ---
 
 ### Precision
@@ -404,9 +404,9 @@ pairs(noise_lsm, adjust = "holm")
 
 ```
 ##  contrast                      estimate   SE  df t.ratio p.value
-##  None - Controllable               42.9 20.7 171 2.074   0.0395 
-##  None - Uncontrollable            106.0 20.7 171 5.128   &lt;.0001 
-##  Controllable - Uncontrollable     63.1 20.7 171 3.053   0.0052 
+##  None - Controllable               42.9 20.7 171   2.074  0.0395
+##  None - Uncontrollable            106.0 20.7 171   5.128  &lt;.0001
+##  Controllable - Uncontrollable     63.1 20.7 171   3.053  0.0052
 ## 
 ## Results are averaged over the levels of: Speed 
 ## P value adjustment: holm method for 3 tests
@@ -490,7 +490,7 @@ All credit for the following goes to Matt Cooper (no relation!) and this great b
 
 --
 
-Read the pipe `|` as "after; `\(SS(AB | A,B)\)` is *"the sum of squares for interaction after the main effects"* 
+Read the pipe `|` as "after"; `\(SS(AB | A,B)\)` is *"the sum of squares for interaction after the main effects"* 
 
 ---
 
@@ -662,7 +662,7 @@ The likelihood of finding an effect *if the effect actually exists.* Power gets 
 
 ---
 
-![](15-interactions_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](17-interactions_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 ---
 

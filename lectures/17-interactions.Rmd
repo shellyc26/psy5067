@@ -360,7 +360,7 @@ $SS(B, AB)$ is sum of squares for model that does not account for the effects fr
 
 --
 
-Read the pipe `|` as "after; $SS(AB | A,B)$ is *"the sum of squares for interaction after the main effects"* 
+Read the pipe `|` as "after"; $SS(AB | A,B)$ is *"the sum of squares for interaction after the main effects"* 
 
 ---
 
@@ -500,7 +500,7 @@ ggplot(data.frame(x = seq(70, 130)), aes(x)) +
   geom_hline(aes(yintercept = 0))+
   scale_x_continuous("Means", breaks = seq(70,130,10)) +
   scale_y_continuous(NULL, breaks = NULL) + 
-  guides(color = F)+
+  guides(color = "none")+
   theme_bw()+
   theme( text = element_text(size = 20))
 ```
