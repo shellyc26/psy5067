@@ -482,7 +482,7 @@ If you subtract the grand mean ( `\(\mu_g\)`) from both sides and substitute in 
 
 Now, above is working with population parameters. We don't have those. We have sample estimates. Let's replace with the notation for sample estimates: 
 
-`$$(Y_{irc} - \bar{Y}_g) = (\bar{Y}_r - \bar{Y}_g) + (\bar{Y}_c - \bar{Y}_g) + (\bar{Y}_{rc} - \bar{Y}_r - \bar{Y}_c + \bar{Y}_g) + (\bar{Y}_{irc} - \bar{Y}_{rc})$$`
+`$$(Y_{irc} - \bar{Y}_g) = (\bar{Y}_r - \bar{Y}_g) + (\bar{Y}_c - \bar{Y}_g) + (\bar{Y}_{rc} - \bar{Y}_r - \bar{Y}_c + \bar{Y}_g) + \\ (\bar{Y}_{irc} - \bar{Y}_{rc})$$`
 --
 
 In words, this translates to:
@@ -521,7 +521,7 @@ The other part will be **between-group variability**.  This part will include va
 
 If the design is balanced (equal cases in all conditions), then:
 
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
+`$$\large SS_{\text{total}} = SS_R + SS_C + SS_{RxC} +SS_{\text{within}}$$`
 
 `\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
 $$
@@ -542,7 +542,7 @@ $$
 
 If the design is balanced (equal cases in all conditions), then:
 
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
+`$$\large SS_{\text{total}} = SS_R + SS_C + SS_{RxC} +SS_{\text{within}}$$`
 
 `\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
 
@@ -570,7 +570,7 @@ Each mean square is a variance estimate.  `\(MS_{within}\)`  is the pooled estim
 
 If the design is balanced (equal cases in all conditions), then:
 
-`$$\large SS_{\text{total}} = SS_{\text{within}} + SS_R + SS_C + SS_{RxC}$$`
+`$$\large SS_{\text{total}} = SS_R + SS_C + SS_{RxC} +SS_{\text{within}}$$`
 
 `\(df\)`, `\(MS\)`, and `\(F\)` ratios are defined in the same way as they were for one-way ANOVA. We just have more of them.
 
