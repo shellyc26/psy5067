@@ -292,7 +292,7 @@ leveneTest(Time ~ Speed*Noise, data = Data)
 
 ## Unbalanced designs
 
-If designs are balanced, then the main effects and interpretation effects are independent/orthogonal. In other words, knowing what condition a case is in on Variable 1 will not make it any easier to guess what condition they were part of in Variable 2. 
+If designs are balanced, then the main effects and interaction effects are independent/orthogonal. In other words, knowing what condition a case is in on Variable 1 will not make it any easier to guess what condition they were part of in Variable 2. 
 
 However, if your design is unbalanced, the main effects and interaction effect are partly confounded. 
 
@@ -418,6 +418,7 @@ Tests the presence of a main effect after the other main effect and interaction.
 | B      | SS(B&#124;A)       | SS(B&#124;A)       | SS(B&#124;A,AB) |
 | A:B    | SS(AB&#124;A,B)    | SS(AB&#124;A,B)    | SS(AB&#124;A,B)   |
 
+.tiny[For Type II:  significant interaction is assumed (in other words, you should test for interaction first (SS(AB&#124;A,B)) and only if AB is not significant, continue with the analysis for main effects).]
 ---
 
 The `aov( )` function in R produces Type I sums of squares. The `Anova( )` function from the `car` package provides Type II and Type III sums of squares.
@@ -441,11 +442,12 @@ The highest order effect (assuming standard ordering) has the same SS in all thr
 
 ---
 
-## Summary (and Regression)
+## Summary (ANOVA and Regression)
 
 Factorial ANOVA is the method by which we can examine whether two (or more) categorical IVs have joint effects on a continuous outcome of interest. Like all general linear models, factorial ANOVA is a specific case of multiple regression. However, we may choose to use an ANOVA framework for the sake of interpretability. 
 
 ---
+## Summary (ANOVA and Regression)
 
 .pull-left[
 #### Factorial ANOVA
@@ -467,7 +469,7 @@ A conditional effect is the effect of IV on the DV **assuming all the other vari
 
 ## Power
 
-What is (statistical) power? How can we increase power?
+What is statistical power? How can we increase power?
 
 --
 
