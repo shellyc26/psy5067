@@ -3,7 +3,7 @@
   <head>
     <title>Interactions (V)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -269,7 +269,7 @@ mean(obeta_xz)
 ## [1] 1.175444
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -290,7 +290,7 @@ mean(ot_xz)
 ## [1] 0.7411209
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -457,7 +457,7 @@ ggplot(football, aes(x = talent, y = points)) +
   theme_bw(base_size = 20)
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -475,7 +475,7 @@ ggplot(aug1, aes(x = .fitted, y = .resid)) +
   theme_bw(base_size = 20)
 ```
 
-![](16-interactions_files/figure-html/mod1-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/mod1-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -518,7 +518,7 @@ plot_model(mod2, type = "pred")
 ## $talent
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 ---
 ## Interpretation
@@ -569,7 +569,7 @@ summary(mod2_50)
 ## $talent_c50
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 ---
 
 Or you can choose another value to center your predictor on, if there's a value that has a particular meaning or interpretation.
@@ -623,7 +623,7 @@ summary(mod2_c)
 ## $talent_c
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 ---
 
 
@@ -642,7 +642,7 @@ tidy(mod2)
 ```
 
 ```
-## # A tibble: 3 x 5
+## # A tibble: 3 × 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)  305.      17.6        17.3  5.22e-42
@@ -688,7 +688,7 @@ tidy(lm(points ~ talent + talent_2, data = football))
 ```
 
 ```
-## # A tibble: 3 x 5
+## # A tibble: 3 × 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)  305.      17.6        17.3  5.22e-42
@@ -859,28 +859,28 @@ plot_model(mod_stress, type = "int", mdrt.values = "meansd")
 ## [[1]]
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
 
 ```
 ## 
 ## [[2]]
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-34-2.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-34-2.png)&lt;!-- --&gt;
 
 ```
 ## 
 ## [[3]]
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-34-3.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-34-3.png)&lt;!-- --&gt;
 
 ```
 ## 
 ## [[4]]
 ```
 
-![](16-interactions_files/figure-html/unnamed-chunk-34-4.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-34-4.png)&lt;!-- --&gt;
 
 ---
 
@@ -901,7 +901,7 @@ tidy(mod_stress)
 ```
 
 ```
-## # A tibble: 8 x 5
+## # A tibble: 8 × 5
 ##   term                    estimate std.error statistic   p.value
 ##   &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 (Intercept)               20.3       4.52     4.50   0.0000139
@@ -919,7 +919,7 @@ tidy(newmod)
 ```
 
 ```
-## # A tibble: 8 x 5
+## # A tibble: 8 × 5
 ##   term                        estimate std.error statistic  p.value
 ##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)                    23.4      0.845     27.7  3.89e-59
@@ -1050,42 +1050,42 @@ pairs(fit.grid, adjust = "holm")
 
 ```
 ##  contrast                                    estimate   SE  df t.ratio p.value
-##  Slow None - Medium None                        105.4 35.8 171  2.944  0.0553 
-##  Slow None - Fast None                          301.4 35.8 171  8.418  &lt;.0001 
-##  Slow None - Slow Controllable                   54.1 35.8 171  1.509  1.0000 
-##  Slow None - Medium Controllable                138.0 35.8 171  3.854  0.0026 
-##  Slow None - Fast Controllable                  343.5 35.8 171  9.592  &lt;.0001 
-##  Slow None - Slow Uncontrollable                 36.3 35.8 171  1.013  1.0000 
-##  Slow None - Medium Uncontrollable              326.1 35.8 171  9.106  &lt;.0001 
-##  Slow None - Fast Uncontrollable                362.6 35.8 171 10.124  &lt;.0001 
-##  Medium None - Fast None                        196.0 35.8 171  5.473  &lt;.0001 
-##  Medium None - Slow Controllable                -51.4 35.8 171 -1.435  1.0000 
-##  Medium None - Medium Controllable               32.6 35.8 171  0.910  1.0000 
-##  Medium None - Fast Controllable                238.1 35.8 171  6.648  &lt;.0001 
-##  Medium None - Slow Uncontrollable              -69.2 35.8 171 -1.931  0.6615 
-##  Medium None - Medium Uncontrollable            220.7 35.8 171  6.162  &lt;.0001 
-##  Medium None - Fast Uncontrollable              257.1 35.8 171  7.180  &lt;.0001 
-##  Fast None - Slow Controllable                 -247.4 35.8 171 -6.908  &lt;.0001 
-##  Fast None - Medium Controllable               -163.4 35.8 171 -4.564  0.0002 
-##  Fast None - Fast Controllable                   42.0 35.8 171  1.174  1.0000 
-##  Fast None - Slow Uncontrollable               -265.2 35.8 171 -7.405  &lt;.0001 
-##  Fast None - Medium Uncontrollable               24.7 35.8 171  0.689  1.0000 
-##  Fast None - Fast Uncontrollable                 61.1 35.8 171  1.707  0.9867 
-##  Slow Controllable - Medium Controllable         84.0 35.8 171  2.344  0.2627 
-##  Slow Controllable - Fast Controllable          289.4 35.8 171  8.082  &lt;.0001 
-##  Slow Controllable - Slow Uncontrollable        -17.8 35.8 171 -0.496  1.0000 
-##  Slow Controllable - Medium Uncontrollable      272.1 35.8 171  7.597  &lt;.0001 
-##  Slow Controllable - Fast Uncontrollable        308.5 35.8 171  8.615  &lt;.0001 
-##  Medium Controllable - Fast Controllable        205.5 35.8 171  5.738  &lt;.0001 
-##  Medium Controllable - Slow Uncontrollable     -101.7 35.8 171 -2.841  0.0707 
-##  Medium Controllable - Medium Uncontrollable    188.1 35.8 171  5.252  &lt;.0001 
-##  Medium Controllable - Fast Uncontrollable      224.6 35.8 171  6.271  &lt;.0001 
-##  Fast Controllable - Slow Uncontrollable       -307.2 35.8 171 -8.579  &lt;.0001 
-##  Fast Controllable - Medium Uncontrollable      -17.4 35.8 171 -0.486  1.0000 
-##  Fast Controllable - Fast Uncontrollable         19.1 35.8 171  0.533  1.0000 
-##  Slow Uncontrollable - Medium Uncontrollable    289.8 35.8 171  8.093  &lt;.0001 
-##  Slow Uncontrollable - Fast Uncontrollable      326.3 35.8 171  9.111  &lt;.0001 
-##  Medium Uncontrollable - Fast Uncontrollable     36.5 35.8 171  1.018  1.0000 
+##  Slow None - Medium None                        105.4 35.8 171   2.944  0.0553
+##  Slow None - Fast None                          301.4 35.8 171   8.418  &lt;.0001
+##  Slow None - Slow Controllable                   54.1 35.8 171   1.509  1.0000
+##  Slow None - Medium Controllable                138.0 35.8 171   3.854  0.0026
+##  Slow None - Fast Controllable                  343.5 35.8 171   9.592  &lt;.0001
+##  Slow None - Slow Uncontrollable                 36.3 35.8 171   1.013  1.0000
+##  Slow None - Medium Uncontrollable              326.1 35.8 171   9.106  &lt;.0001
+##  Slow None - Fast Uncontrollable                362.6 35.8 171  10.124  &lt;.0001
+##  Medium None - Fast None                        196.0 35.8 171   5.473  &lt;.0001
+##  Medium None - Slow Controllable                -51.4 35.8 171  -1.435  1.0000
+##  Medium None - Medium Controllable               32.6 35.8 171   0.910  1.0000
+##  Medium None - Fast Controllable                238.1 35.8 171   6.648  &lt;.0001
+##  Medium None - Slow Uncontrollable              -69.2 35.8 171  -1.931  0.6615
+##  Medium None - Medium Uncontrollable            220.7 35.8 171   6.162  &lt;.0001
+##  Medium None - Fast Uncontrollable              257.1 35.8 171   7.180  &lt;.0001
+##  Fast None - Slow Controllable                 -247.4 35.8 171  -6.908  &lt;.0001
+##  Fast None - Medium Controllable               -163.4 35.8 171  -4.564  0.0002
+##  Fast None - Fast Controllable                   42.0 35.8 171   1.174  1.0000
+##  Fast None - Slow Uncontrollable               -265.2 35.8 171  -7.405  &lt;.0001
+##  Fast None - Medium Uncontrollable               24.7 35.8 171   0.689  1.0000
+##  Fast None - Fast Uncontrollable                 61.1 35.8 171   1.707  0.9867
+##  Slow Controllable - Medium Controllable         84.0 35.8 171   2.344  0.2627
+##  Slow Controllable - Fast Controllable          289.4 35.8 171   8.082  &lt;.0001
+##  Slow Controllable - Slow Uncontrollable        -17.8 35.8 171  -0.496  1.0000
+##  Slow Controllable - Medium Uncontrollable      272.1 35.8 171   7.597  &lt;.0001
+##  Slow Controllable - Fast Uncontrollable        308.5 35.8 171   8.615  &lt;.0001
+##  Medium Controllable - Fast Controllable        205.5 35.8 171   5.738  &lt;.0001
+##  Medium Controllable - Slow Uncontrollable     -101.7 35.8 171  -2.841  0.0707
+##  Medium Controllable - Medium Uncontrollable    188.1 35.8 171   5.252  &lt;.0001
+##  Medium Controllable - Fast Uncontrollable      224.6 35.8 171   6.271  &lt;.0001
+##  Fast Controllable - Slow Uncontrollable       -307.2 35.8 171  -8.579  &lt;.0001
+##  Fast Controllable - Medium Uncontrollable      -17.4 35.8 171  -0.486  1.0000
+##  Fast Controllable - Fast Uncontrollable         19.1 35.8 171   0.533  1.0000
+##  Slow Uncontrollable - Medium Uncontrollable    289.8 35.8 171   8.093  &lt;.0001
+##  Slow Uncontrollable - Fast Uncontrollable      326.3 35.8 171   9.111  &lt;.0001
+##  Medium Uncontrollable - Fast Uncontrollable     36.5 35.8 171   1.018  1.0000
 ## 
 ## P value adjustment: holm method for 36 tests
 ```
@@ -1107,7 +1107,7 @@ plot_model(fit, type = "pred",
 ]
 
 .pull-left[
-![](16-interactions_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
 
 ]
 ---
@@ -1127,7 +1127,7 @@ plot_model(fit, type = "pred",
 ]
 
 .pull-left[
-![](16-interactions_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
 
 ]---
 
@@ -1146,7 +1146,7 @@ plot_model(fit, type = "pred",
 ]
 
 .pull-left[
-![](16-interactions_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1169,7 +1169,7 @@ plot_model(fit, type = "emm",
 ]
 
 .pull-left[
-![](16-interactions_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
+![](18-interactions_files/figure-html/unnamed-chunk-44-1.png)&lt;!-- --&gt;
 
 ]
     </textarea>
