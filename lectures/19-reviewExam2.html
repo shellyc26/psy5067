@@ -147,6 +147,47 @@ summary(lm(body_mass_g ~ bill_length_mm * flipper_length_mm, data = penguins))
 class: inverse, center, middle
 
 # DO NOT LOOK UNTIL AFTER YOU HAVE TRIED THE REVIEW QUESTIONS!
+
+---
+
+
+```r
+means = penguins %&gt;% 
+  group_by(group, island) %&gt;% 
+  summarize(mean(body_mass_g, na.rm = T))
+```
+
+```
+## `summarise()` has grouped output by 'group'. You can override using the `.groups` argument.
+```
+
+```r
+means
+```
+
+```
+## # A tibble: 9 × 3
+## # Groups:   group [3]
+##   group   island    `mean(body_mass_g, na.rm = T)`
+##   &lt;fct&gt;   &lt;fct&gt;                              &lt;dbl&gt;
+## 1 group 1 Biscoe                             4662.
+## 2 group 1 Dream                              3720.
+## 3 group 1 Torgersen                          3777.
+## 4 group 2 Biscoe                             4700.
+## 5 group 2 Dream                              3761.
+## 6 group 2 Torgersen                          3732.
+## 7 group 3 Biscoe                             4784.
+## 8 group 3 Dream                              3653.
+## 9 group 3 Torgersen                          3619.
+```
+
+---
+class:center, middle
+|             |  Biscoe  |  Dream   | Torgersen |
+|-------------|:--------:|:--------:|:---------:|
+| **Group 1** | 4661.818 | 3720.349 | 3776.562  |
+| **Group 2** | 4699.545 | 3761.310 | 3732.353  |
+| **Group 3** | 4784.211 | 3652.564 | 3619.444  |
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -78,3 +78,21 @@ summary(lm(body_mass_g ~ bill_length_mm * flipper_length_mm, data = penguins))
 class: inverse, center, middle
 
 # DO NOT LOOK UNTIL AFTER YOU HAVE TRIED THE REVIEW QUESTIONS!
+
+---
+
+```{r}
+means = penguins %>% 
+  group_by(group, island) %>% 
+  summarize(mean(body_mass_g, na.rm = T))
+
+means
+```
+
+---
+class:center, middle
+|             |  Biscoe  |  Dream   | Torgersen |
+|-------------|:--------:|:--------:|:---------:|
+| **Group 1** | 4661.818 | 3720.349 | 3776.562  |
+| **Group 2** | 4699.545 | 3761.310 | 3732.353  |
+| **Group 3** | 4784.211 | 3652.564 | 3619.444  |
