@@ -38,26 +38,16 @@ summary(q1Mod)
 ## -1859.21  -352.56     7.07   395.25  1600.45 
 ## 
 ## Coefficients:
-##                              Estimate Std. Error t value
-## (Intercept)                  4661.818     84.922  54.895
-## groupgroup 2                   37.727    120.098   0.314
-## groupgroup 3                  122.392    119.039   1.028
-## islandDream                  -941.469    128.203  -7.344
-## islandTorgersen              -885.256    178.891  -4.949
-## groupgroup 2:islandDream        3.233    181.911   0.018
-## groupgroup 3:islandDream     -190.177    183.208  -1.038
-## groupgroup 2:islandTorgersen  -81.937    250.091  -0.328
-## groupgroup 3:islandTorgersen -279.510    246.975  -1.132
-##                              Pr(&gt;|t|)    
-## (Intercept)                   &lt; 2e-16 ***
-## groupgroup 2                    0.754    
-## groupgroup 3                    0.305    
-## islandDream                  1.61e-12 ***
-## islandTorgersen              1.19e-06 ***
-## groupgroup 2:islandDream        0.986    
-## groupgroup 3:islandDream        0.300    
-## groupgroup 2:islandTorgersen    0.743    
-## groupgroup 3:islandTorgersen    0.259    
+##                              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                  4661.818     84.922  54.895  &lt; 2e-16 ***
+## groupgroup 2                   37.727    120.098   0.314    0.754    
+## groupgroup 3                  122.392    119.039   1.028    0.305    
+## islandDream                  -941.469    128.203  -7.344 1.61e-12 ***
+## islandTorgersen              -885.256    178.891  -4.949 1.19e-06 ***
+## groupgroup 2:islandDream        3.233    181.911   0.018    0.986    
+## groupgroup 3:islandDream     -190.177    183.208  -1.038    0.300    
+## groupgroup 2:islandTorgersen  -81.937    250.091  -0.328    0.743    
+## groupgroup 3:islandTorgersen -279.510    246.975  -1.132    0.259    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -122,16 +112,11 @@ summary(lm(body_mass_g ~ bill_length_mm * flipper_length_mm, data = penguins))
 ## -1040.18  -283.07   -23.94   241.93  1241.40 
 ## 
 ## Coefficients:
-##                                   Estimate Std. Error t value
-## (Intercept)                      5090.5088  2925.3007   1.740
-## bill_length_mm                   -229.2424    63.4334  -3.614
-## flipper_length_mm                  -7.3085    15.0321  -0.486
-## bill_length_mm:flipper_length_mm    1.1998     0.3224   3.721
-##                                  Pr(&gt;|t|)    
-## (Intercept)                      0.082740 .  
-## bill_length_mm                   0.000347 ***
-## flipper_length_mm                0.627145    
-## bill_length_mm:flipper_length_mm 0.000232 ***
+##                                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      5090.5088  2925.3007   1.740 0.082740 .  
+## bill_length_mm                   -229.2424    63.4334  -3.614 0.000347 ***
+## flipper_length_mm                  -7.3085    15.0321  -0.486 0.627145    
+## bill_length_mm:flipper_length_mm    1.1998     0.3224   3.721 0.000232 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
