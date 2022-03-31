@@ -43,6 +43,8 @@ navbar:
         href: "lectures/17-interactions.html"
       - text: "18-Interactions 5"
         href: "lectures/18-interactions.html"
+      - text: "19-Exam 2 Review"
+        href: "lectures/19-reviewExam2.html"
     - text: Homework
       href: homework.html
   right:

@@ -1,0 +1,80 @@
+---
+title: 'Review for Exam 2'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = F, results = 'hide', message=FALSE}
+library(tidyverse)
+library(broom)
+library(palmerpenguins)
+penguins = penguins
+
+penguins$group = rep(c("group 1", "group 2", "group 3"), length.out = nrow(penguins))
+penguins$group = factor(penguins$group)
+```
+
+### Review Question 1
+
+```{r}
+q1Mod = lm(body_mass_g ~ group * island, data = penguins)
+summary(q1Mod)
+```
+
+---
+### Review Question 1
+
+```{r}
+anova(q1Mod)
+```
+---
+### Review Question 1
+
+- Write the regression equation
+- Interpret the lower order terms
+- Fill in the following table of cell means
+- If I blocked out pieces of information from the ANOVA table, could you fill them in? How do you interpret the ANOVA table findings?
+
+
+|             | Biscoe | Dream | Torgersen |
+|-------------|--------|-------|-----------|
+| **Group 1** |        |       |           |
+| **Group 2** |        |       |           |
+| **Group 3** |        |       |           |
+
+---
+
+### Review Question 2
+
+```{r}
+summary(lm(body_mass_g ~ bill_length_mm * flipper_length_mm, data = penguins))
+```
+
+---
+
+### Review Question 2
+
+- Write the regression equation
+- Interpret all terms
+- Interpret omnibus NHST and omnibus effect size 
+- What changes if you center your variables? What if you $z$-score them? Would you be able to recognize these transformations were done? 
+
+---
+
+### Other things to keep in mind
+
+- DAGs are on the exam! Can you draw one? Can you recognize the 3 different ways we transmit information? How does "controlling for" variables matter in the context of DAGs? 
+- Do you know when to use a polynomial regression? How would you know if your current regression should actually include a polynomial term?
+- Can you draw your interactions? What types of things should be included? 
+
+---
+class: inverse, center, middle
+
+# DO NOT LOOK UNTIL AFTER YOU HAVE TRIED THE REVIEW QUESTIONS!
