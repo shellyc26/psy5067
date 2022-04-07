@@ -45,6 +45,8 @@ navbar:
         href: "lectures/18-interactions.html"
       - text: "19-Exam 2 Review"
         href: "lectures/19-reviewExam2.html"
+      - text: "20-Bayes"
+        href: "lectures/Bayesian Lecture.pdf"
     - text: Homework
       href: homework.html
   right:
