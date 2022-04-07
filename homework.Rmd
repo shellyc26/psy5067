@@ -28,12 +28,11 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 - Peer Review is due on 3/25 by 9:30am
 
 ## Homework 4
-- Homework 4 has not been posted yet
-- Due on 4/14 by 9:30am
-- *Note: __DO NOT PUT THIS ONE OFF__. It's on the longer side and on interactions, which can be tricky. Best to not procrastinate this time.*
-- Peer Review is due on 4/17 by 9:30am
+- [Homework 4 is here](homework/homework4.html)
+- Due on 4/17 by 11:59pm
+- Peer Review is due on 4/19 by 9:30am
 
 ## Homework 5
-- Homework 5 has not been posted yet
+- [Homework 5 is here](homework/homework5.html)
 - Due on 4/28 by 9:30am
 - Peer Review is due on 5/1 by 9:30am

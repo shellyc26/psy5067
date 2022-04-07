@@ -41,7 +41,7 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | 12   | 4/5 | **Exam 2** |  |  |
 | -    | 4/7  | Intro to Bayesian Methods |   |  |
 | 13   | 4/12 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
-| -    | 4/14 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE** | 4/17
+| -    | 4/14 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE 4/17** | 4/19
 | 14   | 4/19 | ML 2 (Bootstrapping)  |    |  |
 | -    | 4/21 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
 | 15    | 4/26 | Review Problems |  |            |             

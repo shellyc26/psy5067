@@ -14,8 +14,6 @@ Please complete this assignment by creating a new RMarkdown (or RNotebook) file 
 -   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
 -   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
 
-Late assignments will automatically receive a 2 out of 5, unless you discuss with Shelly, Violet, or Chan beforehand.
-
 You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
 
 All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
