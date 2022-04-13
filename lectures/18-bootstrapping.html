@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Bootstrapping</title>
+    <title>Random &amp; Resampling</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -13,7 +13,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Bootstrapping
+# Random &amp; Resampling
 
 ---
 
@@ -30,7 +30,7 @@ Logistic Regression
 Robust estimation
 
 * Weighted Least Squares
-* __Bootstrapping__
+* __Resampling methods, Bootstrapping__
 
 ---
 
@@ -84,7 +84,7 @@ head(ols_aug)
 ```
 
 ```
-## # A tibble: 6 x 8
+## # A tibble: 6 × 8
 ##   problems  calm .fitted .resid   .hat .sigma .cooksd .std.resid
 ##      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
 ## 1        4 1.06     4.87 -0.872 0.0326  0.665 0.0296      -1.33 
@@ -170,7 +170,7 @@ tidy(ols.model)
 ```
 
 ```
-## # A tibble: 2 x 5
+## # A tibble: 2 × 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)     5.94    0.182       32.6 3.54e-47
@@ -184,7 +184,7 @@ tidy(wls.model)
 ```
 
 ```
-## # A tibble: 2 x 5
+## # A tibble: 2 × 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)    5.64     0.182       30.9 1.60e-45
@@ -205,6 +205,42 @@ Use when...
 - Dealing with heteroscedasticity
 - You know already that points should not be treated equally (some should be weighed more than others); do you know that some of your data was measured with less error than other data?
 
+
+---
+## What is Sampling?
+
+- It is nearly impossible to survey every person in the population we are interested in
+
+
+- We take a random sample from the population
+
+- We calculate a statistic (mean, median, etc.)
+
+- *In theory*, we would draw another random sample. But we often can't do that so we
+
+- Luckily, a lot of our statistics follow well-defined distributions, and we can use those distribution properties to estimate the population parameters
+
+---
+## What is Resampling?
+
+- The problem with sampling as we defined previously is that we only actually have 1 estimate of the population parameter
+
+- We don't have a very good sense of the precision of that estimated population parameter
+
+- *In theory*, we can use something like the standard error of the mean, but that also has a lot of assumptions built in. 
+
+--
+
+- **Resampling** methods let us re-estimate our population parameter multiple times *from the same dataset*
+
+- This gives us more accurate estimates and more thorough picture of precision
+
+---
+## Resampling
+
+- Bootstrapping
+- Jacknifing (very similar, won't cover)
+- Permutation testing (you will cover in Research Methods with Ian)
 
 ---
 ## Bootstrapping
@@ -241,55 +277,31 @@ Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, an
 
 
 ```
-## [1] "Phoebe" "Monica" "Rachel" "Rachel" "Joey"   "Ross"
+## [1] "Chandler" "Ross"     "Phoebe"   "Monica"   "Rachel"   "Monica"
 ```
 
 ```
-## [1] 67.66667
+## [1] 68
 ```
 
 ```
-## [1] "Phoebe" "Rachel" "Monica" "Phoebe" "Phoebe" "Phoebe"
+## [1] "Rachel"   "Ross"     "Rachel"   "Chandler" "Ross"     "Monica"
 ```
 
 ```
-## [1] 67
+## [1] 68.83333
 ```
 
 ```
-## [1] "Joey"     "Phoebe"   "Monica"   "Monica"   "Chandler" "Joey"
+## [1] "Rachel"   "Chandler" "Chandler" "Phoebe"   "Monica"   "Monica"
 ```
 
 ```
-## [1] 68.33333
+## [1] 67.83333
 ```
 
 ```
-## [1] "Joey"     "Joey"     "Chandler" "Ross"     "Chandler" "Ross"
-```
-
-```
-## [1] 71.66667
-```
-
-```
-## [1] "Rachel" "Joey"   "Phoebe" "Ross"   "Monica" "Monica"
-```
-
-```
-## [1] 67.66667
-```
-
-```
-## [1] "Rachel" "Rachel" "Rachel" "Monica" "Rachel" "Joey"
-```
-
-```
-## [1] 65.83333
-```
-
-```
-## [1] "Monica"   "Monica"   "Joey"     "Chandler" "Joey"     "Ross"
+## [1] "Phoebe" "Phoebe" "Ross"   "Joey"   "Phoebe" "Phoebe"
 ```
 
 ```
@@ -297,7 +309,31 @@ Imagine you had a sample of 6 people: Rachel, Monica, Phoebe, Joey, Chandler, an
 ```
 
 ```
-## [1] "Ross"     "Monica"   "Chandler" "Joey"     "Monica"   "Joey"
+## [1] "Chandler" "Ross"     "Ross"     "Joey"     "Rachel"   "Chandler"
+```
+
+```
+## [1] 70.83333
+```
+
+```
+## [1] "Rachel"   "Chandler" "Ross"     "Chandler" "Rachel"   "Joey"
+```
+
+```
+## [1] 69.5
+```
+
+```
+## [1] "Phoebe"   "Rachel"   "Chandler" "Ross"     "Monica"   "Joey"
+```
+
+```
+## [1] 68.83333
+```
+
+```
+## [1] "Ross"     "Chandler" "Phoebe"   "Chandler" "Rachel"   "Rachel"
 ```
 
 ```
@@ -632,12 +668,14 @@ Bootstrapping will NOT help you deal with:
 ---
 class: inverse
 
-## 3 more to go...
+## 2 more to go...
 
 Yarkoni and Westfall (2017) and the lessons of machine learning
 
 READ THE PAPER
 
+
+2 more lectures + 1 review + 1 exam
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

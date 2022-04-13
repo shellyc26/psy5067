@@ -1,5 +1,5 @@
 ---
-title: 'Bootstrapping'
+title: 'Random & Resampling'
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -25,7 +25,7 @@ Logistic Regression
 Robust estimation
 
 * Weighted Least Squares
-* __Bootstrapping__
+* __Resampling methods, Bootstrapping__
 
 ---
 
@@ -160,6 +160,42 @@ Use when...
 - Dealing with heteroscedasticity
 - You know already that points should not be treated equally (some should be weighed more than others); do you know that some of your data was measured with less error than other data?
 
+
+---
+## What is Sampling?
+
+- It is nearly impossible to survey every person in the population we are interested in
+
+
+- We take a random sample from the population
+
+- We calculate a statistic (mean, median, etc.)
+
+- *In theory*, we would draw another random sample. But we often can't do that so we
+
+- Luckily, a lot of our statistics follow well-defined distributions, and we can use those distribution properties to estimate the population parameters
+
+---
+## What is Resampling?
+
+- The problem with sampling as we defined previously is that we only actually have 1 estimate of the population parameter
+
+- We don't have a very good sense of the precision of that estimated population parameter
+
+- *In theory*, we can use something like the standard error of the mean, but that also has a lot of assumptions built in. 
+
+--
+
+- **Resampling** methods let us re-estimate our population parameter multiple times *from the same dataset*
+
+- This gives us more accurate estimates and more thorough picture of precision
+
+---
+## Resampling
+
+- Bootstrapping
+- Jacknifing (very similar, won't cover)
+- Permutation testing (you will cover in Research Methods with Ian)
 
 ---
 ## Bootstrapping
@@ -463,7 +499,7 @@ Verizon = read.csv(here("data/Verizon.csv"))
 Verizon %>%
   ggplot(aes(x = Time, fill = Group)) + 
   geom_histogram(bins = 30) + 
-  guides(fill = F) +
+  guides(fill = "none") +
   facet_wrap(~Group, scales = "free_y")
 ```
 
@@ -473,7 +509,7 @@ Verizon %>%
 Verizon %>%
   ggplot(aes(x = Time, fill = Group)) + 
   geom_histogram(bins = 50, position = "dodge") + 
-  guides(fill = F)
+  guides(fill = "none")
 table(Verizon$Group)
 ```
 
@@ -542,9 +578,11 @@ Bootstrapping will NOT help you deal with:
 ---
 class: inverse
 
-## 3 more to go...
+## 2 more to go...
 
 Yarkoni and Westfall (2017) and the lessons of machine learning
 
 READ THE PAPER
 
+
+2 more lectures + 1 review + 1 exam
