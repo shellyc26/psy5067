@@ -26,11 +26,11 @@ library(tidyverse)
 
 ## Last time...
 
-- Bootstrapping
+- Resampling methods via Bootstrapping
 
 ## Today
 
-* Lessons from machine learning
+* Lessons from **machine learning**
 
 ---
 ## Explanation vs. Prediction
@@ -66,7 +66,73 @@ Statistical Tensions
 - *We should spend more time and resources developing predictive models than we currently do*
 
 ---
+class: center, middle
 
+![](images/ai.png)
+---
+## Some definitions you might find helpful
+
+- **machine learning** is the process of feeding previous observations into a computer and using the computer to generate predictions for new observations. AKA:
+  - machine inference
+  - pattern recognition (Google Photos!)
+  - statistical estimation
+  - prediction modeling
+  - statistical learning (ish)
+- **training** occurs by extracting patterns from the observed data; think of this as *learning*
+- **testing** occurs by verifying predictions on previously unobserved data; think of this as *evaluating*
+- this concept is not the same as **artificial intelligence** (AI is the simulation of human intelligence by computers; AI systems are generally trained with machine learning approaches)
+
+---
+
+## Some more definitions
+
+- **supervised learning:** using known patterns between input and output observations to train a mapping between the two
+  - **regression!** learning the mapping between a continuous input feature variable and a continuous output target variable
+  - **classification:** learning them apping between a continuous input feature variable and a categorical output target variable (i.e., a label)
+
+--
+
+- **unsupervised learning:** determining patterns in observations without guiding referents
+  - **dimensionality reduction:** decreasing the overall number of features considered in a learning procedure (i.e., PCA, ICA etc.)
+  - **clustering:** grouping features together that are similar as determined by *some* metric
+
+---
+
+## @Wash U
+
+- **reinforcement learning:** determining a mapping between input and output observations using only a measure of training quality
+
+--
+
+- ML classes in CS department
+- Wouter Kool for reinforcement learning (maybe Zach Reagh but don't quote me)
+- ACCSN with Dennis Barbour and myself for high level discussions on these topics
+- Poli Sci department for dealing with categorical outcomes
+
+---
+
+## Machine Learning Algorithms
+.pull-left[
+- ordinary least squares linear regression
+- logistic regression
+- k-means clustering
+- nearest neighbor
+- naive Bayes
+- ridge regression
+- LASSO regression
+]
+
+.pull-right[
+- support vector machine
+- random forest
+- Gaussian process estimator
+- multilayer perceptron (deep net)
+- convolutional network
+- recurrent network
+- generalized adversarial network
+]
+
+---
 ## Some terminology
 
 **Overfitting** is when we *mistakenly* fit sample-specific noise as if it were actually a signal. 
@@ -81,6 +147,14 @@ Statistical Tensions
 **Variance** refers to how much estimates tend to jump around
 
 **Bias-Variance Tradeoff** we can reduce variance around our estimates but at the expense of increasing bias of estimates and vice versa
+
+.tiny[**Underfitting** means we can't capture a relationship at all -- not as big of a problem for us]
+
+---
+
+class: center, middle
+
+![](images/biasvariance.png)
 
 ---
 class: center, middle, inverse
@@ -209,7 +283,9 @@ summary(model.lm)$r.squared
 
 ### Example: 10-fold cross validation
 
-.small[Note, newer package called `tidymodels` is better for machine learning, but requires a lot more steps. For now, this is the simpler method. Check out `tidymodels` if you're going hard with ML, check out `tidymodels` or use Python `r emo::ji("snake")`]
+.small[Note, newer package called `tidymodels` is better for machine learning, but requires many more steps. For now, this is the simpler method. If you're going hard with ML, check out `tidymodels` or use Python `r emo::ji("snake")`]
+
+.code-small[
 ```{r, message = F}
 library(caret)
 # set control parameters
@@ -221,6 +297,8 @@ cv.model <- train(Stress ~ Anxiety*Support*group,
                method="lm") # what kind of model
 cv.model
 ```
+]
+
 
 ---
 
@@ -241,9 +319,8 @@ The coefficient $\lambda$ is used to penalize the model.
 
 ---
 ## Lasso Regression
-The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term. How could you do that manually?
+The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
 
---
 
 Luckily, the function `model.matrix()` can do this for you.
 
@@ -379,12 +456,9 @@ In NHST and Bayesian probability, we're trying to estimate the degree of randomn
 * Constrain the model to be less overfit 
 
 ---
-
 class: inverse
 
-## 2 more to go...
+# Review on Tuesday
 
-The remaining lectures will be on repeated measures ANOVA and hierarchical linear modeling (HLM). They will be given by our very own Violet Brown!
-
-Violet is going for her teaching certificate. After her lectures, we will send out a quick survey -- please, please, please fill this out! 
+# Final exam on Thursday
 

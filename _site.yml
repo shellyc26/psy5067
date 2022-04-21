@@ -51,6 +51,8 @@ navbar:
         href: "lectures/logistic-regression-lecture.html"
       - text: "22-Resampling"
         href: "lectures/18-bootstrapping.html"
+      - text: "23-Machine Learning"
+        href: "lectures/19-ml.html"
     - text: Homework
       href: homework.html
   right:
