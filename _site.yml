@@ -53,6 +53,8 @@ navbar:
         href: "lectures/18-bootstrapping.html"
       - text: "23-Machine Learning"
         href: "lectures/19-ml.html"
+      - text: "24-Exam 3 Review"
+        href: "lectures/reviewExam3.html"
     - text: Homework
       href: homework.html
   right:
