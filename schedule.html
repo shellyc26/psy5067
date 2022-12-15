@@ -13,8 +13,8 @@
 
 <title>Syllabus</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -63,6 +63,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -83,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -140,11 +144,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -173,8 +181,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -182,16 +190,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -308,7 +309,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -321,7 +322,7 @@ div.tocify {
   <a href="schedule.html">Syllabus</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Lecture Slides
      
     <span class="caret"></span>
@@ -413,7 +414,7 @@ div.tocify {
   <a href="https://gradstats-spring2022.slack.com">Slack</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Spring2021
      
     <span class="caret"></span>
@@ -543,7 +544,7 @@ page.</p>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>1/18</td>
+<td>1/17</td>
 <td>Recap &amp; GLM Intro</td>
 <td></td>
 <td></td>
@@ -551,7 +552,7 @@ page.</p>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>1/20</td>
+<td>1/19</td>
 <td>Data Management</td>
 <td><a href="readings/HumanFallibility_DataManagement.pdf">Human
 Fallibility</a></td>
@@ -560,7 +561,7 @@ Fallibility</a></td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td>1/25</td>
+<td>1/24</td>
 <td>GLM &amp; Categorical Predictors</td>
 <td>Ch. 13-14 (review)</td>
 <td></td>
@@ -568,7 +569,7 @@ Fallibility</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>1/27</td>
+<td>1/26</td>
 <td>Correlation</td>
 <td><a href="readings/CorrelationRevelle.pdf">Chapter from
 Revelle</a></td>
@@ -577,7 +578,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>2/1</td>
+<td>1/31</td>
 <td>Univariate Regression</td>
 <td>Ch. 15.1 - 15.2</td>
 <td></td>
@@ -585,7 +586,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/3</td>
+<td>2/2</td>
 <td>Univariate Regression</td>
 <td><a href="readings/Cohen-MR.pdf">MR Cohen</a></td>
 <td></td>
@@ -593,15 +594,15 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>4</td>
-<td>2/8</td>
+<td>2/7</td>
 <td>Partial Correlations</td>
 <td>Ch. 15.3 - end of chapter</td>
 <td><strong>HW 1 DUE</strong></td>
-<td>2/11</td>
+<td>2/10</td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/10</td>
+<td>2/9</td>
 <td>Multiple Regression</td>
 <td></td>
 <td></td>
@@ -609,7 +610,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td>2/15</td>
+<td>2/14</td>
 <td>Multiple Regression</td>
 <td></td>
 <td></td>
@@ -617,7 +618,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/17</td>
+<td>2/16</td>
 <td>Multiple Regression</td>
 <td></td>
 <td></td>
@@ -625,7 +626,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>6</td>
-<td>2/22</td>
+<td>2/21</td>
 <td>Assumptions and Diagnostics</td>
 <td></td>
 <td></td>
@@ -633,15 +634,15 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/24</td>
+<td>2/23</td>
 <td>Review Problems</td>
 <td></td>
 <td><strong>HW 2 DUE</strong></td>
-<td>2/27</td>
+<td>2/26</td>
 </tr>
 <tr class="odd">
 <td>7</td>
-<td>3/1</td>
+<td>2/28</td>
 <td><strong>Exam 1</strong></td>
 <td></td>
 <td></td>
@@ -649,7 +650,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/3</td>
+<td>3/2</td>
 <td>Causal Models</td>
 <td></td>
 <td></td>
@@ -657,7 +658,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>8</td>
-<td>3/8</td>
+<td>3/7</td>
 <td>Interactions I</td>
 <td></td>
 <td></td>
@@ -665,7 +666,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/10</td>
+<td>3/9</td>
 <td>Interactions II (Factorial ANOVA)</td>
 <td>Ch. 16, <a href="readings/anova1-myers.pdf">Myers Ch. 9</a></td>
 <td></td>
@@ -673,7 +674,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>9</td>
-<td>3/15</td>
+<td>3/14</td>
 <td><strong>Spring Break</strong></td>
 <td></td>
 <td></td>
@@ -681,7 +682,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/17</td>
+<td>3/16</td>
 <td><strong>Spring Break</strong></td>
 <td></td>
 <td></td>
@@ -689,15 +690,15 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>10</td>
-<td>3/22</td>
+<td>3/21</td>
 <td>Interactions III (Factorial ANOVA)</td>
 <td><a href="readings/anova2-myers.pdf">Myers Ch. 10</a></td>
 <td><strong>HW 3 DUE</strong></td>
-<td>3/25</td>
+<td>3/24</td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/24</td>
+<td>3/23</td>
 <td>Interactions IV (Power &amp; Effect Size)</td>
 <td></td>
 <td></td>
@@ -705,7 +706,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>11</td>
-<td>3/29</td>
+<td>3/28</td>
 <td>Interactions V (Polynomials)</td>
 <td></td>
 <td></td>
@@ -713,7 +714,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/31</td>
+<td>3/30</td>
 <td>Review Problems</td>
 <td></td>
 <td></td>
@@ -721,7 +722,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>12</td>
-<td>4/5</td>
+<td>4/4</td>
 <td><strong>Exam 2</strong></td>
 <td></td>
 <td></td>
@@ -729,7 +730,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/7</td>
+<td>4/6</td>
 <td>Intro to Bayesian Methods</td>
 <td></td>
 <td></td>
@@ -737,7 +738,7 @@ Revelle</a></td>
 </tr>
 <tr class="odd">
 <td>13</td>
-<td>4/12</td>
+<td>4/11</td>
 <td>Logistic Regression/GLM</td>
 <td><a href="readings/Logistic-Cohen.pdf">Cohen Logistic</a></td>
 <td></td>
@@ -745,15 +746,15 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/14</td>
+<td>4/13</td>
 <td>Machine Learning 1 (Goals/Theory)</td>
 <td></td>
-<td><strong>HW 4 DUE 4/17</strong></td>
-<td>4/19</td>
+<td><strong>HW 4 DUE</strong></td>
+<td>4/16</td>
 </tr>
 <tr class="odd">
 <td>14</td>
-<td>4/19</td>
+<td>4/18</td>
 <td>ML 2 (Bootstrapping)</td>
 <td></td>
 <td></td>
@@ -761,7 +762,7 @@ Revelle</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/21</td>
+<td>4/20</td>
 <td>ML 3 (Over/Underfitting &amp; Validation)</td>
 <td><a href="readings/Yarkoni%20Westfall%20PPS.pdf">Yarkoni &amp;
 Westfal</a></td>
@@ -770,7 +771,7 @@ Westfal</a></td>
 </tr>
 <tr class="odd">
 <td>15</td>
-<td>4/26</td>
+<td>4/25</td>
 <td>Review Problems</td>
 <td></td>
 <td></td>
@@ -778,11 +779,11 @@ Westfal</a></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/28</td>
+<td>4/27</td>
 <td><strong>FINAL</strong></td>
 <td></td>
 <td><strong>HW 5 DUE</strong></td>
-<td>5/1</td>
+<td>4/30</td>
 </tr>
 </tbody>
 </table>
@@ -911,97 +912,25 @@ of exams will be considered on a case by case basis, but I am
 \end{equation}\]</span></p>
 </div>
 </div>
-<div id="class-policies" class="section level1">
-<h1>Class Policies</h1>
-<div id="university-code-of-conduct" class="section level2">
-<h2>University Code of Conduct</h2>
-<ul>
-<li>Any student found guilty of academic misconduct, such as cheating,
-plagiarizing, forgery, or furnishing false information to a University
-official will be subject to consequences including failing the class,
-suspension from the University, or expulsion from the University.
-Frankly, you’re in graduate school, and the purpose of work is to create
-opportunities to learn and improve. Even if cheating helps you in the
-short term, you’ll quickly find yourself ill-prepared for the career you
-have chosen. If you find yourself tempted to cheat, please come speak to
-me about an extension and developing tools to improve your success.</li>
-<li>Please see the official <a
-href="https://wustl.edu/about/compliance-policies/academic-policies/university-student-judicial-code/">University
-Code of Conduct</a></li>
-</ul>
-</div>
-<div id="special-accommodations" class="section level2">
-<h2>Special Accommodations</h2>
-<ul>
-<li>This includes but is not limited to a learning, sensory, or physical
-disability or any other diagnosis that requires special accommodations
-and/or assistance with lectures, reading, written assignments, and/or
-exam taking</li>
-<li>Contact <a
-href="https://students.wustl.edu/disability-resources/">Disability
-Resources</a> at <a
-href="mailto:disabilityresources@wustl.edu">disabilityresources@wustl.edu</a>
-or call 314-935-5970</li>
-<li>Please also contact me as soon as possible if you need special
-accommodations. Once I have the Accommodation Letter from <a
-href="https://students.wustl.edu/disability-resources/">Disability
-Resources</a>, we can discuss ways to modify the course experience for
-you.</li>
-</ul>
-</div>
-<div id="attendance-new" class="section level2">
-<h2>Attendance (NEW)</h2>
-<ul>
-<li>I expect all students to be in class if they are able (not sick, not
-at a conference etc.). Students find that the content from this semester
-is far more challenging than the previous semester. The best way to
-succeed is to come to class.</li>
-<li>I will take attendance this semester. <strong>If you are absent for
-2 class periods in a row, <em>and you have not reached out to either the
-instructor or the AIs</em>, I will assume that something is
-wrong.</strong> When I have concerns about a graduate student, I contact
-their PI. I will do the same here.
-<ul>
-<li>If you reach out and say you need to miss class for whatever reason,
-then there is no need for me to contact your PI. I know you are alive
-and well (or at least getting well).</li>
-<li>This policy comes out of concern for you! It’s hard to succeed if
-you aren’t in class, and I really want you to succeed!</li>
-<li>You are adults. Come to class when you can. Let me know when you
-can’t (quick email or Slack is OK).</li>
-</ul></li>
-<li><strong>If you are not feeling well, don’t come to class!!</strong>
-I have recorded lectures from last year, you have access to the slides,
-and you can ask a friend for notes.</li>
-<li>If there is even a <em>hint</em> of being sick, I prefer you stay
-home. If you are 100% sure it’s nothing contagious – like allergies, I
-still ask that you wear a mask and sit away from other students.</li>
-<li>WUSTL makes you fill out a COVID screening form before coming to
-campus. If you are in quarantine because of COVID exposure, or you fail
-the screening form because you are showing symptoms, please forward the
-screening form to me! Having a paper trail is extremely helpful for
-everyone.</li>
-</ul>
-</div>
-</div>
-<div id="learning-from-a-crappy-year" class="section level1">
-<h1>Learning from a Crappy Year</h1>
-<p>The 2020-2021 academic year sucked. But instead of burying our heads
-in the sand and forgetting it existed, let’s at least extract some
-things and incorporate them into our lives. For this class, here’s what
-that means…</p>
+<div id="learning-from-crappy-years" class="section level1">
+<h1>Learning from Crappy Years</h1>
+<p>The 2020-2021 academic year sucked, and the 2021-2022 academic year
+was just plain weird. But instead of burying our heads in the sand and
+forgetting they existed, let’s at least extract some things and
+incorporate them into our lives. For this class, here’s what that
+means…</p>
 <div id="staying-connected" class="section level3">
 <h3>Staying Connected</h3>
-<p>Last year was lonely. Although we’re back in person, we still might
-feel that residual loneliness. On top of that, learning stats, learning
-to code, and grad school in general can be really scary – impostor
-syndrome is real! The best thing we can do to combat these feelings is
-to stay connected to one another. Here’s how we’ll accomplish this in
-our class:</p>
+<p>The past few years have been lonely. Although we’re back in person,
+we still might feel that residual loneliness. On top of that, learning
+stats, learning to code, and grad school in general can be really scary
+– impostor syndrome is real! The best thing we can do to combat these
+feelings is to stay connected to one another. Here’s how we’ll
+accomplish this in our class:</p>
 <ul>
-<li><p>Your peer review will be with the same person (different from
-last semester, if possible, though). This way, you will get to know your
-buddy over the course of the semester. Make a friend!</p></li>
+<li><p>Your peer review will be with the same person. This way, you will
+get to know your buddy over the course of the semester. Make a
+friend!</p></li>
 <li><p>We will have a dedicated class Slack work space (see upper right
 corner of website for link). You can post questions that everyone can
 see, or make use of direct messaging. Shelly or the AIs will respond to
@@ -1030,9 +959,35 @@ direction.</li>
 I will work with you.</li>
 </ul>
 </div>
-<div id="in-person-etiquette" class="section level3">
-<h3>In-person Etiquette</h3>
+<div id="attendance-in-person-etiquette" class="section level3">
+<h3>Attendance &amp; In-person Etiquette</h3>
 <ul>
+<li>I expect all students to be in class if they are able (not sick, not
+at a conference etc.). The best way to succeed is to come to class. Your
+chosen profession requires mastery of these skills! Come to class!</li>
+<li>I will take attendance. <strong>If you are absent for 2 class
+periods in a row, <em>and you have not reached out to either the
+instructor or the AIs</em>, I will assume that something is
+wrong.</strong> When I have concerns about a graduate student, I contact
+their PI. I will do the same here.
+<ul>
+<li>If you reach out and say you need to miss class for whatever reason,
+then there is no need for me to contact your PI. I know you are alive
+and well (or at least getting well).</li>
+<li>This policy comes out of concern for you! It’s hard to succeed if
+you aren’t in class, and I really want you to succeed!</li>
+<li>You are adults. Come to class when you can. Let me know when you
+can’t (quick email or Slack is OK).</li>
+</ul></li>
+<li><strong>If you are not feeling well, don’t come to class!!</strong>
+You have access to the slides and you can ask a friend for notes.</li>
+<li>If there is even a <em>hint</em> of being sick, I prefer you stay
+home. If you are 100% sure it’s nothing contagious – like allergies, I
+still ask that you wear a mask and sit away from other students.</li>
+<li>If you are in quarantine because of COVID exposure, or you fail the
+screening form because you are showing symptoms, please forward the
+screening form to me! Having a paper trail is extremely helpful for
+everyone.</li>
 <li>Most people will have electronics with them in class. Drinks should
 have a lid on them so that if they spill, we hopefully aren’t ruining
 yours or another person’s laptop/tablet/phone etc. Be careful!</li>
@@ -1040,8 +995,6 @@ yours or another person’s laptop/tablet/phone etc. Be careful!</li>
 something. Be aware that other people might not be super comfortable
 being physically close together. Maintain appropriate distance, and if a
 classmate asks you to step back a bit, please do so.</li>
-<li>And again, if you are not feeling 100%, please do not come to
-class!</li>
 </ul>
 </div>
 <div id="online-etiquette" class="section level3">
@@ -1071,10 +1024,40 @@ yelling.</li>
 </ul>
 </div>
 </div>
-<div id="resources" class="section level1">
-<h1>Resources</h1>
-<p><a href="data/resources2021.pdf"><strong>Quantitative
-Resources</strong></a></p>
+<div id="policies-resources" class="section level1">
+<h1>Policies &amp; Resources</h1>
+<p><strong>University Code of Conduct:</strong></p>
+<ul>
+<li>Any student found guilty of academic misconduct, such as cheating,
+plagiarizing, forgery, or furnishing false information to a University
+official will be subject to consequences including failing the class,
+suspension from the University, or expulsion from the University.
+Frankly, you’re in graduate school, and the purpose of work is to create
+opportunities to learn and improve. Even if cheating helps you in the
+short term, you’ll quickly find yourself ill-prepared for the career you
+have chosen. If you find yourself tempted to cheat, please come speak to
+me about an extension and developing tools to improve your success.</li>
+<li>Please see the official <a
+href="https://wustl.edu/about/compliance-policies/academic-policies/university-student-judicial-code/">University
+Code of Conduct</a></li>
+</ul>
+<p><strong>Special Accommodations:</strong></p>
+<ul>
+<li>This includes but is not limited to a learning, sensory, or physical
+disability or any other diagnosis that requires special accommodations
+and/or assistance with lectures, reading, written assignments, and/or
+exam taking</li>
+<li>Contact <a
+href="https://students.wustl.edu/disability-resources/">Disability
+Resources</a> at <a
+href="mailto:disabilityresources@wustl.edu">disabilityresources@wustl.edu</a>
+or call 314-935-5970</li>
+<li>Please also contact me as soon as possible if you need special
+accommodations. Once I have the Accommodation Letter from <a
+href="https://students.wustl.edu/disability-resources/">Disability
+Resources</a>, we can discuss ways to modify the course experience for
+you.</li>
+</ul>
 <p><strong>Mental &amp; Physical Health:</strong></p>
 <ul>
 <li><a

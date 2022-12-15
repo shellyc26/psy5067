@@ -16,36 +16,36 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 
 | Week | Date |  Topic                            |Readings            | HW Due | PR Due|
 -------|------|-----------------------------------|--------------------|-----------|-----------|
-| 1    | 1/18 | Recap & GLM Intro |            |             |
-| -    | 1/20 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |     | 
-| 2    | 1/25 | GLM & Categorical Predictors | Ch. 13-14 (review) |     | 
-| -    | 1/27  | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf)                   |            |  
-| 3    | 2/1 |  Univariate Regression           | Ch. 15.1 - 15.2     |    |      
-| -    | 2/3 |  Univariate Regression  | [MR Cohen](readings/Cohen-MR.pdf)   |      |       
-| 4    | 2/8 | Partial Correlations |  Ch. 15.3 - end of chapter   |**HW 1 DUE** | 2/11
-| -    | 2/10 | Multiple Regression  |       |     |      
-| 5    | 2/15 | Multiple Regression   |                    |            |         
-| -    | 2/17 | Multiple Regression   |                    |            | 
-| 6    | 2/22 | Assumptions and Diagnostics   |                    |  |   
-| -    | 2/24 |  Review Problems |                    |   **HW 2 DUE**         |      2/27   
-| 7    | 3/1 | **Exam 1**|                    |                   |
-| -    | 3/3 | Causal Models |  |      |             
-| 8    | 3/8 | Interactions I   |                    |            | 
-| -    | 3/10 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)             |                    |
-| 9    | 3/15 | **Spring Break** |             |                    |
-| -    | 3/17 | **Spring Break** |             |                    |
-| 10    | 3/22 | Interactions III (Factorial ANOVA)  | [Myers Ch. 10](readings/anova2-myers.pdf) | **HW 3 DUE** |   3/25       
-| -    | 3/24 | Interactions IV (Power & Effect Size)  |    |     |
-| 11   | 3/29 |  Interactions V (Polynomials) |    |   |
-| -    | 3/31  | Review Problems |    |   |    
-| 12   | 4/5 | **Exam 2** |  |  |
-| -    | 4/7  | Intro to Bayesian Methods |   |  |
-| 13   | 4/12 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
-| -    | 4/14 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE 4/17** | 4/19
-| 14   | 4/19 | ML 2 (Bootstrapping)  |    |  |
-| -    | 4/21 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
-| 15    | 4/26 | Review Problems |  |            |             
-| -    | 4/28 | **FINAL**  |   |   **HW 5 DUE** |    5/1         
+| 1    | 1/17 | Recap & GLM Intro |            |             |
+| -    | 1/19 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |     | 
+| 2    | 1/24 | GLM & Categorical Predictors | Ch. 13-14 (review) |     | 
+| -    | 1/26  | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf)                   |            |  
+| 3    | 1/31 |  Univariate Regression           | Ch. 15.1 - 15.2     |    |      
+| -    | 2/2 |  Univariate Regression  | [MR Cohen](readings/Cohen-MR.pdf)   |      |       
+| 4    | 2/7 | Partial Correlations |  Ch. 15.3 - end of chapter   |**HW 1 DUE** | 2/10
+| -    | 2/9 | Multiple Regression  |       |     |      
+| 5    | 2/14 | Multiple Regression   |                    |            |         
+| -    | 2/16 | Multiple Regression   |                    |            | 
+| 6    | 2/21 | Assumptions and Diagnostics   |                    |  |   
+| -    | 2/23 |  Review Problems |                    |   **HW 2 DUE**         |      2/26   
+| 7    | 2/28 | **Exam 1**|                    |                   |
+| -    | 3/2 | Causal Models |  |      |             
+| 8    | 3/7 | Interactions I   |                    |            | 
+| -    | 3/9 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)             |                    |
+| 9    | 3/14 | **Spring Break** |             |                    |
+| -    | 3/16 | **Spring Break** |             |                    |
+| 10    | 3/21 | Interactions III (Factorial ANOVA)  | [Myers Ch. 10](readings/anova2-myers.pdf) | **HW 3 DUE** |   3/24       
+| -    | 3/23 | Interactions IV (Power & Effect Size)  |    |     |
+| 11   | 3/28 |  Interactions V (Polynomials) |    |   |
+| -    | 3/30  | Review Problems |    |   |    
+| 12   | 4/4 | **Exam 2** |  |  |
+| -    | 4/6  | Intro to Bayesian Methods |   |  |
+| 13   | 4/11 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
+| -    | 4/13 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE** | 4/16
+| 14   | 4/18 | ML 2 (Bootstrapping)  |    |  |
+| -    | 4/20 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
+| 15    | 4/25 | Review Problems |  |            |             
+| -    | 4/27 | **FINAL**  |   |   **HW 5 DUE** |    4/30         
 
 
 # Overview
@@ -122,81 +122,72 @@ All assignments and examinations are mandatory. If you need to miss an exam you 
 \end{split}
 \end{equation}
 
-# Class Policies
+# Learning from Crappy Years
 
-## University Code of Conduct
-
-- Any student found guilty of academic misconduct, such as cheating, plagiarizing, forgery, or furnishing false information to a University official will be subject to consequences including failing the class, suspension from the University, or expulsion from the University. Frankly, you're in graduate school, and the purpose of work is to create opportunities to learn and improve. Even if cheating helps you in the short term, you'll quickly find yourself ill-prepared for the career you have chosen. If you find yourself tempted to cheat, please come speak to me about an extension and developing tools to improve your success.
-- Please see the official [University Code of Conduct](https://wustl.edu/about/compliance-policies/academic-policies/university-student-judicial-code/)
-
-## Special Accommodations
-
-- This includes but is not limited to a learning, sensory, or physical disability or any other diagnosis that requires special accommodations and/or assistance with lectures, reading, written assignments, and/or exam taking
-- Contact [Disability Resources](https://students.wustl.edu/disability-resources/) at [disabilityresources@wustl.edu](mailto:disabilityresources@wustl.edu) or call 314-935-5970
-- Please also contact me as soon as possible if you need special accommodations. Once I have the Accommodation Letter from [Disability Resources](https://students.wustl.edu/disability-resources/), we can discuss ways to modify the course experience for you.
-
-## Attendance (NEW)
-
-- I expect all students to be in class if they are able (not sick, not at a conference etc.). Students find that the content from this semester is far more challenging than the previous semester. The best way to succeed is to come to class.
-- I will take attendance this semester. **If you are absent for 2 class periods in a row, _and you have not reached out to either the instructor or the AIs_, I will assume that something is wrong.** When I have concerns about a graduate student, I contact their PI. I will do the same here. 
-  * If you reach out and say you need to miss class for whatever reason, then there is no need for me to contact your PI. I know you are alive and well (or at least getting well). 
-  * This policy comes out of concern for you! It's hard to succeed if you aren't in class, and I really want you to succeed! 
-  * You are adults. Come to class when you can. Let me know when you can't (quick email or Slack is OK). 
-- **If you are not feeling well, don't come to class!!** I have recorded lectures from last year, you have access to the slides, and you can ask a friend for notes.
-- If there is even a *hint* of being sick, I prefer you stay home. If you are 100% sure it's nothing contagious -- like allergies, I still ask that you wear a mask and sit away from other students. 
-- WUSTL makes you fill out a COVID screening form before coming to campus. If you are in quarantine because of COVID exposure, or you fail the screening form because you are showing symptoms, please forward the screening form to me! Having a paper trail is extremely helpful for everyone. 
-
-# Learning from a Crappy Year 
-
-The 2020-2021 academic year sucked. But instead of burying our heads in the sand and forgetting it existed, let's at least extract some things and incorporate them into our lives. For this class, here's what that means...
+The 2020-2021 academic year sucked, and the 2021-2022 academic year was just plain weird. But instead of burying our heads in the sand and forgetting they existed, let's at least extract some things and incorporate them into our lives. For this class, here's what that means...
 
 ### Staying Connected
 
-Last year was lonely. Although we're back in person, we still might feel that residual loneliness. On top of that, learning stats, learning to code, and grad school in general can be really scary -- impostor syndrome is real! The best thing we can do to combat these feelings is to stay connected to one another. Here's how we'll accomplish this in our class:
+The past few years have been lonely. Although we're back in person, we still might feel that residual loneliness. On top of that, learning stats, learning to code, and grad school in general can be really scary -- impostor syndrome is real! The best thing we can do to combat these feelings is to stay connected to one another. Here's how we'll accomplish this in our class:
 
--	Your peer review will be with the same person (different from last semester, if possible, though). This way, you will get to know your buddy over the course of the semester. Make a friend! 
+-   Your peer review will be with the same person. This way, you will get to know your buddy over the course of the semester. Make a friend!
 
--	We will have a dedicated class Slack work space (see upper right corner of website for link). You can post questions that everyone can see, or make use of direct messaging. Shelly or the AIs will respond to your questions on Slack (if your peers don't respond first!). This is really great for one-off questions, or if you need some quick clarification on something. We will also have a dedicated channel for silly programming and stats memes, because humor is important when you're learning a skill like coding, in which you’ll repeatedly fail. Slack is not required *per se*, but it is **highly encouraged**.
+-   We will have a dedicated class Slack work space (see upper right corner of website for link). You can post questions that everyone can see, or make use of direct messaging. Shelly or the AIs will respond to your questions on Slack (if your peers don't respond first!). This is really great for one-off questions, or if you need some quick clarification on something. We will also have a dedicated channel for silly programming and stats memes, because humor is important when you're learning a skill like coding, in which you'll repeatedly fail. Slack is not required *per se*, but it is **highly encouraged**.
 
 ### Be Considerate and Kind
 
-- It is OK to not be OK. If you tell me you're having trouble, I'm not going to judge you or think less of you. I hope you will do the same for me. I will work with you to make sure we have a reasonable plan in place should something come up. *However*, this does require you telling me "hey, I'm not OK".
-- You are always welcome to come talk to me about things that you're going through. If I can't help you, I usually know someone who can help -- or I can at least give you some resources and point you in the right direction.
-- If you are struggling or need extra help, please just ask. I promise I will work with you.
+-   It is OK to not be OK. If you tell me you're having trouble, I'm not going to judge you or think less of you. I hope you will do the same for me. I will work with you to make sure we have a reasonable plan in place should something come up. *However*, this does require you telling me "hey, I'm not OK".
+-   You are always welcome to come talk to me about things that you're going through. If I can't help you, I usually know someone who can help -- or I can at least give you some resources and point you in the right direction.
+-   If you are struggling or need extra help, please just ask. I promise I will work with you.
 
-### In-person Etiquette
+### Attendance & In-person Etiquette
 
-- Most people will have electronics with them in class. Drinks should have a lid on them so that if they spill, we hopefully aren't ruining yours or another person's laptop/tablet/phone etc. Be careful!
-- Occasionally, I'll ask you to get into small groups and chat about something. Be aware that other people might not be super comfortable being physically close together. Maintain appropriate distance, and if a classmate asks you to step back a bit, please do so. 
-- And again, if you are not feeling 100%, please do not come to class!
+-   I expect all students to be in class if they are able (not sick, not at a conference etc.). The best way to succeed is to come to class. Your chosen profession requires mastery of these skills! Come to class!
+-   I will take attendance. **If you are absent for 2 class periods in a row, *and you have not reached out to either the instructor or the AIs*, I will assume that something is wrong.** When I have concerns about a graduate student, I contact their PI. I will do the same here.
+    -   If you reach out and say you need to miss class for whatever reason, then there is no need for me to contact your PI. I know you are alive and well (or at least getting well).
+    -   This policy comes out of concern for you! It's hard to succeed if you aren't in class, and I really want you to succeed!
+    -   You are adults. Come to class when you can. Let me know when you can't (quick email or Slack is OK).
+-   **If you are not feeling well, don't come to class!!** You have access to the slides and you can ask a friend for notes.
+-   If there is even a *hint* of being sick, I prefer you stay home. If you are 100% sure it's nothing contagious -- like allergies, I still ask that you wear a mask and sit away from other students.
+-   If you are in quarantine because of COVID exposure, or you fail the screening form because you are showing symptoms, please forward the screening form to me! Having a paper trail is extremely helpful for everyone.
+-   Most people will have electronics with them in class. Drinks should have a lid on them so that if they spill, we hopefully aren't ruining yours or another person's laptop/tablet/phone etc. Be careful!
+-   Occasionally, I'll ask you to get into small groups and chat about something. Be aware that other people might not be super comfortable being physically close together. Maintain appropriate distance, and if a classmate asks you to step back a bit, please do so.
 
 ### Online Etiquette
 
 There will be a lot of online communication with the instructor, the AI, and your peers. You are expected to maintain a polite and respectful tone in their online discourse. Some things to consider:
 
-  -	Any communication shared privately may become public, so be mindful of what you share in discussion boards or chats. This is especially true for sharing any personal and/or identifying information about you or someone else. Do not share any passwords or divulge any personal information (yours or others) that can be used in a malicious manner (phone numbers, addresses etc.).
-  -	Humor doesn't always translate in an online forum. If you want to make a joke or a sarcastic remark, be 100% sure that it is clear you are joking. 
-  -	Your comments must be readable to everyone. Very common acronyms are OK (“lol” or “haha”). But please refrain from acronyms that are not as well-known (“fwiw” etc.).
-  -	Treat your classmates, professor, and AIs with kindness and respect. Any indication of online harassment or bullying will not be tolerated and will be reported. This is especially pertinent when giving constructive feedback in code reviews.
-  - Please avoid using ALL CAPS because it can be interpreted as yelling.
+-   Any communication shared privately may become public, so be mindful of what you share in discussion boards or chats. This is especially true for sharing any personal and/or identifying information about you or someone else. Do not share any passwords or divulge any personal information (yours or others) that can be used in a malicious manner (phone numbers, addresses etc.).
+-   Humor doesn't always translate in an online forum. If you want to make a joke or a sarcastic remark, be 100% sure that it is clear you are joking.
+-   Your comments must be readable to everyone. Very common acronyms are OK ("lol" or "haha"). But please refrain from acronyms that are not as well-known ("fwiw" etc.).
+-   Treat your classmates, professor, and AIs with kindness and respect. Any indication of online harassment or bullying will not be tolerated and will be reported. This is especially pertinent when giving constructive feedback in code reviews.
+-   Please avoid using ALL CAPS because it can be interpreted as yelling.
 
-# Resources
+# Policies & Resources
 
-[**Quantitative Resources**](data/resources2021.pdf)
+**University Code of Conduct:**
+
+-   Any student found guilty of academic misconduct, such as cheating, plagiarizing, forgery, or furnishing false information to a University official will be subject to consequences including failing the class, suspension from the University, or expulsion from the University. Frankly, you're in graduate school, and the purpose of work is to create opportunities to learn and improve. Even if cheating helps you in the short term, you'll quickly find yourself ill-prepared for the career you have chosen. If you find yourself tempted to cheat, please come speak to me about an extension and developing tools to improve your success.
+-   Please see the official [University Code of Conduct](https://wustl.edu/about/compliance-policies/academic-policies/university-student-judicial-code/)
+
+**Special Accommodations:**
+
+-   This includes but is not limited to a learning, sensory, or physical disability or any other diagnosis that requires special accommodations and/or assistance with lectures, reading, written assignments, and/or exam taking
+-   Contact [Disability Resources](https://students.wustl.edu/disability-resources/) at [disabilityresources\@wustl.edu](mailto:disabilityresources@wustl.edu) or call 314-935-5970
+-   Please also contact me as soon as possible if you need special accommodations. Once I have the Accommodation Letter from [Disability Resources](https://students.wustl.edu/disability-resources/), we can discuss ways to modify the course experience for you.
 
 **Mental & Physical Health:**
 
-- [Habif Health and Wellness Center](https://students.wustl.edu/habif-health-wellness-center/), email [HabifInfo@wustl.edu](mailto:HabifInfo@wustl.edu) or call 314-935-6666
+-   [Habif Health and Wellness Center](https://students.wustl.edu/habif-health-wellness-center/), email [HabifInfo\@wustl.edu](mailto:HabifInfo@wustl.edu) or call 314-935-6666
 
 **WUSTL Police Department:**
 
-- For an on campus emergency, call 314-935-5555
-- For an off campus emergency, call 911
+-   For an on campus emergency, call 314-935-5555
+-   For an off campus emergency, call 911
 
 **Relationship or Sexual Violence (including sexual harassment and stalking):**
 
-- Contact a licensed RSVP counselor (confidential, with some limited information being shared as needed with the appropriate university administrator(s)) at [rsvpcenter@wustl.edu](mailto:rsvpcenter@wustl.edu) or call 314-935-3445
-- Contact the university's Title IX Director, Ms. Jessica Kennedy, at [jwkennedy@wustl.edu](mailto:jwkennedy@wustl.edu) or call 314-935-3118
+-   Contact a licensed RSVP counselor (confidential, with some limited information being shared as needed with the appropriate university administrator(s)) at [rsvpcenter\@wustl.edu](mailto:rsvpcenter@wustl.edu) or call 314-935-3445
+-   Contact the university's Title IX Director, Ms. Jessica Kennedy, at [jwkennedy\@wustl.edu](mailto:jwkennedy@wustl.edu) or call 314-935-3118
 
-_**You can always come to me!** Period. However, if you come to me with any issues surrounding child abuse, suicidal tendencies, or sexual assault, sexual discrimination, sexual harassment, dating violence, domestic violence or stalking, I am required to report these to their appropriate administrators. Washington University faculty and administrators strive to maintain confidentiality, but some information may need to be disclosed when it is a matter of safety._
-
+***You can always come to me!** Period. However, if you come to me with any issues surrounding child abuse, suicidal tendencies, or sexual assault, sexual discrimination, sexual harassment, dating violence, domestic violence or stalking, I am required to report these to their appropriate administrators. Washington University faculty and administrators strive to maintain confidentiality, but some information may need to be disclosed when it is a matter of safety.*
