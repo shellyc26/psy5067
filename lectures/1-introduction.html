@@ -3,7 +3,7 @@
   <head>
     <title>Introduction</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -13,7 +13,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Introduction
+]
 
 ---
 
@@ -47,9 +49,9 @@ class: center, middle, inverse, title-slide
 
 - [Class Website](https://shellyc26.github.io/psy5067/index.html); where slides, lecture videos, homeworks, and announcements will be posted
 
-- [Slack Workspace](https://app.slack.com/client/T02T7RKUMEU/); here for answering questions, posting stats/`R` memes and gifs, building community
+- [Slack Workspace](https://quant-ii.slack.com); here for answering questions, posting stats/`R` memes and gifs, building community
 
-- [Canvas](https://wustl.instructure.com/courses/83830); where you'll turn in your homeworks and complete peer reviews and exams
+- [Canvas](https://wustl.instructure.com/courses/105258); where you'll turn in your homeworks and complete peer reviews and exams
 
 - [LSR](https://learningstatisticswithr.com/book/) &amp; [ISLR](https://www.statlearning.com/); textbooks
 
@@ -70,18 +72,22 @@ class: center, middle, inverse, title-slide
 
 - This class is going too slow vs going too fast
 
+--
+
 - If too fast: ASK QUESTIONS AND COME TO CHECK-INS. Also spend lots of time outside of class; learning takes time.
+
+--
 
 - If too slow: ASK QUESTIONS AND COME TO CHECK-INS. There are lots of interesting extensions to these models. I can give you extra readings, or at least point you down a cool path. 
 
 ---
 ## Two AIs
 
-- AJ Wright, MA
+- Messi Lee
 
-- Mary Painter, PhD
+- Tabea Springstein
 
-Both incredible. USE THEM TO YOUR ADVANTAGE! Set up meetings with them. Ask them `R` questions.
+Both incredible. USE THEM TO YOUR ADVANTAGE! **Set up meetings with them**. Ask them `R` questions.
 
 ---
 ## Goals for today  
@@ -144,7 +150,7 @@ Every model we run this semester will be in the form of `\(Y = X + E\)`.  Last s
 
 ```r
 t.1 &lt;- t.test(y ~ x, data = d) 
-# y is cont and x is a categoriocal/nominal (dichotomous) factor
+# y is cont and x is a categorical/nominal (dichotomous) factor
 ```
 
 ---
@@ -155,7 +161,7 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 - The full is equivalent to `\(Y = X + E\)` and the restricted is equivalent to `\(Y = E\)`
 - We compared them to ask which `\(E\)` was larger
 - The only difference between these two models is our `\(X\)` variable (our IVs). The result is we are asking whether `\(X\)` helps explain variance in `\(Y\)`
-- Equivalent to asking whether `\(X\)` reduces variance that is unexplained
+- Equivalent to asking whether `\(X\)` reduces variance that is *unexplained*
 
 ---
 ## Theoretical probability distributions 
@@ -219,9 +225,7 @@ class: inverse
 **REQUIRED READING** 
 
 - You *must* read the Human Fallibility paper. Come prepared. We are not critiquing methods here/trying to tear it apart. We are going to use it as a jumping off point for introspection on how we do our own research.
-- We will meet on GATHERTOWN. Use this link [https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w](https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w)
-- You will need your cameras and microphones ON
-- When you arrive, find me. Click on Participants &gt; right click on my name &gt; Locate. Follow the line with your arrow keys until you find me
+- I will be emailing you your group and your topic. I will explain everything when we get to class. However, when you come to class on Thursday, please go sit with your group. 
 
 
 
@@ -273,6 +277,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

@@ -40,9 +40,9 @@ output:
 
 - [Class Website](https://shellyc26.github.io/psy5067/index.html); where slides, lecture videos, homeworks, and announcements will be posted
 
-- [Slack Workspace](https://app.slack.com/client/T02T7RKUMEU/); here for answering questions, posting stats/`R` memes and gifs, building community
+- [Slack Workspace](https://quant-ii.slack.com); here for answering questions, posting stats/`R` memes and gifs, building community
 
-- [Canvas](https://wustl.instructure.com/courses/83830); where you'll turn in your homeworks and complete peer reviews and exams
+- [Canvas](https://wustl.instructure.com/courses/105258); where you'll turn in your homeworks and complete peer reviews and exams
 
 - [LSR](https://learningstatisticswithr.com/book/) & [ISLR](https://www.statlearning.com/); textbooks
 
@@ -63,18 +63,22 @@ output:
 
 - This class is going too slow vs going too fast
 
+--
+
 - If too fast: ASK QUESTIONS AND COME TO CHECK-INS. Also spend lots of time outside of class; learning takes time.
+
+--
 
 - If too slow: ASK QUESTIONS AND COME TO CHECK-INS. There are lots of interesting extensions to these models. I can give you extra readings, or at least point you down a cool path. 
 
 ---
 ## Two AIs
 
-- AJ Wright, MA
+- Messi Lee
 
-- Mary Painter, PhD
+- Tabea Springstein
 
-Both incredible. USE THEM TO YOUR ADVANTAGE! Set up meetings with them. Ask them `R` questions.
+Both incredible. USE THEM TO YOUR ADVANTAGE! **Set up meetings with them**. Ask them `R` questions.
 
 ---
 ## Goals for today  
@@ -137,7 +141,7 @@ Every model we run this semester will be in the form of $Y = X + E$.  Last semes
 ```{r, eval=FALSE}
 
 t.1 <- t.test(y ~ x, data = d) 
-# y is cont and x is a categoriocal/nominal (dichotomous) factor
+# y is cont and x is a categorical/nominal (dichotomous) factor
 ```
 
 ---
@@ -148,7 +152,7 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 - The full is equivalent to $Y = X + E$ and the restricted is equivalent to $Y = E$
 - We compared them to ask which $E$ was larger
 - The only difference between these two models is our $X$ variable (our IVs). The result is we are asking whether $X$ helps explain variance in $Y$
-- Equivalent to asking whether $X$ reduces variance that is unexplained
+- Equivalent to asking whether $X$ reduces variance that is *unexplained*
 
 ---
 ## Theoretical probability distributions 
@@ -212,9 +216,7 @@ class: inverse
 **REQUIRED READING** 
 
 - You *must* read the Human Fallibility paper. Come prepared. We are not critiquing methods here/trying to tear it apart. We are going to use it as a jumping off point for introspection on how we do our own research.
-- We will meet on GATHERTOWN. Use this link [https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w](https://gather.town/invite?token=mp1HMjIZ0Z2Eo4Smcq37yEKBwO5Cvo3w)
-- You will need your cameras and microphones ON
-- When you arrive, find me. Click on Participants > right click on my name > Locate. Follow the line with your arrow keys until you find me
+- I will be emailing you your group and your topic. I will explain everything when we get to class. However, when you come to class on Thursday, please go sit with your group. 
 
 
 
