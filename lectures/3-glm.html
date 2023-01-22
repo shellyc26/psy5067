@@ -3,7 +3,7 @@
   <head>
     <title>General Linear Model</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -13,7 +13,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # General Linear Model
+]
 
 ---
 
@@ -33,14 +35,6 @@ class: center, middle, inverse, title-slide
 
 &lt;/style&gt;
 
-## Last time
-
-- Emailed comments on your activity from last Thursday (unless we spoke on gathertown)
-- You are your own worst enemy...especially 6-months-from-now-you
-- The activity we did was a modification of Dr. Julia Strand's [Error Tight](https://www.carleton.edu/perception-lab/open-science/error-tight/). You can find it here (links to a psyarxiv page). 
-    * This is a wonderful activity to do with your lab! Suggest it! 
-    
----
 
 ## So far
 
@@ -619,32 +613,6 @@ Consists of -1, 1s (And zeros for more than 2 groups)
 - You have already done this with dummy codes above
 
 ---
-class: clear
-.small[
-
-```
-## 
-## Call:
-## lm(formula = traffic.risk ~ tx, data = example.data)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1.65064 -0.59811 -0.02668  0.54475  2.54475 
-## 
-## Coefficients:
-##             Estimate Std. Error t value             Pr(&gt;|t|)    
-## (Intercept)  2.65064    0.07637  34.707 &lt; 0.0000000000000002 ***
-## tx          -0.48111    0.09740  -4.939           0.00000138 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.7789 on 268 degrees of freedom
-## Multiple R-squared:  0.08344,	Adjusted R-squared:  0.08002 
-## F-statistic:  24.4 on 1 and 268 DF,  p-value: 0.000001381
-```
-]
----
-
 ## Predictions
 - We want our predictions to be close to our actual data for each person ( `\(Y_{i}\)` )
 - The difference between the actual data and our our prediction ( `\(Y_{i}  - \hat{Y}_{i} = e\)` ) is the residual, how far we are "off". This tells us how good our fit is. 
@@ -656,7 +624,7 @@ class: clear
 
 ## Which one has better fit? 
 
-&lt;img src="3-glm_files/figure-html/unnamed-chunk-27-1.png" width="504" /&gt;
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
 
 
 
@@ -924,7 +892,7 @@ ggplot(fit.1.data, aes(.resid)) +
 ]]
 
 .pull-right[
-&lt;img src="3-glm_files/figure-html/unnamed-chunk-36-1.png" width="504" /&gt;
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-35-1.png" width="504" /&gt;
 ]
 ---
 ## An aside concerning `lm` objects
@@ -1004,10 +972,11 @@ glance(mod.1)
 
 ```
 ## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.
-## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##   r.squ…¹ adj.r…² sigma stati…³ p.value    df logLik   AIC   BIC devia…⁴ df.re…⁵
+##     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;int&gt;
+## 1  0.0834  0.0800 0.779    24.4 1.38e-6     1  -315.  635.  646.    163.     268
+## # … with 1 more variable: nobs &lt;int&gt;, and abbreviated variable names
+## #   ¹​r.squared, ²​adj.r.squared, ³​statistic, ⁴​deviance, ⁵​df.residual
 ```
 
 
@@ -1052,7 +1021,7 @@ $$ \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2 $$
 ---
 
 
-&lt;img src="3-glm_files/figure-html/unnamed-chunk-41-1.png" width="504" /&gt;
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-40-1.png" width="504" /&gt;
 
 ---
 # Partitioning the variation in Y
@@ -1116,10 +1085,11 @@ glance(mod.1)
 
 ```
 ## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.
-## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##   r.squ…¹ adj.r…² sigma stati…³ p.value    df logLik   AIC   BIC devia…⁴ df.re…⁵
+##     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;int&gt;
+## 1  0.0834  0.0800 0.779    24.4 1.38e-6     1  -315.  635.  646.    163.     268
+## # … with 1 more variable: nobs &lt;int&gt;, and abbreviated variable names
+## #   ¹​r.squared, ²​adj.r.squared, ³​statistic, ⁴​deviance, ⁵​df.residual
 ```
 
 
@@ -1129,10 +1099,11 @@ glance(mod.1.eff)
 
 ```
 ## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.
-## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+##   r.squ…¹ adj.r…² sigma stati…³ p.value    df logLik   AIC   BIC devia…⁴ df.re…⁵
+##     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;int&gt;
+## 1  0.0834  0.0800 0.779    24.4 1.38e-6     1  -315.  635.  646.    163.     268
+## # … with 1 more variable: nobs &lt;int&gt;, and abbreviated variable names
+## #   ¹​r.squared, ²​adj.r.squared, ³​statistic, ⁴​deviance, ⁵​df.residual
 ```
 ]
 ---
@@ -1229,6 +1200,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
