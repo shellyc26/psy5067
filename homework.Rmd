@@ -35,4 +35,5 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 ## Homework 5
 - Homework 5 has not posted yet
 - Due on 4/27 by 9:30am
-- Peer Review is due on 4/30 by 9:30am
+- Peer Review is due on 4/30
+by 9:30am
