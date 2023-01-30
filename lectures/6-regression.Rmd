@@ -138,8 +138,8 @@ d1.f %>%
 ---
 ## Example
 
-.small[]
-```{r, echo = 2:4, highlight.output = 17}
+.small[
+```{r highlight.output = 17}
 galton.data <- psychTools::galton
 fit.1 = lm(child ~ parent, data = galton.data)
 summary(fit.1) 

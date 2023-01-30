@@ -184,7 +184,7 @@ d1.f$new.fitted = 1.1 -0.7*d1.f$x.1
 
 ggplot(d1.f , aes(x=x.1, y=y.1)) +
     geom_point(size = 2) +
-  geom_abline(intercept = new.i, slope = new.slope, color = "blue", size = 1) +
+  geom_abline(intercept = new.i, slope = new.slope, color = "blue", linewidth = 1) +
   geom_point(aes(y = new.fitted), shape = 1, size = 2) +
   geom_segment(aes( xend = x.1, yend = new.fitted))+
   theme_bw(base_size = 20)

@@ -15,6 +15,10 @@ navbar:
         href: "lectures/3-glm.html"
       - text: "4-Correlation Redux"
         href: "lectures/4-correlation.html"
+      - text: "5-Univariate Part 1"
+        href: "lectures/5-regression.html"
+      - text: "6-Univariate Part 2"
+        href: "lectures/6-regression.html"
     - text: Homework
       href: homework.html
   right:
