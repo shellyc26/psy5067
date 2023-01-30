@@ -21,7 +21,7 @@ All homeworks are **independent projects**. You may not share code or answers wi
 
 In the instructions, when it says **_by hand_**, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
-**Data:** Please use the following dataset for questions 1 through 7.  [`hw1-data`](hw1-data.csv).
+**Data:** Please use the following dataset:  [`hw1-data`](hw1-data.csv).
 
 Good luck!
 
@@ -30,7 +30,7 @@ Good luck!
 1. Load the `hw1-data.csv` data into R. Create:
 
   - an informative plot/figure of the study variables
-  - a informative descriptives table of the study variables
+  - an informative descriptives table of the study variables
   
 Note that these should be the types of figure and table that you could publish in a journal article.  
 
@@ -44,7 +44,7 @@ Note that these should be the types of figure and table that you could publish i
   
 \* For the dummy code model, interpret the intercept and regression coefficient. 
 
-3. Decribe the similarities and differences across the tests you ran in question 2.
+3. Describe the similarities and differences across the tests you ran in question 2.
 
 4. What is the Coefficient of Determination for your dummy code model above? Interpret it. 
 
@@ -53,12 +53,6 @@ Note that these should be the types of figure and table that you could publish i
 6. For the dummy coded model, graph a distribution of the residuals. Then test whether the residuals correlated with X. Explain why they are/are not correlated with X.
 
 7. In #2, the $t$-test output gives you a confidence interval for the difference between the two groups. Using the dummy coded summary output, calculate this same confidence interval.  
-
-#### THE QUESTIONS BELOW DO NOT INVOLVE `hw1-data`:
-
-8. You are contacted by the deans office. They ran a correlation between Wash U SAT scores and happiness and found a correlation of $r = .21061$ with a sample of $N = 600$. They want to know if this is lower than a published meta-analytic estimate (.2554)? Do this "by hand". Treat the meta-analytic estimate as the "population". 
-
-9. Create a 95% confidence interval around $r = .30$ "by hand" for sample sizes of $N = 50$ and $N = 500$. Interpret each CI in your own words and compare and contrast the two CIs.   
 
 
 
