@@ -199,6 +199,18 @@ cor(galton.data$parent, galton.data$child)^2
 ## [1] 0.2104629
 ```
 
+--
+
+
+```r
+galton.fits = augment(fit.1)
+cor(galton.fits$child, galton.fits$.fitted)
+```
+
+```
+## [1] 0.4587624
+```
+
 ---
 ## Computing Sum of Squares
 
@@ -265,7 +277,7 @@ ssResidual
 ## `geom_smooth()` using formula = 'y ~ x'
 ```
 
-![](6-regression_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -300,7 +312,7 @@ mse
 ---
 ## MSE
 
-- It is the square of the residual standard error/deviation (sigma) aka RSE
+- It is the square of the residual standard error/deviation (sigma) aka `\(RSE^2\)`
 
 
 ```r
@@ -467,7 +479,7 @@ summary(m.1)
 ]
 ---
 
-![](6-regression_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 ---
 Again, but with a larger sigma
@@ -510,7 +522,7 @@ summary(m.2)
 ```
 ]
 ---
-![](6-regression_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
 ---
 ## `\(R^2\)` and residual standard deviation
@@ -524,7 +536,7 @@ summary(m.2)
 - for example if variance in Y is changed but with the same regression model and residual standard error, `\(R^2\)` could increase or decrease
 
 ---
-![](6-regression_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 ---
 ## Inferential tests
 
@@ -822,7 +834,7 @@ anova(fit.1, fit.0)
 
 ---
 ## Confidence bands for regression line
-![](6-regression_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -859,7 +871,7 @@ pred &lt;- ggplot(new_df, aes(y=child, x=parent))+
 pred
 ```
 
-![](6-regression_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+![](6-regression_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
 
 ---
 

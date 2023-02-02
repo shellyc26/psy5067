@@ -160,6 +160,13 @@ cor(galton.data$parent, galton.data$child, use = "pairwise")
 cor(galton.data$parent, galton.data$child)^2
 ```
 
+--
+
+```{r}
+galton.fits = augment(fit.1)
+cor(galton.fits$child, galton.fits$.fitted)
+```
+
 ---
 ## Computing Sum of Squares
 
@@ -247,7 +254,7 @@ mse
 ---
 ## MSE
 
-- It is the square of the residual standard error/deviation (sigma) aka RSE
+- It is the square of the residual standard error/deviation (sigma) aka $RSE^2$
 
 ```{r}
 mse = round((summary(fit.1)[["sigma"]]) ^2, digits = 2)
