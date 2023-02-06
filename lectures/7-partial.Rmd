@@ -11,7 +11,7 @@ output:
       countIncrementalSlides: false
 ---
 
-## Warm up
+## Pop Quiz
 
 .code-small[
 ```{r}
