@@ -295,11 +295,11 @@ As the number of groups in the ANOVA grows, the number of possible pairwise comp
 data.frame(g = 2:15) %>%
   mutate(num = (g*(g-1))/2) %>%
   ggplot(aes(x = g, y = num)) +
-  geom_line(size = 1.5) +
+  geom_line(linewidth = 1.5) +
   geom_point(size = 3)+
   scale_x_continuous("Number of Groups in the ANOVA") +
   scale_y_continuous("Number of Pairwise Comparisons") +
-  theme_bw()
+  theme_bw(base_size = 16)
 ```
 
 ---
@@ -329,11 +329,11 @@ data.frame(g = 2:15) %>%
          p_notype1 = (1-.05)^num,
          p_type1 = 1-p_notype1) %>%
   ggplot(aes(x = g, y = p_type1)) +
-  geom_line(size = 1.5) +
+  geom_line(linewidth = 1.5) +
   geom_point(size = 3)+
   scale_x_continuous("Number of Groups in the ANOVA") +
   scale_y_continuous("Probability of a Type I Error") +
-  theme_bw()
+  theme_bw(base_size = 16)
 ```
 
 ---
@@ -394,7 +394,7 @@ class: inverse
 
 - Assumptions & diagnostics
 - Review problems
-- Exam 1 on 3/1!
+- Exam 1 on 2/28!
 
 (we will cover remaining slides if time)
 ---

@@ -18,19 +18,13 @@ You are allowed to Google things. *However*, if you use code from an outside sou
 
 In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
-**Data:** You will need to use the Dawtry et al., 2015 Psychological Science article and the accompanying dataset to answer questions 1 - 7. Please download this [`dawtry-hw2-data`](dawtry-hw2-data.csv) dataset for the homework, which corresponds to study 1a of the paper. [The paper can be found here](../readings/Dawtry2015-PS.pdf).
+**Data:** You will need to use the Dawtry et al., 2015 Psychological Science article and the accompanying dataset to answer all questions. Please download this [`dawtry-hw2-data`](dawtry-hw2-data.csv) dataset for the homework, which corresponds to study 1a of the paper. [The paper can be found here](../readings/Dawtry2015-PS.pdf).
 
 Good luck!
 
 ## Homework Questions
 
-1.  Using data from Dawtry et al. Study 1a, calculate Cronbach's reliability for redistribution attitudes. *(Note: some items may need to be reverse scored).*
-
-2.  Replicate the correlation matrix in Table 1. *(Note: you will have to create a composite to do so)*
-
-3.  Calculate the means and standard deviations for Table 1 variables.
-
-4.  Graph the distributions of the following items. Be sure to comment on anything you find irregular or interesting. The variables to be plotted are:
+1.  Graph the distributions of the following items. Be sure to comment on anything you find irregular or interesting. The variables to be plotted are:
 
     -   Household Income
     -   Fairness and Satisfaction
@@ -38,26 +32,20 @@ Good luck!
     -   Population Mean Income
     -   Political Preference
 
-5.  Run a regression where political preferences predit redistribution.
+2.  Run a regression where political preferences predict redistribution.
 
     -   Interpret the intercept, the regression coefficient and $R^2$
     -   Plot the regression including the raw values, a confidence band, and the regression line
 
-6.  Create a new variable that dichotomizes political preferences into conservative and liberal variable, assuming the midpoint is conservative. Then do the following:
+3.  Create a new variable that dichotomizes political preferences into conservative and liberal variable, assuming the midpoint is conservative. Then do the following:
 
     -   Run a linear model with dummy coding predicting redistribution
-    -   What are the conceptual differences between the regression in \#5 and \#6. Which one would you prefer?
+    -   What are the conceptual differences between the regression in \#2 and \#3. Which one would you prefer?
 
-7.  Using the `anova` function for the model output for the model computed in \#5, calculate $R^2$ "by hand" using numbers in the anova table.
 
-8.  For the same model (\#5), interpret the residual standard error.
+4.  Using the `anova` function for the model output for the model computed in \#2, calculate $R^2$ "by hand" using numbers in the anova table.
 
-9.  Plot a distribution of the residuals for the model computed in \#5. Then comment on the relationship between residual standard error ($\sigma$) and the SD of this distribution.
+5.  For the same model (\#2), interpret the residual standard error.
 
-10. Run a standardized regression with household income predicting redistribution. What is the relationship to your summary output and the correlation in Table 1?
+6.  Plot a distribution of the residuals for the model computed in \#2. Then comment on the relationship between residual standard error ($\sigma$) and the SD of this distribution.
 
-*You do not need to use any data to answer questions 11 & 12*
-
-11. You are given data with two variables, X and Y. The mean of X is 3 with a SD .75. Y has a mean of 4 with a SD of .50. The correlation between the two is r = .3. "By hand", calculate the regression equation. Interpret each term in equation.
-
-12. With the data from \#11, calculate the standardized regression equation. Interpret each term.

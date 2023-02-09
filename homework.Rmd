@@ -18,9 +18,9 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 - *Peer Review is due on 2/10 by 9:30am*
 
 ## Homework 2
-- Homework 2 has not posted yet
-- Due on 2/23 by 9:30am
-- Peer Review is due on 2/26 by 9:30am
+- [Homework 2 is here](homework/homework2.html)
+- **Due on 2/23 by 9:30am**
+- *Peer Review is due on 2/26 by 9:30am*
 
 ## Homework 3
 - Homework 3 has not posted yet
