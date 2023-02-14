@@ -1630,7 +1630,36 @@ cor(solomon[,grepl("dummy", names(solomon))], use = "pairwise")
 
 
 ---
+### What do you think of this model?
 
+
+```r
+summary(lm(WISDOM ~ CONDITION, data = solomon))
+```
+
+```
+## 
+## Call:
+## lm(formula = WISDOM ~ CONDITION, data = solomon)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.64827 -0.55096  0.09494  0.72958  2.20076 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.69638    0.21399  -3.254 0.001500 ** 
+## CONDITION    0.28621    0.07956   3.598 0.000478 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.943 on 113 degrees of freedom
+##   (5 observations deleted due to missingness)
+## Multiple R-squared:  0.1028,	Adjusted R-squared:  0.09482 
+## F-statistic: 12.94 on 1 and 113 DF,  p-value: 0.000478
+```
+
+---
 ### Time savers
 
 R will automatically convert factor-level variables into dummy codes -- just make sure your variable is a factor before adding it to the model!

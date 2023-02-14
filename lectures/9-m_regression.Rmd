@@ -369,7 +369,13 @@ cor(solomon[,grepl("dummy", names(solomon))], use = "pairwise")
 
 
 ---
+### What do you think of this model?
 
+```{r}
+summary(lm(WISDOM ~ CONDITION, data = solomon))
+```
+
+---
 ### Time savers
 
 R will automatically convert factor-level variables into dummy codes -- just make sure your variable is a factor before adding it to the model!
