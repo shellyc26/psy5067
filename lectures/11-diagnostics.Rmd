@@ -316,7 +316,7 @@ The extra term is absorbed into the error so that
 
 $$Y_i = b_0 + b_{1}X_{1} + (\epsilon_{i} + X_2)$$
 
-If $X_1$ and $X_2$ are correlated, and $X_2$ is associated with $Y_i$ above and beyond $X_1$, then the residual and predictor in the model you ran ( $Y_i = b_0 + b_{1}X_{1} + b_{2}X_{2} + \epsilon_{i}$) will be correlated!
+If $X_1$ and $X_2$ are correlated, and $X_2$ is associated with $Y_i$ above and beyond $X_1$, then the residual and predictor in the model you ran ( $Y_i = b_0 + b_{1}X_{1} + \epsilon_{i}$) will be correlated!
 
 
 ]
@@ -364,11 +364,12 @@ Many ways this can happen but one common one is selecting a sample (clinical stu
 
 ## 4) Homoscedasticity
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message= FALSE}
 ggplot(data = aug_1, aes(x=.fitted, y=.resid)) + 
   geom_point() +
   geom_hline(yintercept = 0) +
-  theme_bw(base_size = 20)
+  theme_bw(base_size = 20) +
+  geom_smooth(method = "lm")
 ```
 
 ---
