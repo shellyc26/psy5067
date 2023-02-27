@@ -31,6 +31,8 @@ navbar:
         href: "lectures/11-diagnostics.html"
       - text: "12-Exam Review 1"
         href: "lectures/12-reviewExam1.html"
+      - text: "13-Become a Bayesian"
+        href: "lectures/Become_a_bayesian.html"
     - text: Homework
       href: homework.html
   right:
