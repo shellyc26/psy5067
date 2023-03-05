@@ -392,49 +392,47 @@ solomon %>%
 
 ---
 
-### Model summary
-
 ```{r, highlight.output = 11}
-solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
-summary(solomon.mod)
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
 ```
 
 ---
 
-### Model summary
+
 ```{r, highlight.output = 12}
-solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
-summary(solomon.mod)
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
 ```
 
 ---
 
-### Model summary
 ```{r, highlight.output = 13}
-solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
-summary(solomon.mod)
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
 ```
 
 ---
-
-### Model summary
 ```{r, highlight.output = 14}
-solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
-summary(solomon.mod)
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
 ```
 
 ---
 
-### Model summary
+```{r, highlight.output = 20}
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
+```
+
+---
+
+
 ```{r, highlight.output = 21}
-solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
-summary(solomon.mod)
+summary(lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon))
 ```
 
 ---
 
 ### Plotting results
+
 ```{r, fig.width=9, fig.height=6}
+solomon.mod = lm(WISDOM ~ PERSPECTIVE*DISTANCE, data = solomon)
 plot_model(solomon.mod, type = "int")
 ```
 

@@ -13,7 +13,7 @@ output:
 
 ## Last time
 
-Causal models as a tool for model building
+Josh ranted about Bayesian stats! Yay!
 
 ## Today
 

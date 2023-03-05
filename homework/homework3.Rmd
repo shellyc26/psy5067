@@ -24,7 +24,7 @@ Good luck!
 
 ## Homework Questions
 
-1. Perform a multiple regression where health is regressed on (predicted by) friends, SES, and happiness. Interpret each regresion coefficient. 
+1. Perform a multiple regression where health is regressed on (predicted by) friends, SES, and happiness. Interpret each regression coefficient. 
 
 2. Graph the (2-d) relationship between health and happiness as found in the above regression. Make sure the association controls for the remaining variables in the model. Include data points in your graph and a confidence band. 
 
@@ -36,6 +36,4 @@ Good luck!
 
     a. Interpret the coefficients
     b. Is there a significant increase in variance explained compared to the initial regression in #1? If so, what is the estimate? 
-    c. Recode the group contrasts into effect coding (-1, 0, and 1). Rerun the model. Interpret each regression coefficient including the intercept. 
-    d. For the model you ran in 5c, is the change in variance explained different from the change in variance explained from question 5b? Why or why not? 
 
