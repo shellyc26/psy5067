@@ -37,6 +37,8 @@ navbar:
         href: "lectures/14-interactions.html"
       - text: "15-Interactions (mix)"
         href: "lectures/15-interactions.html"
+      - text: "16-Interactions (anova)"
+        href: "lectures/16-interactions.html"
     - text: Homework
       href: homework.html
   right:

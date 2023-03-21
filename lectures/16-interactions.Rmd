@@ -84,6 +84,42 @@ The outcome was the time of the 10th failure. The experiment used a completely c
 
 ---
 
+### One-way vs Factorial
+
+.pull-left[
+**Marginal Mean Differences**
+
+Results of one-way ANOVA
+
+```{r, eval = F}
+lm(y ~ GROUP)
+```
+
+$$\hat{Y} = b_0 + b_1D$$
+
+]
+
+.pull-left[
+**Conditional Mean Differences**
+
+Results of Factorial ANOVA
+
+```{r, eval = F}
+lm(y ~ GROUP*other_VARIABLE)
+```
+
+$$\hat{Y} = b_0 + b_1D + b_2O + b_3DO$$
+
+]
+
+---
+## The Linear Model Way
+
+```{r}
+summary(lm(Time ~ Noise*Speed, data = Data))
+```
+
+---
 ### Marginal means
 
 ```{r, echo = F, results = 'asis', message = F, warning = F}
@@ -708,4 +744,4 @@ class: inverse
 - Power & effect sizes (interactions IV)
 - Polynomial regression (interactions V)
 - Review problems 
-- Exam 2 on **April 5** (2 weeks from today)
+- Exam 2 on **April 4**

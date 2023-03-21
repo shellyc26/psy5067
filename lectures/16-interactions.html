@@ -3,7 +3,7 @@
   <head>
     <title>Interactions (III)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -15,7 +15,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Interactions (III)
+]
 
 ---
 
@@ -58,6 +60,73 @@ The outcome was the time of the 10th failure. The experiment used a completely c
 
 ---
 
+### One-way vs Factorial
+
+.pull-left[
+**Marginal Mean Differences**
+
+Results of one-way ANOVA
+
+
+```r
+lm(y ~ GROUP)
+```
+
+`$$\hat{Y} = b_0 + b_1D$$`
+
+]
+
+.pull-left[
+**Conditional Mean Differences**
+
+Results of Factorial ANOVA
+
+
+```r
+lm(y ~ GROUP*other_VARIABLE)
+```
+
+`$$\hat{Y} = b_0 + b_1D + b_2O + b_3DO$$`
+
+]
+
+---
+## The Linear Model Way
+
+
+```r
+summary(lm(Time ~ Noise*Speed, data = Data))
+```
+
+```
+## 
+## Call:
+## lm(formula = Time ~ Noise * Speed, data = Data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -316.23  -70.82    4.99   79.87  244.40 
+## 
+## Coefficients:
+##                                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                       630.72      25.32  24.908  &lt; 2e-16 ***
+## NoiseControllable                 -54.05      35.81  -1.509  0.13305    
+## NoiseUncontrollable               -36.28      35.81  -1.013  0.31243    
+## SpeedMedium                      -105.44      35.81  -2.944  0.00369 ** 
+## SpeedFast                        -301.45      35.81  -8.418 1.49e-14 ***
+## NoiseControllable:SpeedMedium      21.48      50.64   0.424  0.67201    
+## NoiseUncontrollable:SpeedMedium  -184.39      50.64  -3.641  0.00036 ***
+## NoiseControllable:SpeedFast        12.01      50.64   0.237  0.81287    
+## NoiseUncontrollable:SpeedFast     -24.84      50.64  -0.490  0.62448    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 113.2 on 171 degrees of freedom
+## Multiple R-squared:  0.6109,	Adjusted R-squared:  0.5927 
+## F-statistic: 33.56 on 8 and 171 DF,  p-value: &lt; 2.2e-16
+```
+
+---
 ### Marginal means
 
 &lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
@@ -260,7 +329,7 @@ If not, then we would need to say that the noise condition effect depends upon (
 ---
 
 
-![](16-interactions_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 
 The noise condition means are most distinctly different in the medium speed condition. The noise condition means are clearly not different in the fast speed condition. 
@@ -273,7 +342,7 @@ The presence of an interaction qualifies any main effect conclusions, leading to
 
 .pull-left[
 
-![](16-interactions_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -348,7 +417,7 @@ An interaction.]
 
 ]
 
-![](16-interactions_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 ---
 
 ### Null Hypotheses
@@ -672,7 +741,7 @@ Interactions are tests of the differences of differences of means -- is the diff
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ???
 No effect of A
@@ -682,7 +751,7 @@ No interaction
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 ???
 Main effect of A
 Main effect of B
@@ -691,7 +760,7 @@ Interaction
 
 ### Visualizing main effects and interactions
 
-![](16-interactions_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](16-interactions_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ???
 No effect of A
@@ -864,7 +933,7 @@ class: inverse
 - Power &amp; effect sizes (interactions IV)
 - Polynomial regression (interactions V)
 - Review problems 
-- Exam 2 on **April 5** (2 weeks from today)
+- Exam 2 on **April 4**
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -912,6 +981,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
