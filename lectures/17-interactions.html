@@ -3,7 +3,7 @@
   <head>
     <title>Interactions (IV)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -15,7 +15,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Interactions (IV)
+]
 
 ---
 
@@ -365,10 +367,13 @@ pooled_sd = sqrt(MS_error)
 ```
 
 ```
-##            Noise   lsmean       SE  df lower.CL upper.CL
-## 1           None 495.0976 14.61974 171 466.2392 523.9560
-## 2   Controllable 452.2079 14.61974 171 423.3495 481.0663
-## 3 Uncontrollable 389.0759 14.61974 171 360.2175 417.9343
+##  Noise          lsmean   SE  df lower.CL upper.CL
+##  None              495 14.6 171      466      524
+##  Controllable      452 14.6 171      423      481
+##  Uncontrollable    389 14.6 171      360      418
+## 
+## Results are averaged over the levels of: Speed 
+## Confidence level used: 0.95
 ```
 
 ```r
@@ -803,6 +808,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
