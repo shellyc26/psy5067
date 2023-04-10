@@ -55,10 +55,11 @@ library(broom)
 Let's take a step back and think about linear regression for a minute:
 
 -  When we have a continuous DV, we can...
-  -   Calculate the R^2 and determine if our IVs & DV are correlated  (large value implying = large effect)
-  -   Calculate a p-value to determine if R^2 is statistically significant  
+  -   Calculate the $R^2$ and determine if our IVs & DV are correlated  (large value implying = large effect)
+  -   Calculate a $p$-value to determine if $R^2$ (or our model) is statistically significant  
   -   Use the line/slope of a linear regression to make a calculated prediction of *y* given *x*
-  -   Use covariates to model *y* using *x* and these other variables using multiple regression (and compare models!)
+  -   Compare models
+  - Add in predictors & look at interactions
 
 ---
 
@@ -128,9 +129,9 @@ This curved line can tell us the probability that something will be "1" given *X
 
 ## Model Complexity
 
-...and just like linear regression, we can make simple models (a relationship between *x* and *y*, with *y* being a binary variable) or more complicated models (with control variables or covariates).
+...and just like linear regression, we can make simple models (a relationship between *x* and *y*, with *y* being a binary variable) or more complicated models (with covariates).
 
-Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model (we will talk more about this later). Rather, we will want to do what is called a "Wald's Test" to find out if our prediction is significantly different from 0 (again, more on this later!).
+Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model. Rather, we will want to do what is called a *Wald's Test* to find out if our prediction is significantly different from 0 (more on this later!).
 
 ---
 
@@ -140,8 +141,8 @@ When our outcome is binary, we violate OLS regression assumptions
     
 Violates:      
 - Correctly specified form  (not linear)
-- Homoscedasticity (as P approaches 1 or 0, variance approaches 0)
-- Normality of the errors (lol nope)
+- Homoscedasticity (as probability approaches 1 or 0, variance approaches 0)
+- Normality of the errors (lol not close)
 
 
 ---
@@ -171,15 +172,15 @@ $$\hat{p}_{i} \leftrightsquigarrow b_{0} + b_{1}X_{1} + b_{2}X_{2}... b_{3}X_{p}
 $$y_i \sim  N(\mu_i, \sigma)$$
 
 $$\mu_i = \alpha + \beta x_i$$
-- The parameters of the normal distribution are the mean μ and the standard deviation σ (or the variance σ2)]
+- The parameters of the normal distribution are the mean μ and the standard deviation σ (or the variance $\sigma^2$)]
 
 .pull-right[
 - Binomial outcome is
 $$y_i \sim  Binomial(n, p_i)$$
 
 $$f(p_i) = \alpha + \beta x_i$$
-- n stands for the number of times the experiment runs.
-- p represents the probability of one specific outcome.]
+- **n** stands for the number of times the experiment runs.
+- **_p_** represents the probability of one specific outcome.]
 
 ---
 ## GLM components
@@ -243,8 +244,6 @@ For the Sigmoid function, as *x* approaches $\infty$, it reaches a natural limit
 
 As *x* approaches $-\infty$, it reaches a natural limit of 0
 
-Interestingly, when *x* is 0, the Sigmoid function settles at 0.5.
-
 This all keeps the limits within the 0, 1 range.
 
 ---
@@ -277,7 +276,7 @@ Put simply:
 - Odds are the ratio of something happening over something not happening.
 - Probability is the ratio of something happening over everything that could happen.
 
-The odds being so asymmetrical (unlike probability) make it so difficult to compare the odds of being 0 versus the odds of being 1. So we use something called log odds.
+The odds being so asymmetrical (unlike probability) make it difficult to compare the odds of being 0 versus the odds of being 1. So we use something called log odds.
 
 ---
 ## Log Odds
@@ -311,7 +310,7 @@ $$logit= Log(odds)=ln(\frac{\hat{p}}{1-\hat{p}}) = b_{0}+b_{1}X$$
 
 - Instead of predicting probabilities directly, we are instead predicting the log of the odds.
 
-- The regression we are used to is not predicting $\hat{Y}$, because we're predicting (or relating our IV) to *logits*
+- The regression we are used to is not predicting $\hat{Y}$, because we're predicting (or relating our IV) *logits*
 
 ---
 
@@ -582,11 +581,6 @@ death.4 <- glm(NOT.premature ~ Intelligence_Self,
 summary(death.4)
 ```
 
-
----
-class:inverse, middle, center
-
-# Thank you to AJ and Mary for wonderful lectures!
 
 ---
 class:inverse

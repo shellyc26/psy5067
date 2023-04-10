@@ -3,7 +3,7 @@
   <head>
     <title>Logistic Regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -13,7 +13,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Logistic Regression
+]
 
 ---
 
@@ -52,10 +54,11 @@ class: center, middle, inverse, title-slide
 Let's take a step back and think about linear regression for a minute:
 
 -  When we have a continuous DV, we can...
-  -   Calculate the R^2 and determine if our IVs &amp; DV are correlated  (large value implying = large effect)
-  -   Calculate a p-value to determine if R^2 is statistically significant  
+  -   Calculate the `\(R^2\)` and determine if our IVs &amp; DV are correlated  (large value implying = large effect)
+  -   Calculate a `\(p\)`-value to determine if `\(R^2\)` (or our model) is statistically significant  
   -   Use the line/slope of a linear regression to make a calculated prediction of *y* given *x*
-  -   Use covariates to model *y* using *x* and these other variables using multiple regression (and compare models!)
+  -   Compare models
+  - Add in predictors &amp; look at interactions
 
 ---
 
@@ -116,9 +119,9 @@ This curved line can tell us the probability that something will be "1" given *X
 
 ## Model Complexity
 
-...and just like linear regression, we can make simple models (a relationship between *x* and *y*, with *y* being a binary variable) or more complicated models (with control variables or covariates).
+...and just like linear regression, we can make simple models (a relationship between *x* and *y*, with *y* being a binary variable) or more complicated models (with covariates).
 
-Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model (we will talk more about this later). Rather, we will want to do what is called a "Wald's Test" to find out if our prediction is significantly different from 0 (again, more on this later!).
+Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model. Rather, we will want to do what is called a *Wald's Test* to find out if our prediction is significantly different from 0 (more on this later!).
 
 ---
 
@@ -128,8 +131,8 @@ When our outcome is binary, we violate OLS regression assumptions
     
 Violates:      
 - Correctly specified form  (not linear)
-- Homoscedasticity (as P approaches 1 or 0, variance approaches 0)
-- Normality of the errors (lol nope)
+- Homoscedasticity (as probability approaches 1 or 0, variance approaches 0)
+- Normality of the errors (lol not close)
 
 
 ---
@@ -159,15 +162,15 @@ Violates:
 `$$y_i \sim  N(\mu_i, \sigma)$$`
 
 `$$\mu_i = \alpha + \beta x_i$$`
-- The parameters of the normal distribution are the mean μ and the standard deviation σ (or the variance σ2)]
+- The parameters of the normal distribution are the mean μ and the standard deviation σ (or the variance `\(\sigma^2\)`)]
 
 .pull-right[
 - Binomial outcome is
 `$$y_i \sim  Binomial(n, p_i)$$`
 
 `$$f(p_i) = \alpha + \beta x_i$$`
-- n stands for the number of times the experiment runs.
-- p represents the probability of one specific outcome.]
+- **n** stands for the number of times the experiment runs.
+- **_p_** represents the probability of one specific outcome.]
 
 ---
 ## GLM components
@@ -233,8 +236,6 @@ For the Sigmoid function, as *x* approaches `\(\infty\)`, it reaches a natural l
 
 As *x* approaches `\(-\infty\)`, it reaches a natural limit of 0
 
-Interestingly, when *x* is 0, the Sigmoid function settles at 0.5.
-
 This all keeps the limits within the 0, 1 range.
 
 ---
@@ -267,7 +268,7 @@ Put simply:
 - Odds are the ratio of something happening over something not happening.
 - Probability is the ratio of something happening over everything that could happen.
 
-The odds being so asymmetrical (unlike probability) make it so difficult to compare the odds of being 0 versus the odds of being 1. So we use something called log odds.
+The odds being so asymmetrical (unlike probability) make it difficult to compare the odds of being 0 versus the odds of being 1. So we use something called log odds.
 
 ---
 ## Log Odds
@@ -301,7 +302,7 @@ Odds are 6 to 1:
 
 - Instead of predicting probabilities directly, we are instead predicting the log of the odds.
 
-- The regression we are used to is not predicting `\(\hat{Y}\)`, because we're predicting (or relating our IV) to *logits*
+- The regression we are used to is not predicting `\(\hat{Y}\)`, because we're predicting (or relating our IV) *logits*
 
 ---
 
@@ -721,11 +722,6 @@ summary(death.4)
 
 
 ---
-class:inverse, middle, center
-
-# Thank you to AJ and Mary for wonderful lectures!
-
----
 class:inverse
 
 ## 4 more to go... 
@@ -782,6 +778,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

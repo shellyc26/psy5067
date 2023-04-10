@@ -47,6 +47,8 @@ navbar:
         href: "lectures/19-reviewExam2.html"
       - text: "20-MLM"
         href: "lectures/MLM_Quant2.pdf"
+      - text: "21-Logistic"
+        href: "lectures/logistic-regression-lecture.html"
     - text: Homework
       href: homework.html
   right:

@@ -12,7 +12,7 @@ Please complete this assignment by creating a new RMarkdown (or RNotebook) file 
 -   All code should be in a code chunk (gray boxes)
 -   All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks.
 -   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
--   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpreations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+-   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use sub headers (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
 
 You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
 
