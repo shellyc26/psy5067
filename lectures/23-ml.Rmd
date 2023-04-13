@@ -88,7 +88,7 @@ class: center, middle
 
 - **supervised learning:** using known patterns between input and output observations to train a mapping between the two
   - **regression!** learning the mapping between a continuous input feature variable and a continuous output target variable
-  - **classification:** learning them apping between a continuous input feature variable and a categorical output target variable (i.e., a label)
+  - **classification:** learning the mapping between a continuous input feature variable and a categorical output target variable (i.e., a label)
 
 --
 
@@ -305,11 +305,11 @@ cv.model
 ## Regularization
 
 Penalizing a model as it grows more complex. 
-* Usually involves shrinking coefficient estimates -- the model will fit less well in-sample but may be more predictive
+* Usually involves _**shrinking**_ coefficient estimates -- the model will fit less well in-sample but may be more predictive
 
 --
 
-*Lasso regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
+*LASSO regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
 - Penalize the size of the coefficients
 - The larger the penalty applied, the more estimates are go towards zero (or "shrink" -- the first "S")
 - Coefficients are more biased (tend to underestimate coefficients) but produce less variability in results
@@ -319,7 +319,7 @@ The coefficient $\lambda$ is used to penalize the model.
 
 ---
 ## Lasso Regression
-The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
+The `glmnet` package has the tools for LASSO regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
 
 
 Luckily, the function `model.matrix()` can do this for you.

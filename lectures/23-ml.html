@@ -3,7 +3,7 @@
   <head>
     <title>Lessons from Machine Learning</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -13,7 +13,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Lessons from Machine Learning
+]
 
 ---
 
@@ -93,7 +95,7 @@ class: center, middle
 
 - **supervised learning:** using known patterns between input and output observations to train a mapping between the two
   - **regression!** learning the mapping between a continuous input feature variable and a continuous output target variable
-  - **classification:** learning them apping between a continuous input feature variable and a categorical output target variable (i.e., a label)
+  - **classification:** learning the mapping between a continuous input feature variable and a categorical output target variable (i.e., a label)
 
 --
 
@@ -328,11 +330,11 @@ cv.model
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 106, 106, 107, 106, 106, 106, ... 
+## Summary of sample sizes: 107, 106, 106, 106, 107, 106, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE     
-##   1.488403  0.3665443  1.207458
+##   RMSE      Rsquared   MAE    
+##   1.536901  0.3451611  1.24317
 ## 
 ## Tuning parameter 'intercept' was held constant at a value of TRUE
 ```
@@ -344,11 +346,11 @@ cv.model
 ## Regularization
 
 Penalizing a model as it grows more complex. 
-* Usually involves shrinking coefficient estimates -- the model will fit less well in-sample but may be more predictive
+* Usually involves _**shrinking**_ coefficient estimates -- the model will fit less well in-sample but may be more predictive
 
 --
 
-*Lasso regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
+*LASSO regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
 - Penalize the size of the coefficients
 - The larger the penalty applied, the more estimates are go towards zero (or "shrink" -- the first "S")
 - Coefficients are more biased (tend to underestimate coefficients) but produce less variability in results
@@ -358,7 +360,7 @@ The coefficient `\(\lambda\)` is used to penalize the model.
 
 ---
 ## Lasso Regression
-The `glmnet` package has the tools for lasso regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
+The `glmnet` package has the tools for LASSO regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
 
 
 Luckily, the function `model.matrix()` can do this for you.
@@ -520,7 +522,7 @@ lasso.mod
 plot(lasso.mod, xvar = "dev", label = T)
 ```
 
-![](19-ml_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](23-ml_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[Looks like coefficients 1, 2, and 3 have high values even with shrinkage.
@@ -533,7 +535,7 @@ plot(lasso.mod, xvar = "dev", label = T)
 plot(lasso.mod, xvar = "lambda", label = TRUE)
 ```
 
-![](19-ml_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](23-ml_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 I might look for lambda values where those coefficients are still different from 0. 
 
@@ -646,8 +648,8 @@ cvfit
 ## Measure: Mean-squared Error 
 ## 
 ##      Lambda Index Measure     SE Nonzero
-## min 0.02159    42   2.383 0.1661       4
-## 1se 0.16719    20   2.526 0.1674       2
+## min 0.01968    43   2.319 0.4069       4
+## 1se 0.24256    16   2.717 0.4504       3
 ```
 
 ]
@@ -658,7 +660,7 @@ cvfit
 plot(cvfit)
 ```
 
-![](19-ml_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](23-ml_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 ]
 
 
@@ -741,6 +743,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

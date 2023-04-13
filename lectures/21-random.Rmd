@@ -1,0 +1,479 @@
+---
+title: 'Random Topics'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = F, message = F, warning = F}
+library(tidyverse)
+```
+
+
+## Last time...
+
+Logistic Regression 
+
+## Today
+
+* Review & finish logistic regression
+* Weighted Least Squares
+* Other random `R` things
+
+---
+
+## Estimation with Maximum Likelihood
+
+- Logistic regression is used when our outcomes are categorical
+- OLS minimizes the errors ( $SS_{res}$), which maximizes ( $SS_{reg}$)   
+- In logistic regression we are not so lucky  
+
+- Need to rely on iterative procedure, ML Estimation:
+
+  - Pick parameters of your model ( $b_0$, $b_1$ etc. ), and calculate the *likelihood* of the data, given those parameters. We do this iteratively until we find the best parameters -- the ones that *maximize* the *likelihood* of your data. 
+
+---
+## GLM in R
+
+.pull-left[
+```{r, eval=FALSE}
+
+glm(formula,
+    family = gaussian(link="identity"), #<<
+    data,
+    weights,
+    subset,
+    na.action,
+    start = NULL,
+    etastart,
+    mustart,
+    offset, 
+    control = glm.control(...),
+    model = TRUE,
+    method = ”glm.fit”,
+    x = FALSE, 
+    y = TRUE,
+    contrasts = NULL, ...)
+```
+]
+
+.pull-right[
+The `family` argument specifies the distribution. In R, families have default links. 
+
+![](images/glmfamily.png)
+]
+
+---
+## GLM in R
+
+.pull-left[
+```{r, eval=FALSE}
+
+glm(y ~ X1+ X2 + X3 , #<<
+    family = binomial,
+    data = dataset)
+
+```
+]
+
+.pull-right[
+Specify the model like you would with `lm`
+]
+
+---
+## GLM in R
+
+.pull-left[
+```{r, eval=FALSE}
+
+glm(y ~ X1+ X2 + X3 , 
+    family = binomial, #<<
+    data = dataset)
+
+```
+]
+
+.pull-right[
+
+Specify the distribution you're working with. When binary outcomes, we'll use the binomial. 
+
+]
+
+---
+## GLM in R
+
+.pull-left[
+```{r, eval=FALSE}
+
+glm(y ~ X1+ X2 + X3 , 
+    family = binomial, 
+    data = dataset) #<<
+
+```
+]
+
+.pull-right[
+
+Specify your dataset.
+
+]
+
+---
+## How to interpret
+- $b_1$ is the predicted change in the logit for a 1-unit change in X, holding the other predictors constant 
+
+- For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$   
+
+  - e.g,. $b_{1}$ = .4, $e^{.4}$ = 1.49 
+
+- For fitted values, need to use entire equation
+$\hat{Y} = e^{b_{0}+b_{1}X_{1}}$
+
+- Turn to probabilities by: $\frac{\text{odds}}{(1 + \text{odds})}$
+
+---
+## Example
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library(readr)
+Personality_longevity <- read_csv("https://raw.githubusercontent.com/josh-jackson/5067-Spring-2020/master/static/Lectures/Personality_longevity.csv")
+
+library(dplyr)
+mortality <- Personality_longevity %>% 
+  select (Time, Intelligence_Self, Intelligence_Mate) %>% 
+  mutate(premature.d = cut(Time, breaks=c(-Inf, 62, Inf),
+                     labels=c("premature","normal"))) %>% 
+  select(-Time)
+  
+mortality$NOT.premature <- dplyr::recode(mortality$premature.d, normal ="1", premature="0")
+  
+mortality$NOT.premature <- as.numeric(as.character(mortality$NOT.premature ))
+
+
+  
+```
+
+```{r}
+# 1 = not premature
+mortality
+```
+
+---
+
+```{r}
+
+death.1 <- lm(NOT.premature ~ Intelligence_Self , data = mortality)
+summary(death.1)
+```
+
+
+---
+
+```{r}
+
+death.2 <- glm(NOT.premature ~ Intelligence_Self , data = mortality)
+summary(death.2)
+```
+
+
+---
+```{r}
+anova(death.1)
+```
+
+---
+```{r}
+anova(death.2)
+```
+
+---
+
+```{r}
+death.3 <- glm(NOT.premature ~ Intelligence_Self,
+               family = binomial, data = mortality)
+summary(death.3)
+```
+
+---
+.pull-left[
+For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$
+
+```{r}
+exp(1)^.08012
+```
+
+*For every 1-unit increase in Intelligence, the odds of living increase by 8%*
+]
+
+--
+
+.pull-right[
+Now convert back into probabilities $\frac{\text{odds}}{(1 + \text{odds})}$
+
+```{r}
+1.083417 / (1+1.083417)
+```
+
+
+*For every 1-unit increase in Intelligence, the probability of living increases by .52* 
+
+Probability greater than .5 indicates success is more likely than failure.
+]
+---
+
+## Specific Values?
+
+What if you want the probability of being a premature death for a given level of Intelligence? (Now that we've run our model and have parameters...)
+
+For fitted values, need to use entire equation
+$\hat{Y} = e^{b_{0}+b_{1}X_{1}}$
+
+```{r}
+# get fitted value with a given value of X (here 20)
+exp(1)^(0.28695 + (.08012*20))
+ 
+# now get odds
+6.615067 / (1+6.615067)
+```
+
+---
+## Probit 
+
+We can have different link functions. When your response variable (DV) is truly binary -- the data generating process generates legit binary data -- logit is your pick.
+
+--
+
+What if your response variable is binary, but the underlying construct you are trying to measure is likely Gaussian? Ex: depressed vs. not depressed. But the underlying latent construct is continuous. More appropriate then is the **probit** link function.
+
+[Stack exchange thread if you're going down this route](https://stats.stackexchange.com/questions/20523/difference-between-logit-and-probit-models)
+---
+## Probit
+
+
+```{r}
+death.4 <- glm(NOT.premature ~ Intelligence_Self,
+        family = binomial(link = "probit"), data = mortality)
+summary(death.4)
+```
+
+---
+## Expanding upon simple logistic models
+
+- You can include covariates
+- You can have interactions...BUT
+
+**Interactions are super hard to interpret in logistic regression**
+
+--
+
+- We have nonlinear mapping (S-function)
+- Can express in terms of odds, probabilities, or logits
+- Whether your observe an interaction *depends* on if you express the outcome in terms of odds, probabilities, or logits...You can get very different results!
+- Ultimately, you might want to use other techniques
+
+---
+class: inverse, center, middle
+
+# Weighted Least Squares
+
+---
+## Estimation methods thus far
+
+- OLS
+- MLE 
+
+--
+
+Why do we need another method?
+
+---
+
+## Homoscedasticity
+
+Homoscedasticity is the assumption that the variance of Y is constant across all levels of a predictor.
+
+```{r, echo = F}
+set.seed(031020)
+N = 80
+n.per = round(N/4)
+y.x1 = rnorm(n = n.per, mean = 50, sd = 10)
+y.x2 = rnorm(n = n.per, mean = 40, sd = 7)
+y.x3 = rnorm(n = n.per, mean = 30, sd = 5)
+y.x4 = rnorm(n = n.per, mean = 20, sd = 2)
+
+y = c(y.x1, y.x2, y.x3, y.x4)
+
+x.list = sapply(c(1:4), function(x) rnorm(n = n.per, mean = x, sd = .2))
+xvar = as.vector(x.list)
+
+Data = data.frame(calm = xvar, 
+                  problems = round(y/10))
+```
+
+```{r, message = F, fig.height = 4, echo=FALSE}
+ggplot(Data, aes(x = calm, y = problems)) +
+  geom_jitter(alpha = .5)
+```
+
+Do we meet this assumption?
+---
+
+## Weighted least squares
+
+Weighted least squares (WLS) is a commonly used remedial procedure for heteroscedasticity.
+
+In an ordinary least squares (OLS) approach, each case in the dataset is given equal weight.
+  - WLS assigns each case a weight $w_i$, depending upon the precision of the observation of Y in that case.
+  
+  - For observations for which the variance around the residuals around the regression line is low, the case is given a high weight.
+
+---
+
+Recall that an OLS estimation chooses values of $b_0$ and $b_1$ that minimizes the sum of squared residuals:
+
+$$\large \text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$
+
+In a WLS approach, weights are taken into account, such that the values of $b_0$ and $b_1$ are chosen to minimize the sum of the **weighted** squared residuals:
+
+$$\large \text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$
+
+The value of the weights is the inverse of the conditional variance of the residuals in the population corresponding to the specified value of X:
+
+$$\large w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$
+---
+
+The value of $\sigma^2_{Y-\hat{Y}|X}$, the variance of the residuals in the population conditional on X, is not known and must be estimated. A common procedure for estimating weights is to estimate the usual OLS regression equation, square the residuals, and then regress the squared residuals onto X. The weight is then estimated as the inverse of the predicted value for a case. 
+
+Using our own data:
+
+```{r}
+ols.model = lm(problems ~ calm, data = Data)
+library(broom)
+ols_aug = augment(ols.model)
+head(ols_aug)
+```
+---
+
+```{r}
+# square residuals
+ols_aug$resid_sq = ols_aug$.resid^2
+# regress squared resid on predictor
+weight.mod = lm(resid_sq ~ calm, data = ols_aug)
+```
+
+.pull-left[
+```{r}
+coef(ols.model)
+```
+
+]
+
+.pull-right[
+```{r}
+coef(weight.mod)
+```
+
+]
+
+```{r}
+# extract predicted values
+pred.resid = predict(weight.mod)
+head(pred.resid)
+# find inverse of predicted values
+# use absolute value if some of your predicted values are negative  
+est.weights = 1/abs(pred.resid) 
+head(est.weights)
+```
+
+
+---
+
+```{r}
+wls.model = lm(problems ~ calm, data = Data, weights = est.weights)
+```
+
+
+#### OLS solution
+```{r}
+tidy(ols.model)
+```
+
+#### WLS solution
+```{r}
+tidy(wls.model)
+```
+
+---
+
+```{r, echo = F, fig.width=10, fig.height=8, warning = FALSE, message = FALSE}
+Data %>%
+  ggplot(aes(x = calm, y = problems)) +
+  geom_point(alpha = .5, position = position_jitter(width = 0, height = .1)) +
+  geom_smooth(method = "lm", se = F, aes(color = "OLS")) +
+  geom_smooth(method = "lm", se = F, aes(color = "WLS", weight = est.weights)) +
+  theme_classic(base_size = 20)
+```
+
+
+---
+## When to use WLS
+
+WLS is a **robust** method of estimation. "**Robust statistics** are statistics with good performance for data drawn from a wide range of probability distributions, especially for distributions that are not normal." .small[_(this quote taken straight from the [Wikipedia page](https://en.wikipedia.org/wiki/Robust_statistics))_]
+
+Use when...
+- Dealing with heteroscedasticity
+
+- You know already that points should not be treated equally (some should be weighed more than others); do you know that some of your data was measured with less error than other data?
+
+---
+class: inverse, center, middle
+
+# Other Random R Things
+
+---
+
+## Checking Assumptions
+
+```{r}
+library(performance)
+library(palmerpenguins)
+
+model1 = lm(body_mass_g ~ bill_length_mm, data = penguins)
+summary(model1)
+```
+
+
+---
+## Checking Assumptions
+
+.small[
+```{r, message=F, warning=FALSE}
+check_model(x = model1)
+```
+]
+
+
+---
+## Bayes Tutorial 
+
+(if time)
+
+---
+
+class: inverse
+
+## End of semester
+
+- Tuesday = Messi talking about resampling methods, namely bootstrapping
+
+- Thursday = Shelly talking about machine learning; READ THE YARKONI & WESTFALL PAPER
+
+- Tuesday = Review session
+
+- Thursday - Monday - Exam 3 will be open
