@@ -51,6 +51,8 @@ navbar:
         href: "lectures/logistic-regression-lecture.html"
       - text: "22-Random"
         href: "lectures/21-random.html"
+      - text: "23-Resampling"
+        href: "lectures/bootstrapping_lecture_messi.html"
     - text: Homework
       href: homework.html
   right:
