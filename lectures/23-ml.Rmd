@@ -26,7 +26,7 @@ library(tidyverse)
 
 ## Last time...
 
-- Resampling methods via Bootstrapping
+- Resampling methods via Bootstrapping (thank you Messi!)
 
 ## Today
 
@@ -105,8 +105,11 @@ class: center, middle
 --
 
 - ML classes in CS department
+
 - Wouter Kool for reinforcement learning (maybe Zach Reagh but don't quote me)
+
 - ACCSN with Dennis Barbour and myself for high level discussions on these topics
+
 - Poli Sci department for dealing with categorical outcomes
 
 ---
