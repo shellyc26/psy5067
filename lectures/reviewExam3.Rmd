@@ -28,11 +28,11 @@ penguins$group = factor(penguins$group)
 .small[
 
 
-- What is different between a Frequentist and a Bayesian? How does a Frequentist evaluate if a model is good? How does a Bayesian evaluate if their priors are good? Review AJ's lecture and understand the principles of Bayesian inference.
+- nEEDS TO BE MLM
 
 - What is the problem resampling methods help us overcome? Can you describe the process? If I gave you a snippet of code, could you read it through and more or less understand what is going on? 
 
-- What problem is logistic regression trying to solve? Why can't we use linear regression? How do we derive our coefficients in logistic regression? Can you interpret the output? How do you convert to probabilities, odds, etc? Review Mary's lecture and make sure that you understand principles of logistic regression. 
+- What problem is logistic regression trying to solve? Why can't we use linear regression? How do we derive our coefficients in logistic regression? Can you interpret the output? How do you convert to probabilities, odds, etc? 
 
 - What was the main takeaway from Yarkoni & Westfall? What is cross-validation, overfitting, and regularization? When can we implement these tools? What is the bias-variance tradeoff and how does that relate to the terms listed earlier?  
 ]
@@ -123,4 +123,5 @@ https://psych.wustl.edu/graduate-certificate
 
 class: inverse, middle, center
 
-# Party!  `r emo::ji("celebrate")` `r emo::ji("tada")`
+# Thank you for a great year! 
+# `r emo::ji("celebrate")` `r emo::ji("tada")`
