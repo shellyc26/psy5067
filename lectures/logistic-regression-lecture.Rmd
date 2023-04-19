@@ -45,8 +45,11 @@ library(broom)
 
 - We've had a mixture of continuous/categorical IVs (more regression)
 
+- .small[Please note that slide 41 of this presentation was edited on 4/19]
+
 --
 - But we've never had a DV variable that is categorical... in comes Logistic Regression
+
 
 ---
 
@@ -520,7 +523,8 @@ summary(death.3)
 ```
 
 ---
-.pull-left[
+### Slide corrected on 4/19
+
 For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$
 
 ```{r}
@@ -528,22 +532,9 @@ exp(1)^.08012
 ```
 
 *For every 1-unit increase in Intelligence, the odds of living increase by 8%*
-]
-
---
-
-.pull-right[
-Now convert back into probabilities $\frac{\text{odds}}{(1 + \text{odds})}$
-
-```{r}
-1.083417 / (1+1.083417)
-```
 
 
-*For every 1-unit increase in Intelligence, the probability of living increases by .52* 
 
-Probability greater than .5 indicates success is more likely than failure.
-]
 ---
 
 ## Specific Values?
