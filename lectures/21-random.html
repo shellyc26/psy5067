@@ -307,7 +307,8 @@ summary(death.3)
 ```
 
 ---
-.pull-left[
+## Modified on 4/20
+
 For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by `\(e^{b_{1}}\)`
 
 
@@ -320,27 +321,7 @@ exp(1)^.08012
 ```
 
 *For every 1-unit increase in Intelligence, the odds of living increase by 8%*
-]
 
---
-
-.pull-right[
-Now convert back into probabilities `\(\frac{\text{odds}}{(1 + \text{odds})}\)`
-
-
-```r
-1.083417 / (1+1.083417)
-```
-
-```
-## [1] 0.5200193
-```
-
-
-*For every 1-unit increase in Intelligence, the probability of living increases by .52* 
-
-Probability greater than .5 indicates success is more likely than failure.
-]
 ---
 ## Interpreting Odds Ratios
 
@@ -461,7 +442,7 @@ Homoscedasticity is the assumption that the variance of Y is constant across all
 
 
 
-![](21-random_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](21-random_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 Do we meet this assumption?
 ---
@@ -612,7 +593,7 @@ tidy(wls.model)
 
 ---
 
-![](21-random_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+![](21-random_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -675,7 +656,7 @@ summary(model1)
 check_model(x = model1)
 ```
 
-![](21-random_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
+![](21-random_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 ]
 
 

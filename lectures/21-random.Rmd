@@ -201,7 +201,8 @@ summary(death.3)
 ```
 
 ---
-.pull-left[
+## Modified on 4/20
+
 For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$
 
 ```{r}
@@ -209,22 +210,7 @@ exp(1)^.08012
 ```
 
 *For every 1-unit increase in Intelligence, the odds of living increase by 8%*
-]
 
---
-
-.pull-right[
-Now convert back into probabilities $\frac{\text{odds}}{(1 + \text{odds})}$
-
-```{r}
-1.083417 / (1+1.083417)
-```
-
-
-*For every 1-unit increase in Intelligence, the probability of living increases by .52* 
-
-Probability greater than .5 indicates success is more likely than failure.
-]
 ---
 ## Interpreting Odds Ratios
 
