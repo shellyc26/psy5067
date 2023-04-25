@@ -21,24 +21,6 @@ penguins$group = rep(c("group 1", "group 2", "group 3"), length.out = nrow(pengu
 penguins$group = factor(penguins$group)
 ```
 
-## Thought questions
-
-.tiny[Spend roughly 10-15 minutes with friends describing each. Be as thorough as possible]
-
-.small[
-
-
-- What is the problem multilevel modeling is trying to solve? Can you explain fixed & random effects? Can you describe between-person effects and within-person effects? 
-
-- What is the problem resampling methods help us overcome? Can you describe the process? If I gave you a snippet of code, could you read it through and more or less understand what is going on? 
-
-- What problem is logistic regression trying to solve? Why can't we use linear regression? How do we derive our coefficients in logistic regression? Can you interpret the output?
-
-- What was the main takeaway from Yarkoni & Westfall? What is cross-validation, overfitting, and regularization? When can we implement these tools? What is the bias-variance tradeoff and how does that relate to the terms listed earlier?  
-]
-
----
-
 ## Final Exam
 
 What it covers:
@@ -125,3 +107,22 @@ class: inverse, middle, center
 
 # Thank you for a great year! 
 # `r emo::ji("celebrate")` `r emo::ji("tada")`
+
+---
+## Thought questions
+
+.tiny[Spend roughly 10-15 minutes with friends describing each. Be as thorough as possible]
+
+.small[
+
+
+- What is the problem multilevel modeling is trying to solve? Can you explain fixed & random effects? Can you describe between-person effects and within-person effects? 
+
+- What is the problem resampling methods help us overcome? Can you describe the process? If I gave you a snippet of code, could you read it through and more or less understand what is going on? 
+
+- What problem is logistic regression trying to solve? Why can't we use linear regression? How do we derive our coefficients in logistic regression? Can you interpret the output?
+
+- What was the main takeaway from Yarkoni & Westfall? What is cross-validation, overfitting, and regularization? When can we implement these tools? What is the bias-variance tradeoff and how does that relate to the terms listed earlier?  
+]
+
+
