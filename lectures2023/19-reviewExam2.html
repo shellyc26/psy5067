@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Review for Exam 2</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="my-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Review for Exam 2
+]
+
+---
+
+
+
+
+### Tips 
+- Prepare as though this were a closed note test that lasts 80 minutes. Do not rely on open notes. 
+
+- Make a cheat sheet (preferably hand written) to keep next to you the entire time.
+
+- Consider printing the exam and doing it by hand. Allows you to implement classic test taking strategies like highlighting/underlining etc.
+
+- Study with people. Study with different people! 
+
+- Speak out loud. You are learning a language. You don't become fluent in French without speaking French...
+
+---
+### Review Question 1
+
+
+
+
+```
+## 
+## Call:
+## lm(formula = body_mass_g ~ group * island, data = penguins)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1859.21  -352.56     7.07   395.25  1600.45 
+## 
+## Coefficients:
+##                              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                  4661.818     84.922  54.895  &lt; 2e-16 ***
+## groupgroup 2                   37.727    120.098   0.314    0.754    
+## groupgroup 3                  122.392    119.039   1.028    0.305    
+## islandDream                  -941.469    128.203  -7.344 1.61e-12 ***
+## islandTorgersen              -885.256    178.891  -4.949 1.19e-06 ***
+## groupgroup 2:islandDream        3.233    181.911   0.018    0.986    
+## groupgroup 3:islandDream     -190.177    183.208  -1.038    0.300    
+## groupgroup 2:islandTorgersen  -81.937    250.091  -0.328    0.743    
+## groupgroup 3:islandTorgersen -279.510    246.975  -1.132    0.259    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 629.8 on 333 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.3977,	Adjusted R-squared:  0.3833 
+## F-statistic: 27.49 on 8 and 333 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+### Review Question 1
+
+
+```r
+anova(q1Mod)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: body_mass_g
+##               Df    Sum Sq  Mean Sq  F value Pr(&gt;F)    
+## group          2     64386    32193   0.0812 0.9221    
+## island         2  86292470 43146235 108.7782 &lt;2e-16 ***
+## group:island   4    868318   217079   0.5473 0.7011    
+## Residuals    333 132082524   396644                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+---
+### Review Question 1
+
+- Write the regression equation
+- Interpret the lower order terms
+- Fill in the following table of cell means
+- If I blocked out pieces of information from the ANOVA table, could you fill them in? How do you interpret the ANOVA table findings?
+
+
+|             | Biscoe | Dream | Torgersen |
+|-------------|--------|-------|-----------|
+| **Group 1** |        |       |           |
+| **Group 2** |        |       |           |
+| **Group 3** |        |       |           |
+
+---
+
+### Review Question 2
+
+
+```r
+summary(lm(body_mass_g ~ bill_length_mm * flipper_length_mm, data = penguins))
+```
+
+```
+## 
+## Call:
+## lm(formula = body_mass_g ~ bill_length_mm * flipper_length_mm, 
+##     data = penguins)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1040.18  -283.07   -23.94   241.93  1241.40 
+## 
+## Coefficients:
+##                                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      5090.5088  2925.3007   1.740 0.082740 .  
+## bill_length_mm                   -229.2424    63.4334  -3.614 0.000347 ***
+## flipper_length_mm                  -7.3085    15.0321  -0.486 0.627145    
+## bill_length_mm:flipper_length_mm    1.1998     0.3224   3.721 0.000232 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 386.8 on 338 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.7694,	Adjusted R-squared:  0.7674 
+## F-statistic: 375.9 on 3 and 338 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+### Review Question 2
+
+- Write the regression equation
+- Interpret all terms
+- Interpret omnibus NHST and omnibus effect size 
+- What changes if you center your variables? What if you `\(z\)`-score them? Would you be able to recognize these transformations were done? 
+
+---
+
+### Other things to keep in mind
+
+- Josh's bayesian lecture is on the exam! I only expect you to understand at a very high level what taking a bayesian approach might mean.
+
+- Do you know when to use a polynomial regression? How would you know if your current regression should actually include a polynomial term?
+
+- Can you draw your interactions? What types of things should be included? 
+
+---
+class: inverse, center, middle
+
+# DO NOT LOOK UNTIL AFTER YOU HAVE TRIED THE REVIEW QUESTIONS!
+
+---
+
+
+```r
+means = penguins %&gt;% 
+  group_by(group, island) %&gt;% 
+  summarize(mean(body_mass_g, na.rm = T))
+
+means
+```
+
+```
+## # A tibble: 9 × 3
+## # Groups:   group [3]
+##   group   island    `mean(body_mass_g, na.rm = T)`
+##   &lt;fct&gt;   &lt;fct&gt;                              &lt;dbl&gt;
+## 1 group 1 Biscoe                             4662.
+## 2 group 1 Dream                              3720.
+## 3 group 1 Torgersen                          3777.
+## 4 group 2 Biscoe                             4700.
+## 5 group 2 Dream                              3761.
+## 6 group 2 Torgersen                          3732.
+## 7 group 3 Biscoe                             4784.
+## 8 group 3 Dream                              3653.
+## 9 group 3 Torgersen                          3619.
+```
+
+---
+class:center, middle
+|             |  Biscoe  |  Dream   | Torgersen |
+|-------------|:--------:|:--------:|:---------:|
+| **Group 1** | 4661.818 | 3720.349 | 3776.562  |
+| **Group 2** | 4699.545 | 3761.310 | 3732.353  |
+| **Group 3** | 4784.211 | 3652.564 | 3619.444  |
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

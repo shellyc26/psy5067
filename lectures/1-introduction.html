@@ -3,10 +3,8 @@
   <head>
     <title>Introduction</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -36,6 +34,8 @@ class: center, middle, inverse, title-slide
 &lt;/style&gt;
 
 
+
+
 ## Goals for semester
 
 - Analyze and interpret general(ized) linear models (aka regression models; aka ANOVA)
@@ -45,13 +45,13 @@ class: center, middle, inverse, title-slide
 - Identify and diagnose problems when they arise
 
 ---
-## Important links
+### Important links
 
-- [Class Website](https://shellyc26.github.io/psy5067/index.html); where slides, lecture videos, homeworks, and announcements will be posted
+- [Class Website](https://shellyc26.github.io/psy5067/index.html)
 
 - [Slack Workspace](https://quant-ii.slack.com); here for answering questions, posting stats/`R` memes and gifs, building community
 
-- [Canvas](https://wustl.instructure.com/courses/105258); where you'll turn in your homeworks and complete peer reviews and exams
+- [Canvas](https://wustl.instructure.com/courses/126223); where you'll turn in your homeworks
 
 - [LSR](https://learningstatisticswithr.com/book/) &amp; [ISLR](https://www.statlearning.com/); textbooks
 
@@ -83,9 +83,9 @@ class: center, middle, inverse, title-slide
 ---
 ## Two AIs
 
-- Messi Lee
+- Merve Ileri Tayar
 
-- Tabea Springstein
+- Grace Drake
 
 Both incredible. USE THEM TO YOUR ADVANTAGE! **Set up meetings with them**. Ask them `R` questions.
 
@@ -99,7 +99,7 @@ Both incredible. USE THEM TO YOUR ADVANTAGE! **Set up meetings with them**. Ask 
 - Syllabus
 
 ---
-## Pragmatics
+### Pragmatics
 What you *need* to know:
 
 - R, RStudio 
@@ -114,7 +114,7 @@ What you *should* know or strive to learn:
 - Keep it simple and readable: `dplyr` &amp; `tidyverse` (recommended)
 
 ---
-## Visualizing data
+### Visualizing data
 
 - Histograms, probability mass function
 - Density plot, probability density function, cumulative density function
@@ -125,7 +125,7 @@ What you *should* know or strive to learn:
   2. Use interpretable scales
   3. LABEL. YOUR. AXES.
   4. Always provide a dispersion estimate
-  5. If possible include raw data and/or the distribution (as dispersion only can hide oddities)
+  5. If possible include raw data and/or the distribution
 
 ---
 ## What did we cover last semester?
@@ -137,7 +137,7 @@ What you *should* know or strive to learn:
   * All had assumptions, most had some modifications (homogeneity of variances etc.)
 
 ---
-## Running models
+### Running models
 
 `\(Y = X + E\)` 
 
@@ -164,15 +164,13 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 - Equivalent to asking whether `\(X\)` reduces variance that is *unexplained*
 
 ---
-## Theoretical probability distributions 
+### Theoretical probability distributions 
 
 - How you collect &amp; measure your variables determine your analytic tool options
 
 - For IVs, how you measure changes the name of the analysis but not really much else. For DVs, data generating process defines appropriate analyses 
 
 - Binomial, poisson, negative binomial, normal (Gaussian), *t*, *F*, `\(\chi^2\)`...
-
-- As a default we assume Gaussian. Why? 
 
 - THIS DOES NOT MEAN WE *NEED* TO HAVE A NORMAL DISTRIBUTION IN OUR DATA
 
@@ -214,15 +212,33 @@ $$ SSW(restricted) - SSW(full) / stuff $$
 - Devote time 
 
 ---
-## Looking forward
+## Relationships &amp; Models
 
--  This semester's themes are Relationships and Models
+.pull-left[
+Theme 1: Tell me `\(Y\)`
+]
+
+.pull-right[
+![](images/bsb.jpeg)
+]
+
+---
+## Relationships &amp; Models
+
+.pull-left[
+Theme 2: What does `\(0\)` mean?
+]
+
+.pull-right[
+![](images/a-zero.jpeg)
+]
+
 
 ---
 class: inverse
 ## Next time
 
-**REQUIRED READING** 
+##### REQUIRED READING 
 
 - You *must* read the Human Fallibility paper. Come prepared. We are not critiquing methods here/trying to tear it apart. We are going to use it as a jumping off point for introspection on how we do our own research.
 - I will be emailing you your group and your topic. I will explain everything when we get to class. However, when you come to class on Thursday, please go sit with your group. 

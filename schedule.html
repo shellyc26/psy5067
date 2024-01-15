@@ -321,7 +321,32 @@ div.tocify {
         <li>
   <a href="schedule.html">Syllabus</a>
 </li>
-<li class="dropdown-header">Lecture Slides</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    HTML Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">1-Intro</li>
+    <li>
+      <a href="lectures/1-introduction.html"></a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    PDF Slides
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">1-Intro</li>
+    <li>
+      <a href="lectures/1-introduction.pdf"></a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="homework.html">Homework</a>
 </li>
@@ -364,14 +389,13 @@ You can use either the first or second version. All other readings will
 be provided on this page, in the lecture slides, and on our GitHub
 page.</p>
 <p><strong>PR = Peer Review</strong></p>
-<table>
+<table style="width:100%;">
 <colgroup>
+<col width="8%" />
 <col width="7%" />
-<col width="6%" />
-<col width="38%" />
-<col width="22%" />
-<col width="12%" />
-<col width="12%" />
+<col width="44%" />
+<col width="25%" />
+<col width="13%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -380,252 +404,221 @@ page.</p>
 <th>Topic</th>
 <th>Readings</th>
 <th>HW Due</th>
-<th>PR Due</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>1/17</td>
+<td>1/16</td>
 <td>Recap &amp; GLM Intro</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>1/19</td>
+<td>1/18</td>
 <td>Data Management</td>
 <td><a href="readings/HumanFallibility_DataManagement.pdf">Human
 Fallibility</a></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td>1/24</td>
+<td>1/23</td>
 <td>GLM &amp; Categorical Predictors</td>
 <td>Ch. 13-14 (review)</td>
-<td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>1/26</td>
+<td>1/25</td>
 <td>Correlation</td>
 <td><a href="readings/CorrelationRevelle.pdf">Chapter from
 Revelle</a></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>1/31</td>
+<td>1/30</td>
 <td>Univariate Regression</td>
 <td>Ch. 15.1 - 15.2</td>
-<td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/2</td>
+<td>2/1</td>
 <td>Univariate Regression</td>
 <td><a href="readings/Cohen-MR.pdf">MR Cohen</a></td>
-<td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>4</td>
-<td>2/7</td>
+<td>2/6</td>
 <td>Partial Correlations</td>
 <td>Ch. 15.3 - end of chapter</td>
 <td><strong>HW 1 DUE</strong></td>
-<td>2/10</td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/9</td>
+<td>2/8</td>
 <td>Multiple Regression</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>5</td>
-<td>2/14</td>
+<td>2/13</td>
 <td>Multiple Regression</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>2/16</td>
+<td>2/15</td>
 <td>Multiple Regression</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>6</td>
-<td>2/21</td>
+<td>2/20</td>
+<td><strong>Exam 1</strong></td>
+<td></td>
+<td><strong>HW 2 DUE</strong></td>
+</tr>
+<tr class="even">
+<td>-</td>
+<td>2/22</td>
 <td>Assumptions and Diagnostics</td>
 <td></td>
 <td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>-</td>
-<td>2/23</td>
-<td>Review Problems</td>
-<td></td>
-<td><strong>HW 2 DUE</strong></td>
-<td>2/26</td>
 </tr>
 <tr class="odd">
 <td>7</td>
-<td>2/28</td>
-<td><strong>Exam 1</strong></td>
-<td></td>
+<td>2/27</td>
+<td>TBD</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/2</td>
-<td>Bayes Guest Lecture</td>
-<td></td>
+<td>2/29</td>
+<td>TBD</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>8</td>
-<td>3/7</td>
+<td>3/5</td>
 <td>Interactions I</td>
 <td></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/9</td>
+<td>3/7</td>
 <td>Interactions II (Factorial ANOVA)</td>
 <td>Ch. 16, <a href="readings/anova1-myers.pdf">Myers Ch. 9</a></td>
-<td></td>
-<td></td>
+<td><strong>HW 3 DUE</strong></td>
 </tr>
 <tr class="odd">
 <td>9</td>
-<td>3/14</td>
+<td>3/12</td>
 <td><strong>Spring Break</strong></td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/16</td>
+<td>3/14</td>
 <td><strong>Spring Break</strong></td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>10</td>
-<td>3/21</td>
+<td>3/19</td>
 <td>Interactions III (Factorial ANOVA)</td>
 <td><a href="readings/anova2-myers.pdf">Myers Ch. 10</a></td>
-<td><strong>HW 3 DUE</strong></td>
-<td>3/24</td>
+<td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/23</td>
+<td>3/21</td>
 <td>Interactions IV (Power &amp; Effect Size)</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>11</td>
-<td>3/28</td>
+<td>3/26</td>
 <td>Interactions V (Polynomials)</td>
 <td></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>3/30</td>
-<td>Review Problems</td>
+<td>3/28</td>
+<td><strong>Exam 2</strong></td>
 <td></td>
-<td></td>
-<td></td>
+<td><strong>HW 4 DUE</strong></td>
 </tr>
 <tr class="odd">
 <td>12</td>
-<td>4/4</td>
-<td><strong>Exam 2</strong></td>
-<td></td>
+<td>4/2</td>
+<td>TBD</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/6</td>
+<td>4/4</td>
 <td>Multilevel Models Intro</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>13</td>
-<td>4/11</td>
+<td>4/9</td>
 <td>Logistic Regression/GLM</td>
 <td><a href="readings/Logistic-Cohen.pdf">Cohen Logistic</a></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/13</td>
+<td>4/11</td>
 <td>Machine Learning 1 (Goals/Theory)</td>
 <td></td>
-<td><strong>HW 4 DUE</strong></td>
-<td>4/16</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td>14</td>
-<td>4/18</td>
+<td>4/16</td>
 <td>ML 2 (Bootstrapping)</td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/20</td>
+<td>4/18</td>
 <td>ML 3 (Over/Underfitting &amp; Validation)</td>
 <td><a href="readings/Yarkoni%20Westfall%20PPS.pdf">Yarkoni &amp;
 Westfal</a></td>
 <td></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>15</td>
-<td>4/25</td>
-<td>Review Problems</td>
+<td>4/23</td>
+<td>Wrapping Up &amp; Future Directions</td>
 <td></td>
-<td></td>
-<td></td>
+<td><strong>HW 5 DUE</strong></td>
 </tr>
 <tr class="even">
 <td>-</td>
-<td>4/27</td>
+<td>4/25</td>
 <td><strong>FINAL</strong></td>
 <td></td>
-<td><strong>HW 5 DUE</strong></td>
-<td>4/30</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -645,25 +638,40 @@ regression analyses.</p>
 </div>
 <div id="graded-materials" class="section level1">
 <h1>Graded materials</h1>
-<p>Your final grade is comprised of three components:</p>
+<p>Your final grade is comprised of:</p>
 <ul>
-<li>3 Exams: 20% each, 60% total</li>
-<li>5 Homework: 6% each, 30% total</li>
-<li>5 Peer Reviews: 2% each, 10% total</li>
+<li>5 Homework: 5% each, 25% total</li>
+<li>Exam 1 - Written portion 22.5%</li>
+<li>Exam 1 - Oral portion 7.5%</li>
+<li>Exam 2 - Written portion 15%</li>
+<li>Exam 2 - Oral portion 10%</li>
+<li>Exam 3 - Written portion 5%</li>
+<li>Exam 3 - Oral portion 15%</li>
 </ul>
 <div id="exams" class="section level2">
 <h2>Exams</h2>
-<p>There will be 2 exams and 1 final, each worth 20% of your grade. They
-will test both your theoretical understanding of concepts, as well as
-your applied understanding of the material. You will not be expected to
-open <code>R</code> and code during these exams, however you will be
-expected to understand <code>R</code> code that has been provided.</p>
-<p>Exams 1 &amp; 2 will work the same way as they did last semester.
-They will open on Tuesday at 9am and will be due the following Wednesday
-at 11:59pm.</p>
-<p>The final is very similar to last semester, where it is technically a
-cumulative exam, but emphasis is on the last third of the class and
-broad topics/analytics from the first two thirds of the class.</p>
+<p>There are 3 exams total, each with a written portion and an oral
+portion. They will follow similar formats to last semester where the
+written portion is a little more math-heavy (although you will still be
+asked to write interpretations etc.) and the oral exam is a little more
+theoretical and/or applied in context.</p>
+<p>The last exam is very similar to last semester, where it is
+technically a cumulative exam, but emphasis is on the last third of the
+class and broad topics/analytics from the first two thirds of the
+class.</p>
+<p>Together, the first exam is worth 30% of your grade, the second exam
+is worth 25% of your grade, and the last exam is worth 20% of your
+grade.</p>
+<p><strong>New Rule</strong>: If you have something going on in life
+that you think will impede you from doing your best on an exam, please
+come talk to me (even if it’s like 5 minutes before we start!). Family
+emergency, sudden news of a loved one, illness, bereavement, etc.
+<em>Once you see an exam, you will not be able to make-up or do-over the
+test.</em> I would much prefer that you talk to me and we agree that you
+take the exam at a later date, rather than trying to take it first,
+seeing how you do, then asking for a redo. You are graduate students,
+and I think by now you’ve learned that I’m not particularly scary – I
+will always work with you and very much want you to succeed!</p>
 </div>
 <div id="homework-assignments" class="section level2">
 <h2>Homework assignments</h2>
@@ -674,8 +682,8 @@ assignments should be submitted to Canvas. Please submit BOTH your
 <strong>.Rmd</strong> and <strong>.html</strong> file. Please do
 <em>not</em> use PDF or Word documents. There will be 5 assignments in
 total, each worth 6% of your grade.</p>
-<p>HWs are due at their due date by 9:30am. Grading will go by the
-following rubric:</p>
+<p>I will specify exact due dates, and all will be required by 11:59pm.
+Grading will go by the following rubric:</p>
 <ul>
 <li>6/6: Completed all parts of the assignment, and
 results/interpretations were mostly correct (with maybe a few minor
@@ -707,21 +715,18 @@ automatic zero.</li>
 <li>If you work with someone, you <em>must</em> acknowledge them in the
 assignment itself.</li>
 </ol>
-</div>
-<div id="peer-reviews" class="section level2">
-<h2>Peer Reviews</h2>
-<p>It’s important to get feedback on your work not just from the
-instructors/AIs but also from your peers. You will gain valuable
-experience in reading other peoples’ code, which is far more prevalent
-than you might expect. Code reviews will take place on Canvas in
-Discussion threads. You will submit your code to the discussion thread
-by the assignment due date. You then have 72 hours (3 days) to complete
-the code review. You will follow the the template I provide for each
-code review. Each review will be worth 2% each for a total of 10% of
-your grade. These are intended to boost your grade. Please note that
-late peer reviews will be docked unless given the OK by the instructor.
-.5 points if you submit on the due date but after the morning time.
-Docked 1 point if 1 day late. And a 0 if more than 1 day late.</p>
+<p><strong>AI Policy</strong> Given the nature of written in-person
+exams and oral exams, there is no way to feasibly use AI in these
+settings. However, AI is particularly helpful for coding. I am OK with
+you using AI tools for your homework assignments with the following
+caveats: 1. You are the adult in the room. That means it’s up to you to
+be able to carefully evaluate what it gives you. AI is often wrong so
+you’ll need to be careful here. 2. You must paste the link to the
+“conversation” in your HW assignments so that we can back-trace what you
+prompted and how it responded. A url that does not work will be
+considered a violation of academic integrity. 3. If the AI is wrong and
+you do not catch it, this will count against you. You can’t blame the
+AI.</p>
 </div>
 <div id="final-grading-rubric" class="section level2">
 <h2>Final Grading Rubric</h2>
@@ -732,17 +737,17 @@ of exams will be considered on a case by case basis, but I am
 <p><span class="math display">\[\begin{equation}
 \begin{split}
 
-&amp; \text{&gt; 100% = A+} \\
-&amp; \text{93% - 99.99% = A} \\
+&amp; \text{&gt; 93% = A} \\
 &amp; \text{90% - 92.99% = A-} \\
 &amp; \text{87% - 89.99% = B+} \\
 &amp; \text{83% - 86.99% = B} \\
 &amp; \text{80% - 82.99% = B-} \\
+&amp; \text{77% - 79.99% = C+}
 
 \end{split}
 
 \begin{split}
-&amp; \text{77% - 79.99% = C+} \\
+
 &amp; \text{73% - 76.99% = C} \\
 &amp; \text{70% - 72.99% = C-} \\
 &amp; \text{67% - 69.99% = D+} \\
@@ -826,10 +831,6 @@ You have access to the slides and you can ask a friend for notes.</li>
 <li>If there is even a <em>hint</em> of being sick, I prefer you stay
 home. If you are 100% sure it’s nothing contagious – like allergies, I
 still ask that you wear a mask and sit away from other students.</li>
-<li>If you are in quarantine because of COVID exposure, or you fail the
-screening form because you are showing symptoms, please forward the
-screening form to me! Having a paper trail is extremely helpful for
-everyone.</li>
 <li>Most people will have electronics with them in class. Drinks should
 have a lid on them so that if they spill, we hopefully aren’t ruining
 yours or another person’s laptop/tablet/phone etc. Be careful!</li>
@@ -837,32 +838,6 @@ yours or another person’s laptop/tablet/phone etc. Be careful!</li>
 something. Be aware that other people might not be super comfortable
 being physically close together. Maintain appropriate distance, and if a
 classmate asks you to step back a bit, please do so.</li>
-</ul>
-</div>
-<div id="online-etiquette" class="section level3">
-<h3>Online Etiquette</h3>
-<p>There will be a lot of online communication with the instructor, the
-AI, and your peers. You are expected to maintain a polite and respectful
-tone in their online discourse. Some things to consider:</p>
-<ul>
-<li>Any communication shared privately may become public, so be mindful
-of what you share in discussion boards or chats. This is especially true
-for sharing any personal and/or identifying information about you or
-someone else. Do not share any passwords or divulge any personal
-information (yours or others) that can be used in a malicious manner
-(phone numbers, addresses etc.).</li>
-<li>Humor doesn’t always translate in an online forum. If you want to
-make a joke or a sarcastic remark, be 100% sure that it is clear you are
-joking.</li>
-<li>Your comments must be readable to everyone. Very common acronyms are
-OK (“lol” or “haha”). But please refrain from acronyms that are not as
-well-known (“fwiw” etc.).</li>
-<li>Treat your classmates, professor, and AIs with kindness and respect.
-Any indication of online harassment or bullying will not be tolerated
-and will be reported. This is especially pertinent when giving
-constructive feedback in code reviews.</li>
-<li>Please avoid using ALL CAPS because it can be interpreted as
-yelling.</li>
 </ul>
 </div>
 </div>

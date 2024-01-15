@@ -14,38 +14,38 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 
 **PR = Peer Review**
 
-| Week | Date |  Topic                            |Readings            | HW Due | PR Due|
--------|------|-----------------------------------|--------------------|-----------|-----------|
-| 1    | 1/17 | Recap & GLM Intro |            |             |
-| -    | 1/19 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |     | 
-| 2    | 1/24 | GLM & Categorical Predictors | Ch. 13-14 (review) |     | 
-| -    | 1/26  | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf)                   |            |  
-| 3    | 1/31 |  Univariate Regression           | Ch. 15.1 - 15.2     |    |      
-| -    | 2/2 |  Univariate Regression  | [MR Cohen](readings/Cohen-MR.pdf)   |      |       
-| 4    | 2/7 | Partial Correlations |  Ch. 15.3 - end of chapter   |**HW 1 DUE** | 2/10
-| -    | 2/9 | Multiple Regression  |       |     |      
-| 5    | 2/14 | Multiple Regression   |                    |            |         
-| -    | 2/16 | Multiple Regression   |                    |            | 
-| 6    | 2/21 | Assumptions and Diagnostics   |                    |  |   
-| -    | 2/23 |  Review Problems |                    |   **HW 2 DUE**         |      2/26   
-| 7    | 2/28 | **Exam 1**|                    |                   |
-| -    | 3/2 | Bayes Guest Lecture |  |      |             
-| 8    | 3/7 | Interactions I   |                    |            | 
-| -    | 3/9 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)             |                    |
-| 9    | 3/14 | **Spring Break** |             |                    |
-| -    | 3/16 | **Spring Break** |             |                    |
-| 10    | 3/21 | Interactions III (Factorial ANOVA)  | [Myers Ch. 10](readings/anova2-myers.pdf) | **HW 3 DUE** |   3/24       
-| -    | 3/23 | Interactions IV (Power & Effect Size)  |    |     |
-| 11   | 3/28 |  Interactions V (Polynomials) |    |   |
-| -    | 3/30  | Review Problems |    |   |    
-| 12   | 4/4 | **Exam 2** |  |  |
-| -    | 4/6  | Multilevel Models Intro |   |  |
-| 13   | 4/11 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
-| -    | 4/13 | Machine Learning 1 (Goals/Theory) |  | **HW 4 DUE** | 4/16
-| 14   | 4/18 | ML 2 (Bootstrapping)  |    |  |
-| -    | 4/20 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
-| 15    | 4/25 | Review Problems |  |            |             
-| -    | 4/27 | **FINAL**  |   |   **HW 5 DUE** |    4/30         
+| Week | Date |  Topic                            |Readings            | HW Due | 
+-------|------|-----------------------------------|--------------------|-----------|
+| 1    | 1/16 | Recap & GLM Intro |            |             |
+| -    | 1/18 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |      
+| 2    | 1/23 | GLM & Categorical Predictors | Ch. 13-14 (review) |     | 
+| -    | 1/25  | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf)                   |          
+| 3    | 1/30 |  Univariate Regression           | Ch. 15.1 - 15.2     |        
+| -    | 2/1 |  Univariate Regression  | [MR Cohen](readings/Cohen-MR.pdf)   |      
+| 4    | 2/6 | Partial Correlations |  Ch. 15.3 - end of chapter   |**HW 1 DUE** | 2/5
+| -    | 2/8 | Multiple Regression  |       |     |      
+| 5    | 2/13 | Multiple Regression   |                    |                  
+| -    | 2/15 | Multiple Regression   |                    |            | 
+| 6    | 2/20 | **Exam 1**   |                    |**HW 2 DUE**  |   2/19
+| -    | 2/22 | Assumptions and Diagnostics  |                    |                    
+| 7    | 2/27 | TBD |                    |                   
+| -    | 2/29 | TBD |  |                 
+| 8    | 3/5 | Interactions I   |                    |            
+| -    | 3/7 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)             |                 **HW 3 DUE**   | 3/11
+| 9    | 3/12 | **Spring Break** |             |                    |
+| -    | 3/14 | **Spring Break** |             |                    |
+| 10    | 3/19 | Interactions III (Factorial ANOVA)  | [Myers Ch. 10](readings/anova2-myers.pdf) |  |         
+| -    | 3/21 | Interactions IV (Power & Effect Size)  |    |     |
+| 11   | 3/26 |  Interactions V (Polynomials) |    |   |
+| -    | 3/28  | **Exam 2** |    | **HW 4 DUE**  |    3/27
+| 12   | 4/2 | TBD  |  |  | 
+| -    | 4/4  | Multilevel Models Intro |   |  |
+| 13   | 4/9 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
+| -    | 4/11 | Machine Learning 1 (Goals/Theory) |  | | 
+| 14   | 4/16 | ML 2 (Bootstrapping)  |    |  |
+| -    | 4/18 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
+| 15    | 4/23 | Wrapping Up & Future Directions |   |   **HW 5 DUE**         |        4/24     
+| -    | 4/25 | **FINAL**  |   |    |            
 
 
 # Overview
@@ -54,25 +54,31 @@ This course is the second in a two-course sequence that introduces necessary ski
 
 # Graded materials
 
-Your final grade is comprised of three components:
+Your final grade is comprised of:
 
-  - 3 Exams: 20\% each, 60\% total
-  - 5 Homework: 6\% each, 30\% total
-  - 5 Peer Reviews: 2\% each, 10\% total
+  - 5 Homework: 5\% each, 25\% total
+  - Exam 1 - Written portion 22.5\%
+  - Exam 1 - Oral portion 7.5\%
+  - Exam 2 - Written portion 15\%
+  - Exam 2 - Oral portion 10\%
+  - Exam 3 - Written portion 5\%
+  - Exam 3 - Oral portion 15\%
 
 ## Exams
 
-There will be 2 exams and 1 final, each worth 20% of your grade. They will test both your theoretical understanding of concepts, as well as your applied understanding of the material. You will not be expected to open `R` and code during these exams, however you will be expected to understand `R` code that has been provided. 
+There are 3 exams total, each with a written portion and an oral portion. They will follow similar formats to last semester where the written portion is a little more math-heavy (although you will still be asked to write interpretations etc.) and the oral exam is a little more theoretical and/or applied in context.
 
-Exams 1 & 2 will work the same way as they did last semester. They will open on Tuesday at 9am and will be due the following Wednesday at 11:59pm.
+The last exam is very similar to last semester, where it is technically a cumulative exam, but emphasis is on the last third of the class and broad topics/analytics from the first two thirds of the class. 
 
-The final is very similar to last semester, where it is technically a cumulative exam, but emphasis is on the last third of the class and broad topics/analytics from the first two thirds of the class. 
+Together, the first exam is worth 30% of your grade, the second exam is worth 25% of your grade, and the last exam is worth 20% of your grade. 
+
+**New Rule**: If you have something going on in life that you think will impede you from doing your best on an exam, please come talk to me (even if it's like 5 minutes before we start!). Family emergency, sudden news of a loved one, illness, bereavement, etc. *Once you see an exam, you will not be able to make-up or do-over the test.* I would much prefer that you talk to me and we agree that you take the exam at a later date, rather than trying to take it first, seeing how you do, then asking for a redo. You are graduate students, and I think by now you've learned that I'm not particularly scary -- I will always work with you and very much want you to succeed! 
 
 ## Homework assignments
 
 Homework assignments are intended to gauge your ability to apply the topics covered in class to the practice of data analysis. Homework assignments are to be done using `R` and RMarkdown; completed assignments should be submitted to Canvas. Please submit BOTH your **.Rmd** and **.html** file. Please do *not* use PDF or Word documents. There will be 5 assignments in total, each worth 6% of your grade.
 
-HWs are due at their due date by 9:30am. Grading will go by the following rubric:
+I will specify exact due dates, and all will be required by 11:59pm. Grading will go by the following rubric:
 
 - 6/6: Completed all parts of the assignment, and results/interpretations were mostly correct (with maybe a few minor errors along the way)
 - 5/6: Completed all parts of the assignment, and ~25% of the results/interpretations are incorrect
@@ -89,10 +95,11 @@ You may work with your peers on homework assignments, with the following caveats
 1. Your code cannot be 100% identical to your peer's code (trust me, we can tell). It’s one thing to work together and consult, but it’s another thing to copy someone else’s assignment. If it is determined that someone copied an entire homework assignment, both parties will be given automatic zero.
 2. If you work with someone, you *must* acknowledge them in the assignment itself.
 
-## Peer Reviews
-
-It’s important to get feedback on your work not just from the instructors/AIs but also from your peers. You will gain valuable experience in reading other peoples’ code, which is far more prevalent than you might expect. Code reviews will take place on Canvas in Discussion threads. You will submit your code to the discussion thread by the assignment due date. You then have 72 hours (3 days) to complete the code review. You will follow the the template I provide for each code review. Each review will be worth 2% each for a total of 10% of your grade. These are intended to boost your grade. Please note that late peer reviews will be docked unless given the OK by the instructor. .5 points if you submit on the due date but after the morning time. Docked 1 point if 1 day late. And a 0 if more than 1 day late. 
-
+**AI Policy**
+Given the nature of written in-person exams and oral exams, there is no way to feasibly use AI in these settings. However, AI is particularly helpful for coding. I am OK with you using AI tools for your homework assignments with the following caveats:
+1. You are the adult in the room. That means it's up to you to be able to carefully evaluate what it gives you. AI is often wrong so you'll need to be careful here. 
+2. You must paste the link to the "conversation" in your HW assignments so that we can back-trace what you prompted and how it responded. A url that does not work will be considered a violation of academic integrity. 
+3. If the AI is wrong and you do not catch it, this will count against you. You can't blame the AI. 
 
 ## Final Grading Rubric
 
@@ -101,17 +108,17 @@ All assignments and examinations are mandatory. If you need to miss an exam you 
 \begin{equation}
 \begin{split}
 
-& \text{> 100% = A+} \\
-& \text{93% - 99.99% = A} \\
+& \text{> 93% = A} \\
 & \text{90% - 92.99% = A-} \\
 & \text{87% - 89.99% = B+} \\
 & \text{83% - 86.99% = B} \\
 & \text{80% - 82.99% = B-} \\
+& \text{77% - 79.99% = C+}
 
 \end{split}
 
 \begin{split}
-& \text{77% - 79.99% = C+} \\
+
 & \text{73% - 76.99% = C} \\
 & \text{70% - 72.99% = C-} \\
 & \text{67% - 69.99% = D+} \\
@@ -149,19 +156,8 @@ The past few years have been lonely. Although we're back in person, we still mig
     -   You are adults. Come to class when you can. Let me know when you can't (quick email or Slack is OK).
 -   **If you are not feeling well, don't come to class!!** You have access to the slides and you can ask a friend for notes.
 -   If there is even a *hint* of being sick, I prefer you stay home. If you are 100% sure it's nothing contagious -- like allergies, I still ask that you wear a mask and sit away from other students.
--   If you are in quarantine because of COVID exposure, or you fail the screening form because you are showing symptoms, please forward the screening form to me! Having a paper trail is extremely helpful for everyone.
 -   Most people will have electronics with them in class. Drinks should have a lid on them so that if they spill, we hopefully aren't ruining yours or another person's laptop/tablet/phone etc. Be careful!
 -   Occasionally, I'll ask you to get into small groups and chat about something. Be aware that other people might not be super comfortable being physically close together. Maintain appropriate distance, and if a classmate asks you to step back a bit, please do so.
-
-### Online Etiquette
-
-There will be a lot of online communication with the instructor, the AI, and your peers. You are expected to maintain a polite and respectful tone in their online discourse. Some things to consider:
-
--   Any communication shared privately may become public, so be mindful of what you share in discussion boards or chats. This is especially true for sharing any personal and/or identifying information about you or someone else. Do not share any passwords or divulge any personal information (yours or others) that can be used in a malicious manner (phone numbers, addresses etc.).
--   Humor doesn't always translate in an online forum. If you want to make a joke or a sarcastic remark, be 100% sure that it is clear you are joking.
--   Your comments must be readable to everyone. Very common acronyms are OK ("lol" or "haha"). But please refrain from acronyms that are not as well-known ("fwiw" etc.).
--   Treat your classmates, professor, and AIs with kindness and respect. Any indication of online harassment or bullying will not be tolerated and will be reported. This is especially pertinent when giving constructive feedback in code reviews.
--   Please avoid using ALL CAPS because it can be interpreted as yelling.
 
 # Policies & Resources
 

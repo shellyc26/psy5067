@@ -1,0 +1,1032 @@
+---
+title: 'Resampling Methods'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, uwm-fonts]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 22px;
+    padding: 1em 4em 1em 4em;
+}
+</style>
+
+```{r, echo = F, message = F, warning = F}
+library(tidyverse)
+library(xaringan)
+```
+
+
+## Last time...
+
+### Review Lecture
+
+* Reviewed Logistic Regression
+* Went over Weighted Least Squares (WLS)
+* Discussed Random R Things
+
+--
+
+## Today
+
+* Start looking at topics related to machine learning
+* We are going to start off with __Resampling methods__
+
+---
+## First. Sampling
+
+It is impossible to survey every person in the population we are interested in, so we often take a "random sample" from the population and calculate a **sample statistic** (e.g., mean, median). 
+
+--
+
+A lot of our statistics follow well-defined distributions (e.g., normal distribution), and we use the properties of these distributions to estimate the population parameter. 
+
+---
+## Problems with Sampling
+
+### Single Estimate of the Population Parameter
+
+- Estimate the population mean
+
+- Sampling distribution of mean derived from sample statistics
+
+- Built a 95% confidence interval around the sample mean
+
+- We've been **relying on a single estimate** of the population parameter. 
+
+--
+
+### Assumptions
+
+- We make assumptions about the sample (e.g., representative sample, large sample size, normality), which may or may not be true.
+
+---
+## Introduction to Resampling
+
+A statistical technique that involves re-estimation of the population parameter by repeatedly drawing samples from **the original sample**
+
+--
+
+### Reasons for Resampling
+
+- Reduce bias of the estimate by using multiple samples instead of one
+  
+- Better sense of precision of the estimated population parameter
+  
+- We do not need to make assumptions about the population distribution (e.g., when we perform two samples t-test, for example, we make the assumption that the populations from which the samples are drawn are normally distributed)
+  
+- Sample does not have to be large
+
+---
+## Types of Resampling
+
+- Bootstrapping
+
+- Jackknife method (just a glimpse)
+
+- Permutation testing (just a glimpse; Research Methods will cover it)
+
+---
+## Bootstrapping
+
+The term **bootstrapping** comes from the expression "pull oneself up by one's bootstraps" which means to "to help oneself without the aid of others; use one's resources". 
+
+--
+
+**Bootstrapping** is a method where we rely entirely on the sample that we have at hand. We randomly sample within the sample (with replacement) and compute the estimator of interest to build an empirical distribution of that test statistic.
+
+---
+### Illustration of Bootstrapping
+
+Imagine we are trying to estimate the height of a class cohort and have a representative sample consisting of (just) 6 people: April, Beatrice, Carl, David, Emily, and Frank. 
+
+To estimate their height, you decide to perform bootstrapping, meaning you draw many samples from this group of 6 people, *with replacement*, each time calculating the average height of the sample.
+
+--
+
+```{r, echo = F}
+friends = c('April', 'Beatrice', 'Carl', 'David', 'Emily', 'Frank')
+heights = c(165, 165, 178, 170, 172, 173)
+names(heights) = friends
+
+(sample1 = sample(friends, size = 6, replace = T)); paste('Mean height of this sample:', mean(heights[sample1]))
+```
+
+### We notice that:
+
+--
+
+The number of students that we randomly sample is 6, the same number of students inside the initial sample. 
+
+--
+
+Within the same sample, there can be duplicate students (e.g., Emily). This is what it means to randomly sample **with replacement**. 
+
+---
+## Repeat
+
+```{r, echo = F}
+(sample1 = sample(friends, size = 6, replace = T)); paste('Mean height of this sample:', mean(heights[sample1]))
+```
+--
+```{r, echo = F}
+(sample1 = sample(friends, size = 6, replace = T)); paste('Mean height of this sample:', mean(heights[sample1]))
+```
+--
+```{r, echo = F}
+(sample1 = sample(friends, size = 6, replace = T)); paste('Mean height of this sample:', mean(heights[sample1]))
+```
+
+---
+### Bootstrap 10,000 Times
+
+```{r}
+# When resampling, it is generally a good practice to set random seed
+# for full reproducibility of the resampling process
+set.seed(1048596)
+
+boot <- 10000 # Set number of bootstrap samples
+
+friends <- c('April', 'Beatrice', 'Carl', 'David', 'Emily', 'Frank')
+heights <- c(165, 165, 178, 170, 172, 173)
+
+sample_means <- NULL # Initialize list to store sample means
+```
+
+---
+### Bootstrap 10,000 Times
+
+```{r}
+# When resampling, it is generally a good practice to set random seed
+# for full reproducibility of the resampling process
+set.seed(1048596)
+
+boot <- 10000 # Set number of bootstrap samples
+
+friends <- c('April', 'Beatrice', 'Carl', 'David', 'Emily', 'Frank')
+heights <- c(165, 165, 178, 170, 172, 173)
+
+sample_means <- NULL # Initialize list to store sample means
+
+# Append the mean of bootstrap sample heights to *sample_means*
+for(i in 1:boot){ #<<
+  this_sample <- sample(heights, size = length(heights), replace = T) #<<
+  sample_means <- c(sample_means, mean(this_sample)) #<<
+} #<<
+```
+
+---
+### Comparison
+
+```{r, echo = F, message = F, fig.retina = 3, fig.width = 10, fig.height = 7, warning = F}
+library(ggpubr)
+mu = mean(heights)
+sem = sd(heights)/sqrt(length(heights))
+cv_t = qt(p = .975, df = length(heights)-1)
+
+bootstrapped = data.frame(means = sample_means) %>%
+  ggplot(aes(x = means)) + 
+  geom_histogram(color = "white") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(sample_means), color = "mean"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(sample_means), color = "median"),
+             linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(sample_means, probs = .025), color = "Lower 2.5%"), 
+             linewidth = 2) +
+    geom_vline(aes(xintercept = quantile(sample_means, probs = .975), color = "Upper 2.5%"), 
+               linewidth = 2) +
+  scale_x_continuous(limits = c(mu-3*sem, mu+3*sem))+
+  ggtitle("Bootstrapped distribution") +
+  cowplot::theme_cowplot()
+
+from_prob = data.frame(means = seq(from = min(sample_means), to = max(sample_means))) %>%
+  ggplot(aes(x = means)) +
+  stat_function(fun = function(x) dnorm(x, m = mu, sd = sem)) + 
+  geom_vline(aes(xintercept = mean(heights), color = "mean"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(heights), color = "median"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = mu-cv_t*sem, color = "Lower 2.5%"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = mu+cv_t*sem, color = "Upper 2.5%"), 
+             linewidth = 2) + 
+  scale_x_continuous(limits = c(mu-3*sem, mu+3*sem))+  
+  ggtitle("Distribution from probability theory") +
+  cowplot::theme_cowplot()
+
+ggarrange(bootstrapped, from_prob, ncol = 1)
+```
+
+---
+## Another Example
+
+Central tendency and variability of 216 response times. 
+
+There are several candidates for central tendency (e.g., mean, median) and for variability (e.g., standard deviation, interquartile range). **Some of these do not have well understood theoretical sampling distributions.**
+
+For the mean and standard deviation, we have theoretical sampling distributions to help us, provided we think the mean and standard deviation are the best indices. For the others, we can use bootstrapping.
+
+--
+### Simulate Response Time
+
+```{r}
+# Set random seed before generating data
+set.seed(1048596)
+
+# The observations generally follow the F Distribution + random noise
+response = rf(n = 216, 3, 50) 
+response = response * 500 + rnorm(n = 216, mean = 200, sd = 100)
+```
+
+---
+### Visualize Data
+```{r, echo = F, message = F, warning = F, fig.retina = 3, fig.width = 9, fig.height=7}
+library(tidyverse)
+
+set.seed(1048596)
+response = rf(n = 216, 3, 50) 
+response = response * 500 + rnorm(n = 216, mean = 200, sd = 100)
+
+values = quantile(response, 
+                  probs = c(.025, .5, .975))
+mean_res = mean(response)
+
+data.frame(x = response) %>%
+  ggplot(aes(x)) +
+  geom_histogram(aes(y = ..density..), 
+                 binwidth = 150, 
+                 fill = "lightgrey",
+                 color = "black")+
+  geom_density()+
+  geom_vline(aes(xintercept = values[1], 
+                 color = "Lower 2.5%"), linewidth = 2)+
+  geom_vline(aes(xintercept = values[2], color = "Median"), 
+             linewidth = 2)+
+  geom_vline(aes(xintercept = values[3], color = "Upper 2.5%"),
+             linewidth = 2)+
+  geom_vline(aes(xintercept = mean_res, color = "Mean"), 
+             linewidth = 2)+
+  labs(x = "Reponse time (ms)", title = "Response Time Distribution") + cowplot::theme_cowplot(font_size = 20)
+```
+
+---
+### Mean of Response Time
+
+```{r}
+set.seed(1048596) # Set random seed
+boot <- 10000 # Set number of bootstrap samples
+
+response_means <- NULL # Initialize list of mean values
+
+for(i in 1:boot){
+  sample_response <- sample(response, size = 216, replace = T)
+  response_means <- c(response_means, mean(sample_response))
+}
+```
+
+What is the bootstrap mean and its 95% CI?
+
+```{r}
+mean(response_means)
+quantile(response_means, probs = c(.025, .975))
+```
+
+---
+
+### Distribution of Means
+
+```{r, echo = F, message = F, warning = F, fig.retina = 3, fig.width = 9, fig.height = 7}
+data.frame(means = response_means) %>%
+  ggplot(aes(x = means)) + 
+  geom_histogram(color = "white") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_means), color = "mean"),
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(response_means), color = "median"),
+             linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(response_means, probs = .025), 
+                 color = "Lower 2.5%"), linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(response_means, probs = .975), 
+                 color = "Upper 2.5%"), linewidth = 2) +
+  cowplot::theme_cowplot()
+```
+
+---
+### Bootstrapped distribution of the median
+
+```{r}
+set.seed(1048596)
+boot <- 10000
+response_med <- NULL
+
+for(i in 1:boot){
+  sample_response <- sample(response, size = 216, replace = T)
+  response_med <- c(response_med, median(sample_response))}
+```
+.pull-left[
+```{r echo=F, fig.retina = 3, fig.height = 6.5, message = FALSE}
+data.frame(medians = response_med) %>%
+  ggplot(aes(x = medians)) + 
+  geom_histogram(aes(y = ..density..),
+                 color = "white", fill = "grey") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_med), color = "mean"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(response_med), color = "median"),
+             linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(response_med, probs = .025), color = "Lower 2.5%"), linewidth = 2) +
+    geom_vline(aes(xintercept = quantile(response_med, probs = .975), color = "Upper 2.5%"), linewidth = 2) +
+  cowplot::theme_cowplot()
+```
+]
+.pull-right[
+```{r}
+mean(response_med)
+median(response_med)
+quantile(response_med, 
+         probs = c(.025, .975))
+```
+]
+
+---
+### Bootstrapped distribution of the standard deviation
+
+```{r}
+set.seed(1048596)
+boot <- 10000
+response_sd <- NULL
+
+for(i in 1:boot){
+  sample_response <- sample(response, size = 216, replace = T)
+  response_sd <- c(response_sd, sd(sample_response))}
+```
+.pull-left[
+```{r echo=F, fig.retina = 3, fig.height = 6.5, message = FALSE}
+data.frame(sds = response_sd) %>%
+  ggplot(aes(x = sds)) + 
+  geom_histogram(aes(y = ..density..),color = "white", fill = "grey") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(response_sd), color = "mean"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(response_sd), 
+                 color = "median"), linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(response_sd, probs = .025), 
+                 color = "Lower 2.5%"), linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(response_sd, probs = .975), 
+                 color = "Upper 2.5%"), linewidth = 2) +
+  cowplot::theme_cowplot()
+```
+]
+.pull-right[
+```{r}
+mean(response_sd)
+median(response_sd)
+quantile(response_sd, 
+         probs = c(.025, .975))
+```
+]
+
+---
+### Other Estimators?
+
+You can bootstrap estimates and 95% confidence intervals for *any* statistics you'll need to estimate. 
+
+The `boot` package and function provides some help to speed this process along. Things you should learn how to do in R:
+
+- learn to read a `for loop`
+- learn to write your own function
+
+```{r}
+library(boot)
+
+# function to obtain R-Squared from the data
+rsq <- function(data, indices) {
+  d <- data[indices,] # allows boot to select sample
+  fit <- lm(mpg ~ wt + disp, data = d) # this is the code you would have run
+  return(summary(fit)$r.square)
+}
+
+results <- boot(data = mtcars, statistic = rsq, R = 10000)
+```
+
+---
+.pull-left[
+```{r echo=F, fig.retina = 3, fig.height = 6.5, message = FALSE}
+data.frame(rsq = results$t) %>%
+  ggplot(aes(x = rsq)) +
+  geom_histogram(color = "white", bins = 30) 
+```
+]
+
+.pull-right[
+```{r}
+median(results$t)
+boot.ci(results, type = "perc")
+```
+]
+
+---
+## Exercise 1 for the Day
+
+In this district, Verizon provides line service to both Verizon and non-Verizon customers. Here, we are going to look at a dataset containing service waiting times for Verizon customers (ILEC) and non-Verizon customers (CLEC). We are interested in **whether waiting time of non-Verizon customers is longer than that of Verizon customers**. 
+
+### Import Verizon Data
+
+```{r}
+Verizon = read.csv("https://raw.githubusercontent.com/shellyc26/psy5067/master/data/Verizon.csv")
+```
+
+```{r}
+head(Verizon, 3)
+```
+
+---
+### Inspect Verizon Data 1
+
+```{r, echo = F, fig.retina = 3, fig.width = 10, fig.height = 4}
+Verizon %>%
+  ggplot(aes(x = Time, fill = Group)) + 
+  geom_histogram(bins = 30) + 
+  guides(fill = "none") +
+  facet_wrap(~Group, scales = "free_y")
+```
+
+- Left is the distribution of waiting times of Non-Verizon (CLEC) customers; and
+- Right is the distribution of waiting times of Verizon (ILEC) customers. 
+
+--
+
+You will notice: Both distributions are not normal.
+
+---
+### Inspect Verizon Data 2
+
+```{r, echo = F, fig.retina = 3, fig.width = 10, fig.height = 4.5}
+Verizon %>%
+  ggplot(aes(x = Time, fill = Group)) + 
+  geom_histogram(bins = 50, position = "dodge") + 
+  guides(fill = "none") +
+  theme_bw()
+table(Verizon$Group)
+```
+
+--
+
+You will notice: The groups are (very) unbalanced. 
+
+---
+### Analysis Plan and Justification 
+
+It seems that the data does not meet the typical assumptions of an independent samples t-test. In this case, to estimate mean differences we can use bootstrapping. Here, we'll resample with replacement separately from the two samples and calculate their difference in means.
+
+---
+### Perhaps this will help:
+```{r}
+# Set random seed and number of bootstrap samples
+set.seed(1048596)
+boot <- 10000
+
+response_means <- NULL
+
+for(i in 1:boot){
+  sample_response <- sample(response, size = 216, replace = T)
+  response_means <- c(response_means,mean(sample_response))
+}
+```
+
+
+### Breakdown of Tasks: Inside the For Loop
+
+- Sample (with replacement) Verizon group (ILEC) customers
+
+- Sample (with replacement) non-Verizon group (CLEC) customers
+
+- Calculate the difference in means between the two groups
+
+- Append the difference value to a list
+
+--
+
+---
+### One Solution
+
+```{r}
+set.seed(1048596)
+boot <- 10000
+difference <- NULL
+
+subsample_CLEC = Verizon %>% filter(Group == "CLEC") #<<
+subsample_ILEC = Verizon %>% filter(Group == "ILEC") #<<
+```
+
+---
+### One Solution
+
+```{r}
+set.seed(1048596)
+boot <- 10000
+difference <- NULL
+
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+
+for(i in 1:boot){
+  # Sample (with replacement) Verizon group (ILEC) customers
+  sample_CLEC = sample(subsample_CLEC$Time, #<<
+                       size = nrow(subsample_CLEC), #<<
+                       replace = T) #<<
+  # Sample (with replacement) Non-Verizon group (CLEC) customers
+  sample_ILEC = sample(subsample_ILEC$Time, #<<
+                       size = nrow(subsample_ILEC), #<<
+                       replace = T) #<<
+}
+```
+
+---
+### One Solution
+
+```{r}
+set.seed(1048596)
+boot <- 10000
+difference <- NULL
+
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+
+for(i in 1:boot){
+  # Sample (with replacement) Verizon group (ILEC) customers
+  sample_CLEC = sample(subsample_CLEC$Time, 
+                       size = nrow(subsample_CLEC), 
+                       replace = T)
+  # Sample (with replacement) Non-Verizon group (CLEC) customers
+  sample_ILEC = sample(subsample_ILEC$Time, 
+                       size = nrow(subsample_ILEC), 
+                       replace = T)
+  
+  # Calculate the difference in means between the two groups
+  # Append the difference value to a list
+  difference <- c(difference, mean(sample_CLEC) - mean(sample_ILEC)) #<<
+}
+```
+
+---
+### Bootstrap Distribution of Differences
+
+```{r echo=F, warning = FALSE, message = FALSE, fig.retina = 3, fig.width=10, fig.height=4}
+data.frame(differences = difference) %>%
+  ggplot(aes(x = differences)) + 
+  geom_histogram(aes(y = ..density..),color = "white", fill = "grey") +
+  geom_density() +
+  geom_vline(aes(xintercept = mean(differences), color = "mean"), 
+             linewidth = 2) +
+  geom_vline(aes(xintercept = median(differences), color = "median"),
+             linewidth = 2) +
+  geom_vline(aes(xintercept = quantile(differences, probs = .025), color = "Lower 2.5%"), 
+             linewidth = 2) +
+    geom_vline(aes(xintercept = quantile(differences, probs = .975), color = "Upper 2.5%"), 
+               linewidth = 2) +
+  cowplot::theme_cowplot()
+```
+
+The difference in means is `r round(median(difference),2)` $[`r round(quantile(difference, probs = .025),2)`,`r round(quantile(difference, probs = .975),2)`]$. What would this mean?
+
+--
+
+The bootstrap CI does not include 0. This suggests that there is significant difference in the waiting time of Verizon and non-Verizon customers in the expected direction
+
+---
+
+### Bootstrapping Summary 1
+
+Bootstrapping can be a useful tool to estimate parameters when 
+
+--
+
+1. You've violated assumptions of the test (i.e., normality, size of the sample)
+
+--
+
+2. You have good reason to believe the sampling distribution is not normal, but don't know what it is (e.g., median)
+
+--
+
+3. There are other oddities in your data, like very unbalanced samples 
+
+--
+
+This allows you to create a confidence interval around any statistic you want -- Cronbach's alpha, ICC, Mahalanobis Distance, $R^2$, AUC, etc. 
+* You can test whether these statistics are significantly different from any other value. 
+
+---
+
+### Bootstrapping Summary 2
+
+Bootstrapping will NOT help you deal with:
+
+--
+
+* Dependence between observations -- for this, you'll need to explicitly model dependence
+
+--
+
+* Improperly specified models or forms -- use theory to guide you here
+
+--
+
+* Measurement error -- why bother?
+
+--
+
+* Caveats: representativeness of the sample, outliers
+
+---
+## Jackknife Resampling
+
+**Jackknife Resampling** is a method where researchers generate n sub-samples, each leaving out one observation. The method is very similar to bootstrapping except **the way that we create the sub-samples**.
+
+---
+
+### Illustration of Jackknife Resampling
+
+Same example looking at cohort of 6 people: April, Beatrice, Carl, David, Emily, and Frank. If you decide to jackknife their heights, you would draw six sub-samples and calculate their respective mean height.
+
+```{r}
+friends = c('April', 'Beatrice', 'Carl', 'David', 'Emily', 'Frank')
+heights = c(165, 165, 178, 170, 172, 173)
+names(heights) = friends
+```
+--
+```{r, echo = F}
+paste("First Sub-sample: ", toString(friends[-1]))
+```
+--
+```{r, echo = F}
+paste("Second Sub-sample: ", toString(friends[-2]))
+```
+--
+```{r, echo = F}
+paste("Third Sub-sample: ", toString(friends[-3]))
+```
+--
+```{r, echo = F}
+paste("Fourth Sub-sample: ", toString(friends[-4]))
+```
+--
+```{r, echo = F}
+paste("Fifth Sub-sample: ", toString(friends[-5]))
+```
+--
+```{r, echo = F}
+paste("Sixth Sub-sample: ", toString(friends[-6]))
+```
+
+Notice that there are **6** sub-samples of **size 5**. 
+
+---
+## Jackknife Summary
+1. Can be a useful way to assess the accuracy of a statistical estimator without making assumptions about the underlying distribution of the data. 
+
+2. Generally, computationally efficient compared to bootstrapping because only *n* sub-samples are generated (compared to 10,000 for example)
+
+3. Not used as much these days as bootstrapping can be used to perform the same task and more others. With advances in computing, bootstrapping is not as computationally intensive anymore.
+
+--
+
+## Limitations of Jackknife
+
+* Sensitive to sample size: If sample size is small, it can result in inaccurate estimates of the bias (e.g., sample size of 6 means six jackknife samples).
+
+---
+
+## Exercise 2 for the Day
+
+Again, we are going to look at a dataset containing service waiting time of Verizon customers (ILEC). We are going to use Jackknife Resampling to Estimate **the standard deviation of mean service waiting times** of Verizon Customers. 
+
+--
+
+### Access to Data:
+
+```{r}
+Verizon = read.csv("https://raw.githubusercontent.com/shellyc26/psy5067/master/data/Verizon.csv")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC") 
+```
+
+### Analysis Plan
+
+* Create **n** subsamples, each leaving out the **n**th observation
+
+* Calculate the mean and append it to a list
+
+* Then calculate the standard deviation of the list
+
+---
+
+### One Way to do this
+
+```{r}
+# Initialize list to store sample means
+sample_mean <- NULL
+
+# Append the mean of bootstrap sample heights to *sample_means*
+for(i in 1:nrow(subsample_ILEC)){
+  this_sample <- subsample_ILEC$Time[-i]#<<
+  sample_mean <- c(sample_mean, mean(this_sample))
+}
+```
+
+```{r}
+sd(sample_mean)
+```
+
+---
+## What is Permutation Testing?
+
+A resampling method that involves randomly shuffling the labels (e.g., conditions) across the data and recomputing the test statistic of interest, thereby deriving a null distribution of the test statistic.
+
+--
+
+### Illustration of Permutation Testing 1
+
+We are interested in the difference in the rating of group A and group B  restaurants. 
+
+```{r, echo = FALSE}
+names <- c("Pappy's Smokehouse", 'Mai Lee', "Adriana's on the Hill", 'Salt & Smoke', 'Chilli Spot', 'BLK MKT')
+labels <- c('A', 'A', 'A', 'B', 'B', 'B')
+ratings <- c(7, 8, 8, 4, 6, 7)
+
+perm_df <- data.frame(name = names, 
+                      group = labels, 
+                      rating = ratings)
+
+head(perm_df, 6)
+```
+
+---
+
+### Illustration of Permutation Testing 2
+
+The observed difference is...
+
+```{r echo = F}
+perm_df %>% filter(group == 'A') %>% head(3)
+```
+
+```{r echo = T}
+perm_df %>% filter(group == 'A') %>% pull(rating) %>% mean()
+```
+
+```{r echo = F}
+perm_df %>% filter(group == 'B') %>% head(3)
+```
+
+```{r echo = T}
+perm_df %>% filter(group == 'B') %>% pull(rating) %>% mean()
+```
+
+--
+
+```{r echo = T}
+perm_df %>% filter(group == 'A') %>% pull(rating) %>% mean() - perm_df %>% filter(group == 'B') %>% pull(rating) %>% mean()
+```
+
+---
+
+### Illustration of Permutation Testing 3
+
+Initially, the three restaurants in group A were: 
+
+```{r echo = F}
+perm_df %>% filter(group == 'A') %>% head(3)
+```
+
+--
+
+Now, we are going to randomly assign restaurants to group A and group B, and calculate the mean difference in ratings. 
+
+```{r echo = T}
+random_indices <- sample.int(nrow(perm_df), 3)
+random_A <- perm_df[random_indices,]
+random_B <- perm_df[-random_indices,]
+
+random_A %>% pull(name)
+```
+
+```{r echo = T}
+random_A %>% pull(rating) %>% mean() - random_B %>% pull(rating) %>% mean()
+```
+
+---
+### Illustration of Permutation Testing 4
+
+We will repeat the previous step numerous times and use the mean differences to impose a null distribution of mean differences. 
+
+```{r echo = F}
+observed_diff <- perm_df %>% filter(group == 'A') %>% pull(rating) %>% mean() - perm_df %>% filter(group == 'B') %>% pull(rating) %>% mean()
+
+set.seed(1048596) # Set random seed
+perm = 20 # Set number of permutations
+
+differences <- NULL
+
+for (i in c(1:perm)){
+  random_indices <- sample.int(nrow(perm_df), 3)
+  random_A <- perm_df[random_indices,]
+  random_B <- perm_df[-random_indices,]
+  
+  differences <- c(random_A %>% pull(rating) %>% mean() - random_B %>% pull(rating) %>% mean(), differences)
+}
+```
+
+```{r, echo = F, message = F, warning = F, fig.retina = 3, fig.height = 4}
+diff_df = data.frame(diff = differences)
+
+ggplot(diff_df, aes(x = diff)) +
+  geom_histogram(color = "white") + 
+  geom_vline(aes(xintercept = observed_diff, color = "observed"), 
+             linewidth = 1) +
+  ggtitle("Empirical Null Distribution of Differences") +
+  cowplot::theme_cowplot()
+```
+
+
+--
+
+If we had a bigger dataset and repeated the permutation 1,000 times, we could count the number of permutations that have larger test statistic value than the observed difference, which would be equivalent to the p-value (or the probability that a test statistic is greater than or equal to the observed value, **under the null**).
+
+---
+
+### Final Exercise
+
+Initially, we had 23 CLEC and 1,664 ILEC customers. **First**, we are going to calculate the mean difference in waiting time between the two groups using the observed data. 
+
+```{r}
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+
+(mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time))
+```
+
+---
+
+### Second Step
+
+We are going to randomly shuffle the labels of groups (previous CLEC and ILEC labels don't matter!). Label 23 random customers as CLEC and 1,664 random customers as ILEC 1,000 times, and store the mean difference in waiting time between the two groups inside a list. 
+
+--
+
+One iteration would look something like this: 
+
+```{r}
+random_indices <- sample.int(nrow(Verizon), 23)
+random_CLEC <- Verizon[random_indices,]
+random_ILEC <- Verizon[-random_indices,]
+
+(mean(random_CLEC$Time) - mean(random_ILEC$Time))
+```
+
+---
+## Exercise: Repeat 1,000 times and derive p-value
+
+One iteration would look something like this: 
+
+```{r}
+random_indices <- sample.int(nrow(Verizon), 23)
+random_CLEC <- Verizon[random_indices,]
+random_ILEC <- Verizon[-random_indices,]
+
+(mean(random_CLEC$Time) - mean(random_ILEC$Time))
+```
+
+### Analysis Plan
+
+1. Put this in a for loop
+
+--
+
+2. Construct a list of mean differences
+
+--
+
+3. Determine the number of (random) mean differences greater than the observed difference in means (8.10). 
+
+---
+
+### One Way to do this
+
+```{r}
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+observed_diff <- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
+
+set.seed(1048596) # Set random seed
+perm = 1000 # Set number of permutations
+
+differences <- NULL #<<
+```
+
+---
+
+### One Way to do this
+
+```{r}
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+observed_diff <- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
+
+set.seed(1048596) # Set random seed
+perm = 1000 # Set number of permutations
+
+differences <- NULL
+
+for (i in 1:perm){
+  random_indices <- sample.int(nrow(Verizon), 23)
+  random_CLEC <- Verizon[random_indices,]
+  random_ILEC <- Verizon[-random_indices,]
+  
+  differences <- c(differences, #<<
+                   mean(random_CLEC$Time) - mean(random_ILEC$Time)) #<<
+}
+
+```
+
+
+---
+
+### One Way to do this
+
+```{r}
+subsample_CLEC = Verizon %>% filter(Group == "CLEC")
+subsample_ILEC = Verizon %>% filter(Group == "ILEC")
+observed_diff <- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
+
+set.seed(1048596) # Set random seed
+perm = 1000 # Set number of permutations
+
+differences <- NULL
+
+for (i in 1:perm){
+  random_indices <- sample.int(nrow(Verizon), 23)
+  random_CLEC <- Verizon[random_indices,]
+  random_ILEC <- Verizon[-random_indices,]
+  
+  differences <- c(differences, 
+                   mean(random_CLEC$Time) - mean(random_ILEC$Time))
+}
+
+paste("Number of mean differences greater than observed difference: ", sum(differences > observed_diff)) #<<
+paste("p-value: ", sum(differences > observed_diff)/length(differences)) #<<
+```
+
+---
+
+### Visualization
+```{r, echo = F, message = F, warning = F, fig.retina = 3}
+perm_df = data.frame(diff = differences)
+
+ggplot(perm_df, aes(x = diff)) +
+  geom_histogram(color = "white") + 
+  geom_vline(aes(xintercept = mean(diff), color = "mean"), 
+             linewidth = 1) +
+  geom_vline(aes(xintercept = median(diff), color = "median"), 
+             linewidth = 1) +
+  geom_vline(aes(xintercept = observed_diff, color = "observed"), 
+             linewidth = 1) +
+  ggtitle("Empirical Distribution of Differences under the Null") +
+  cowplot::theme_cowplot()
+```
+
+---
+
+### Permutation Testing Summary
+
+- Permutation testing is useful for hypothesis testing because we can easily derive a p-value
+
+- Can be used when data violates common assumptions about the data (i.e., homogeneity of variance and normality)
+
+--
+
+### Some Caveats
+
+- Assumption that the observations need to be exchangeable. Some observations may not be exchangeable (e.g., time series data - data collected at different time points)
+
+- Sample size needs to be large. No point randomly shuffling 1,000 times when the possible permutation is less than 1000. 
+
+---
+
+class: inverse
+
+## Next time ...
+
+- Thursday: One more machine learning lecture 
+
+- Don't forget to read Yarkoni & Westfall, 2017!
+
+- Next Tuesday: Final review session
