@@ -27,18 +27,18 @@ LSR readings can be found in the free, online textbook, [_Learning Statistics wi
 | 5    | 2/13 | Multiple Regression   |                    |                  
 | -    | 2/15 | Multiple Regression   |                    |            | 
 | 6    | 2/20 | **Exam 1**   |                    |**HW 2 DUE**  |   2/19
-| -    | 2/22 | Assumptions and Diagnostics  |                    |                    
-| 7    | 2/27 | TBD |                    |                   
-| -    | 2/29 | TBD |  |                 
-| 8    | 3/5 | Interactions I   |                    |            
-| -    | 3/7 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)             |                 **HW 3 DUE**   | 3/11
+| -    | 2/22 | Assumptions and Diagnostics  |                    |         
+| 7    | 2/27 | Interactions I |                    |   
+| -    | 2/29 | Bayes *Guest: Josh Jackson* |  |                 
+| 8    | 3/5 | Interactions II (Factorial ANOVA)   |  Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)                  |            
+| -    | 3/7 | Interactions III *Guest: Grace Drake* | [Myers Ch. 10](readings/anova2-myers.pdf)             |                 **HW 3 DUE**   | 3/11
 | 9    | 3/12 | **Spring Break** |             |                    |
 | -    | 3/14 | **Spring Break** |             |                    |
-| 10    | 3/19 | Interactions III (Factorial ANOVA)  | [Myers Ch. 10](readings/anova2-myers.pdf) |  |         
+| 10    | 3/19 | Qualitative Methods *Guest: Amy Eyler*   |  |  |         
 | -    | 3/21 | Interactions IV (Power & Effect Size)  |    |     |
 | 11   | 3/26 |  Interactions V (Polynomials) |    |   |
-| -    | 3/28  | **Exam 2** |    | **HW 4 DUE**  |    3/27
-| 12   | 4/2 | TBD  |  |  | 
+| -    | 3/28  | Flex/Catch Up |    | **HW 4 DUE**  |    3/27
+| 12   | 4/2 | **Exam 2**  |  |  | 
 | -    | 4/4  | Multilevel Models Intro |   |  |
 | 13   | 4/9 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
 | -    | 4/11 | Machine Learning 1 (Goals/Theory) |  | | 
