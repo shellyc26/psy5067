@@ -9,3 +9,7 @@ stringr
 forcats
 broom
 ggstatsplot
+xaringanthemer
+lubridate
+gridExtra
+lsr
