@@ -10,43 +10,42 @@ output:
 
 # Weekly schedule
 
-LSR readings can be found in the free, online textbook, [_Learning Statistics with R_](https://learningstatisticswithr-bookdown.netlify.com/index.html) by Danielle Navarro. For those interested in taking notes, I recommend the use of the [Hypothes.is](http://Hypothes.is) app to annotate webpages. I will note that the formatting of the book online is wonky in a few places. If this bothers you, or you prefer to work offline, you can download a [PDF version](https://learningstatisticswithr.com/lsr-0.6.pdf) of the book. We will also use An Introduction to Statistical Learning (**ISLR**) for supplemental readings. You can find a free version of [ISLR here](https://www.statlearning.com/). You can use either the first or second version. All other readings will be provided on this page, in the lecture slides, and on our GitHub page.
+LSR readings can be found in the free, online textbook, [*Learning Statistics with R*](https://learningstatisticswithr-bookdown.netlify.com/index.html) by Danielle Navarro. For those interested in taking notes, I recommend the use of the [Hypothes.is](http://Hypothes.is) app to annotate webpages. I will note that the formatting of the book online is wonky in a few places. If this bothers you, or you prefer to work offline, you can download a [PDF version](https://learningstatisticswithr.com/lsr-0.6.pdf) of the book. We will also use An Introduction to Statistical Learning (**ISLR**) for supplemental readings. You can find a free version of [ISLR here](https://www.statlearning.com/). You can use either the first or second version. All other readings will be provided on this page, in the lecture slides, and on our GitHub page.
 
 **PR = Peer Review**
 
-| Week | Date |  Topic                            |Readings            | HW Due | 
--------|------|-----------------------------------|--------------------|-----------|
-| 1    | 1/16 | Recap & GLM Intro |            |             |
-| -    | 1/18 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |      
-| 2    | 1/23 | GLM & Categorical Predictors | Ch. 13-14 (review) |     | 
-| -    | 1/25  | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf)                   |          
-| 3    | 1/30 |  Univariate Regression           | Ch. 15.1 - 15.2     |        
-| -    | 2/1 |  Univariate Regression  | [MR Cohen](readings/Cohen-MR.pdf)   |      
-| 4    | 2/6 | Partial Correlations |  Ch. 15.3 - end of chapter   |**HW 1 DUE** | 2/5
-| -    | 2/8 | Multiple Regression  |       |     |      
-| 5    | 2/13 | Multiple Regression   |                    |                  
-| -    | 2/15 | Multiple Regression   |                    |            | 
-| 6    | 2/20 | **Exam 1**   |                    |**HW 2 DUE**  |   2/19
-| -    | 2/22 | Assumptions and Diagnostics  |                    |         
-| 7    | 2/27 | Interactions I |                    |   
-| -    | 2/29 | Bayes *Guest: Josh Jackson* |  |                 
-| 8    | 3/5 | Interactions II (Factorial ANOVA)   |  Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)                  |            
-| -    | 3/7 | Interactions III *Guest: Grace Drake* | [Myers Ch. 10](readings/anova2-myers.pdf)             |                 **HW 3 DUE**   | 3/11
-| 9    | 3/12 | **Spring Break** |             |                    |
-| -    | 3/14 | **Spring Break** |             |                    |
-| 10    | 3/19 | Qualitative Methods *Guest: Amy Eyler*   |  |  |         
-| -    | 3/21 | Interactions IV (Power & Effect Size)  |    |     |
-| 11   | 3/26 |  Interactions V (Polynomials) |    |   |
-| -    | 3/28  | Flex/Catch Up |    | **HW 4 DUE**  |    3/27
-| 12   | 4/2 | **Exam 2**  |  |  | 
-| -    | 4/4  | Multilevel Models Intro |   |  |
-| 13   | 4/9 | Logistic Regression/GLM  | [Cohen Logistic](readings/Logistic-Cohen.pdf) |    |            
-| -    | 4/11 | Machine Learning 1 (Goals/Theory) |  | | 
-| 14   | 4/16 | ML 2 (Bootstrapping)  |    |  |
-| -    | 4/18 | ML 3 (Over/Underfitting & Validation) | [Yarkoni & Westfal](readings/Yarkoni Westfall PPS.pdf)  |       |             
-| 15    | 4/23 | Wrapping Up & Future Directions |   |   **HW 5 DUE**         |        4/24     
-| -    | 4/25 | **FINAL**  |   |    |            
-
+| Week | Date | Topic                                  | Readings                                                          | HW Due                    |     |
+|-------------|-------------|-------------------|-------------|-------------|--|
+| 1    | 1/16 | Recap & GLM Intro                      |                                                                   |                           |     |
+| \-   | 1/18 | Data Management                        | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |                           |     |
+| 2    | 1/23 | GLM & Categorical Predictors           | Ch. 13-14 (review)                                                |                           |     |
+| \-   | 1/25 | Correlation                            | [Chapter from Revelle](readings/CorrelationRevelle.pdf)           |                           |     |
+| 3    | 1/30 | Univariate Regression                  | Ch. 15.1 - 15.2                                                   |                           |     |
+| \-   | 2/1  | Univariate Regression                  | [MR Cohen](readings/Cohen-MR.pdf)                                 |                           |     |
+| 4    | 2/6  | Partial Correlations                   | Ch. 15.3 - end of chapter                                         | **HW 1 DUE 2/5 11:59pm**  |     |
+| \-   | 2/8  | Multiple Regression                    |                                                                   |                           |     |
+| 5    | 2/13 | Multiple Regression                    |                                                                   |                           |     |
+| \-   | 2/15 | Multiple Regression                    |                                                                   |                           |     |
+| 6    | 2/20 | **Exam 1**                             |                                                                   | **HW 2 DUE 2/19 11:59pm** |     |
+| \-   | 2/22 | Assumptions and Diagnostics            |                                                                   |                           |     |
+| 7    | 2/27 | Interactions I                         |                                                                   |                           |     |
+| \-   | 2/29 | Bayes *Guest: Josh Jackson*            |                                                                   |                           |     |
+| 8    | 3/5  | Interactions II (Factorial ANOVA)      | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)                  |                           |     |
+| \-   | 3/7  | Interactions III *Guest: Grace Drake*  | [Myers Ch. 10](readings/anova2-myers.pdf)                         | **HW 3 DUE 3/9 11:59pm**  |     |
+| 9    | 3/12 | **Spring Break**                       |                                                                   |                           |     |
+| \-   | 3/14 | **Spring Break**                       |                                                                   |                           |     |
+| 10   | 3/19 | Qualitative Methods *Guest: Amy Eyler* |                                                                   |                           |     |
+| \-   | 3/21 | Interactions IV (Power & Effect Size)  |                                                                   |                           |     |
+| 11   | 3/26 | Interactions V (Polynomials)           |                                                                   |                           |     |
+| \-   | 3/28 | Flex/Catch Up                          |                                                                   | **HW 4 DUE 4/1 11:59pm**  |     |
+| 12   | 4/2  | **Exam 2**                             |                                                                   |                           |     |
+| \-   | 4/4  | Multilevel Models Intro                |                                                                   |                           |     |
+| 13   | 4/9  | Logistic Regression/GLM                | [Cohen Logistic](readings/Logistic-Cohen.pdf)                     |                           |     |
+| \-   | 4/11 | Machine Learning 1 (Goals/Theory)      |                                                                   |                           |     |
+| 14   | 4/16 | ML 2 (Bootstrapping)                   |                                                                   |                           |     |
+| \-   | 4/18 | ML 3 (Over/Underfitting & Validation)  | [Yarkoni & Westfal](readings/Yarkoni%20Westfall%20PPS.pdf)        |                           |     |
+| 15   | 4/23 | Wrapping Up & Future Directions        |                                                                   | **HW 5 DUE 4/24 11:59pm** |     |
+| \-   | 4/25 | **FINAL**                              |                                                                   |                           |     |
 
 # Overview
 
@@ -56,23 +55,23 @@ This course is the second in a two-course sequence that introduces necessary ski
 
 Your final grade is comprised of:
 
-  - 5 Homework: 5\% each, 25\% total
-  - Exam 1 - Written portion 22.5\%
-  - Exam 1 - Oral portion 7.5\%
-  - Exam 2 - Written portion 15\%
-  - Exam 2 - Oral portion 10\%
-  - Exam 3 - Written portion 5\%
-  - Exam 3 - Oral portion 15\%
+-   5 Homework: 5% each, 25% total
+-   Exam 1 - Written portion 22.5%
+-   Exam 1 - Oral portion 7.5%
+-   Exam 2 - Written portion 15%
+-   Exam 2 - Oral portion 10%
+-   Exam 3 - Written portion 5%
+-   Exam 3 - Oral portion 15%
 
 ## Exams
 
 There are 3 exams total, each with a written portion and an oral portion. They will follow similar formats to last semester where the written portion is a little more math-heavy (although you will still be asked to write interpretations etc.) and the oral exam is a little more theoretical and/or applied in context.
 
-The last exam is very similar to last semester, where it is technically a cumulative exam, but emphasis is on the last third of the class and broad topics/analytics from the first two thirds of the class. 
+The last exam is very similar to last semester, where it is technically a cumulative exam, but emphasis is on the last third of the class and broad topics/analytics from the first two thirds of the class.
 
-Together, the first exam is worth 30% of your grade, the second exam is worth 25% of your grade, and the last exam is worth 20% of your grade. 
+Together, the first exam is worth 30% of your grade, the second exam is worth 25% of your grade, and the last exam is worth 20% of your grade.
 
-**New Rule**: If you have something going on in life that you think will impede you from doing your best on an exam, please come talk to me (even if it's like 5 minutes before we start!). Family emergency, sudden news of a loved one, illness, bereavement, etc. *Once you see an exam, you will not be able to make-up or do-over the test.* I would much prefer that you talk to me and we agree that you take the exam at a later date, rather than trying to take it first, seeing how you do, then asking for a redo. You are graduate students, and I think by now you've learned that I'm not particularly scary -- I will always work with you and very much want you to succeed! 
+**New Rule**: If you have something going on in life that you think will impede you from doing your best on an exam, please come talk to me (even if it's like 5 minutes before we start!). Family emergency, sudden news of a loved one, illness, bereavement, etc. *Once you see an exam, you will not be able to make-up or do-over the test.* I would much prefer that you talk to me and we agree that you take the exam at a later date, rather than trying to take it first, seeing how you do, then asking for a redo. You are graduate students, and I think by now you've learned that I'm not particularly scary -- I will always work with you and very much want you to succeed!
 
 ## Homework assignments
 
@@ -80,31 +79,27 @@ Homework assignments are intended to gauge your ability to apply the topics cove
 
 I will specify exact due dates, and all will be required by 11:59pm. Grading will go by the following rubric:
 
-- 6/6: Completed all parts of the assignment, and results/interpretations were mostly correct (with maybe a few minor errors along the way)
-- 5/6: Completed all parts of the assignment, and ~25% of the results/interpretations are incorrect
-- 4/6: Completed all parts of the assignment, however ~50% of the results/interpretations are incorrect
-- 4/6: Either parts of the assignment are missing but what is there is correct, OR all parts have been completed but there are substantial issues with the results/interpretation
-- 2/6: Parts of the assignment are missing, and there are substantial issues with the results/interpretation
-- 1/6: Nearly all of the assignment is missing, but something was turned in
-- 0/6: No assignment submitted
+-   5/5: Completed all parts of the assignment, and results/interpretations were mostly correct (with maybe a few minor errors along the way)
+-   4/5: Completed all parts of the assignment, and \~25% of the results/interpretations are incorrect
+-   3/5: Completed all parts of the assignment, however \~50% of the results/interpretations are incorrect. Or, parts of the assignment are missing but what is there is correct.
+-   2/5: Parts of the assignment are missing, and there are substantial issues with the results/interpretation
+-   1/5: Nearly all of the assignment is missing, but something was turned in
+-   0/5: No assignment submitted
 
-All of this to say that you can still get a 6 out of 6 even if you get a few things wrong here and there. HW assignments should boost your grades, not hurt them.
+All of this to say that you can still get a 5 out of 5 even if you get a few things wrong here and there. HW assignments should boost your grades, not hurt them.
 
 You may work with your peers on homework assignments, with the following caveats:
 
-1. Your code cannot be 100% identical to your peer's code (trust me, we can tell). It’s one thing to work together and consult, but it’s another thing to copy someone else’s assignment. If it is determined that someone copied an entire homework assignment, both parties will be given automatic zero.
-2. If you work with someone, you *must* acknowledge them in the assignment itself.
+1.  Your code cannot be 100% identical to your peer's code (trust me, we can tell). It’s one thing to work together and consult, but it’s another thing to copy someone else’s assignment. If it is determined that someone copied an entire homework assignment, both parties will be given automatic zero.
+2.  If you work with someone, you *must* acknowledge them in the assignment itself.
 
-**AI Policy**
-Given the nature of written in-person exams and oral exams, there is no way to feasibly use AI in these settings. However, AI is particularly helpful for coding. I am OK with you using AI tools for your homework assignments with the following caveats:
-1. You are the adult in the room. That means it's up to you to be able to carefully evaluate what it gives you. AI is often wrong so you'll need to be careful here. 
-2. You must paste the link to the "conversation" in your HW assignments so that we can back-trace what you prompted and how it responded. A url that does not work will be considered a violation of academic integrity. 
-3. If the AI is wrong and you do not catch it, this will count against you. You can't blame the AI. 
+**AI Policy** Given the nature of written in-person exams and oral exams, there is no way to feasibly use AI in these settings. However, AI is particularly helpful for coding. I am OK with you using AI tools for your homework assignments with the following caveats: 1. You are the adult in the room. That means it's up to you to be able to carefully evaluate what it gives you. AI is often wrong so you'll need to be careful here. 2. You must paste the link to the "conversation" in your HW assignments so that we can back-trace what you prompted and how it responded. A url that does not work will be considered a violation of academic integrity. 3. If the AI is wrong and you do not catch it, this will count against you. You can't blame the AI.
 
 ## Final Grading Rubric
 
-All assignments and examinations are mandatory. If you need to miss an exam you must get in touch with me as soon as possible. Rescheduling of exams will be considered on a case by case basis, but I am _not_ required to approve a rescheduled exam.
+All assignments and examinations are mandatory. If you need to miss an exam you must get in touch with me as soon as possible. Rescheduling of exams will be considered on a case by case basis, but I am *not* required to approve a rescheduled exam.
 
+```{=tex}
 \begin{equation}
 \begin{split}
 
@@ -128,10 +123,10 @@ All assignments and examinations are mandatory. If you need to miss an exam you 
 
 \end{split}
 \end{equation}
-
+```
 # Learning from Crappy Years
 
-The 2020-2021 academic year sucked, and the 2021-2022 academic year was just plain weird. But instead of burying our heads in the sand and forgetting they existed, let's at least extract some things and incorporate them into our lives. For this class, here's what that means...
+Life has been weird since the pandemic. But instead of burying our heads in the sand and forgetting they existed, let's at least extract some things and incorporate them into our lives. For this class, here's what that means...
 
 ### Staying Connected
 

@@ -371,7 +371,7 @@ no long form sentences should be in there.</li>
 one <code>#</code> symbol, then a space, then type “Question 1”). You
 may use subheaders (meaning more than 1 <code>#</code> symbol) for
 different parts of the question, if you wish. However, your
-interpreations/opinions/summary statements should not be contained
+interpretations/opinions/summary statements should not be contained
 within a header (that is, there should be no <code>#</code> symbols
 preceding it).</li>
 </ul>
@@ -379,7 +379,9 @@ preceding it).</li>
 from an outside source (meaning not the lecture slides or the R help
 documentation), then you must provide a <strong>working link</strong> to
 the website you used. You don’t need to use APA formatting or anything.
-Just a working url.</p>
+Just a working url. Similarly, you must do the same for any and all AI
+use (including Chat-GPT). You must include a working link to your
+conversation.</p>
 <p>All homeworks are <strong>independent projects</strong>. You may not
 share code or answers with your peers, but you can discuss them in broad
 strokes. You absolutely should <strong>not simply copy someone else’s
@@ -405,7 +407,8 @@ of course use a R function.</p>
 <div id="homework-questions" class="section level2">
 <h2>Homework Questions</h2>
 <ol style="list-style-type: decimal">
-<li>Load the <code>hw1-data.csv</code> data into R. Create:</li>
+<li>Load the <code>hw1-data.csv</code> data into <code>R</code>.
+Create:</li>
 </ol>
 <ul>
 <li>an informative plot/figure of the study variables</li>
@@ -418,30 +421,33 @@ could publish in a journal article.</p>
 </ol>
 <ul>
 <li><span class="math inline">\(t\)</span>-test</li>
-<li>one way anova</li>
+<li>oneway anova</li>
 <li>linear model (regression) with dummy codes*</li>
 <li>linear model with effect coding</li>
 <li>correlation between two variables</li>
 </ul>
-<p>* For the dummy code model, interpret the intercept and regression
-coefficient.</p>
+<p>* For the <strong>dummy coded</strong> model, interpret the intercept
+and regression coefficient.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Describe the similarities and differences across the tests you
 ran in question 2.</p></li>
-<li><p>What is the Coefficient of Determination for your dummy code
-model above? Interpret it.</p></li>
+<li><p>What is the Coefficient of Determination for your dummy coded
+model above? Interpret it. Is it good?</p></li>
 <li><p>“By hand,” (using the output from question 2 and the scores
 obtained from the dataframe) calculate the predicted (fitted) scores and
-the residuals for subject #3 and subject #5 using dummy coding. Then
-calculate their predicted and residual score with the effect codes. Are
-they the same? Explain why or why not.</p></li>
+the residuals for subject #3 and subject #5 using the dummy coded model.
+Then calculate their predicted and residual score with the effect coded
+model. Are they the same? Explain why or why not.</p></li>
 <li><p>For the dummy coded model, graph a distribution of the residuals.
-Then test whether the residuals correlated with X. Explain why they
-are/are not correlated with X.</p></li>
+Do not use the R defaults – make sure the axes are labeled appropriately
+and it’s pretty enough that you would be willing to publish it. Then
+test whether the residuals correlated with X. Explain why they are/are
+not correlated with X.</p></li>
 <li><p>In #2, the <span class="math inline">\(t\)</span>-test output
 gives you a confidence interval for the difference between the two
 groups. Using the dummy coded summary output, calculate this same
-confidence interval.</p></li>
+confidence interval. Interpret the confidence interval in the context of
+this model.</p></li>
 </ol>
 </div>
 
