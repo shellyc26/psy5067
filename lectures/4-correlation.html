@@ -3,10 +3,8 @@
   <head>
     <title>Correlations</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,24 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+
 
 
 
@@ -70,7 +86,7 @@ Standard Deviation
 
 ---
 
-class: center
+## Review of Dispersion
 
 Formula for standard error of the mean?
 
@@ -102,8 +118,6 @@ Covariation (cross products)
 ---
 ## Associations
 
-Covariance
-
 **Sample:**
 
 `$$\large cov_{xy} = {\frac{\sum{(x-\bar{x})(y-\bar{y})}}{N-1}}$$`
@@ -112,13 +126,11 @@ Covariance
 
 `$$\large \sigma_{xy}^{2} = {\frac{\sum{(x-\mu_{x})(y-\mu_{y})}}{N}}$$`
 
---
-&gt;- Covariance matrix is basis for many analyses
-&gt;- What are some issues that may arise when comparing covariances?
+
+&gt; What are some issues that may arise when comparing covariances?
 
 ---
 ## Associations
-Correlations
 
 **Sample:**
 
@@ -129,7 +141,7 @@ Correlations
 `$$\large \rho_{xy} = {\frac{cov(X,Y)}{\sigma_{x}\sigma_{y}}}$$`
 
 
-Many other formulas exist for specific types of data, these were more helpful when we computed everything by hand (more on this later).
+&gt; Many other formulas exist for specific types of data
 
 ---
 
@@ -170,8 +182,7 @@ Ways to think about a correlation:
 
 .pull-right[
 - This will become our regression line. Right now, it is our correlation line. At this point **they are the same!**
-- Correlation summarizes the association btwn 2 continuous variables
-- We will use this to build up our regression model, but in the mean time, you can do a lot of things with just correlations.
+- You can do a lot of things with just correlations.
 ]
 
 ---
@@ -204,8 +215,6 @@ Assumes:
 
 ## Sampling distribution?
 
---
-
 The sampling distribution we use depends on our null hypothesis.
 
 --
@@ -216,7 +225,7 @@ If our null hypothesis is that `\((\rho = 0)\)` , then we can use a ***t*-distri
 
 ---
 ## Test Statistic
-As with most all test statistics, they take the form of "signal" divided by "noise". Standard error is interpreted like other standard errors we've seen.
+Signal divided by noise
 
 `$$\large t = {\frac{r}{SE_{r}}}$$`
 --
@@ -232,7 +241,7 @@ As with most all test statistics, they take the form of "signal" divided by "noi
 
 ---
 ## Power calculations
-What sample size do you need in order to have enough power to detect a .1 correlation? .3?
+What sample size do you need in order to have enough power to detect a **.1** correlation? 
 
 ```r
 library(pwr)
@@ -250,7 +259,12 @@ pwr.r.test(n = , r = .1, sig.level = .05 , power = .8)
 ##     alternative = two.sided
 ```
 
+---
+## Power calculations
+What sample size do you need in order to have enough power to detect a **.3** correlation? 
+
 ```r
+library(pwr)
 pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 ```
 
@@ -264,7 +278,6 @@ pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 ##           power = 0.8
 ##     alternative = two.sided
 ```
-
 ---
 ## Power calculations
 - But what is your confidence?
@@ -273,7 +286,7 @@ pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 
 - Schönbrodt &amp; Perugini (2013) suggest correlations 'stabilize' at 250+ regardless of effect size
 
-- CI[.19, .39]
+
 
 ---
 ## Fisher's r to z' transformation
@@ -281,7 +294,7 @@ pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 If we want to make calculations based on `\(\rho \neq 0\)` then we will run into a skewed sampling distribution.
 ]
 
-![](4-correlation_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](4-correlation_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -290,9 +303,7 @@ If we want to make calculations based on `\(\rho \neq 0\)` then we will run into
 - Skewed sampling distribution will rear its head when:
 
     * `\(H_{0}: \rho \neq 0\)`
-
     * Calculating confidence intervals
-
     * Testing two correlations against one another
 
 - r to z':
@@ -304,18 +315,17 @@ ln = natural log
 ---
 ## Fisher’s r to z’ transformation
 
-![](4-correlation_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+&lt;img src="4-correlation_files/figure-html/unnamed-chunk-10-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
-.pull-right[
+
 No longer bounded by 1 &amp; -1
-]
 
 ---
-##  Steps for computing confidence interval
+##  Computing confidence interval
 
-1. Transform r into z'
-2. Compute CI as you normally would using z'
-3. revert back to r
+1. Transform `\(r\)` into `\(z'\)`
+2. Compute CI as you normally would using `\(z'\)`
+3. Revert back to `\(r\)`
 
 $$ SE_z = \frac{1}{\sqrt{N-3}}$$
 
@@ -323,8 +333,6 @@ $$ SE_z = \frac{1}{\sqrt{N-3}}$$
 
 .small[*Note, `e` here stands for Euler's number. `exp(1)` is straight Euler's number or `e`, `exp(2)` is Euler's number squared or `e^2`*]
 ---
-
-### Example
 
 In a sample of 42 students, you calculate a correlation of 0.44 between hours spent outside on Saturday and self-rated health. What is the precision of your estimate?
 
@@ -339,7 +347,7 @@ In a sample of 42 students, you calculate a correlation of 0.44 between hours sp
 
 
 
-.small[Why is it 2.021 instead of 1.96? Because we're using a *t* distribution with N-2 degrees of freedom. `qt(p = .975, df = N-2, lower.tail = T)` = 2.021]
+.tiny[Why is it 2.021 instead of 1.96? Because we're using a *t* distribution with N-2 degrees of freedom. `qt(p = .975, df = N-2, lower.tail = T)` = 2.021]
 
 ---
 
@@ -373,9 +381,9 @@ $$ H_A: \rho_1 \neq \rho_2 $$
 `$$Z = \frac{z_1^{'}- z_2^{'}}{se_{z_1-z_2}}$$`
 
 ---
-## Comparing two correlations
+### Comparing two correlations
 
-Again, we use the Fisher’s r to z’ transformation. Here, we're transforming the correlations into z's, then using the difference between z's to calculate the test statistic. 
+Again, we use Fisher’s `\(r\)` to `\(z’\)` transformation. Here, we're transforming the correlations into `\(z'\)`s, then using the difference between `\(z\)`'s to calculate the test statistic. 
 
 `$$Z = \frac{z_1^{'}- z_2^{'}}{se_{z_1-z_2}}$$`
 
@@ -384,7 +392,7 @@ Again, we use the Fisher’s r to z’ transformation. Here, we're transforming 
 - But probably best to do this test in another framework (e.g., GLM via interaction or SEM)
 ---
 
-## Example
+### Example
 
 Replication of Hill et al. (2012) where they found that the correlation between narcissism and happiness was greater for young adults compared to older adults
 
@@ -447,7 +455,7 @@ How big is practical?
 - Meyer &amp; Hemphill .3 is average
 
 ---
-## What is the size of the correlation?
+### What is the size of the correlation?
 - Chemotherapy and breast cancer survival?
 - Batting ability and hit success on a single at bat?
 - Antihistamine use and reduced sneezing/runny nose?
@@ -457,10 +465,10 @@ How big is practical?
 - Therapy and well being?
 - Observer ratings of attractiveness?
 - Gender and arm strength?
-- Nearness to equator and daily temperature for U.S.?
+
 
 ---
-## What is the size of the correlation?
+### What is the size of the correlation?
 - Chemotherapy and breast cancer survival? (.03)
 - Batting ability and hit success on a single at bat? (.06)
 - Antihistamine use and reduced sneezing/runny nose? (.11)
@@ -470,7 +478,7 @@ How big is practical?
 - Therapy and well being? (.32)
 - Observer ratings of attractiveness? (.39)
 - Gender and arm strength? (.55)
-- Nearness to equator and daily temperature for U.S.? (.60)
+
 
 ---
 ## Questions to ask yourself:
@@ -497,20 +505,20 @@ head(bfi)
 ```
 
 ```
-##       A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3 N4 N5 O1 O2 O3 O4
-## 61617  2  4  3  4  4  2  3  3  4  4  3  3  3  4  4  3  4  2  2  3  3  6  3  4
-## 61618  2  4  5  2  5  5  4  4  3  4  1  1  6  4  3  3  3  3  5  5  4  2  4  3
-## 61620  5  4  5  4  4  4  5  4  2  5  2  4  4  4  5  4  5  4  2  3  4  2  5  5
-## 61621  4  4  6  5  5  4  4  3  5  5  5  3  4  4  4  2  5  2  4  1  3  3  4  3
-## 61622  2  3  3  4  5  4  4  5  3  2  2  2  5  4  5  2  3  4  4  3  3  3  4  3
-## 61623  6  6  5  6  5  6  6  6  1  3  2  1  6  5  6  3  5  2  2  3  4  3  5  6
-##       O5 gender education age
-## 61617  3      1        NA  16
-## 61618  3      2        NA  18
-## 61620  2      2        NA  17
-## 61621  5      2        NA  17
-## 61622  3      1        NA  17
-## 61623  1      2         3  21
+##       A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3 N4
+## 61617  2  4  3  4  4  2  3  3  4  4  3  3  3  4  4  3  4  2  2
+## 61618  2  4  5  2  5  5  4  4  3  4  1  1  6  4  3  3  3  3  5
+## 61620  5  4  5  4  4  4  5  4  2  5  2  4  4  4  5  4  5  4  2
+## 61621  4  4  6  5  5  4  4  3  5  5  5  3  4  4  4  2  5  2  4
+## 61622  2  3  3  4  5  4  4  5  3  2  2  2  5  4  5  2  3  4  4
+## 61623  6  6  5  6  5  6  6  6  1  3  2  1  6  5  6  3  5  2  2
+##       N5 O1 O2 O3 O4 O5 gender education age
+## 61617  3  3  6  3  4  3      1        NA  16
+## 61618  5  4  2  4  3  3      2        NA  18
+## 61620  3  4  2  5  5  2      2        NA  17
+## 61621  1  3  3  4  3  5      2        NA  17
+## 61622  3  3  3  4  3  3      1        NA  17
+## 61623  3  4  3  5  6  1      2         3  21
 ```
 
 ---
@@ -521,64 +529,93 @@ cor(bfi)
 ```
 
 ```
-##           A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3 N4 N5 O1
-## A1         1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## A2        NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## A3        NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## A4        NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## A5        NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## C1        NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## C2        NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## C3        NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA
-## C4        NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA
-## C5        NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA
-## E1        NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA
-## E2        NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA
-## E3        NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA
-## E4        NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA
-## E5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA
-## N1        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA
-## N2        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA
-## N3        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA
-## N4        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA
-## N5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA
-## O1        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1
-## O2        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## O3        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## O4        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## O5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## gender    NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## education NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-## age       NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
-##                    O2 O3 O4 O5     gender education         age
-## A1                 NA NA NA NA         NA        NA          NA
-## A2                 NA NA NA NA         NA        NA          NA
-## A3                 NA NA NA NA         NA        NA          NA
-## A4                 NA NA NA NA         NA        NA          NA
-## A5                 NA NA NA NA         NA        NA          NA
-## C1                 NA NA NA NA         NA        NA          NA
-## C2                 NA NA NA NA         NA        NA          NA
-## C3                 NA NA NA NA         NA        NA          NA
-## C4                 NA NA NA NA         NA        NA          NA
-## C5                 NA NA NA NA         NA        NA          NA
-## E1                 NA NA NA NA         NA        NA          NA
-## E2                 NA NA NA NA         NA        NA          NA
-## E3                 NA NA NA NA         NA        NA          NA
-## E4                 NA NA NA NA         NA        NA          NA
-## E5                 NA NA NA NA         NA        NA          NA
-## N1                 NA NA NA NA         NA        NA          NA
-## N2                 NA NA NA NA         NA        NA          NA
-## N3                 NA NA NA NA         NA        NA          NA
-## N4                 NA NA NA NA         NA        NA          NA
-## N5                 NA NA NA NA         NA        NA          NA
-## O1                 NA NA NA NA         NA        NA          NA
-## O2         1.00000000 NA NA NA 0.02694778        NA -0.04254386
-## O3                 NA  1 NA NA         NA        NA          NA
-## O4                 NA NA  1 NA         NA        NA          NA
-## O5                 NA NA NA  1         NA        NA          NA
-## gender     0.02694778 NA NA NA 1.00000000        NA  0.04770347
-## education          NA NA NA NA         NA         1          NA
-## age       -0.04254386 NA NA NA 0.04770347        NA  1.00000000
+##           A1 A2 A3 A4 A5 C1 C2 C3 C4 C5 E1 E2 E3 E4 E5 N1 N2 N3
+## A1         1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## A2        NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## A3        NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## A4        NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## A5        NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA NA
+## C1        NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA NA
+## C2        NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA NA
+## C3        NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA NA
+## C4        NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA NA
+## C5        NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA NA
+## E1        NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA NA
+## E2        NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA NA
+## E3        NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA NA
+## E4        NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA NA
+## E5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA NA
+## N1        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA NA
+## N2        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1 NA
+## N3        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1
+## N4        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## N5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## O1        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## O2        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## O3        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## O4        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## O5        NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## gender    NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## education NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## age       NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##           N4 N5 O1          O2 O3 O4 O5     gender education
+## A1        NA NA NA          NA NA NA NA         NA        NA
+## A2        NA NA NA          NA NA NA NA         NA        NA
+## A3        NA NA NA          NA NA NA NA         NA        NA
+## A4        NA NA NA          NA NA NA NA         NA        NA
+## A5        NA NA NA          NA NA NA NA         NA        NA
+## C1        NA NA NA          NA NA NA NA         NA        NA
+## C2        NA NA NA          NA NA NA NA         NA        NA
+## C3        NA NA NA          NA NA NA NA         NA        NA
+## C4        NA NA NA          NA NA NA NA         NA        NA
+## C5        NA NA NA          NA NA NA NA         NA        NA
+## E1        NA NA NA          NA NA NA NA         NA        NA
+## E2        NA NA NA          NA NA NA NA         NA        NA
+## E3        NA NA NA          NA NA NA NA         NA        NA
+## E4        NA NA NA          NA NA NA NA         NA        NA
+## E5        NA NA NA          NA NA NA NA         NA        NA
+## N1        NA NA NA          NA NA NA NA         NA        NA
+## N2        NA NA NA          NA NA NA NA         NA        NA
+## N3        NA NA NA          NA NA NA NA         NA        NA
+## N4         1 NA NA          NA NA NA NA         NA        NA
+## N5        NA  1 NA          NA NA NA NA         NA        NA
+## O1        NA NA  1          NA NA NA NA         NA        NA
+## O2        NA NA NA  1.00000000 NA NA NA 0.02694778        NA
+## O3        NA NA NA          NA  1 NA NA         NA        NA
+## O4        NA NA NA          NA NA  1 NA         NA        NA
+## O5        NA NA NA          NA NA NA  1         NA        NA
+## gender    NA NA NA  0.02694778 NA NA NA 1.00000000        NA
+## education NA NA NA          NA NA NA NA         NA         1
+## age       NA NA NA -0.04254386 NA NA NA 0.04770347        NA
+##                   age
+## A1                 NA
+## A2                 NA
+## A3                 NA
+## A4                 NA
+## A5                 NA
+## C1                 NA
+## C2                 NA
+## C3                 NA
+## C4                 NA
+## C5                 NA
+## E1                 NA
+## E2                 NA
+## E3                 NA
+## E4                 NA
+## E5                 NA
+## N1                 NA
+## N2                 NA
+## N3                 NA
+## N4                 NA
+## N5                 NA
+## O1                 NA
+## O2        -0.04254386
+## O3                 NA
+## O4                 NA
+## O5                 NA
+## gender     0.04770347
+## education          NA
+## age        1.00000000
 ```
 
 ---
@@ -589,93 +626,122 @@ round(cor(bfi, use = "pairwise"),2)
 ```
 
 ```
-##              A1    A2    A3    A4    A5    C1    C2    C3    C4    C5    E1
-## A1         1.00 -0.34 -0.27 -0.15 -0.18  0.03  0.02 -0.02  0.13  0.05  0.11
-## A2        -0.34  1.00  0.49  0.34  0.39  0.09  0.14  0.19 -0.15 -0.12 -0.21
-## A3        -0.27  0.49  1.00  0.36  0.50  0.10  0.14  0.13 -0.12 -0.16 -0.21
-## A4        -0.15  0.34  0.36  1.00  0.31  0.09  0.23  0.13 -0.15 -0.24 -0.11
-## A5        -0.18  0.39  0.50  0.31  1.00  0.12  0.11  0.13 -0.13 -0.17 -0.25
-## C1         0.03  0.09  0.10  0.09  0.12  1.00  0.43  0.31 -0.34 -0.25 -0.02
-## C2         0.02  0.14  0.14  0.23  0.11  0.43  1.00  0.36 -0.38 -0.30  0.02
-## C3        -0.02  0.19  0.13  0.13  0.13  0.31  0.36  1.00 -0.34 -0.34  0.00
-## C4         0.13 -0.15 -0.12 -0.15 -0.13 -0.34 -0.38 -0.34  1.00  0.48  0.09
-## C5         0.05 -0.12 -0.16 -0.24 -0.17 -0.25 -0.30 -0.34  0.48  1.00  0.06
-## E1         0.11 -0.21 -0.21 -0.11 -0.25 -0.02  0.02  0.00  0.09  0.06  1.00
-## E2         0.09 -0.23 -0.29 -0.19 -0.33 -0.09 -0.06 -0.08  0.20  0.26  0.47
-## E3        -0.05  0.25  0.39  0.19  0.42  0.12  0.15  0.09 -0.08 -0.16 -0.33
-## E4        -0.06  0.28  0.38  0.30  0.47  0.14  0.12  0.09 -0.11 -0.20 -0.42
-## E5        -0.02  0.29  0.25  0.16  0.27  0.25  0.25  0.21 -0.24 -0.23 -0.30
-## N1         0.17 -0.09 -0.08 -0.10 -0.20 -0.07 -0.02 -0.07  0.22  0.21  0.02
-## N2         0.14 -0.05 -0.09 -0.14 -0.19 -0.04 -0.01 -0.06  0.16  0.25  0.01
-## N3         0.10 -0.04 -0.04 -0.07 -0.14 -0.03  0.00 -0.07  0.21  0.24  0.05
-## N4         0.05 -0.09 -0.13 -0.17 -0.20 -0.10 -0.05 -0.11  0.26  0.34  0.23
-## N5         0.02  0.02 -0.04 -0.01 -0.08 -0.05  0.05 -0.01  0.20  0.17  0.05
-## O1         0.01  0.13  0.15  0.06  0.16  0.17  0.16  0.09 -0.09 -0.08 -0.10
-## O2         0.08  0.02  0.00  0.04  0.00 -0.11 -0.04 -0.03  0.21  0.14  0.04
-## O3        -0.06  0.16  0.22  0.07  0.24  0.19  0.19  0.06 -0.08 -0.08 -0.22
-## O4        -0.08  0.09  0.04 -0.04  0.02  0.11  0.06  0.02  0.05  0.14  0.08
-## O5         0.11 -0.09 -0.05  0.02 -0.05 -0.12 -0.05 -0.01  0.20  0.06  0.10
-## gender    -0.16  0.18  0.14  0.13  0.10  0.01  0.07  0.05 -0.08 -0.09 -0.13
-## education -0.14  0.01  0.00 -0.02  0.01  0.03  0.00  0.05 -0.04  0.03  0.00
-## age       -0.16  0.11  0.07  0.14  0.13  0.08  0.02  0.07 -0.15 -0.09 -0.03
-##              E2    E3    E4    E5    N1    N2    N3    N4    N5    O1    O2
-## A1         0.09 -0.05 -0.06 -0.02  0.17  0.14  0.10  0.05  0.02  0.01  0.08
-## A2        -0.23  0.25  0.28  0.29 -0.09 -0.05 -0.04 -0.09  0.02  0.13  0.02
-## A3        -0.29  0.39  0.38  0.25 -0.08 -0.09 -0.04 -0.13 -0.04  0.15  0.00
-## A4        -0.19  0.19  0.30  0.16 -0.10 -0.14 -0.07 -0.17 -0.01  0.06  0.04
-## A5        -0.33  0.42  0.47  0.27 -0.20 -0.19 -0.14 -0.20 -0.08  0.16  0.00
-## C1        -0.09  0.12  0.14  0.25 -0.07 -0.04 -0.03 -0.10 -0.05  0.17 -0.11
-## C2        -0.06  0.15  0.12  0.25 -0.02 -0.01  0.00 -0.05  0.05  0.16 -0.04
-## C3        -0.08  0.09  0.09  0.21 -0.07 -0.06 -0.07 -0.11 -0.01  0.09 -0.03
-## C4         0.20 -0.08 -0.11 -0.24  0.22  0.16  0.21  0.26  0.20 -0.09  0.21
-## C5         0.26 -0.16 -0.20 -0.23  0.21  0.25  0.24  0.34  0.17 -0.08  0.14
-## E1         0.47 -0.33 -0.42 -0.30  0.02  0.01  0.05  0.23  0.05 -0.10  0.04
-## E2         1.00 -0.38 -0.51 -0.37  0.17  0.19  0.20  0.35  0.25 -0.16  0.08
-## E3        -0.38  1.00  0.42  0.38 -0.05 -0.07 -0.02 -0.15 -0.07  0.33 -0.07
-## E4        -0.51  0.42  1.00  0.32 -0.14 -0.14 -0.10 -0.29 -0.09  0.14  0.06
-## E5        -0.37  0.38  0.32  1.00  0.04  0.04 -0.06 -0.21 -0.13  0.30 -0.08
-## N1         0.17 -0.05 -0.14  0.04  1.00  0.71  0.56  0.40  0.38 -0.05  0.13
-## N2         0.19 -0.07 -0.14  0.04  0.71  1.00  0.55  0.39  0.35 -0.05  0.13
-## N3         0.20 -0.02 -0.10 -0.06  0.56  0.55  1.00  0.52  0.43 -0.03  0.11
-## N4         0.35 -0.15 -0.29 -0.21  0.40  0.39  0.52  1.00  0.40 -0.05  0.08
-## N5         0.25 -0.07 -0.09 -0.13  0.38  0.35  0.43  0.40  1.00 -0.12  0.20
-## O1        -0.16  0.33  0.14  0.30 -0.05 -0.05 -0.03 -0.05 -0.12  1.00 -0.21
-## O2         0.08 -0.07  0.06 -0.08  0.13  0.13  0.11  0.08  0.20 -0.21  1.00
-## O3        -0.23  0.39  0.21  0.29 -0.05 -0.03 -0.03 -0.06 -0.08  0.40 -0.26
-## O4         0.17  0.05 -0.10  0.00  0.08  0.13  0.18  0.21  0.11  0.18 -0.07
-## O5         0.08 -0.11  0.05 -0.11  0.11  0.04  0.06  0.04  0.14 -0.24  0.32
-## gender    -0.05  0.05  0.08  0.07  0.04  0.10  0.12  0.00  0.21 -0.10  0.03
-## education -0.01  0.00 -0.04  0.06 -0.05 -0.05 -0.05  0.01 -0.05  0.03 -0.09
-## age       -0.11  0.00 -0.01  0.11 -0.09 -0.10 -0.11 -0.03 -0.10  0.05 -0.04
-##              O3    O4    O5 gender education   age
-## A1        -0.06 -0.08  0.11  -0.16     -0.14 -0.16
-## A2         0.16  0.09 -0.09   0.18      0.01  0.11
-## A3         0.22  0.04 -0.05   0.14      0.00  0.07
-## A4         0.07 -0.04  0.02   0.13     -0.02  0.14
-## A5         0.24  0.02 -0.05   0.10      0.01  0.13
-## C1         0.19  0.11 -0.12   0.01      0.03  0.08
-## C2         0.19  0.06 -0.05   0.07      0.00  0.02
-## C3         0.06  0.02 -0.01   0.05      0.05  0.07
-## C4        -0.08  0.05  0.20  -0.08     -0.04 -0.15
-## C5        -0.08  0.14  0.06  -0.09      0.03 -0.09
-## E1        -0.22  0.08  0.10  -0.13      0.00 -0.03
-## E2        -0.23  0.17  0.08  -0.05     -0.01 -0.11
-## E3         0.39  0.05 -0.11   0.05      0.00  0.00
-## E4         0.21 -0.10  0.05   0.08     -0.04 -0.01
-## E5         0.29  0.00 -0.11   0.07      0.06  0.11
-## N1        -0.05  0.08  0.11   0.04     -0.05 -0.09
-## N2        -0.03  0.13  0.04   0.10     -0.05 -0.10
-## N3        -0.03  0.18  0.06   0.12     -0.05 -0.11
-## N4        -0.06  0.21  0.04   0.00      0.01 -0.03
-## N5        -0.08  0.11  0.14   0.21     -0.05 -0.10
-## O1         0.40  0.18 -0.24  -0.10      0.03  0.05
-## O2        -0.26 -0.07  0.32   0.03     -0.09 -0.04
-## O3         1.00  0.19 -0.31  -0.04      0.09  0.04
-## O4         0.19  1.00 -0.18   0.00      0.05  0.01
-## O5        -0.31 -0.18  1.00   0.02     -0.06 -0.10
-## gender    -0.04  0.00  0.02   1.00      0.01  0.05
-## education  0.09  0.05 -0.06   0.01      1.00  0.24
-## age        0.04  0.01 -0.10   0.05      0.24  1.00
+##              A1    A2    A3    A4    A5    C1    C2    C3    C4
+## A1         1.00 -0.34 -0.27 -0.15 -0.18  0.03  0.02 -0.02  0.13
+## A2        -0.34  1.00  0.49  0.34  0.39  0.09  0.14  0.19 -0.15
+## A3        -0.27  0.49  1.00  0.36  0.50  0.10  0.14  0.13 -0.12
+## A4        -0.15  0.34  0.36  1.00  0.31  0.09  0.23  0.13 -0.15
+## A5        -0.18  0.39  0.50  0.31  1.00  0.12  0.11  0.13 -0.13
+## C1         0.03  0.09  0.10  0.09  0.12  1.00  0.43  0.31 -0.34
+## C2         0.02  0.14  0.14  0.23  0.11  0.43  1.00  0.36 -0.38
+## C3        -0.02  0.19  0.13  0.13  0.13  0.31  0.36  1.00 -0.34
+## C4         0.13 -0.15 -0.12 -0.15 -0.13 -0.34 -0.38 -0.34  1.00
+## C5         0.05 -0.12 -0.16 -0.24 -0.17 -0.25 -0.30 -0.34  0.48
+## E1         0.11 -0.21 -0.21 -0.11 -0.25 -0.02  0.02  0.00  0.09
+## E2         0.09 -0.23 -0.29 -0.19 -0.33 -0.09 -0.06 -0.08  0.20
+## E3        -0.05  0.25  0.39  0.19  0.42  0.12  0.15  0.09 -0.08
+## E4        -0.06  0.28  0.38  0.30  0.47  0.14  0.12  0.09 -0.11
+## E5        -0.02  0.29  0.25  0.16  0.27  0.25  0.25  0.21 -0.24
+## N1         0.17 -0.09 -0.08 -0.10 -0.20 -0.07 -0.02 -0.07  0.22
+## N2         0.14 -0.05 -0.09 -0.14 -0.19 -0.04 -0.01 -0.06  0.16
+## N3         0.10 -0.04 -0.04 -0.07 -0.14 -0.03  0.00 -0.07  0.21
+## N4         0.05 -0.09 -0.13 -0.17 -0.20 -0.10 -0.05 -0.11  0.26
+## N5         0.02  0.02 -0.04 -0.01 -0.08 -0.05  0.05 -0.01  0.20
+## O1         0.01  0.13  0.15  0.06  0.16  0.17  0.16  0.09 -0.09
+## O2         0.08  0.02  0.00  0.04  0.00 -0.11 -0.04 -0.03  0.21
+## O3        -0.06  0.16  0.22  0.07  0.24  0.19  0.19  0.06 -0.08
+## O4        -0.08  0.09  0.04 -0.04  0.02  0.11  0.06  0.02  0.05
+## O5         0.11 -0.09 -0.05  0.02 -0.05 -0.12 -0.05 -0.01  0.20
+## gender    -0.16  0.18  0.14  0.13  0.10  0.01  0.07  0.05 -0.08
+## education -0.14  0.01  0.00 -0.02  0.01  0.03  0.00  0.05 -0.04
+## age       -0.16  0.11  0.07  0.14  0.13  0.08  0.02  0.07 -0.15
+##              C5    E1    E2    E3    E4    E5    N1    N2    N3
+## A1         0.05  0.11  0.09 -0.05 -0.06 -0.02  0.17  0.14  0.10
+## A2        -0.12 -0.21 -0.23  0.25  0.28  0.29 -0.09 -0.05 -0.04
+## A3        -0.16 -0.21 -0.29  0.39  0.38  0.25 -0.08 -0.09 -0.04
+## A4        -0.24 -0.11 -0.19  0.19  0.30  0.16 -0.10 -0.14 -0.07
+## A5        -0.17 -0.25 -0.33  0.42  0.47  0.27 -0.20 -0.19 -0.14
+## C1        -0.25 -0.02 -0.09  0.12  0.14  0.25 -0.07 -0.04 -0.03
+## C2        -0.30  0.02 -0.06  0.15  0.12  0.25 -0.02 -0.01  0.00
+## C3        -0.34  0.00 -0.08  0.09  0.09  0.21 -0.07 -0.06 -0.07
+## C4         0.48  0.09  0.20 -0.08 -0.11 -0.24  0.22  0.16  0.21
+## C5         1.00  0.06  0.26 -0.16 -0.20 -0.23  0.21  0.25  0.24
+## E1         0.06  1.00  0.47 -0.33 -0.42 -0.30  0.02  0.01  0.05
+## E2         0.26  0.47  1.00 -0.38 -0.51 -0.37  0.17  0.19  0.20
+## E3        -0.16 -0.33 -0.38  1.00  0.42  0.38 -0.05 -0.07 -0.02
+## E4        -0.20 -0.42 -0.51  0.42  1.00  0.32 -0.14 -0.14 -0.10
+## E5        -0.23 -0.30 -0.37  0.38  0.32  1.00  0.04  0.04 -0.06
+## N1         0.21  0.02  0.17 -0.05 -0.14  0.04  1.00  0.71  0.56
+## N2         0.25  0.01  0.19 -0.07 -0.14  0.04  0.71  1.00  0.55
+## N3         0.24  0.05  0.20 -0.02 -0.10 -0.06  0.56  0.55  1.00
+## N4         0.34  0.23  0.35 -0.15 -0.29 -0.21  0.40  0.39  0.52
+## N5         0.17  0.05  0.25 -0.07 -0.09 -0.13  0.38  0.35  0.43
+## O1        -0.08 -0.10 -0.16  0.33  0.14  0.30 -0.05 -0.05 -0.03
+## O2         0.14  0.04  0.08 -0.07  0.06 -0.08  0.13  0.13  0.11
+## O3        -0.08 -0.22 -0.23  0.39  0.21  0.29 -0.05 -0.03 -0.03
+## O4         0.14  0.08  0.17  0.05 -0.10  0.00  0.08  0.13  0.18
+## O5         0.06  0.10  0.08 -0.11  0.05 -0.11  0.11  0.04  0.06
+## gender    -0.09 -0.13 -0.05  0.05  0.08  0.07  0.04  0.10  0.12
+## education  0.03  0.00 -0.01  0.00 -0.04  0.06 -0.05 -0.05 -0.05
+## age       -0.09 -0.03 -0.11  0.00 -0.01  0.11 -0.09 -0.10 -0.11
+##              N4    N5    O1    O2    O3    O4    O5 gender
+## A1         0.05  0.02  0.01  0.08 -0.06 -0.08  0.11  -0.16
+## A2        -0.09  0.02  0.13  0.02  0.16  0.09 -0.09   0.18
+## A3        -0.13 -0.04  0.15  0.00  0.22  0.04 -0.05   0.14
+## A4        -0.17 -0.01  0.06  0.04  0.07 -0.04  0.02   0.13
+## A5        -0.20 -0.08  0.16  0.00  0.24  0.02 -0.05   0.10
+## C1        -0.10 -0.05  0.17 -0.11  0.19  0.11 -0.12   0.01
+## C2        -0.05  0.05  0.16 -0.04  0.19  0.06 -0.05   0.07
+## C3        -0.11 -0.01  0.09 -0.03  0.06  0.02 -0.01   0.05
+## C4         0.26  0.20 -0.09  0.21 -0.08  0.05  0.20  -0.08
+## C5         0.34  0.17 -0.08  0.14 -0.08  0.14  0.06  -0.09
+## E1         0.23  0.05 -0.10  0.04 -0.22  0.08  0.10  -0.13
+## E2         0.35  0.25 -0.16  0.08 -0.23  0.17  0.08  -0.05
+## E3        -0.15 -0.07  0.33 -0.07  0.39  0.05 -0.11   0.05
+## E4        -0.29 -0.09  0.14  0.06  0.21 -0.10  0.05   0.08
+## E5        -0.21 -0.13  0.30 -0.08  0.29  0.00 -0.11   0.07
+## N1         0.40  0.38 -0.05  0.13 -0.05  0.08  0.11   0.04
+## N2         0.39  0.35 -0.05  0.13 -0.03  0.13  0.04   0.10
+## N3         0.52  0.43 -0.03  0.11 -0.03  0.18  0.06   0.12
+## N4         1.00  0.40 -0.05  0.08 -0.06  0.21  0.04   0.00
+## N5         0.40  1.00 -0.12  0.20 -0.08  0.11  0.14   0.21
+## O1        -0.05 -0.12  1.00 -0.21  0.40  0.18 -0.24  -0.10
+## O2         0.08  0.20 -0.21  1.00 -0.26 -0.07  0.32   0.03
+## O3        -0.06 -0.08  0.40 -0.26  1.00  0.19 -0.31  -0.04
+## O4         0.21  0.11  0.18 -0.07  0.19  1.00 -0.18   0.00
+## O5         0.04  0.14 -0.24  0.32 -0.31 -0.18  1.00   0.02
+## gender     0.00  0.21 -0.10  0.03 -0.04  0.00  0.02   1.00
+## education  0.01 -0.05  0.03 -0.09  0.09  0.05 -0.06   0.01
+## age       -0.03 -0.10  0.05 -0.04  0.04  0.01 -0.10   0.05
+##           education   age
+## A1            -0.14 -0.16
+## A2             0.01  0.11
+## A3             0.00  0.07
+## A4            -0.02  0.14
+## A5             0.01  0.13
+## C1             0.03  0.08
+## C2             0.00  0.02
+## C3             0.05  0.07
+## C4            -0.04 -0.15
+## C5             0.03 -0.09
+## E1             0.00 -0.03
+## E2            -0.01 -0.11
+## E3             0.00  0.00
+## E4            -0.04 -0.01
+## E5             0.06  0.11
+## N1            -0.05 -0.09
+## N2            -0.05 -0.10
+## N3            -0.05 -0.11
+## N4             0.01 -0.03
+## N5            -0.05 -0.10
+## O1             0.03  0.05
+## O2            -0.09 -0.04
+## O3             0.09  0.04
+## O4             0.05  0.01
+## O5            -0.06 -0.10
+## gender         0.01  0.05
+## education      1.00  0.24
+## age            0.24  1.00
 ```
 
 ---
@@ -686,100 +752,129 @@ round(cor(bfi, use = "complete"),2)
 ```
 
 ```
-##              A1    A2    A3    A4    A5    C1    C2    C3    C4    C5    E1
-## A1         1.00 -0.34 -0.26 -0.14 -0.19  0.02  0.01 -0.01  0.10  0.02  0.12
-## A2        -0.34  1.00  0.48  0.34  0.38  0.09  0.13  0.19 -0.14 -0.11 -0.24
-## A3        -0.26  0.48  1.00  0.38  0.50  0.10  0.14  0.13 -0.12 -0.15 -0.22
-## A4        -0.14  0.34  0.38  1.00  0.32  0.08  0.22  0.13 -0.16 -0.24 -0.14
-## A5        -0.19  0.38  0.50  0.32  1.00  0.12  0.11  0.13 -0.12 -0.16 -0.25
-## C1         0.02  0.09  0.10  0.08  0.12  1.00  0.43  0.32 -0.35 -0.25 -0.03
-## C2         0.01  0.13  0.14  0.22  0.11  0.43  1.00  0.36 -0.38 -0.30  0.02
-## C3        -0.01  0.19  0.13  0.13  0.13  0.32  0.36  1.00 -0.35 -0.35 -0.02
-## C4         0.10 -0.14 -0.12 -0.16 -0.12 -0.35 -0.38 -0.35  1.00  0.48  0.10
-## C5         0.02 -0.11 -0.15 -0.24 -0.16 -0.25 -0.30 -0.35  0.48  1.00  0.07
-## E1         0.12 -0.24 -0.22 -0.14 -0.25 -0.03  0.02 -0.02  0.10  0.07  1.00
-## E2         0.08 -0.24 -0.29 -0.20 -0.33 -0.10 -0.07 -0.09  0.21  0.26  0.47
-## E3        -0.04  0.25  0.38  0.20  0.41  0.13  0.15  0.10 -0.09 -0.17 -0.33
-## E4        -0.07  0.30  0.39  0.33  0.48  0.14  0.12  0.10 -0.12 -0.21 -0.42
-## E5        -0.02  0.30  0.26  0.16  0.27  0.26  0.25  0.22 -0.23 -0.24 -0.31
-## N1         0.16 -0.08 -0.07 -0.09 -0.19 -0.06 -0.02 -0.08  0.21  0.21  0.01
-## N2         0.13 -0.04 -0.08 -0.15 -0.19 -0.03  0.00 -0.06  0.15  0.24  0.01
-## N3         0.09 -0.02 -0.03 -0.07 -0.13 -0.01  0.01 -0.07  0.20  0.23  0.05
-## N4         0.04 -0.09 -0.13 -0.16 -0.21 -0.09 -0.04 -0.13  0.28  0.35  0.23
-## N5         0.01  0.02 -0.04  0.00 -0.08 -0.05  0.05 -0.04  0.21  0.18  0.04
-## O1         0.00  0.11  0.14  0.04  0.15  0.18  0.16  0.09 -0.10 -0.09 -0.10
-## O2         0.07  0.03  0.03  0.05  0.00 -0.13 -0.05 -0.03  0.21  0.12  0.06
-## O3        -0.06  0.15  0.22  0.04  0.22  0.19  0.18  0.06 -0.07 -0.07 -0.21
-## O4        -0.09  0.05  0.02 -0.06  0.00  0.08  0.03  0.00  0.07  0.14  0.08
-## O5         0.11 -0.08 -0.04  0.04 -0.04 -0.13 -0.06  0.00  0.18  0.05  0.09
-## gender    -0.17  0.21  0.16  0.13  0.11  0.00  0.06  0.04 -0.07 -0.09 -0.15
-## education -0.14  0.02  0.00 -0.02  0.02  0.04  0.01  0.06 -0.04  0.04  0.00
-## age       -0.14  0.09  0.04  0.11  0.10  0.08  0.00  0.05 -0.12 -0.07 -0.03
-##              E2    E3    E4    E5    N1    N2    N3    N4    N5    O1    O2
-## A1         0.08 -0.04 -0.07 -0.02  0.16  0.13  0.09  0.04  0.01  0.00  0.07
-## A2        -0.24  0.25  0.30  0.30 -0.08 -0.04 -0.02 -0.09  0.02  0.11  0.03
-## A3        -0.29  0.38  0.39  0.26 -0.07 -0.08 -0.03 -0.13 -0.04  0.14  0.03
-## A4        -0.20  0.20  0.33  0.16 -0.09 -0.15 -0.07 -0.16  0.00  0.04  0.05
-## A5        -0.33  0.41  0.48  0.27 -0.19 -0.19 -0.13 -0.21 -0.08  0.15  0.00
-## C1        -0.10  0.13  0.14  0.26 -0.06 -0.03 -0.01 -0.09 -0.05  0.18 -0.13
-## C2        -0.07  0.15  0.12  0.25 -0.02  0.00  0.01 -0.04  0.05  0.16 -0.05
-## C3        -0.09  0.10  0.10  0.22 -0.08 -0.06 -0.07 -0.13 -0.04  0.09 -0.03
-## C4         0.21 -0.09 -0.12 -0.23  0.21  0.15  0.20  0.28  0.21 -0.10  0.21
-## C5         0.26 -0.17 -0.21 -0.24  0.21  0.24  0.23  0.35  0.18 -0.09  0.12
-## E1         0.47 -0.33 -0.42 -0.31  0.01  0.01  0.05  0.23  0.04 -0.10  0.06
-## E2         1.00 -0.40 -0.52 -0.39  0.17  0.20  0.19  0.35  0.26 -0.16  0.08
-## E3        -0.40  1.00  0.43  0.40 -0.04 -0.06 -0.01 -0.15 -0.09  0.33 -0.07
-## E4        -0.52  0.43  1.00  0.33 -0.14 -0.15 -0.13 -0.31 -0.09  0.12  0.05
-## E5        -0.39  0.40  0.33  1.00  0.04  0.05 -0.06 -0.21 -0.14  0.29 -0.09
-## N1         0.17 -0.04 -0.14  0.04  1.00  0.71  0.57  0.41  0.38 -0.05  0.14
-## N2         0.20 -0.06 -0.15  0.05  0.71  1.00  0.55  0.39  0.35 -0.05  0.12
-## N3         0.19 -0.01 -0.13 -0.06  0.57  0.55  1.00  0.52  0.43 -0.05  0.11
-## N4         0.35 -0.15 -0.31 -0.21  0.41  0.39  0.52  1.00  0.40 -0.06  0.08
-## N5         0.26 -0.09 -0.09 -0.14  0.38  0.35  0.43  0.40  1.00 -0.15  0.20
-## O1        -0.16  0.33  0.12  0.29 -0.05 -0.05 -0.05 -0.06 -0.15  1.00 -0.23
-## O2         0.08 -0.07  0.05 -0.09  0.14  0.12  0.11  0.08  0.20 -0.23  1.00
-## O3        -0.24  0.41  0.21  0.30 -0.03 -0.02 -0.03 -0.06 -0.08  0.39 -0.29
-## O4         0.17  0.04 -0.10 -0.02  0.09  0.13  0.17  0.23  0.11  0.17 -0.08
-## O5         0.08 -0.13  0.04 -0.11  0.10  0.02  0.05  0.03  0.14 -0.25  0.33
-## gender    -0.08  0.05  0.11  0.08  0.04  0.09  0.11 -0.02  0.21 -0.11  0.04
-## education -0.01  0.01 -0.03  0.06 -0.04 -0.04 -0.04  0.01 -0.05  0.03 -0.10
-## age       -0.10 -0.02 -0.01  0.10 -0.07 -0.09 -0.11 -0.02 -0.10  0.05 -0.04
-##              O3    O4    O5 gender education   age
-## A1        -0.06 -0.09  0.11  -0.17     -0.14 -0.14
-## A2         0.15  0.05 -0.08   0.21      0.02  0.09
-## A3         0.22  0.02 -0.04   0.16      0.00  0.04
-## A4         0.04 -0.06  0.04   0.13     -0.02  0.11
-## A5         0.22  0.00 -0.04   0.11      0.02  0.10
-## C1         0.19  0.08 -0.13   0.00      0.04  0.08
-## C2         0.18  0.03 -0.06   0.06      0.01  0.00
-## C3         0.06  0.00  0.00   0.04      0.06  0.05
-## C4        -0.07  0.07  0.18  -0.07     -0.04 -0.12
-## C5        -0.07  0.14  0.05  -0.09      0.04 -0.07
-## E1        -0.21  0.08  0.09  -0.15      0.00 -0.03
-## E2        -0.24  0.17  0.08  -0.08     -0.01 -0.10
-## E3         0.41  0.04 -0.13   0.05      0.01 -0.02
-## E4         0.21 -0.10  0.04   0.11     -0.03 -0.01
-## E5         0.30 -0.02 -0.11   0.08      0.06  0.10
-## N1        -0.03  0.09  0.10   0.04     -0.04 -0.07
-## N2        -0.02  0.13  0.02   0.09     -0.04 -0.09
-## N3        -0.03  0.17  0.05   0.11     -0.04 -0.11
-## N4        -0.06  0.23  0.03  -0.02      0.01 -0.02
-## N5        -0.08  0.11  0.14   0.21     -0.05 -0.10
-## O1         0.39  0.17 -0.25  -0.11      0.03  0.05
-## O2        -0.29 -0.08  0.33   0.04     -0.10 -0.04
-## O3         1.00  0.17 -0.32  -0.04      0.10  0.02
-## O4         0.17  1.00 -0.18  -0.04      0.06  0.00
-## O5        -0.32 -0.18  1.00   0.04     -0.06 -0.08
-## gender    -0.04 -0.04  0.04   1.00      0.01  0.05
-## education  0.10  0.06 -0.06   0.01      1.00  0.25
-## age        0.02  0.00 -0.08   0.05      0.25  1.00
+##              A1    A2    A3    A4    A5    C1    C2    C3    C4
+## A1         1.00 -0.34 -0.26 -0.14 -0.19  0.02  0.01 -0.01  0.10
+## A2        -0.34  1.00  0.48  0.34  0.38  0.09  0.13  0.19 -0.14
+## A3        -0.26  0.48  1.00  0.38  0.50  0.10  0.14  0.13 -0.12
+## A4        -0.14  0.34  0.38  1.00  0.32  0.08  0.22  0.13 -0.16
+## A5        -0.19  0.38  0.50  0.32  1.00  0.12  0.11  0.13 -0.12
+## C1         0.02  0.09  0.10  0.08  0.12  1.00  0.43  0.32 -0.35
+## C2         0.01  0.13  0.14  0.22  0.11  0.43  1.00  0.36 -0.38
+## C3        -0.01  0.19  0.13  0.13  0.13  0.32  0.36  1.00 -0.35
+## C4         0.10 -0.14 -0.12 -0.16 -0.12 -0.35 -0.38 -0.35  1.00
+## C5         0.02 -0.11 -0.15 -0.24 -0.16 -0.25 -0.30 -0.35  0.48
+## E1         0.12 -0.24 -0.22 -0.14 -0.25 -0.03  0.02 -0.02  0.10
+## E2         0.08 -0.24 -0.29 -0.20 -0.33 -0.10 -0.07 -0.09  0.21
+## E3        -0.04  0.25  0.38  0.20  0.41  0.13  0.15  0.10 -0.09
+## E4        -0.07  0.30  0.39  0.33  0.48  0.14  0.12  0.10 -0.12
+## E5        -0.02  0.30  0.26  0.16  0.27  0.26  0.25  0.22 -0.23
+## N1         0.16 -0.08 -0.07 -0.09 -0.19 -0.06 -0.02 -0.08  0.21
+## N2         0.13 -0.04 -0.08 -0.15 -0.19 -0.03  0.00 -0.06  0.15
+## N3         0.09 -0.02 -0.03 -0.07 -0.13 -0.01  0.01 -0.07  0.20
+## N4         0.04 -0.09 -0.13 -0.16 -0.21 -0.09 -0.04 -0.13  0.28
+## N5         0.01  0.02 -0.04  0.00 -0.08 -0.05  0.05 -0.04  0.21
+## O1         0.00  0.11  0.14  0.04  0.15  0.18  0.16  0.09 -0.10
+## O2         0.07  0.03  0.03  0.05  0.00 -0.13 -0.05 -0.03  0.21
+## O3        -0.06  0.15  0.22  0.04  0.22  0.19  0.18  0.06 -0.07
+## O4        -0.09  0.05  0.02 -0.06  0.00  0.08  0.03  0.00  0.07
+## O5         0.11 -0.08 -0.04  0.04 -0.04 -0.13 -0.06  0.00  0.18
+## gender    -0.17  0.21  0.16  0.13  0.11  0.00  0.06  0.04 -0.07
+## education -0.14  0.02  0.00 -0.02  0.02  0.04  0.01  0.06 -0.04
+## age       -0.14  0.09  0.04  0.11  0.10  0.08  0.00  0.05 -0.12
+##              C5    E1    E2    E3    E4    E5    N1    N2    N3
+## A1         0.02  0.12  0.08 -0.04 -0.07 -0.02  0.16  0.13  0.09
+## A2        -0.11 -0.24 -0.24  0.25  0.30  0.30 -0.08 -0.04 -0.02
+## A3        -0.15 -0.22 -0.29  0.38  0.39  0.26 -0.07 -0.08 -0.03
+## A4        -0.24 -0.14 -0.20  0.20  0.33  0.16 -0.09 -0.15 -0.07
+## A5        -0.16 -0.25 -0.33  0.41  0.48  0.27 -0.19 -0.19 -0.13
+## C1        -0.25 -0.03 -0.10  0.13  0.14  0.26 -0.06 -0.03 -0.01
+## C2        -0.30  0.02 -0.07  0.15  0.12  0.25 -0.02  0.00  0.01
+## C3        -0.35 -0.02 -0.09  0.10  0.10  0.22 -0.08 -0.06 -0.07
+## C4         0.48  0.10  0.21 -0.09 -0.12 -0.23  0.21  0.15  0.20
+## C5         1.00  0.07  0.26 -0.17 -0.21 -0.24  0.21  0.24  0.23
+## E1         0.07  1.00  0.47 -0.33 -0.42 -0.31  0.01  0.01  0.05
+## E2         0.26  0.47  1.00 -0.40 -0.52 -0.39  0.17  0.20  0.19
+## E3        -0.17 -0.33 -0.40  1.00  0.43  0.40 -0.04 -0.06 -0.01
+## E4        -0.21 -0.42 -0.52  0.43  1.00  0.33 -0.14 -0.15 -0.13
+## E5        -0.24 -0.31 -0.39  0.40  0.33  1.00  0.04  0.05 -0.06
+## N1         0.21  0.01  0.17 -0.04 -0.14  0.04  1.00  0.71  0.57
+## N2         0.24  0.01  0.20 -0.06 -0.15  0.05  0.71  1.00  0.55
+## N3         0.23  0.05  0.19 -0.01 -0.13 -0.06  0.57  0.55  1.00
+## N4         0.35  0.23  0.35 -0.15 -0.31 -0.21  0.41  0.39  0.52
+## N5         0.18  0.04  0.26 -0.09 -0.09 -0.14  0.38  0.35  0.43
+## O1        -0.09 -0.10 -0.16  0.33  0.12  0.29 -0.05 -0.05 -0.05
+## O2         0.12  0.06  0.08 -0.07  0.05 -0.09  0.14  0.12  0.11
+## O3        -0.07 -0.21 -0.24  0.41  0.21  0.30 -0.03 -0.02 -0.03
+## O4         0.14  0.08  0.17  0.04 -0.10 -0.02  0.09  0.13  0.17
+## O5         0.05  0.09  0.08 -0.13  0.04 -0.11  0.10  0.02  0.05
+## gender    -0.09 -0.15 -0.08  0.05  0.11  0.08  0.04  0.09  0.11
+## education  0.04  0.00 -0.01  0.01 -0.03  0.06 -0.04 -0.04 -0.04
+## age       -0.07 -0.03 -0.10 -0.02 -0.01  0.10 -0.07 -0.09 -0.11
+##              N4    N5    O1    O2    O3    O4    O5 gender
+## A1         0.04  0.01  0.00  0.07 -0.06 -0.09  0.11  -0.17
+## A2        -0.09  0.02  0.11  0.03  0.15  0.05 -0.08   0.21
+## A3        -0.13 -0.04  0.14  0.03  0.22  0.02 -0.04   0.16
+## A4        -0.16  0.00  0.04  0.05  0.04 -0.06  0.04   0.13
+## A5        -0.21 -0.08  0.15  0.00  0.22  0.00 -0.04   0.11
+## C1        -0.09 -0.05  0.18 -0.13  0.19  0.08 -0.13   0.00
+## C2        -0.04  0.05  0.16 -0.05  0.18  0.03 -0.06   0.06
+## C3        -0.13 -0.04  0.09 -0.03  0.06  0.00  0.00   0.04
+## C4         0.28  0.21 -0.10  0.21 -0.07  0.07  0.18  -0.07
+## C5         0.35  0.18 -0.09  0.12 -0.07  0.14  0.05  -0.09
+## E1         0.23  0.04 -0.10  0.06 -0.21  0.08  0.09  -0.15
+## E2         0.35  0.26 -0.16  0.08 -0.24  0.17  0.08  -0.08
+## E3        -0.15 -0.09  0.33 -0.07  0.41  0.04 -0.13   0.05
+## E4        -0.31 -0.09  0.12  0.05  0.21 -0.10  0.04   0.11
+## E5        -0.21 -0.14  0.29 -0.09  0.30 -0.02 -0.11   0.08
+## N1         0.41  0.38 -0.05  0.14 -0.03  0.09  0.10   0.04
+## N2         0.39  0.35 -0.05  0.12 -0.02  0.13  0.02   0.09
+## N3         0.52  0.43 -0.05  0.11 -0.03  0.17  0.05   0.11
+## N4         1.00  0.40 -0.06  0.08 -0.06  0.23  0.03  -0.02
+## N5         0.40  1.00 -0.15  0.20 -0.08  0.11  0.14   0.21
+## O1        -0.06 -0.15  1.00 -0.23  0.39  0.17 -0.25  -0.11
+## O2         0.08  0.20 -0.23  1.00 -0.29 -0.08  0.33   0.04
+## O3        -0.06 -0.08  0.39 -0.29  1.00  0.17 -0.32  -0.04
+## O4         0.23  0.11  0.17 -0.08  0.17  1.00 -0.18  -0.04
+## O5         0.03  0.14 -0.25  0.33 -0.32 -0.18  1.00   0.04
+## gender    -0.02  0.21 -0.11  0.04 -0.04 -0.04  0.04   1.00
+## education  0.01 -0.05  0.03 -0.10  0.10  0.06 -0.06   0.01
+## age       -0.02 -0.10  0.05 -0.04  0.02  0.00 -0.08   0.05
+##           education   age
+## A1            -0.14 -0.14
+## A2             0.02  0.09
+## A3             0.00  0.04
+## A4            -0.02  0.11
+## A5             0.02  0.10
+## C1             0.04  0.08
+## C2             0.01  0.00
+## C3             0.06  0.05
+## C4            -0.04 -0.12
+## C5             0.04 -0.07
+## E1             0.00 -0.03
+## E2            -0.01 -0.10
+## E3             0.01 -0.02
+## E4            -0.03 -0.01
+## E5             0.06  0.10
+## N1            -0.04 -0.07
+## N2            -0.04 -0.09
+## N3            -0.04 -0.11
+## N4             0.01 -0.02
+## N5            -0.05 -0.10
+## O1             0.03  0.05
+## O2            -0.10 -0.04
+## O3             0.10  0.02
+## O4             0.06  0.00
+## O5            -0.06 -0.08
+## gender         0.01  0.05
+## education      1.00  0.25
+## age            0.25  1.00
 ```
 
 ---
 
 With **pairwise deletion**, different sets of cases contribute to different correlations.  That maximizes the sample sizes, but can lead to problems if the data are missing for some systematic reason.
 
-**Listwise deletion** (often referred to in `R` as use complete cases) doesn't have the same issue of biasing correlations, but does result in smaller samples and potentially limited generalizability.
+**Listwise deletion** ("complete cases") doesn't have the same issue of biasing correlations, but does result in smaller samples and potentially limited generalizability.
 
 A good practice is comparing the different matrices; if the correlation values are very different, this suggests that the missingness that affects pairwise deletion is systematic.
 
@@ -791,93 +886,122 @@ round(cor(bfi, use = "pairwise")- cor(bfi, use = "complete"),2)
 ```
 
 ```
-##              A1    A2    A3    A4    A5    C1    C2    C3    C4    C5    E1
-## A1         0.00  0.00  0.00  0.00  0.00  0.01  0.00 -0.01  0.03  0.03 -0.01
-## A2         0.00  0.00  0.00 -0.01  0.01  0.00  0.01  0.01 -0.01 -0.01  0.03
-## A3         0.00  0.00  0.00 -0.02  0.00  0.00  0.00  0.00  0.00 -0.01  0.00
-## A4         0.00 -0.01 -0.02  0.00 -0.01  0.01  0.01  0.00  0.01  0.00  0.03
-## A5         0.00  0.01  0.00 -0.01  0.00  0.00  0.00  0.00 -0.01 -0.01  0.00
-## C1         0.01  0.00  0.00  0.01  0.00  0.00  0.00 -0.01  0.01  0.00  0.00
-## C2         0.00  0.01  0.00  0.01  0.00  0.00  0.00  0.00  0.00  0.00 -0.01
-## C3        -0.01  0.01  0.00  0.00  0.00 -0.01  0.00  0.00  0.02  0.01  0.02
-## C4         0.03 -0.01  0.00  0.01 -0.01  0.01  0.00  0.02  0.00 -0.01 -0.01
-## C5         0.03 -0.01 -0.01  0.00 -0.01  0.00  0.00  0.01 -0.01  0.00  0.00
-## E1        -0.01  0.03  0.00  0.03  0.00  0.00 -0.01  0.02 -0.01  0.00  0.00
-## E2         0.01  0.01  0.00  0.01  0.00  0.01  0.01  0.01 -0.01  0.00  0.00
-## E3         0.00  0.00  0.00 -0.01  0.00 -0.02  0.00 -0.02  0.01  0.01  0.01
-## E4         0.01 -0.02 -0.02 -0.03 -0.01  0.00  0.00 -0.01  0.01  0.01  0.00
-## E5         0.00  0.00 -0.01  0.00  0.00 -0.01  0.00  0.00  0.00  0.01  0.00
-## N1         0.01 -0.01 -0.02  0.00  0.00 -0.01  0.00  0.01  0.01  0.01  0.01
-## N2         0.01 -0.01  0.00  0.00  0.00 -0.01 -0.01  0.00  0.01  0.01  0.01
-## N3         0.01 -0.02 -0.01  0.00 -0.01 -0.02 -0.01  0.01  0.01  0.01  0.00
-## N4         0.01  0.00  0.00 -0.01  0.01 -0.01 -0.01  0.02 -0.02 -0.01  0.00
-## N5         0.01  0.00  0.00  0.00  0.00  0.00  0.00  0.02 -0.02 -0.01  0.01
-## O1         0.01  0.02  0.00  0.02  0.02 -0.01  0.01  0.00  0.01  0.01  0.00
-## O2         0.01 -0.02 -0.03 -0.01  0.00  0.02  0.01  0.00  0.00  0.02 -0.01
-## O3         0.00  0.02  0.01  0.03  0.02  0.00  0.01  0.01 -0.01 -0.01  0.00
-## O4         0.01  0.03  0.01  0.02  0.01  0.03  0.03  0.02 -0.02  0.00 -0.01
-## O5         0.01 -0.01 -0.01 -0.01 -0.01  0.01  0.00 -0.01  0.01  0.01  0.01
-## gender     0.01 -0.03 -0.02  0.00 -0.01  0.01  0.01  0.01 -0.01  0.00  0.02
-## education  0.00 -0.01 -0.01  0.00  0.00 -0.01 -0.01 -0.01  0.00 -0.01  0.00
-## age       -0.02  0.02  0.03  0.03  0.03  0.00  0.02  0.02 -0.03 -0.01  0.01
-##              E2    E3    E4    E5    N1    N2    N3    N4    N5    O1    O2
-## A1         0.01  0.00  0.01  0.00  0.01  0.01  0.01  0.01  0.01  0.01  0.01
-## A2         0.01  0.00 -0.02  0.00 -0.01 -0.01 -0.02  0.00  0.00  0.02 -0.02
-## A3         0.00  0.00 -0.02 -0.01 -0.02  0.00 -0.01  0.00  0.00  0.00 -0.03
-## A4         0.01 -0.01 -0.03  0.00  0.00  0.00  0.00 -0.01  0.00  0.02 -0.01
-## A5         0.00  0.00 -0.01  0.00  0.00  0.00 -0.01  0.01  0.00  0.02  0.00
-## C1         0.01 -0.02  0.00 -0.01 -0.01 -0.01 -0.02 -0.01  0.00 -0.01  0.02
-## C2         0.01  0.00  0.00  0.00  0.00 -0.01 -0.01 -0.01  0.00  0.01  0.01
-## C3         0.01 -0.02 -0.01  0.00  0.01  0.00  0.01  0.02  0.02  0.00  0.00
-## C4        -0.01  0.01  0.01  0.00  0.01  0.01  0.01 -0.02 -0.02  0.01  0.00
-## C5         0.00  0.01  0.01  0.01  0.01  0.01  0.01 -0.01 -0.01  0.01  0.02
-## E1         0.00  0.01  0.00  0.00  0.01  0.01  0.00  0.00  0.01  0.00 -0.01
-## E2         0.00  0.02  0.01  0.02  0.00  0.00  0.01 -0.01  0.00  0.00  0.00
-## E3         0.02  0.00 -0.01 -0.02 -0.01 -0.01 -0.01  0.01  0.01  0.00  0.01
-## E4         0.01 -0.01  0.00 -0.02  0.01  0.01  0.03  0.02  0.00  0.01  0.01
-## E5         0.02 -0.02 -0.02  0.00  0.00 -0.01  0.00  0.00  0.01  0.00  0.00
-## N1         0.00 -0.01  0.01  0.00  0.00  0.00 -0.01 -0.01 -0.01  0.00 -0.01
-## N2         0.00 -0.01  0.01 -0.01  0.00  0.00  0.00  0.00  0.00  0.00  0.00
-## N3         0.01 -0.01  0.03  0.00 -0.01  0.00  0.00  0.00  0.00  0.01  0.00
-## N4        -0.01  0.01  0.02  0.00 -0.01  0.00  0.00  0.00  0.00  0.01  0.00
-## N5         0.00  0.01  0.00  0.01 -0.01  0.00  0.00  0.00  0.00  0.03  0.00
-## O1         0.00  0.00  0.01  0.00  0.00  0.00  0.01  0.01  0.03  0.00  0.02
-## O2         0.00  0.01  0.01  0.00 -0.01  0.00  0.00  0.00  0.00  0.02  0.00
-## O3         0.02 -0.02  0.00  0.00 -0.02 -0.01  0.00  0.00  0.01  0.00  0.03
-## O4         0.00  0.01  0.01  0.01 -0.01  0.00  0.01 -0.02  0.01  0.01  0.01
-## O5         0.00  0.02  0.01  0.00  0.01  0.02  0.01  0.01 -0.01  0.01 -0.01
-## gender     0.02 -0.01 -0.03 -0.01  0.01  0.00  0.01  0.02  0.00  0.01 -0.02
-## education  0.00  0.00 -0.01  0.00  0.00 -0.01 -0.01  0.00 -0.01 -0.01  0.01
-## age        0.00  0.02  0.00  0.02 -0.01 -0.01  0.00 -0.01  0.00  0.00  0.00
-##              O3    O4    O5 gender education   age
-## A1         0.00  0.01  0.01   0.01      0.00 -0.02
-## A2         0.02  0.03 -0.01  -0.03     -0.01  0.02
-## A3         0.01  0.01 -0.01  -0.02     -0.01  0.03
-## A4         0.03  0.02 -0.01   0.00      0.00  0.03
-## A5         0.02  0.01 -0.01  -0.01      0.00  0.03
-## C1         0.00  0.03  0.01   0.01     -0.01  0.00
-## C2         0.01  0.03  0.00   0.01     -0.01  0.02
-## C3         0.01  0.02 -0.01   0.01     -0.01  0.02
-## C4        -0.01 -0.02  0.01  -0.01      0.00 -0.03
-## C5        -0.01  0.00  0.01   0.00     -0.01 -0.01
-## E1         0.00 -0.01  0.01   0.02      0.00  0.01
-## E2         0.02  0.00  0.00   0.02      0.00  0.00
-## E3        -0.02  0.01  0.02  -0.01      0.00  0.02
-## E4         0.00  0.01  0.01  -0.03     -0.01  0.00
-## E5         0.00  0.01  0.00  -0.01      0.00  0.02
-## N1        -0.02 -0.01  0.01   0.01      0.00 -0.01
-## N2        -0.01  0.00  0.02   0.00     -0.01 -0.01
-## N3         0.00  0.01  0.01   0.01     -0.01  0.00
-## N4         0.00 -0.02  0.01   0.02      0.00 -0.01
-## N5         0.01  0.01 -0.01   0.00     -0.01  0.00
-## O1         0.00  0.01  0.01   0.01     -0.01  0.00
-## O2         0.03  0.01 -0.01  -0.02      0.01  0.00
-## O3         0.00  0.02  0.01   0.01      0.00  0.01
-## O4         0.02  0.00  0.00   0.03     -0.01  0.01
-## O5         0.01  0.00  0.00  -0.01      0.00 -0.02
-## gender     0.01  0.03 -0.01   0.00      0.00  0.00
-## education  0.00 -0.01  0.00   0.00      0.00 -0.01
-## age        0.01  0.01 -0.02   0.00     -0.01  0.00
+##              A1    A2    A3    A4    A5    C1    C2    C3    C4
+## A1         0.00  0.00  0.00  0.00  0.00  0.01  0.00 -0.01  0.03
+## A2         0.00  0.00  0.00 -0.01  0.01  0.00  0.01  0.01 -0.01
+## A3         0.00  0.00  0.00 -0.02  0.00  0.00  0.00  0.00  0.00
+## A4         0.00 -0.01 -0.02  0.00 -0.01  0.01  0.01  0.00  0.01
+## A5         0.00  0.01  0.00 -0.01  0.00  0.00  0.00  0.00 -0.01
+## C1         0.01  0.00  0.00  0.01  0.00  0.00  0.00 -0.01  0.01
+## C2         0.00  0.01  0.00  0.01  0.00  0.00  0.00  0.00  0.00
+## C3        -0.01  0.01  0.00  0.00  0.00 -0.01  0.00  0.00  0.02
+## C4         0.03 -0.01  0.00  0.01 -0.01  0.01  0.00  0.02  0.00
+## C5         0.03 -0.01 -0.01  0.00 -0.01  0.00  0.00  0.01 -0.01
+## E1        -0.01  0.03  0.00  0.03  0.00  0.00 -0.01  0.02 -0.01
+## E2         0.01  0.01  0.00  0.01  0.00  0.01  0.01  0.01 -0.01
+## E3         0.00  0.00  0.00 -0.01  0.00 -0.02  0.00 -0.02  0.01
+## E4         0.01 -0.02 -0.02 -0.03 -0.01  0.00  0.00 -0.01  0.01
+## E5         0.00  0.00 -0.01  0.00  0.00 -0.01  0.00  0.00  0.00
+## N1         0.01 -0.01 -0.02  0.00  0.00 -0.01  0.00  0.01  0.01
+## N2         0.01 -0.01  0.00  0.00  0.00 -0.01 -0.01  0.00  0.01
+## N3         0.01 -0.02 -0.01  0.00 -0.01 -0.02 -0.01  0.01  0.01
+## N4         0.01  0.00  0.00 -0.01  0.01 -0.01 -0.01  0.02 -0.02
+## N5         0.01  0.00  0.00  0.00  0.00  0.00  0.00  0.02 -0.02
+## O1         0.01  0.02  0.00  0.02  0.02 -0.01  0.01  0.00  0.01
+## O2         0.01 -0.02 -0.03 -0.01  0.00  0.02  0.01  0.00  0.00
+## O3         0.00  0.02  0.01  0.03  0.02  0.00  0.01  0.01 -0.01
+## O4         0.01  0.03  0.01  0.02  0.01  0.03  0.03  0.02 -0.02
+## O5         0.01 -0.01 -0.01 -0.01 -0.01  0.01  0.00 -0.01  0.01
+## gender     0.01 -0.03 -0.02  0.00 -0.01  0.01  0.01  0.01 -0.01
+## education  0.00 -0.01 -0.01  0.00  0.00 -0.01 -0.01 -0.01  0.00
+## age       -0.02  0.02  0.03  0.03  0.03  0.00  0.02  0.02 -0.03
+##              C5    E1    E2    E3    E4    E5    N1    N2    N3
+## A1         0.03 -0.01  0.01  0.00  0.01  0.00  0.01  0.01  0.01
+## A2        -0.01  0.03  0.01  0.00 -0.02  0.00 -0.01 -0.01 -0.02
+## A3        -0.01  0.00  0.00  0.00 -0.02 -0.01 -0.02  0.00 -0.01
+## A4         0.00  0.03  0.01 -0.01 -0.03  0.00  0.00  0.00  0.00
+## A5        -0.01  0.00  0.00  0.00 -0.01  0.00  0.00  0.00 -0.01
+## C1         0.00  0.00  0.01 -0.02  0.00 -0.01 -0.01 -0.01 -0.02
+## C2         0.00 -0.01  0.01  0.00  0.00  0.00  0.00 -0.01 -0.01
+## C3         0.01  0.02  0.01 -0.02 -0.01  0.00  0.01  0.00  0.01
+## C4        -0.01 -0.01 -0.01  0.01  0.01  0.00  0.01  0.01  0.01
+## C5         0.00  0.00  0.00  0.01  0.01  0.01  0.01  0.01  0.01
+## E1         0.00  0.00  0.00  0.01  0.00  0.00  0.01  0.01  0.00
+## E2         0.00  0.00  0.00  0.02  0.01  0.02  0.00  0.00  0.01
+## E3         0.01  0.01  0.02  0.00 -0.01 -0.02 -0.01 -0.01 -0.01
+## E4         0.01  0.00  0.01 -0.01  0.00 -0.02  0.01  0.01  0.03
+## E5         0.01  0.00  0.02 -0.02 -0.02  0.00  0.00 -0.01  0.00
+## N1         0.01  0.01  0.00 -0.01  0.01  0.00  0.00  0.00 -0.01
+## N2         0.01  0.01  0.00 -0.01  0.01 -0.01  0.00  0.00  0.00
+## N3         0.01  0.00  0.01 -0.01  0.03  0.00 -0.01  0.00  0.00
+## N4        -0.01  0.00 -0.01  0.01  0.02  0.00 -0.01  0.00  0.00
+## N5        -0.01  0.01  0.00  0.01  0.00  0.01 -0.01  0.00  0.00
+## O1         0.01  0.00  0.00  0.00  0.01  0.00  0.00  0.00  0.01
+## O2         0.02 -0.01  0.00  0.01  0.01  0.00 -0.01  0.00  0.00
+## O3        -0.01  0.00  0.02 -0.02  0.00  0.00 -0.02 -0.01  0.00
+## O4         0.00 -0.01  0.00  0.01  0.01  0.01 -0.01  0.00  0.01
+## O5         0.01  0.01  0.00  0.02  0.01  0.00  0.01  0.02  0.01
+## gender     0.00  0.02  0.02 -0.01 -0.03 -0.01  0.01  0.00  0.01
+## education -0.01  0.00  0.00  0.00 -0.01  0.00  0.00 -0.01 -0.01
+## age       -0.01  0.01  0.00  0.02  0.00  0.02 -0.01 -0.01  0.00
+##              N4    N5    O1    O2    O3    O4    O5 gender
+## A1         0.01  0.01  0.01  0.01  0.00  0.01  0.01   0.01
+## A2         0.00  0.00  0.02 -0.02  0.02  0.03 -0.01  -0.03
+## A3         0.00  0.00  0.00 -0.03  0.01  0.01 -0.01  -0.02
+## A4        -0.01  0.00  0.02 -0.01  0.03  0.02 -0.01   0.00
+## A5         0.01  0.00  0.02  0.00  0.02  0.01 -0.01  -0.01
+## C1        -0.01  0.00 -0.01  0.02  0.00  0.03  0.01   0.01
+## C2        -0.01  0.00  0.01  0.01  0.01  0.03  0.00   0.01
+## C3         0.02  0.02  0.00  0.00  0.01  0.02 -0.01   0.01
+## C4        -0.02 -0.02  0.01  0.00 -0.01 -0.02  0.01  -0.01
+## C5        -0.01 -0.01  0.01  0.02 -0.01  0.00  0.01   0.00
+## E1         0.00  0.01  0.00 -0.01  0.00 -0.01  0.01   0.02
+## E2        -0.01  0.00  0.00  0.00  0.02  0.00  0.00   0.02
+## E3         0.01  0.01  0.00  0.01 -0.02  0.01  0.02  -0.01
+## E4         0.02  0.00  0.01  0.01  0.00  0.01  0.01  -0.03
+## E5         0.00  0.01  0.00  0.00  0.00  0.01  0.00  -0.01
+## N1        -0.01 -0.01  0.00 -0.01 -0.02 -0.01  0.01   0.01
+## N2         0.00  0.00  0.00  0.00 -0.01  0.00  0.02   0.00
+## N3         0.00  0.00  0.01  0.00  0.00  0.01  0.01   0.01
+## N4         0.00  0.00  0.01  0.00  0.00 -0.02  0.01   0.02
+## N5         0.00  0.00  0.03  0.00  0.01  0.01 -0.01   0.00
+## O1         0.01  0.03  0.00  0.02  0.00  0.01  0.01   0.01
+## O2         0.00  0.00  0.02  0.00  0.03  0.01 -0.01  -0.02
+## O3         0.00  0.01  0.00  0.03  0.00  0.02  0.01   0.01
+## O4        -0.02  0.01  0.01  0.01  0.02  0.00  0.00   0.03
+## O5         0.01 -0.01  0.01 -0.01  0.01  0.00  0.00  -0.01
+## gender     0.02  0.00  0.01 -0.02  0.01  0.03 -0.01   0.00
+## education  0.00 -0.01 -0.01  0.01  0.00 -0.01  0.00   0.00
+## age       -0.01  0.00  0.00  0.00  0.01  0.01 -0.02   0.00
+##           education   age
+## A1             0.00 -0.02
+## A2            -0.01  0.02
+## A3            -0.01  0.03
+## A4             0.00  0.03
+## A5             0.00  0.03
+## C1            -0.01  0.00
+## C2            -0.01  0.02
+## C3            -0.01  0.02
+## C4             0.00 -0.03
+## C5            -0.01 -0.01
+## E1             0.00  0.01
+## E2             0.00  0.00
+## E3             0.00  0.02
+## E4            -0.01  0.00
+## E5             0.00  0.02
+## N1             0.00 -0.01
+## N2            -0.01 -0.01
+## N3            -0.01  0.00
+## N4             0.00 -0.01
+## N5            -0.01  0.00
+## O1            -0.01  0.00
+## O2             0.01  0.00
+## O3             0.00  0.01
+## O4            -0.01  0.01
+## O5             0.00 -0.02
+## gender         0.00  0.00
+## education      0.00 -0.01
+## age           -0.01  0.00
 ```
 ---
 
@@ -891,12 +1015,8 @@ For a single correlation, best practice is to visualize the relationship using a
 See also: [Interpreting Correlations](https://rpsychologist.com/correlation/)
 ---
 
-![](4-correlation_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
-
-
----
-
 ![](4-correlation_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
 
 ---
 
@@ -906,19 +1026,23 @@ See also: [Interpreting Correlations](https://rpsychologist.com/correlation/)
 
 ![](4-correlation_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
-
 ---
+
 ![](4-correlation_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 
 ---
 ![](4-correlation_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 
+
 ---
 ![](4-correlation_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 ![](4-correlation_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+
+---
+![](4-correlation_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -940,7 +1064,7 @@ library(corrplot)
 corrplot(cor(bfi, use = "pairwise"), method = "square")
 ```
 
-![](4-correlation_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+![](4-correlation_files/figure-html/unnamed-chunk-29-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -958,8 +1082,7 @@ corrplot(cor(bfi, use = "pairwise"), method = "square")
 - Again, best to do these tests in another framework (e.g., interaction, SEM, MLM)
 
 ---
-## Factors that influence *r* (and most other test statistics)
-
+### Factors that influence *r* 
 1. Restriction of range (GRE scores and success)
 
 2. Very skewed distributions (smoking and health)
@@ -1009,13 +1132,13 @@ All measurement includes error
 `$$\large r_{XX}$$`
 
 ---
-## Reliability
+### Reliability
 
 - True score variance divided by observed variance
 
 `$$r_{XX} = \frac{\sigma^2_{T}}{\sigma^2_{T} + \sigma^2_{E}}$$`
 
-- How do you assess theoretical variance i.e., true score variance?
+- How do you assess true score variance?
 
 `$$\large r_{XY} = r_{X_{T} Y_{T}} {\sqrt{r_{XX}r_{YY}}}$$`
 - We can look at our observed correlation ( `\(r_{XY}\)` ) and our reliability coefficients ( `\(r_{XX}\)` and `\(r_{YY}\)` ), and solve
@@ -1031,7 +1154,7 @@ All measurement includes error
 `$$\large r_{X_{T} Y_{T}} = {\frac {.30} {\sqrt{(.70)(.70)}}} = .42$$`
 --
 
-- CAVEAT: Reliabilities are also estimates. They can be wrong and there are lots of ways to get a reliability coefficient. The correlation you calculate ( `\(r_{X_{T} Y_{T}}\)` ) is the highest correlation it could possibly be -- not the actual "theoretically true" correlation. (Kind of reminiscent of statistical power)
+- CAVEAT: Reliabilities are also estimates. They can be wrong and there are lots of ways to get a reliability coefficient. The correlation you calculate ( `\(r_{X_{T} Y_{T}}\)` ) is the highest correlation it could possibly be -- not the actual "theoretically true" correlation.
 
 ---
 ## Most common ways to assess
@@ -1107,14 +1230,17 @@ The correlation between midterm exam grades and final exam grades was .56. The c
 ---
 
 
-.left-column[
-Probability of getting a *t* statistic of 6.83 or greater is 3.1921793\times 10^{-10}.
+.pull-left[
+Probability of getting a *t* statistic of 6.83 or greater is `\(3.19 x 10^{-10}\)`
 
-Probability of getting *t* statistic of 6.83 or more extreme is 6.3843586\times 10^{-10}.
+
+Probability of getting *t* statistic of 6.83 or more extreme is `\(6.38 x 10^{-10}\)`
 ]
 
-![](4-correlation_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+.pull-right[
 
+![](4-correlation_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+]
 ---
 
 ### Example

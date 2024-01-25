@@ -3,13 +3,35 @@ title: 'Correlations'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
 
 ```{r, echo = F, warning = F, message = F}
 library(psych)
@@ -77,7 +99,7 @@ $$\large\sigma = \sqrt{\frac{\sum{(x-\mu)^2}}{N}}$$
 
 ---
 
-class: center
+## Review of Dispersion
 
 Formula for standard error of the mean?
 
@@ -109,8 +131,6 @@ $$SS = {\sum{{(x-\mu_{x}})(y-\mu_{y})}}$$
 ---
 ## Associations
 
-Covariance
-
 **Sample:**
 
 $$\large cov_{xy} = {\frac{\sum{(x-\bar{x})(y-\bar{y})}}{N-1}}$$
@@ -119,13 +139,11 @@ $$\large cov_{xy} = {\frac{\sum{(x-\bar{x})(y-\bar{y})}}{N-1}}$$
 
 $$\large \sigma_{xy}^{2} = {\frac{\sum{(x-\mu_{x})(y-\mu_{y})}}{N}}$$
 
---
->- Covariance matrix is basis for many analyses
->- What are some issues that may arise when comparing covariances?
+
+> What are some issues that may arise when comparing covariances?
 
 ---
 ## Associations
-Correlations
 
 **Sample:**
 
@@ -136,7 +154,7 @@ $$\large r_{xy} = {\frac{\sum({z_{x}z_{y})}}{N}}$$
 $$\large \rho_{xy} = {\frac{cov(X,Y)}{\sigma_{x}\sigma_{y}}}$$
 
 
-Many other formulas exist for specific types of data, these were more helpful when we computed everything by hand (more on this later).
+> Many other formulas exist for specific types of data
 
 ---
 
@@ -184,8 +202,7 @@ ggplot(galton.data, aes(x=parent, y=child)) +
 
 .pull-right[
 - This will become our regression line. Right now, it is our correlation line. At this point **they are the same!**
-- Correlation summarizes the association btwn 2 continuous variables
-- We will use this to build up our regression model, but in the mean time, you can do a lot of things with just correlations.
+- You can do a lot of things with just correlations.
 ]
 
 ---
@@ -268,8 +285,6 @@ sample %>% as.data.frame() %>%
 
 ## Sampling distribution?
 
---
-
 The sampling distribution we use depends on our null hypothesis.
 
 --
@@ -280,7 +295,7 @@ If our null hypothesis is that $(\rho = 0)$ , then we can use a ***t*-distributi
 
 ---
 ## Test Statistic
-As with most all test statistics, they take the form of "signal" divided by "noise". Standard error is interpreted like other standard errors we've seen.
+Signal divided by noise
 
 $$\large t = {\frac{r}{SE_{r}}}$$
 --
@@ -296,13 +311,19 @@ $$\large DF = N-2$$
 
 ---
 ## Power calculations
-What sample size do you need in order to have enough power to detect a .1 correlation? .3?
+What sample size do you need in order to have enough power to detect a **.1** correlation? 
 ```{r, warning = FALSE, message = FALSE}
 library(pwr)
 pwr.r.test(n = , r = .1, sig.level = .05 , power = .8)
-pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 ```
 
+---
+## Power calculations
+What sample size do you need in order to have enough power to detect a **.3** correlation? 
+```{r, warning = FALSE, message = FALSE}
+library(pwr)
+pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
+```
 ---
 ## Power calculations
 - But what is your confidence?
@@ -311,7 +332,7 @@ pwr.r.test(n = , r = .3, sig.level = .05 , power = .8)
 
 - Schönbrodt & Perugini (2013) suggest correlations 'stabilize' at 250+ regardless of effect size
 
-- CI[.19, .39]
+
 
 ---
 ## Fisher's r to z' transformation
@@ -397,9 +418,7 @@ ggpubr::ggarrange(cor_n85, cor_32, cor_75,
 - Skewed sampling distribution will rear its head when:
 
     * $H_{0}: \rho \neq 0$
-
     * Calculating confidence intervals
-
     * Testing two correlations against one another
 
 - r to z':
@@ -411,7 +430,7 @@ ln = natural log
 ---
 ## Fisher’s r to z’ transformation
 
-```{r, echo = F}
+```{r, echo = F, fig.align='center', out.width="65%"}
 r = seq(-.99,.99,.01)
 z = psych::fisherz(r)
 data.frame(r,z) %>%
@@ -422,16 +441,15 @@ data.frame(r,z) %>%
   theme_bw(base_size = 20)
 ```
 
-.pull-right[
+
 No longer bounded by 1 & -1
-]
 
 ---
-##  Steps for computing confidence interval
+##  Computing confidence interval
 
-1. Transform r into z'
-2. Compute CI as you normally would using z'
-3. revert back to r
+1. Transform $r$ into $z'$
+2. Compute CI as you normally would using $z'$
+3. Revert back to $r$
 
 $$ SE_z = \frac{1}{\sqrt{N-3}}$$
 
@@ -439,8 +457,6 @@ $$\large r = {\frac{e^{2z'}-1}{e^{2z'}+1}}$$
 
 .small[*Note, `e` here stands for Euler's number. `exp(1)` is straight Euler's number or `e`, `exp(2)` is Euler's number squared or `e^2`*]
 ---
-
-### Example
 
 In a sample of 42 students, you calculate a correlation of 0.44 between hours spent outside on Saturday and self-rated health. What is the precision of your estimate?
 
@@ -465,7 +481,7 @@ $$CI_{Z_{UB}} = `r round(z,2)`+(`r round(ct,3)`)`r round(se,2)` = `r round(ubz,2
 
 
 
-.small[Why is it 2.021 instead of 1.96? Because we're using a *t* distribution with N-2 degrees of freedom. `qt(p = .975, df = N-2, lower.tail = T)` = `r round(qt(p = .975, df = N-2, lower.tail = T), digits = 3)`]
+.tiny[Why is it 2.021 instead of 1.96? Because we're using a *t* distribution with N-2 degrees of freedom. `qt(p = .975, df = N-2, lower.tail = T)` = `r round(qt(p = .975, df = N-2, lower.tail = T), digits = 3)`]
 
 ---
 
@@ -498,9 +514,9 @@ $$ H_A: \rho_1 \neq \rho_2 $$
 $$Z = \frac{z_1^{'}- z_2^{'}}{se_{z_1-z_2}}$$
 
 ---
-## Comparing two correlations
+### Comparing two correlations
 
-Again, we use the Fisher’s r to z’ transformation. Here, we're transforming the correlations into z's, then using the difference between z's to calculate the test statistic. 
+Again, we use Fisher’s $r$ to $z’$ transformation. Here, we're transforming the correlations into $z'$s, then using the difference between $z$'s to calculate the test statistic. 
 
 $$Z = \frac{z_1^{'}- z_2^{'}}{se_{z_1-z_2}}$$
 
@@ -509,7 +525,7 @@ $$se_{z_1-z_2} = \sqrt{se_{z_1}+se_{z_2}} = \sqrt{\frac{1}{n_1-3}+\frac{1}{n_2-3
 - But probably best to do this test in another framework (e.g., GLM via interaction or SEM)
 ---
 
-## Example
+### Example
 
 Replication of Hill et al. (2012) where they found that the correlation between narcissism and happiness was greater for young adults compared to older adults
 
@@ -575,7 +591,7 @@ How big is practical?
 - Meyer & Hemphill .3 is average
 
 ---
-## What is the size of the correlation?
+### What is the size of the correlation?
 - Chemotherapy and breast cancer survival?
 - Batting ability and hit success on a single at bat?
 - Antihistamine use and reduced sneezing/runny nose?
@@ -585,10 +601,10 @@ How big is practical?
 - Therapy and well being?
 - Observer ratings of attractiveness?
 - Gender and arm strength?
-- Nearness to equator and daily temperature for U.S.?
+
 
 ---
-## What is the size of the correlation?
+### What is the size of the correlation?
 - Chemotherapy and breast cancer survival? (.03)
 - Batting ability and hit success on a single at bat? (.06)
 - Antihistamine use and reduced sneezing/runny nose? (.11)
@@ -598,7 +614,7 @@ How big is practical?
 - Therapy and well being? (.32)
 - Observer ratings of attractiveness? (.39)
 - Gender and arm strength? (.55)
-- Nearness to equator and daily temperature for U.S.? (.60)
+
 
 ---
 ## Questions to ask yourself:
@@ -645,7 +661,7 @@ round(cor(bfi, use = "complete"),2)
 
 With **pairwise deletion**, different sets of cases contribute to different correlations.  That maximizes the sample sizes, but can lead to problems if the data are missing for some systematic reason.
 
-**Listwise deletion** (often referred to in `R` as use complete cases) doesn't have the same issue of biasing correlations, but does result in smaller samples and potentially limited generalizability.
+**Listwise deletion** ("complete cases") doesn't have the same issue of biasing correlations, but does result in smaller samples and potentially limited generalizability.
 
 A good practice is comparing the different matrices; if the correlation values are very different, this suggests that the missingness that affects pairwise deletion is systematic.
 
@@ -802,8 +818,7 @@ corrplot(cor(bfi, use = "pairwise"), method = "square")
 - Again, best to do these tests in another framework (e.g., interaction, SEM, MLM)
 
 ---
-## Factors that influence *r* (and most other test statistics)
-
+### Factors that influence *r* 
 1. Restriction of range (GRE scores and success)
 
 2. Very skewed distributions (smoking and health)
@@ -853,13 +868,13 @@ All measurement includes error
 $$\large r_{XX}$$
 
 ---
-## Reliability
+### Reliability
 
 - True score variance divided by observed variance
 
 $$r_{XX} = \frac{\sigma^2_{T}}{\sigma^2_{T} + \sigma^2_{E}}$$
 
-- How do you assess theoretical variance i.e., true score variance?
+- How do you assess true score variance?
 
 $$\large r_{XY} = r_{X_{T} Y_{T}} {\sqrt{r_{XX}r_{YY}}}$$
 - We can look at our observed correlation ( $r_{XY}$ ) and our reliability coefficients ( $r_{XX}$ and $r_{YY}$ ), and solve
@@ -875,7 +890,7 @@ $$\large r_{X_{T} Y_{T}} =  {\frac {r_{XY}} {\sqrt{r_{XX}r_{YY}}}}$$
 $$\large r_{X_{T} Y_{T}} = {\frac {.30} {\sqrt{(.70)(.70)}}} = .42$$
 --
 
-- CAVEAT: Reliabilities are also estimates. They can be wrong and there are lots of ways to get a reliability coefficient. The correlation you calculate ( $r_{X_{T} Y_{T}}$ ) is the highest correlation it could possibly be -- not the actual "theoretically true" correlation. (Kind of reminiscent of statistical power)
+- CAVEAT: Reliabilities are also estimates. They can be wrong and there are lots of ways to get a reliability coefficient. The correlation you calculate ( $r_{X_{T} Y_{T}}$ ) is the highest correlation it could possibly be -- not the actual "theoretically true" correlation.
 
 ---
 ## Most common ways to assess
@@ -957,11 +972,14 @@ $$\large t = \frac{r}{SE_r} = \frac{`r round(r,2)`}{`r round(se,2)`} = `r round(
 ---
 
 
-.left-column[
-Probability of getting a *t* statistic of `r round(r/se,2)` or greater is `r p1`.
+.pull-left[
+Probability of getting a *t* statistic of `r round(r/se,2)` or greater is $3.19 x 10^{-10}$
 
-Probability of getting *t* statistic of `r round(r/se,2)` or more extreme is `r p1*2`.
+
+Probability of getting *t* statistic of `r round(r/se,2)` or more extreme is $6.38 x 10^{-10}$
 ]
+
+.pull-right[
 
 ```{r, echo = F, message = F, warning = F, results='hide'}
 library(tidyverse)
@@ -972,7 +990,7 @@ data.frame(x = c(-3,7)) %>%
   ggtitle("t distribution (DF = 102)")+
   theme_bw()
 ```
-
+]
 ---
 
 ### Example
