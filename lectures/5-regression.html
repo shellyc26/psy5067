@@ -3,10 +3,8 @@
   <head>
     <title>Univariate regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,23 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
 
 
 
@@ -51,11 +66,21 @@ class: center, middle, inverse, title-slide
   
 ---
 
-## Regression
+## GLM/Regression
 
-Regression is a general data analytic system, meaning lots of things fall under the umbrella of regression. This system can handle a variety of forms of relations, although all forms have to be specified in a linear way. Usefully, we can incorporate IVs of all nature -- continuous, categorical, nominal, ordinal....
+GLM is a general data analytic system, meaning lots of things fall under the umbrella of regression.
 
-The output of regression includes both effect sizes and, if using frequentist or Bayesian software, statistical significance. We can also incorporate multiple influences (IVs) and account for their intercorrelations. 
+* *General* - broad set of similar models; can be applied to almost any context
+  * IVs can be continuous, categorical, nominal, ordinal....
+* *Linear* - We try to understand our dependent variable (DV) via a linear combination predictor variables (add &amp; multiply)
+
+---
+## GLM/Regression
+#### What do we get?
+- effect sizes
+- statistical significance
+- incorporate multiple IVs
+- account for intercorrelations
 
 ---
 
@@ -63,14 +88,9 @@ The output of regression includes both effect sizes and, if using frequentist or
 
 - **Scientific** use: explaining the influence of one or more variables on some outcome. 
 
-  + Does this intervention affect reaction time?
-  + Does self-esteem predict relationship quality?
   
 - **Prediction** use: We can develop models based on what's happened in the past to predict what will happen in the figure.
 
-  + Insurance premiums
-  + Graduate school... success?
-  
 - **Adjustment**: Statistically control for known effects
 
   + If everyone had the same level of SES, would abuse still be associated with criminal behavior?
@@ -93,7 +113,6 @@ How do we uncover the relationship?
 
 ### How does Y vary with X?
 
-- The regression of Y (DV) on X (IV) corresponds to the line that gives the mean value of Y corresponding to each possible value of X
 
 - `\(\large E(Y|X)\)`
 
@@ -178,7 +197,7 @@ The line that yields the smallest sum of squared deviations
 
 --
 
-In order to find the OLS solution, you could try many different coefficients `\((b_0 \text{ and } b_{1})\)` until you find the one with the smallest sum squared deviation. Luckily, there are simple calculations that will yield the OLS solution every time.
+In order to find the OLS solution, you could try many different coefficients `\((b_0 \text{ and } b_{1})\)`... or not
 
 ---
 ## Regression coefficient, `\(b_{1}\)`
@@ -187,10 +206,8 @@ In order to find the OLS solution, you could try many different coefficients `\(
 
 `$$\large r_{xy} = \frac{s_{xy}}{s_xs_y}$$`
 
-- The regression coefficient (slope) equals the estimated change in Y for a 1-unit change in X  
-- For nominal variables using dummy coding (0s and 1s), the regression coefficient equals the difference in means between the 2 groups (remember, correlation can be used for nominal variables!)
 
-.tiny[Suggested Practice: Go in `R` and see if you can prove to yourself that these equations are the same!]
+*Suggested Practice: Go in `R` and see if you can prove to yourself that these equations are the same!*
 
 ---
 ## Standardized regression
@@ -201,6 +218,8 @@ In order to find the OLS solution, you could try many different coefficients `\(
 `$$\large b_{1} = r_{xy} \frac{s_{y}}{s_{x}}$$`
 
 $$ \large r_{xy} = b_1\frac{s_x}{s_y} $$
+---
+## Standardized regression
 
 If the variance of both X and Y is equal to 1 (as in z-scores): 
 
@@ -219,20 +238,17 @@ According to this regression equation, when `\(X = 0, Y = 0\)`. Our interpretati
 
 ---
 
-## Estimating the intercept, `\(b_0\)`
-(AKA how to get the raw score regressione equation)
+## Estimating the intercept raw `\(b_0\)`
 
-- Re-write equation to include the means of Y and X ( `\(\bar{X}\)` &amp; `\(\bar{Y}\)` )
+- Re-write equation to include `\(\bar{X}\)` &amp; `\(\bar{Y}\)`
 - Intercept serves to adjust for differences in means between X and Y
 
-`$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$`
+`$$\hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$`
 - If standardized, intercept drops out
 - Otherwise, intercept is where regression line crosses the y-axis at X = 0  
-- Notice that when  `\(X = \bar{X}\)` the regression line goes through  `\(\bar{Y}\)`. This is true for all regressions such that the regression line must pass through `\(\bar{X}\)`  and  `\(\bar{Y}\)`
+- When  `\(X = \bar{X}\)` the regression line goes through  `\(\bar{Y}\)`. This is true for all regressions -- line must pass through `\(\bar{X}\)`  and  `\(\bar{Y}\)`
 
 ---
-
-## Example
 
 
 
@@ -439,24 +455,24 @@ describe(model_info)
 ```
 
 ```
-##            vars   n  mean   sd median trimmed  mad   min   max range
-## child         1 928 68.09 2.52  68.20   68.12 2.97 61.70 73.70 12.00
-## parent        2 928 68.31 1.79  68.50   68.32 1.48 64.00 73.00  9.00
-## .fitted       3 928 68.09 1.16  68.21   68.10 0.96 65.30 71.12  5.82
-## .resid        4 928  0.00 2.24   0.05    0.06 2.26 -7.81  5.93 13.73
-## .hat          5 928  0.00 0.00   0.00    0.00 0.00  0.00  0.01  0.01
-## .sigma        6 928  2.24 0.00   2.24    2.24 0.00  2.22  2.24  0.01
-## .cooksd       7 928  0.00 0.00   0.00    0.00 0.00  0.00  0.02  0.02
-## .std.resid    8 928  0.00 1.00   0.02    0.03 1.01 -3.49  2.65  6.14
-##             skew kurtosis   se
-## child      -0.09    -0.35 0.08
-## parent     -0.04     0.05 0.06
-## .fitted    -0.04     0.05 0.04
-## .resid     -0.24    -0.23 0.07
-## .hat        1.99     3.47 0.00
-## .sigma     -2.39     8.62 0.00
-## .cooksd     3.44    17.34 0.00
-## .std.resid -0.24    -0.23 0.03
+##            vars   n  mean   sd median trimmed  mad   min   max range  skew
+## child         1 928 68.09 2.52  68.20   68.12 2.97 61.70 73.70 12.00 -0.09
+## parent        2 928 68.31 1.79  68.50   68.32 1.48 64.00 73.00  9.00 -0.04
+## .fitted       3 928 68.09 1.16  68.21   68.10 0.96 65.30 71.12  5.82 -0.04
+## .resid        4 928  0.00 2.24   0.05    0.06 2.26 -7.81  5.93 13.73 -0.24
+## .hat          5 928  0.00 0.00   0.00    0.00 0.00  0.00  0.01  0.01  1.99
+## .sigma        6 928  2.24 0.00   2.24    2.24 0.00  2.22  2.24  0.01 -2.39
+## .cooksd       7 928  0.00 0.00   0.00    0.00 0.00  0.00  0.02  0.02  3.44
+## .std.resid    8 928  0.00 1.00   0.02    0.03 1.01 -3.49  2.65  6.14 -0.24
+##            kurtosis   se
+## child         -0.35 0.08
+## parent         0.05 0.06
+## .fitted        0.05 0.04
+## .resid        -0.23 0.07
+## .hat           3.47 0.00
+## .sigma         8.62 0.00
+## .cooksd       17.34 0.00
+## .std.resid    -0.23 0.03
 ```
 
 ???
@@ -542,9 +558,9 @@ model_info %&gt;% rename(y = child, x = parent) %&gt;% select(x,y,.fitted,.resid
 ## Residuals Summary
 
 - Residuals are not correlated with `\(X\)` and `\(\hat{Y}\)` because those two are perfectly correlated with one another (that is, `\(r_{\text{fitted,x}} = 1\)`  )
-- `\(X\)` and `\(\hat{Y}\)` represent the *same* information. We use our model ( `\(X\)` ) to make a prediction ( `\(\hat{Y}\)` ). These predictions are entirely based on the model.
-- There is no correlation between residuals with `\(X\)` and `\(\hat{Y}\)` because they are created by subtracting them out of `\(Y\)`. That is, ( `\(\epsilon = Y - \hat{Y}\)` )
-- Sigma ( `\(\sigma\)` ; the SD of residuals) can be thought of as how much left over in `\(Y\)` after we take out all of the information our model provides. 
+- `\(X\)` and `\(\hat{Y}\)` represent the *same* information. We use our model ( `\(X\)` ) to make a prediction ( `\(\hat{Y}\)` ).
+- No correlation between residuals with `\(X\)` and `\(\hat{Y}\)` because they are created by subtracting them out of `\(Y\)`. ( `\(\epsilon = Y - \hat{Y}\)` )
+- `\(\sigma\)`  (SD of residuals) can be thought of as how much left over in `\(Y\)` after we take out all of the information our model provides. 
 
 ---
 

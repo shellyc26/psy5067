@@ -3,13 +3,34 @@ title: 'Univariate regression'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
 
 ```{r, echo = F, warning = F, message = F, results = 'hide'}
 library(psych)
@@ -46,11 +67,21 @@ library(broom)
   
 ---
 
-## Regression
+## GLM/Regression
 
-Regression is a general data analytic system, meaning lots of things fall under the umbrella of regression. This system can handle a variety of forms of relations, although all forms have to be specified in a linear way. Usefully, we can incorporate IVs of all nature -- continuous, categorical, nominal, ordinal....
+GLM is a general data analytic system, meaning lots of things fall under the umbrella of regression.
 
-The output of regression includes both effect sizes and, if using frequentist or Bayesian software, statistical significance. We can also incorporate multiple influences (IVs) and account for their intercorrelations. 
+* *General* - broad set of similar models; can be applied to almost any context
+  * IVs can be continuous, categorical, nominal, ordinal....
+* *Linear* - We try to understand our dependent variable (DV) via a linear combination predictor variables (add & multiply)
+
+---
+## GLM/Regression
+#### What do we get?
+- effect sizes
+- statistical significance
+- incorporate multiple IVs
+- account for intercorrelations
 
 ---
 
@@ -58,14 +89,9 @@ The output of regression includes both effect sizes and, if using frequentist or
 
 - **Scientific** use: explaining the influence of one or more variables on some outcome. 
 
-  + Does this intervention affect reaction time?
-  + Does self-esteem predict relationship quality?
   
 - **Prediction** use: We can develop models based on what's happened in the past to predict what will happen in the figure.
 
-  + Insurance premiums
-  + Graduate school... success?
-  
 - **Adjustment**: Statistically control for known effects
 
   + If everyone had the same level of SES, would abuse still be associated with criminal behavior?
@@ -88,7 +114,6 @@ How do we uncover the relationship?
 
 ### How does Y vary with X?
 
-- The regression of Y (DV) on X (IV) corresponds to the line that gives the mean value of Y corresponding to each possible value of X
 
 - $\large E(Y|X)$
 
@@ -215,7 +240,7 @@ $$\Large = \Sigma(e_i)^2$$
 
 --
 
-In order to find the OLS solution, you could try many different coefficients $(b_0 \text{ and } b_{1})$ until you find the one with the smallest sum squared deviation. Luckily, there are simple calculations that will yield the OLS solution every time.
+In order to find the OLS solution, you could try many different coefficients $(b_0 \text{ and } b_{1})$... or not
 
 ---
 ## Regression coefficient, $b_{1}$
@@ -224,10 +249,8 @@ $$\large b_{1} = \frac{cov_{XY}}{s_{x}^{2}} = r_{xy} \frac{s_{y}}{s_{x}}$$
 
 $$\large r_{xy} = \frac{s_{xy}}{s_xs_y}$$
 
-- The regression coefficient (slope) equals the estimated change in Y for a 1-unit change in X  
-- For nominal variables using dummy coding (0s and 1s), the regression coefficient equals the difference in means between the 2 groups (remember, correlation can be used for nominal variables!)
 
-.tiny[Suggested Practice: Go in `R` and see if you can prove to yourself that these equations are the same!]
+*Suggested Practice: Go in `R` and see if you can prove to yourself that these equations are the same!*
 
 ---
 ## Standardized regression
@@ -238,6 +261,8 @@ $$\large r_{xy} = \frac{s_{xy}}{s_xs_y}$$
 $$\large b_{1} = r_{xy} \frac{s_{y}}{s_{x}}$$
 
 $$ \large r_{xy} = b_1\frac{s_x}{s_y} $$
+---
+## Standardized regression
 
 If the variance of both X and Y is equal to 1 (as in z-scores): 
 
@@ -256,20 +281,17 @@ According to this regression equation, when $X = 0, Y = 0$. Our interpretation o
 
 ---
 
-## Estimating the intercept, $b_0$
-(AKA how to get the raw score regressione equation)
+## Estimating the intercept raw $b_0$
 
-- Re-write equation to include the means of Y and X ( $\bar{X}$ & $\bar{Y}$ )
+- Re-write equation to include $\bar{X}$ & $\bar{Y}$
 - Intercept serves to adjust for differences in means between X and Y
 
-$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
+$$\hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$
 - If standardized, intercept drops out
 - Otherwise, intercept is where regression line crosses the y-axis at X = 0  
-- Notice that when  $X = \bar{X}$ the regression line goes through  $\bar{Y}$. This is true for all regressions such that the regression line must pass through $\bar{X}$  and  $\bar{Y}$
+- When  $X = \bar{X}$ the regression line goes through  $\bar{Y}$. This is true for all regressions -- line must pass through $\bar{X}$  and  $\bar{Y}$
 
 ---
-
-## Example
 
 
 
@@ -423,9 +445,9 @@ model_info %>% rename(y = child, x = parent) %>% select(x,y,.fitted,.resid) %>% 
 ## Residuals Summary
 
 - Residuals are not correlated with $X$ and $\hat{Y}$ because those two are perfectly correlated with one another (that is, $r_{\text{fitted,x}} = 1$  )
-- $X$ and $\hat{Y}$ represent the *same* information. We use our model ( $X$ ) to make a prediction ( $\hat{Y}$ ). These predictions are entirely based on the model.
-- There is no correlation between residuals with $X$ and $\hat{Y}$ because they are created by subtracting them out of $Y$. That is, ( $\epsilon = Y - \hat{Y}$ )
-- Sigma ( $\sigma$ ; the SD of residuals) can be thought of as how much left over in $Y$ after we take out all of the information our model provides. 
+- $X$ and $\hat{Y}$ represent the *same* information. We use our model ( $X$ ) to make a prediction ( $\hat{Y}$ ).
+- No correlation between residuals with $X$ and $\hat{Y}$ because they are created by subtracting them out of $Y$. ( $\epsilon = Y - \hat{Y}$ )
+- $\sigma$  (SD of residuals) can be thought of as how much left over in $Y$ after we take out all of the information our model provides. 
 
 ---
 
