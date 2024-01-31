@@ -3,10 +3,8 @@
   <head>
     <title>Univariate regression II</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,23 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+
 
 
 
@@ -59,8 +74,11 @@ To assess how well our model fits the data, we simply take all the variability i
 ## Partitioning variation 
 
 - We formally test how well we are doing with our guesses by partitioning variation
-- To the extent that we can generate different predicted values of Y, based on the values of the predicors, we are doing well in our prediction
+- To the extent that we can generate different predicted values of Y, based on the values of the predictors, we are doing well in our prediction
 
+`$$\sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$`
+---
+## Partitioning variation 
 `$$\sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2$$`
 
 Each of these is the sum of a squared deviation from an expected value of Y. We can abbreviate the sum of squared deviations:
@@ -82,7 +100,6 @@ The relative magnitude of sums of squares, especially in more complex designs, p
 Consider the case with no correlation between X and Y
 
 `$$\Large \hat{Y} = \bar{Y} + r_{xy} \frac{s_{y}}{s_{x}}(X-\bar{X})$$`
---
 `$$\Large \hat{Y} = \bar{Y}$$`
 
 To the extent that we can generate different predicted values of Y based on the values of the predictors, we are doing well in our prediction
@@ -121,7 +138,6 @@ To the extent that we can generate different predicted values of Y based on the 
 
 
 ---
-## Example
 
 .small[
 
@@ -151,29 +167,6 @@ summary(fit.1)
 *## Multiple R-squared:  0.2105,	Adjusted R-squared:  0.2096 
 ## F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16
 ```
-
-```r
-summary(fit.1)$r.squared
-```
-
-```
-## [1] 0.2104629
-
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-*NA```
 ]
 
 ---
@@ -211,6 +204,17 @@ cor(galton.fits$child, galton.fits$.fitted)
 ## [1] 0.4587624
 ```
 
+--
+
+
+```r
+summary(fit.1)$r.squared
+```
+
+```
+## [1] 0.2104629
+```
+
 ---
 ## Computing Sum of Squares
 
@@ -228,19 +232,14 @@ cor(galton.fits$child, galton.fits$.fitted)
 
 ---
 
-## Using `R` To Check Yourself
+### Using `R` To Check Yourself
 `$$SS_{residual} = (1- R^2){SS_{Y}}$$`
 
 ```r
 r2 = summary(fit.1)$r.squared
-
 fit.1.anova = summary(aov(fit.1))
-
 ssTotal = fit.1.anova[[1]]$`Sum Sq`[1] + fit.1.anova[[1]]$`Sum Sq`[2]
-
 ssResidual = (1 - r2) * ssTotal
-
-# print things out
 fit.1.anova
 ```
 
@@ -262,32 +261,23 @@ ssResidual
 
 
 
-???
+---
+
+## What is an "error"?
  
 
 
 
-
-```
-## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as
-## of ggplot2 3.3.4.
-```
-
-```
-## `geom_smooth()` using formula = 'y ~ x'
-```
-
-![](6-regression_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## Mean Square Error (MSE) (msw/msr)
+### Mean Square Error (MSE) (msw/msr)
 
-- AKA square of residual standard error/deviation (sigma)
+- AKA square of residual standard error/deviation ( `\(\sigma^2\)` )
 - *Unbiased* estimate of error variance
 - Measure of discrepancy between the data and the model
-- The MSE is the variance of data around the fitted regression line
-- Just like with MSwithin, which was variance around predicted group means
+- Variance of data around the fitted regression line (same as MSwithin for group means)
 - It is the mean of the square of the residuals
 
 
@@ -355,6 +345,7 @@ mse
 
 - aka standard deviation of the residual
 - aka **standard error of the estimate**
+- aka `\(\sigma\)`
 
 `$$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y|X} = \sqrt{\frac{\Sigma(Y_i -\hat{Y_i})^2}{N-2}}$$`
 
@@ -365,7 +356,7 @@ mse
 ---
 
 
-## Residual standard error/deviation or standard error of the estimate
+### Residual standard error/deviation or standard error of the estimate
 
 
 
@@ -395,7 +386,7 @@ sd(galton.data$child)
 ## [1] 2.517941
 ```
 
-Because the size of `\(\hat{\sigma}\)` depends on both how well the model does as well as the original units of measurement, it is important to compare it to Y to evaluate! 
+`\(\hat{\sigma}\)` is in original units of Y, so you need to compare to the sd of Y!
 
 ---
 
@@ -416,7 +407,7 @@ sqrt(mse)
 
 
 ---
-## Residual Standard Error and Sigma
+## Residual Standard Error and `\(\sigma\)`
 
 - So many names to represent the spread of data around the regression line
 - Standard deviation of the residual, standard error of the estimate, MSE...
@@ -425,19 +416,18 @@ sqrt(mse)
 - It is the standard deviation of Y not accounted by the model (i.e., residuals)
 
 ---
-## Why do we care about sigma?
+## Why do we care about `\(\sigma\)`?
 
 - Let's simulate!
 - Data generating process: $$Y_{i} \sim \mathcal{N}(\mu,\,\sigma)\ $$
-
-- In English: our DV for individual `\(i\)` is distributed normally with a mean of `\(\mu\)` and a standard deviation of `\(\sigma\)`
-- This describes how we think our DVs are generated, and the paramters of interest
-A a standard regression model assumes this, but we will see other DGPs such as binomial or poisson that do not
-
+- This describes how we think our DVs are generated, and the parameters of interest
 - For normal, `\(\mu\)` gets all the focus but `\(\sigma\)` is just as important
 
 ---
-Our plan is to fix `\(\mu\)` and then vary sigma to see what happens
+
+## Simulation
+
+Our plan is to fix `\(\mu\)` and then vary `\(\sigma\)` to see what happens
 
 
 ```r
@@ -450,7 +440,9 @@ m.1 &lt;- lm(y.1 ~ x.1, data = d.1) # use x to predict y with this data
 ```
 
 ---
-.tiny[
+
+## Simulation
+
 
 ```r
 summary(m.1)
@@ -476,12 +468,16 @@ summary(m.1)
 ## Multiple R-squared:  0.2755,	Adjusted R-squared:  0.2748 
 ## F-statistic: 379.5 on 1 and 998 DF,  p-value: &lt; 2.2e-16
 ```
-]
----
-
-![](6-regression_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 ---
+
+## Simulation
+
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Simulation
 Again, but with a larger sigma
 
 ```r
@@ -494,7 +490,8 @@ m.2 &lt;- lm(y.2 ~ x.1, data = d.2)
 
 
 ---
-.tiny[
+
+## Simulation
 
 ```r
 summary(m.2)
@@ -520,9 +517,12 @@ summary(m.2)
 ## Multiple R-squared:  0.08136,	Adjusted R-squared:  0.08044 
 ## F-statistic: 88.39 on 1 and 998 DF,  p-value: &lt; 2.2e-16
 ```
-]
+
 ---
-![](6-regression_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+## Simulation
+
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ## `\(R^2\)` and residual standard deviation
@@ -536,7 +536,7 @@ summary(m.2)
 - for example if variance in Y is changed but with the same regression model and residual standard error, `\(R^2\)` could increase or decrease
 
 ---
-![](6-regression_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ## Inferential tests
 
@@ -558,11 +558,11 @@ In regression, there are several inferential tests being conducted at once. The 
 
 `$$\Large H_{0}: \rho_{XY}^2 \neq 0$$`
 
-It is possible to calculate the significance of your regression with a correlation test. In fact, it would seem quite practical and logical to do so. 
+It is possible to calculate the significance of your regression with a correlation test. 
 
 --
 
-However, historically we use a different probability distribution -- **the _F_ distribution** to estimate the significance of our model. It's important to know that these methods are mathematically equivalent. But the _F_ distribution is useful here, because it works with our ability to partition variance.
+However, we use **the _F_ distribution** to estimate the significance of our model. Methods are mathematically equivalent! But when have we seen the **F** before?
 
 
 ---
@@ -583,9 +583,9 @@ As a result, _F_ has two degrees of freedom, `\(\nu_1\)` and `\(\nu_2\)`
 
 ## _F_  Distributions and regression
 
-Recall that when using a _z_ or _t_ distribution, we were interested in whether one mean was equal to another mean -- sometimes the second mean was calculated from another sample or hypothesized (i.e., the value of the null). In this comparison, we compared the _difference of two means_ to 0 (or whatever our null hypothesis dictates), and if the difference was not 0, we concluded significance. 
+Recall that when using a _z_ or _t_ distribution, we were interested in whether one mean was equal to another mean. In this comparison, we compared the _difference of two means_ to 0 (or whatever), and if the difference was not 0, we concluded significance. 
 
-_F_ statistics are not testing the likelihood of differences; they test the size of a _ratio_. In this case, we want to determine whether the variance explained by our model is larger in magnitude than another variance. 
+_F_ statistics are not testing the likelihood of differences; they test the size of a _ratio_. Is the variance explained by our model larger in magnitude than another variance. 
 
 Which variance?
 
@@ -662,14 +662,15 @@ summary(fit.1)
 
 ---
 ## Model Comparisons
-- So the omnibus `\(F\)`-statistic is the ratio of MSregression to MSresidual
+- Omnibus `\(F\)`-statistic is the ratio of MSregression to MSresidual
+
 - Test of overall significance. Does your model give a better fit to the data than a model that contains no independent variables? 
-- This is truly a question of model comparisons!
 
---
+---
+## Model Comparisons
+- How much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
 
-- The basic idea is asking how much variance remains unexplained in our model. This "left over" variance can be contrasted with an alternative model/hypothesis. Does adding a new predictor variable help explain more variance or should we stick with the most parsimonious (simplest) model?
-- Every model you report implies that you are favoring that model over an alternative model, typically the null. Taking a more formal model comparison approach allows you to be more flexible, explicit, and deliberate. 
+- Every model you report implies that you are favoring that model over an alternative model, typically the null. Taking a more formal model comparison approach allows you to be more flexible and explicit. 
 
 ---
 ## Full vs. Restricted Models
@@ -781,9 +782,8 @@ anova(fit.1, fit.0)
 ## Model Comparisons
 
 - Model comparisons are redundant with nil/null hypotheses and coefficient tests right now, be they'll be more flexible down the road
-- Key is to start thinking about your implicit alternative models
+- Key is to start thinking about your **implicit** alternative models
 - The ultimate goal would be to create two models that represent two equally plausible theories
-- Theory A is made up of components XYZ, whereas theory B has QRS components. You can then ask which theory (model) is better. 
 - A model embodies your hypothesis! It is the mathematical expression of your hypothesis!
 
 ---
@@ -791,19 +791,11 @@ anova(fit.1, fit.0)
 
 `$$\Large H_{0}: \beta_{1}= 0$$`
 `$$\Large H_{1}: \beta_{1} \neq 0$$`
+--
+
+We conduct a one-sample *t*-test! What do you need to do so? 
 ---
-## What does the regression coefficient test?
-- Does X provide any predictive information? 
 
-- Does X provide any explanatory power regarding the variability of Y? 
-
-- Is the the average value the best guess (i.e., is Y bar equal to the predicted value of Y?)
-
-- Is the regression line flat? 
-
-- Are X and Y correlated?  
-
----
 ## Regression coefficient
 `$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$`
 `$$\Large t(n-2) = \frac{b_{1}}{se_{b}}$$`
@@ -820,9 +812,25 @@ anova(fit.1, fit.0)
 - much like previously we can take our estimate (b) and put confidence regions around it to get an estimate of what could be "possible" if we ran the study again  
 
 ---
+
+## What does the regression coefficient test?
+- Does X provide any predictive information? 
+
+- Does X provide any explanatory power regarding the variability of Y? 
+
+- Is the the average value the best guess (i.e., is Y bar equal to the predicted value of Y?)
+
+- Is the regression line flat? 
+
+- Are X and Y correlated?  
+
+---
+
 ## Intercept
 
-- more complex standard error calculation as the calculation depends on how far the X value (here zero) is away from the mean of X
+- The same but different
+
+- More complex standard error calculation as the calculation depends on how far the X value (here zero) is away from the mean of X
 
     - farther from the mean, less information, thus more uncertainty 
     
@@ -830,11 +838,12 @@ anova(fit.1, fit.0)
 ## Confidence interval for coefficents
 
 - Same equation as we've been working with
+
 - Estimate plus minus 1.96*se
 
 ---
-## Confidence bands for regression line
-![](6-regression_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+## Confidence Bands
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -844,51 +853,52 @@ anova(fit.1, fit.0)
 
 
 ---
-## Prediction band
-- We are predicting and individual *i*'s score, not the `\(\hat{Y}\)` for a particular level of `\(X\)`. (A new `\(Y_i\)` given `\(X\)`, rather than `\(\bar{Y}\)` given `\(X\)` )
+## Prediction Bands
+- We are predicting and individual score, not the `\(\hat{Y}\)` for a particular level of `\(X\)`. 
 - Because there is greater variation in predicting an individual value rather than a collection of individual values (i.e., the mean) the prediction band is greater
 - Combines unknown variability in 1) the estimated mean (as reflected in se of b) 2) peoples scores around  mean (residual standard error) 
 
-`$$\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{1+ \frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}$$`
+`\(\hat{Y}\pm t_{critical} * se_{residual}*\sqrt{1+ \frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}\)`
 
 ---
-
+## Prediction Bands
 
 ```r
-temp_var &lt;- predict(fit.1, interval="prediction")
+temp_var &lt;- predict(fit.1, interval = "prediction")
 new_df &lt;- cbind(galton.data, temp_var)
-pred &lt;- ggplot(new_df, aes(y=child, x=parent))+
-       geom_point() +   
-  geom_smooth(method=lm,se=TRUE) +
- geom_ribbon(aes(ymin = lwr, ymax = upr), 
-               fill = "blue", alpha = 0.1)
+pred &lt;- ggplot(new_df, aes(y = child, x = parent)) +
+  geom_point() +
+  geom_smooth(method = lm, se = TRUE) +
+  geom_ribbon(aes(ymin = lwr, ymax = upr),
+              fill = "blue",
+              alpha = 0.1) +
+  theme_classic(base_size = 18)
 ```
 
 
 ---
-
-```r
-pred
-```
-
-![](6-regression_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+## Prediction Bands
+&lt;img src="6-regression_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 class: inverse
 
-## Next time...
-
-Partial Correlations
-
 ### Things you should be able to do (based on this lecture and the one before):
 
 - Can you get an individual's predicted score &amp; residual from an equation?
 - Can you calculate b0 &amp; b1?
-- Can you take the output from `R` and write a regression equation?
+- Can you take the output from R and write a regression equation, being very specific?
 - Can you tell me if you have a "good" model?
 - Is a coefficient meaningful? How do you know and can you calculate it?
 - Can you plot a regression, confidence band, and prediction band? 
+
+---
+
+class: inverse
+## Next time...
+
+Partial Correlations
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
