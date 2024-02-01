@@ -18,7 +18,7 @@ navbar:
       - text: "5-Univariate Reg"
         href: "lectures/5-regression.html"
       - text: "6-Univariate Reg"
-        href: "lecture/6-regression.html"
+        href: "lectures/6-regression.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -32,7 +32,7 @@ navbar:
       - text: "5-Univariate Reg"
         href: "lectures/5-regression.pdf"
       - text: "6-Univariate Reg II"
-        href: "lecture/6-regression.pdf"
+        href: "lectures/6-regression.pdf"
     - text: Homework
       href: homework.html
   right:
