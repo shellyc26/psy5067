@@ -3,7 +3,7 @@ title: 'Partial correlations'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
@@ -11,17 +11,62 @@ output:
       countIncrementalSlides: false
 ---
 
-## Pop Quiz
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
 
-.code-small[
-```{r}
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
+
+
+### Pop Quiz
+
+
+```{r, echo=FALSE}
 irisModel <- lm(Sepal.Length ~ Species, data = iris)
 summary(irisModel)
 ```
-]
+
 
 - Interpret all 3 coefficients
+
+
+---
+### Pop Quiz
+
+
+```{r, echo=FALSE}
+irisModel <- lm(Sepal.Length ~ Species, data = iris)
+summary(irisModel)
+```
+
+
 - What is the mean of each of the 3 categories?
+
+---
+### Pop Quiz
+
+
+```{r, echo=FALSE}
+irisModel <- lm(Sepal.Length ~ Species, data = iris)
+summary(irisModel)
+```
+
+
 - Is it a good model? How do you know?
 
 ---
@@ -157,7 +202,7 @@ $\large R^2_{Y.12} = a + b + c$
 
 **Statistical Control**
 - Control variance by removing unwanted variance from the other variables
-- Control by "partialling" 
+- Control by **"partialling"** 
 
 ---
 
@@ -194,11 +239,14 @@ the semi-partial correlation between parent SES and GPA controlling for peer rel
 $$\large sr_1 = r_{Y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{12}}{\sqrt{1-r^2_{12}}}$$
 
 $$\large sr_1^2 = R^2_{Y.12}-r^2_{Y2}$$
+.small[
+
 Notation:
 
 - $R^2_{Y.12}$ is your standard $R^2$ -- variance explained in what is before the dot by what is after the dot. *"Variance explained in Y by X1 and X2"*
 
 - $r_{Y(1.2)}$ is another way to write the semi-partial correlation. 
+]
 ---
 
 ## Numbers to these correlations
@@ -236,7 +284,12 @@ sr2
 - This is often the estimate that we refer to when we talk about **controlling for** another variable.
 - Notation: $sr$ or $r_{Y(1.2)}$; $sr^2$ is the semi-partial correlation, squared 
 
---
+---
+## Types of correlations
+
+**Pearson product moment correlation**
+
+**Semi-partial correlation**
 
 **Partial correlation**
 - The extent to which the part of $X_1$ *that is independent* of $X_2$ is correlated with *the part of Y that is also independent of* $X_2$. 
@@ -252,7 +305,7 @@ sr2
 ---
 ## Partial correlations
 
-$$\large pr_1=r_{Y1.2} = \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}} = \frac{r_{Y(1.2)}}{\sqrt{1-r^2_{Y2}}}$$
+$$\large pr_1=r_{Y1.2} = \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}} \\=  \frac{r_{Y(1.2)}}{\sqrt{1-r^2_{Y2}}}$$
 ---
 
 ## Partial correlation
@@ -262,7 +315,7 @@ $$\large pr^2= \frac{R^2_{Y.12} - r^2_{Y2}}{\sqrt{1-r^2_{Y2}}}$$
 $$\large sr^2 = R^2_{Y.12} - r^2_{Y2}$$
 ---
 
-## What happens if X1 and X2 are uncorrelated?
+### What happens if X1 and X2 are uncorrelated?
 
 .pull-left[
 How does the semi-partial correlation compare to the zero-order correlation?
@@ -275,7 +328,7 @@ How does the semi-partial correlation compare to the zero-order correlation?
 ]
 ---
 
-## What happens if X1 and X2 are uncorrelated?
+### What happens if X1 and X2 are uncorrelated?
 
 .pull-left[
 How does the semi-partial correlation compare to the zero-order correlation?
@@ -290,7 +343,7 @@ $$\large r_{Y(1.2)} = r_{Y1}$$
 ]
 ---
 
-## What happens if X1 and X2 are uncorrelated?
+### What happens if X1 and X2 are uncorrelated?
 
 .pull-left[
 How does the semi-partial correlation compare to the zero-order correlation?
@@ -306,7 +359,7 @@ How does the partial correlation compare to the zero-order correlation?
 ]
 ---
 
-## What happens if X1 and X2 are uncorrelated?
+### What happens if X1 and X2 are uncorrelated?
 
 .pull-left[
 How does the semi-partial correlation compare to the zero-order correlation?
@@ -332,13 +385,13 @@ the latter is true bc you've removed variance in y...so there's no way for it to
 
 ---
 
-## When we use these?
+### When we use these?
 
-The semi-partial correlation is most often used when we want to show that some variable adds incremental variance in Y above and beyond another X variable. How much unique variance an IV adds to the TOTAL amount of variance.
+Semi-partial: used when we want to show that some variable adds incremental variance in Y above and beyond another X variable. How much unique variance an IV adds to the TOTAL amount of variance.
 
 - e.g., predicting Alzheimer's
 
-The partial correlations most often used when some third variable, Z, is a plausible explanation of the correlation between X and Y. How much unique variance adds to the unaccounted variance in Y.sq 
+Partial: used when some third variable, Z, is a plausible explanation of the correlation between X and Y. How much unique variance adds to the unaccounted variance in Y.sq 
 
 - e.g., predicting grades
 
@@ -377,33 +430,30 @@ round(pcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, di
 
 ---
 
-## Regression
+### $e$ are part of $Y$ that is independent of $X$
 
-Recall that the residuals of a univariate regression equation are the part of the outcome $(Y)$ that is independent of the predictor $(X)$.
-
-$$\Large \hat{Y} = b_0 + b_1X$$
-$$\Large e_i = Y_i - \hat{Y_i}$$
+$$ \hat{Y} = b_0 + b_1X$$
+$$ e_i = Y_i - \hat{Y_i}$$
 We can use this to construct a measure of $X_1$ that is independent of $X_2$:
 
-$$\Large \hat{X}_{1.2} = b_0 + b_1X_2$$
+$$ \hat{X}_{1.2} = b_0 + b_1X_2$$
 
-$$\Large e_{X_1} = X_1 - \hat{X}_{1.2}$$
-
-???
-We run a regression where X2 predicts X1. then we take the error from that, which is the part of X1 that is independent of X2.
+$$e_{X_1} = X_1 - \hat{X}_{1.2}$$
+.small[
+We run a regression where X2 predicts X1. then we take the error from that, which is the part of X1 that is independent of X2.]
 ---
 
 We can either correlate that value with Y, to calculate our semi-partial correlation:
 
-$$\Large r_{e_{X_1},Y} = r_{Y(1.2)}$$
+$$\Large r_{e,{x_1},Y} = r_{y(1.2)}$$
 
 Or we can calculate a measure of Y that is also independent of $X_2$ and correlate that with our $X_1$ residuals.
 
 $$\Large \hat{Y} = b_0 + b_1X_2$$
 
-$$\Large e_{Y} = Y - \hat{Y}$$
+$$\Large e_{y} = Y - \hat{Y}$$
 
-$$\Large r_{e_{X_1},e_{Y}} = r_{Y1.2}$$
+$$\Large r_{e_{X_1},e_{y}} = r_{y1.2}$$
 
 ---
 
