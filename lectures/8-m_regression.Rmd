@@ -3,13 +3,34 @@ title: 'Multiple Regression'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
 
 ```{r, echo = F, results='hide',warning=FALSE,message=FALSE}
 library(tidyverse)
@@ -64,7 +85,9 @@ $$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
 - Intercept is the value of $Y$ when all predictors = 0
 - Regression coefficients are the predicted change in $Y$ for a 1 unit change in $X$, *holding all other predictors constant*
 
---
+---
+### Interpretting multiple regression model
+$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
 
 - Residual in simple regression can be thought of as a measure of $Y$ that is left over after accounting for your DV
 - Partial correlation can be created by:
@@ -98,7 +121,7 @@ If a univariate regression is estimating the best-fit line, what is this estimat
 ---
 ## Visualizing multiple regression
 
-```{r}
+```{r, echo=FALSE, fig.align='center'}
 library(visreg)
 
 visreg2d(mr.model,"Support", "Anxiety", plot.type = "persp")
@@ -113,14 +136,14 @@ Just like with univariate regression, we calculate the OLS solution. As a remind
 
 .pull-left[
 ### Unstandardized
-$$\large \hat{Y} = b_0 + b_{1}X1 + b_{2}X_2$$
-$$\large \text{minimize} \sum (Y-\hat{Y})^2 $$
+$$\small \hat{Y} = b_0 + b_{1}X1 + b_{2}X_2$$
+$$\small \text{minimize} \sum (Y-\hat{Y})^2 $$
 ]
 .pull-right[
 
 ### Standardized
-$$\large \hat{Z}_{Y} = b_{1}^*Z_{X1} + b_{2}^*Z_{X2}$$
-$$\large \text{minimize} \sum (z_{Y}-\hat{z}_{Y})^2$$
+$$\small \hat{Z}_{Y} = b_{1}^*Z_{X1} + b_{2}^*Z_{X2}$$
+$$\small \text{minimize} \sum (z_{Y}-\hat{z}_{Y})^2$$
 ]
 
 ---
@@ -141,32 +164,32 @@ $$sr = r_{y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
 
 ---
 
-## Relationships between partial, semi- and b*  
+### Relationships between partial, semi- and b*  
 
-(Standardized) Regression coefficients, partial correlations, and semi-partial correlations are all ways to represent the relationship between two variables while taking into account a third (or more!) variables. 
+All ways to represent the relationship between two variables while taking into account a third (or more!) variables. 
 
-  - Each is a standardized effect, meaning the effect size is calculated in standardized units, bounded by -1 and 1*. This means they can be compared across studies, metrics, etc.
+  - Each is a standardized effect, bounded by -1 and 1*. This means they can be compared.
 
-Note, however, that the calculations differ between the three effect sizes. These effect sizes are not synonymous and often yield different answers. 
+Not equal calculations!
 
-  - if predictors are not correlated, $r$,  sr $(r_{Y(1.2)})$ and b* are equal 
+  - If predictors are not correlated, $r$,  sr $(r_{Y(1.2)})$ and b* are equal 
 
-.small[*Actually, standardized regression coefficients are not bounded by -1 and 1, but it's rare to see values this large, and usually they're a sign that you have some problems in the model. ]
+.small[*Standardized regression coefficients are not bounded by -1 and 1, but it's rare and usually a problem ]
 ---
 
-** Standardized multiple regression coefficient** $b^*$
+** Standardized mult regression coefficient** $b^*$
 
-$$\large \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+$$\frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
 
 
 ** Semi-partial correlation** $r_{y(1.2)}$
-$$\large \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
+$$\frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
 
 ** Partial correlation** $r_{y1.2}$
-$$\large \frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}}$$
+$$\frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}}$$
 ---
 
-```{r}
+```{r, echo=FALSE}
 z_score = function(x){
   m = mean(x, na.rm=T)
   s = sd(x, na.rm=T)
@@ -178,7 +201,9 @@ stress.data = stress.data %>%
   mutate(z_anxiety = z_score(Anxiety),
          z_support = z_score(Support),
          z_stress = z_score(Stress))
+```
 
+```{r}
 mod0 = lm(z_stress ~ z_anxiety + z_support, 
           data = stress.data)
 
@@ -204,8 +229,7 @@ pcor.test(x = stress.data$Anxiety,
 
 ]
 
-???
-point is they're not the same, but they're close!
+They're not the same, but they're close!
 
 ---
 ## Review
@@ -252,7 +276,7 @@ Taken from [@nickchk](https://twitter.com/nickchk/status/1068215492458905600)
 
 ## Estimating model fit
 
-```{r, highlight.output = 18}
+```{r, highlight.output = 18, echo=FALSE}
 mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
 summary(mr.model)
 ```
@@ -310,7 +334,7 @@ $$\Large {SS_{residual}} = (1- R^2){SS_{Y}}$$
   
 ---
 
-## significance tests
+## Significance tests
 
 - $R^2$ (omnibus)  
 - Regression Coefficients  
@@ -383,15 +407,15 @@ $$\Large H_{1}: \beta_{X} \neq 0$$
 
 ---
 
-## Test of individual regression coefficients
+### Test of individual regression coefficients
 
 In the case of univariate regression:
 
-$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$
+$$se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$
 
 In the case of multiple regression:
 
-$$\Large se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}} \sqrt{\frac {1}{1-R_{i.jkl...p}^2}}$$
+$$se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}} \sqrt{\frac {1}{1-R_{i.jkl...p}^2}}$$
 
 - As N increases... 
 - As variance explained increases... 
