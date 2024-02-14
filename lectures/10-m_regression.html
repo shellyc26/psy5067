@@ -3,12 +3,10 @@
   <head>
     <title>Multiple Regression III</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
     <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -22,9 +20,26 @@ class: center, middle, inverse, title-slide
 ---
 
 
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
 
 
-## Last time...
+
+
+
+### Last time...
 
 * Model comparison
 * Categorical predictors/dummy coding
@@ -33,20 +48,17 @@ class: center, middle, inverse, title-slide
 
 ### Today...
 
-*ANOVA, the long way
+ANOVA, the long way
 
 It's important to note that by covering dummy coding a categorical variable, we have already covered ANOVA -- there is nothing more you can learn from this technique that the omnibus test of that model will not tell you. 
 
 ---
 
-## Example
-
-Participants performed an eye-hand coordination task while subjected to periodic 3-second bursts of 85 dB white noise played over earphones. The task required participants to keep a mouse pointer on a red dot that moved in a circular motion at a rate of 1 revolution per second. Participants performed the task until they allowed the pointer to stray from the rotating dot 10 times.  The time (in seconds) at the 10th failure was recorded and is the outcome measure.
+Eye-hand coordination task while subjected to periodic 3-second bursts of 85 dB white noise played over earphones. They had participants keep a mouse pointer on a red dot that moved in a circle at a rate of 1 revolution per second. Participants performed the task until they allowed the pointer to stray from the rotating dot 10 times.  The time (in seconds) at the 10th failure was  the outcome measure.
 
 ![](images/dot.jpg)
 ---
 
-### Example
 
 The participants were randomly assigned to one of four noise conditions:
 
@@ -55,18 +67,16 @@ The participants were randomly assigned to one of four noise conditions:
 * controllable but unpredictable noise
 * uncontrollable and unpredictable noise.
 
-When noise was predictable, the 3-second bursts of noise would occur regularly every 20 seconds. 
+When noise was *predictable*, the 3-second bursts of noise would occur regularly every 20 seconds. 
 
-When noise was unpredictable, the 3-second bursts would occur randomly (although every 20 seconds on average).  
+When noise was *unpredictable*, the 3-second bursts would occur randomly (although every 20 seconds on average).  
 
 ---
-When noise was uncontrollable, participants could do nothing to prevent the noise from occurring. 
+When noise was *uncontrollable*, participants could do nothing to prevent the noise from occurring. 
 
-When noise was  controllable, participants were shown a button that would prevent the noise, but they were told, "the button is a safety measure, for your protection, but we would prefer that you not use it unless absolutely necessary." No participants actually used the button.  
+When noise was *controllable*, participants were shown a button that would prevent the noise, but they were told, "the button is a safety measure, for your protection, but we would prefer that you not use it unless absolutely necessary." No participants actually used the button.  
 
-Why is it important that the button was never used?
-
-Why is random assignment important in this design?
+Why is **random assignment** important in this design?
 
 ---
 
@@ -113,7 +123,7 @@ ggboxplot(data = rotate, x = "Group_lab", y = "Time", xlab = F)
 
 ![](10-m_regression_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 --
-The pattern of means indicates that performance degrades with either uncontrollable noise or unpredictable noise. Noise that is both uncontrollable and unpredictable appears to be particularly disruptive.
+Performance degrades with either uncontrollable noise or unpredictable noise. Noise that is both uncontrollable and unpredictable is particularly disruptive.
 
 ---
 
@@ -128,19 +138,7 @@ Addition of the confidence intervals indicates that the two extreme conditions a
 
 ---
 
-
-```r
-library(knitr)
-library(kableExtra)
-rotate %&gt;%
-  group_by(Group_lab) %&gt;%
-  summarize(N = n(),
-            Mean = mean(Time, na.rm = T),
-            SD = sd(Time, na.rm = T)) %&gt;%
-  kable(., digits = 2) %&gt;% kable_styling()
-```
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+&lt;table class="table" style="font-size: 24px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt; Group_lab &lt;/th&gt;
@@ -200,12 +198,13 @@ Unlike regression, the ANOVA framework has a single hypothesis test. This is equ
 .pull-left[
 ### ANOVA
 
-`$$H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4$$`
-`$$H_1: \text{Not that } \mu_1 = \mu_2 = \mu_3 = \mu_4$$`
-This can occur in quite a number of ways.
+`$$\small H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4$$`
+`$$\small H_1: \text{Not that } \mu_1 = \mu_2 = \mu_3 = \mu_4$$`
+This can occur in a number of ways.
 ]
 
 ---
+## ANOVA
 
 The total variability of all of the data, regardless of group membership, can be expressed as:
 
@@ -213,23 +212,29 @@ The total variability of all of the data, regardless of group membership, can be
 
 for G groups and `\(N_k\)` participants within groups. 
 
-In analysis of variance, we will be interested in the numerator of this variance equation, known as the total sum of squares:
+---
+
+## ANOVA
+
+We are interested in the numerator of this variance equation, known as the **total sum of squares**:
 
 `$$\large SS_{tot} = \sum_{k=1}^G\sum_{i=1}^{N_k}(Y_{ik}-\bar{Y})^2$$`
 It's worth noting that this is just a more complicated way of expressing total sums of squares, but in a way that will be useful for thinking about how we partition sums of squares later. 
 
 ---
+## ANOVA
 
 We already know from regression that the deviation of a score from the grand mean is the sum of two independent parts. In regression these parts are the deviation of the actual score from the predicted score, and  the deviation of the predicted value from the grand mean. 
 
 `$$\large Y_{i}-\bar{Y} = (Y_{i}-\hat{Y}_i) + (\hat{Y} - \bar{Y}_i)$$`
+---
+
 
 In ANOVA, this holds true, but we express these relationships by referring to each Y within a group, and instead of "predicted value" we talk about group means. So now the parts are the deviation of the score from its group mean, and the deviation of that group mean from the grand mean. Why do we substitute "group mean" for "predicted value"?
 
 `$$\large Y_{ik}-\bar{Y} = (Y_{ik}-\bar{Y}_k) + (\bar{Y}_k - \bar{Y})$$`
---
 
-In other words, each deviation score has a within-group part and a between-group part. These separate parts can be squared and summed, giving rise to two other sums of squares. 
+Each deviation score has a within-group part and a between-group part. These separate parts can be squared and summed, giving rise to two other sums of squares. 
 
 ---
 One part, the within-groups sum of squares, represents squared deviations of scores around the group means:
@@ -238,7 +243,6 @@ One part, the within-groups sum of squares, represents squared deviations of sco
 The other, the between-groups sum of squares, represents deviations of the group means around the grand mean:
 
 `$$\large SS_b = \sum_{k=1}^GN_k(\bar{Y}_{k}-\bar{Y})^2$$`
-How do these compare the sums of squares we are familiar with in regression?
 
 ---
 Sums of squares are central to ANOVA.  They are the building blocks that represent different sources of variability in a research design. They are additive, meaning that the `\(SS_{tot}\)` can be partitioned, or divided, into independent parts.
@@ -251,22 +255,19 @@ The relative magnitude of sums of squares, especially in more complex designs, p
 
 If the null hypothesis is true, then variability among the means should be consistent with the variability of the data.
 
-We know that relationship already:
-`$$\large \hat{\sigma}^2_{\bar{Y}} = \frac{\hat{\sigma}^2_{Y}}{N}$$`
+`$$\hat{\sigma}^2_{\bar{Y}} = \frac{\hat{\sigma}^2_{Y}}{N}$$`
 In other words, if we have an estimate of the variance of the means, we can transform that into an estimate of the variance of the scores, provided the only source of mean variability is sampling variability (the null hypothesis).
 
-`$$\large N\hat{\sigma}^2_{\bar{Y}} = \hat{\sigma}^2_Y$$`
+`$$N\hat{\sigma}^2_{\bar{Y}} = \hat{\sigma}^2_Y$$`
 ---
 
 The `\(SS_w\)` is qualitatively giving us information that is similar to 
 
-`$$\large \hat{\sigma}^2_Y$$`
+`$$\hat{\sigma}^2_Y$$`
 The `\(SS_b\)` is qualitatively giving us information that is similar to 
-`$$\large N\hat{\sigma}^2_{\bar{Y}}$$`
+`$$N\hat{\sigma}^2_{\bar{Y}}$$`
 
 These are arrived at separately, but under the null hypothesis they should be estimates of the same thing.  The only reason that `\(SS_b\)` would be larger than expected is if there are systematic differences among the mean, perhaps created by experimental manipulations.
-
-We need a formal way to make the comparison.
 
 ---
 
@@ -282,41 +283,36 @@ These variance estimates are known as mean squares:
 `$$\large df_b = G-1$$`
 ]
 
-How are these degrees of freedom determined?
-
 ---
 ANOVA assumes homogeneity of group variances.  Under that assumption, the separate group variances are pooled to provide a single estimate of within-group variability.
 
-`$$\large SS_w = \sum_{k=1}^G\sum_{i=1}^{N_k}(Y_{ik}-\bar{Y}_k)^2 = \sum_{k=1}^G(N_k-1)\hat{\sigma}^2_k$$`
+`$$SS_w = \sum_{k=1}^G\sum_{i=1}^{N_k}(Y_{ik}-\bar{Y}_k)^2 = \sum_{k=1}^G(N_k-1)\hat{\sigma}^2_k$$`
 The degrees of freedom are likewise pooled:
 
-`$$\large df_w = N-G=(N_1-1)+(N_2-1)+\dots+(N_G-1)$$`
-Where have we seen similar pooling?
+`$$df_w = N-G=(N_1-1)+(N_2-1)+\dots$$`
 
 ---
 
-If data are normally distributed, then the variance is `\(\chi^2\)` distributed.  The ratio of two `\(\chi^2\)` distributed variables is F distributed.
+If data are normally distributed, then the variance is `\(\chi^2\)` distributed.  The ratio of two `\(\chi^2\)` distributed variables is `\(F\)` distributed.
 
-In analysis of variance, the ratio of the mean squares (variance estimates) is symbolized by `\(F\)` and has a sampling distribution that is `\(F\)` distributed with degrees of freedom equal to `\(df_b\)` and `\(df_w\)`.  That sampling distribution is used to determine if an obtained `\(F\)` statistic is unusual enough to reject the null hypothesis.
+In ANOVA, the ratio of the mean squares (variance estimates) is symbolized by `\(F\)` and has a sampling distribution that is `\(F\)` distributed with degrees of freedom equal to `\(df_b\)` and `\(df_w\)`.  That sampling distribution is used to determine if an obtained `\(F\)` statistic is unusual enough to reject the null hypothesis.
 
 `$$\large F = \frac{MS_b}{MS_w}$$`
 ---
 
-`$$\large F = \frac{MS_b}{MS_w}$$`
+`$$F = \frac{MS_b}{MS_w}$$`
 
-If the null hypothesis is true, `\(F\)` has an expected value of approximately 1.00 (the numerator and denominator are estimates of the same variability). 
+If the null hypothesis is true, `\(F\)` has an expected value of approximately 1.00.
 
 If the null hypothesis is false, the numerator will be larger than the denominator because systematic, between-group differences contribute to the variance of the means, but not to the variance within groups (ideally).  If `\(F\)` is "large enough," we will reject the null hypothesis as a reasonable description of the obtained variability. 
 
 ---
 
-The `\(F\)` statistic can be viewed as follows:
-
 `$$\large F = \frac{\hat{Q} + \hat{\sigma}^2}{\hat{\sigma}^2}$$`
 
-The extra term in the numerator (Q) is the treatment effect that, if present, increases variability among the means but does not affect the variability of scores within a group (treatment is a constant within any group).
+`\(Q\)` is the treatment effect that, if present, increases variability among the means but does not affect the variability of scores within a group (treatment is a constant within any group).
 
-As the treatment effect gets larger, the `\(F\)` statistic departs from 1.00. If it departs enough, we claim F to be rare or unusual under the null and reject the null. The `\(F\)` probability density distribution tells us how rare or unusual a particular `\(F\)` statistic happens to be.  The shape of the `\(F\)` distribution is defined by its parameters, `\(df_b\)` and `\(df_w\)`.
+As the treatment effect gets larger, the `\(F\)` statistic gets bigger. If it departs enough, we claim `\(F\)` to be rare or unusual. The shape of the `\(F\)` distribution is defined by its parameters, `\(df_b\)` and `\(df_w\)`.
 
 ---
 
@@ -326,13 +322,6 @@ For 3 and 196 degrees of freedom, an `\(F\)` statistic of 2.65 or greater will i
 
 ---
 
-ANOVA for the sample data:
-
-
-```r
-fit_1 = aov(Time ~ Group_lab, data = rotate)
-summary(fit_1)
-```
 
 ```
 ##              Df  Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -344,13 +333,10 @@ summary(fit_1)
 
 The `\(F\)` statistic is highly unusual in the `\(F\)` distribution, assuming the null hypothesis is true.  We reject the null hypothesis.
 
-Note: how does the output above compare to this output? What is the difference between the two?
+--
 
+What's different?
 
-```r
-fit_1.1 = aov(Time ~ Group, data = rotate)
-summary(fit_1.1)
-```
 
 ```
 ##              Df  Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -362,11 +348,6 @@ summary(fit_1.1)
 
 
 ---
-
-```r
-fit_1 = aov(Time ~ Group_lab, data = rotate)
-summary(fit_1)
-```
 
 ```
 ##              Df  Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -392,22 +373,24 @@ As the number of groups in the ANOVA grows, the number of possible pairwise comp
 
 As the number of significance tests grows, and assuming the null hypothesis is true, the probability that we will make one or more Type I errors increases.  To approximate the magnitude of the problem, we can assume that the multiple pairwise comparisons are independent. The probability that we don’t make a Type I error for just one test is:
 
-`$$\large P(\text{No Type I}, 1 \text{ test}) = 1-\alpha$$`
+`$$P(\text{No Type I}, 1 \text{ test}) = 1-\alpha$$`
 The probability that we don't make a Type I error for two tests is (note the reason we assume independence):
 
-`$$\large P(\text{No Type I}, 2 \text{ test}) = (1-\alpha)(1-\alpha)$$`
+`$$P(\text{No Type I}, 2 \text{ test}) = (1-\alpha)(1-\alpha)$$`
 ---
 For C tests, the probability that we make **no** Type I errors is
 
-`$$\large P(\text{No Type I}, C \text{ tests}) = (1-\alpha)^C$$`
+`$$P(\text{No Type I}, C \text{ tests}) = (1-\alpha)^C$$`
 We can then use the following to calculate the probability that we make one or more Type I errors in a collection of C independent tests.
 
-`$$\large P(\text{At least one Type I}, C \text{ tests}) = 1-(1-\alpha)^C$$`
+`$$P(\text{At least one Type I}, C \text{ tests}) = 1-(1-\alpha)^C$$`
 As the number of comparisons grows, the inflation of the Type I error rate can be substantial.
+
+**What is this called?**
 
 ---
 
-The Type I error inflation that accompanies multiple comparisons motivates the large number of "correction" procedures that have been developed.
+Need "correction" procedures. Many exist.
 
 ![](10-m_regression_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
@@ -415,13 +398,13 @@ The Type I error inflation that accompanies multiple comparisons motivates the l
 
 Multiple comparisons, each tested with `\(\alpha_{per-test}\)`, increases the family-wise `\(\alpha\)` level. 
 
-`$$\large \alpha_{family-wise} = 1 - (1-\alpha_{per-test})^C$$`
-Šidák showed that the family-wise a could be controlled to a desired level (e.g., .05) by changing the `\(\alpha_{per-test}\)` to:
+`$$\alpha_{family-wise} = 1 - (1-\alpha_{per-test})^C$$`
+Šidák showed that the family-wise `\(\alpha\)` could be controlled to a desired level (e.g., .05) by changing the `\(\alpha_{per-test}\)` to:
 
-`$$\large \alpha_{per-wise} = 1 - (1-\alpha_{family-wise})^{\frac{1}{C}}$$`
+`$$\alpha_{per-wise} = 1 - (1-\alpha_{family-wise})^{\frac{1}{C}}$$`
 Bonferroni (and Dunn, and others) suggested this simple approximation: 
 
-`$$\large \alpha_{per-test} = \frac{\alpha_{family-wise}}{C}$$`
+`$$\alpha_{per-test} = \frac{\alpha_{family-wise}}{C}$$`
 
 This is typically called the Bonferroni correction and is very often used even though better alternatives are available. 
 
@@ -432,26 +415,32 @@ This is typically called the Bonferroni correction and is very often used even t
 library(rstatix)
 
 rotate %&gt;% 
-  pairwise_t_test(Time ~ Group, p.adjust.method = "bonferroni")
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "bonferroni")
 ```
 
 ```
 ## # A tibble: 6 × 9
-##   .y.   group1 group2    n1    n2        p p.signif    p.adj p.adj.signif
-## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;       
-## 1 Time  1      2         47    52 1.33e-31 ****     7.99e-31 ****        
-## 2 Time  1      3         47    45 2.27e-24 ****     1.36e-23 ****        
-## 3 Time  2      3         52    45 5.52e- 2 ns       3.31e- 1 ns          
-## 4 Time  1      4         47    56 7.93e-52 ****     4.76e-51 ****        
-## 5 Time  2      4         52    56 1.53e-10 ****     9.2 e-10 ****        
-## 6 Time  3      4         45    56 5.92e-15 ****     3.55e-14 ****
+##   .y.   group1 group2    n1    n2        p p.signif    p.adj
+## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+## 1 Time  1      2         47    52 1.33e-31 ****     7.99e-31
+## 2 Time  1      3         47    45 2.27e-24 ****     1.36e-23
+## 3 Time  2      3         52    45 5.52e- 2 ns       3.31e- 1
+## 4 Time  1      4         47    56 7.93e-52 ****     4.76e-51
+## 5 Time  2      4         52    56 1.53e-10 ****     9.2 e-10
+## 6 Time  3      4         45    56 5.92e-15 ****     3.55e-14
+## # ℹ 1 more variable: p.adj.signif &lt;chr&gt;
 ```
 
 ---
 
-The Bonferroni procedure is conservative. Other correction procedures have been developed that control family-wise Type I error at .05 but that are more powerful than the Bonferroni procedure.  The most common one is the Holm procedure.
+The Bonferroni procedure is conservative. The most common other one is the Holm procedure.
 
 The Holm procedure does not make a constant adjustment to each per-test `\(\alpha\)`. Instead it makes adjustments in stages depending on the relative size of each pairwise p-value.
+
+---
+
+## Holm Procedure
 
 1. Rank order the p-values from largest to smallest.
 2. Start with the smallest p-value. Multiply it by its rank.
@@ -460,11 +449,12 @@ The Holm procedure does not make a constant adjustment to each per-test `\(\alph
 5. Judge significance of each new p-value against `\(\alpha = .05\)`.
 
 ---
-
+## Holm Procedure
 
 ```r
 hp = rotate %&gt;% 
-  pairwise_t_test(Time ~ Group, p.adjust.method = "holm") %&gt;% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "holm") %&gt;% 
   arrange(p) %&gt;% 
   mutate(Rank = 6:1, rXp = Rank*p)
 
@@ -473,14 +463,30 @@ hp[,c(2,3,6:11)]
 
 ```
 ## # A tibble: 6 × 8
-##   group1 group2        p p.signif    p.adj p.adj.signif  Rank      rXp
-##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt;
-## 1 1      4      7.93e-52 ****     4.76e-51 ****             6 4.76e-51
-## 2 1      2      1.33e-31 ****     6.66e-31 ****             5 6.65e-31
-## 3 1      3      2.27e-24 ****     9.07e-24 ****             4 9.08e-24
-## 4 3      4      5.92e-15 ****     1.78e-14 ****             3 1.78e-14
-## 5 2      4      1.53e-10 ****     3.07e-10 ****             2 3.06e-10
-## 6 2      3      5.52e- 2 ns       5.52e- 2 ns               1 5.52e- 2
+##   group1 group2        p p.signif    p.adj p.adj.signif  Rank
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;
+## 1 1      4      7.93e-52 ****     4.76e-51 ****             6
+## 2 1      2      1.33e-31 ****     6.66e-31 ****             5
+## 3 1      3      2.27e-24 ****     9.07e-24 ****             4
+## 4 3      4      5.92e-15 ****     1.78e-14 ****             3
+## 5 2      4      1.53e-10 ****     3.07e-10 ****             2
+## 6 2      3      5.52e- 2 ns       5.52e- 2 ns               1
+## # ℹ 1 more variable: rXp &lt;dbl&gt;
+```
+---
+
+
+```
+## # A tibble: 6 × 8
+##   group1 group2        p p.signif    p.adj p.adj.signif  Rank
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;
+## 1 1      4      7.93e-52 ****     4.76e-51 ****             6
+## 2 1      2      1.33e-31 ****     6.66e-31 ****             5
+## 3 1      3      2.27e-24 ****     9.07e-24 ****             4
+## 4 3      4      5.92e-15 ****     1.78e-14 ****             3
+## 5 2      4      1.53e-10 ****     3.07e-10 ****             2
+## 6 2      3      5.52e- 2 ns       5.52e- 2 ns               1
+## # ℹ 1 more variable: rXp &lt;dbl&gt;
 ```
 
 A single adjusted per-test a would be used with the Bonferroni procedure: .05/6 = .0083. We would compare each original p-value to this new criterion and claim as significant only those that are less. Or, we could multiply the original p-values by 6 and judge them against a =.05.
@@ -491,14 +497,13 @@ class: inverse
 
 ## Next time...
 
-- Assumptions &amp; diagnostics
-- Review problems
-- Exam 1 on 2/28!
+- Exam 1!
+
 
 (we will cover remaining slides if time)
 ---
 
-## Contrasts
+### Contrasts
 
 You can change which group is the reference:
 
@@ -518,7 +523,7 @@ coef(summary(lm(Time~Group, data = rotate)))
 
 You're not restricted to simple dummy coding. Choosing another variant of contrast codes allows you to test more specific hypotheses. There are some common coding schemes.
 ---
-For example, **deviation coding** (sometimes called **"effect coding"**):
+For example, **deviation coding** (aka **"effect coding"**):
 
 
 ```r
@@ -536,10 +541,10 @@ contr.sum(4)
 
 ```r
 contrasts(rotate$Group) = contr.sum(n = 4)
-coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3)) %&gt;% kable_styling()
+coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3), format = "html") %&gt;% kable_styling(font_size = 13)
 ```
 
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+&lt;table class="table" style="font-size: 13px; margin-left: auto; margin-right: auto;"&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
@@ -583,51 +588,13 @@ coef(summary(lm(Time~Group, data = rotate))) %&gt;% kable(., digits = c(2,2,2,3)
 
 ---
 
-### Contrasts
-
-You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. The rules for setting up contrast codes are:
+You can create a contrast matrix that tests any number of hypotheses, like whether groups 1 and 3 are different from group 4. Rules:
 
 1. The sum of the weights across all groups for each code variable must equal 0. (Sum down the column = 0).
 
 2. The sum of the product of each pair of code variables, `\(C_1C_2,\)` must equal 0. (This is challenging when your groups are unequal sizes).
 
-3. The difference between the value of the set of positive weights and the set of negative weights should equal 1 for each code variable (column).
-
----
-
-One benefit* to using the ANOVA framework instead of the regression framework is that you can estimate the total variability captured by one categorical variable controlling for another categorical or continuous variable with ease.
-
-`\(\eta^2\)` (eta-squared) is a standardized measure of effect size used in analyses of variance. This effect size is the **proportion of variance in Y that is accounted for by one independent variable.**
-
-`$$\eta^2 = \frac{SS_{variable}}{SS_{total}}$$`
-
-For example, what if we believed gender was associated with performance on the noise burst task.
-
-.small[\* No difference when using R though.]
----
-
-
-
-
-```r
-mod2 = aov(Time ~ Group + gender, data = rotate)
-anova(mod2)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Response: Time
-##            Df  Sum Sq Mean Sq  F value Pr(&gt;F)    
-## Group       3 2000252  666751 150.2832 &lt;2e-16 ***
-## gender      1    7145    7145   1.6105 0.2059    
-## Residuals 195  865142    4437                    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-
-
+3. The difference between the value of the set of + weights and the set of neg weights should equal 1 for each column.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
