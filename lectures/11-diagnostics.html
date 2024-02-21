@@ -3,10 +3,8 @@
   <head>
     <title>Assumptions and Diagnostics</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,24 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+
 
 
 
@@ -50,25 +66,34 @@ Consistent: as N increases, standard error decreases
 
 ---
 
-## Assumptions of the regression model
+## Assumptions of regression
 
 1. No measurement error
+
 2. Correctly specified form
+
 3. No omitted variables
+
 4. Homoscedasticity 
+
 5. Independence among the residuals
+
 6. Normally distributed residuals
 
 ---
 
 ## What happens if we violate assumptions?
 
-1. Biased regression coefficients
-2. Biased standard errors
+--
+
+1. _Biased_ regression **coefficients**
+
+--
+
+2. _Biased_ **standard errors**
 
 ---
 
-## 6 assumptions
 
 |Violated Regression Assumption |	Coefficients |	Standard Errors|
 |-------------------------------|--------------|-----------------|
@@ -81,7 +106,7 @@ Consistent: as N increases, standard error decreases
 
 ---
 
-## How do we detect violations? 
+
 |       Assumption              |       	Detection                    |
 |-------------------------------|--------------------------------|
 |1. Measured without error	    |	  Reliability                  |
@@ -118,7 +143,7 @@ aug_1
 ##  8    3.41    4.1     9.53 -6.12   0.0255    2.02 0.115         -2.96  
 ##  9    8.66    5.39    9.00 -0.340  0.0173    2.10 0.000237      -0.164 
 ## 10    4.85   13.9     5.47 -0.620  0.0299    2.10 0.00139       -0.301 
-## # … with 108 more rows
+## # ℹ 108 more rows
 ```
 
 ---
@@ -132,17 +157,21 @@ Residuals are your best diagnostic tool for assessing your regression model. Not
 * Improve your research design
 
 ---
-
-![](11-diagnostics_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+.left-column[
+### What are residuals?
+]
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-
-![](11-diagnostics_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+.left-column[
+### What are residuals?
+]
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
 We can add stress to the model to see how this changes
 ---
 
-## 1) Measurement Error
+## 1. Measurement Error
 
 Assumption 1: No measurement error in our independent variables
 
@@ -152,39 +181,40 @@ Assumption 1: No measurement error in our independent variables
 
 * How can we check this assumption?
 
-???
+---
 
-If there is measurement error, our coefficient estimates will always UNDERestimate the true parameter. This is because
-`$$r_{XY} = \rho\sqrt{r_{XX}r_{YY}}$$`
-Measurement error inflates our standard errors, because they add error
+## Reliability Can Help!
+
+If there is measurement error, our coefficient estimates will always *UNDER*-estimate the true parameter. This is because
+`$$r_{xy} = \rho\sqrt{r_{xx}r_{yy}}$$`
+Measurement error inflates our standard errors, because they add...error
 
 There is ALWAYS measurement error. What do we do about this?
 
 ---
-## 2) Form
+## 2. Form
 
 Assumption 2: Correctly specified form
 
 ![](11-diagnostics_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
-???
-
-Underestimates `\(R^2\)`
+Don't use linear models on non-linear data! This will underestimate `\(R^2\)`
 
 ---
-## 3) Model
+## 3. Model
 
 Assumption 3: Correctly specified model
-- This is especially important for multiple regression. 
+- This is especially important for multiple regression.
+
 - Two problems: 
   
-  1. "Over control" and your coefficient is no longer interpretable
+&gt; "Over control" and your coefficient is no longer interpretable
   
-  2. "Under control" and your coefficient is no longer interpretable
+&gt; "Under control" and your coefficient is no longer interpretable
   
 ---
-## 3) Model
-### Correctly specified model
+## 3. Model
+&gt; "Over control" and your coefficient is no longer interpretable
 
 Cohen and Cohen (1983) discuss several problems associated with the inclusion of covariates/multiple independent predictors in a model. Those problems were:
 
@@ -193,34 +223,27 @@ Cohen and Cohen (1983) discuss several problems associated with the inclusion of
 3. Interpretation
 
 ---
-## 3) Model
-### Correctly specified model: Tolerance
+&gt; "Over control" and your coefficient is no longer interpretable
 
-Recall that, computationally, including multiple predictors in your model requires adjusting for the overlap in these predictors. 
+Including multiple predictors in your model requires adjusting for the overlap in these predictors. 
 
-`$$\large se_{b} = \frac{s_{Y}}{s_{X}}\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}\sqrt{\frac{1}{1-R_{12}^2}}$$`
-(in a two-predictor regression)
+`$$se_{b} = \frac{s_{Y}}{s_{X}}\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}\sqrt{\frac{1}{1-R_{12}^2}}$$`
 
+Tolerance (in a two-predictor regression) is: 
 
-Tolerance is: 
-
-`$$\large 1-R_{12}^2$$`
+`$$1-R_{12}^2$$`
 
 ---
-## 3) Model
-### Correctly specified model: Tolerance
 
 If your two independent predictors are highly correlated, tolerance gets smaller.
 
-* As tolerance gets smaller, the standard error gets larger. This is referred to as variance inflation. The **variance inflation factor** is an index to assess this problem. 
+* As tolerance gets smaller, the standard error gets larger. This is referred to as _variance inflation_. The **variance inflation factor** is an index to assess this problem. 
 
 `$$\text{VIF} = \frac{1}{\text{Tolerance}} = \frac{1}{1-R^2_{12}}$$`
 
-* As the standard error becomes larger, the confidence intervals around coefficients becomes larger. When confidence intervals around estimates are large, then we say the partial coefficient estimates are *unstable.*
+* As the standard error becomes larger, the CIs around coefficients becomes larger. When CIs around estimates are large, then we say the coefficients are *unstable.*
 
 ---
-## 3) Model
-### Tolerance
 
 VIF is not bounded, but generally large numbers (greater than 5 or 10, based on who's giving you the heuristic) indicates a problem.
 
@@ -235,18 +258,27 @@ vif(model.2)
 ## 1.378785 1.378785
 ```
 
-The lesson from tolerance is that, as you add predictors to your model, it is best to select predictors that are not correlated with each other. 
+The lesson from tolerance is that, as you add predictors to your model, it is best to select predictors that are not correlated or minimally correlated with each other. 
 
-What about (3) Interpretation?
+What about interpretation?
 ---
-## 3) Model
-### Lynam et al (2006)
 
-Main takeaways:
+* What construct does an independent variable represent once the shared variance with other constructs has been removed?
 
 * Partialling changes the meaning and interpretation of a variable.
 
-* Partialling only takes variance away from the reliable `\((r_{XX})\)` part of a measurement.
+* Partialling only takes variance away from the reliable `\((r_{xx})\)` part of a measurement.
+
+  - If a scale has reliability .7 and correlates with another variable at .3, the partialling out the covariate removes .3 of the valid .7 variance or 9% out of 49%
+
+.tiny[[Lynam et al., 2016](../readings/Lynam-2006-Assessment.pdf)]
+
+---
+### Lessons from [Lynam et al., 2006](../readings/Lynam-2006-Assessment.pdf)
+
+*  Heterogeneous measures run the risk of greater dissimilarity following partialling. They showed this empirically. 
+
+  - partialling out sub-scales -- some correlations are even negative
 
 * **Nothing is a good substitute for good theory and reliable measurement.**
 
@@ -270,22 +302,31 @@ PRAQ proactive and reactive aggression
 EPQ
 PPI also psychopathy
 
-- partialling out sub-scales -- some correlations are even negative
+- 
 
 Good statistics cannot overcome poor measurement and bad theory
 
 - always present 
 
+---
+## 3. Model
+
+Assumption 3: Correctly specified model
+- This is especially important for multiple regression.
+
+- Two problems: 
+  
+&gt; "Over control" and your coefficient is no longer interpretable
+  
+&gt; **"Under control" and your coefficient is no longer interpretable
+**
 
 ---
+## Endogeniety 
 
-## 3) Model
 
-### Endogeniety 
+&gt; "Under control" and your coefficient is no longer interpretable
 
-Back to correctly specified models.
-
-2. "Under control" and your coefficient is no longer interpretable
 
 **Endogeniety** is when your your error term is associated with a predictor. 
 
@@ -299,35 +340,27 @@ Underestimates `\(R^2\)`
 
 ---
 
-## 3) Model
 
-### Endogeniety; left out predictor 
-
-.pull-left[
 If this is the true model:
 
 `$$Y_i = b_0 + b_{1}X_{1} + b_{2}X_{2} + \epsilon_{i}$$`
 But you only model this:
 
 `$$Y_i = b_0 + b_{1}X_{1} + \epsilon_{i}$$`
-]
+
 
 --
 
-.pull-right[
+
 The extra term is absorbed into the error so that
 
 `$$Y_i = b_0 + b_{1}X_{1} + (\epsilon_{i} + X_2)$$`
 
-If `\(X_1\)` and `\(X_2\)` are correlated, and `\(X_2\)` is associated with `\(Y_i\)` above and beyond `\(X_1\)`, then the residual and predictor in the model you ran ( `\(Y_i = b_0 + b_{1}X_{1} + \epsilon_{i}\)`) will be correlated!
+If `\(X_1\)` and `\(X_2\)` are correlated, and `\(X_2\)` is associated with `\(Y_i\)` above and beyond `\(X_1\)`, then the residual and predictor in the model you ran will be correlated! ( `\(r_{x_1,\epsilon} \neq 0\)` )
 
-
-]
 
 ---
-## 3) Model
-
-### Endogeniety; Condition on a collider
+### Condition on a collider
 
 
 Many ways this can happen but one common one is selecting a sample (clinical students, college students) that is associated with your variables of interest (e.g., emotion regulation, memory ability)
@@ -341,9 +374,7 @@ Many ways this can happen but one common one is selecting a sample (clinical stu
 ---
 
 
-## 4) Homoscedasticity
-
-**Homoscedasticity** is the general form of "homogeneity of variance."
+### 4. Homoscedasticity
 
 .pull-left[
 **Homogeneity of variance**
@@ -365,77 +396,45 @@ Many ways this can happen but one common one is selecting a sample (clinical stu
 
 ---
 
-## 4) Homoscedasticity
+## 4. Homoscedasticity
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
----
-
-## 4) Homoscedasticity
-
-.pull-left[
-![](11-diagnostics_files/figure-html/boxplot-1.png)&lt;!-- --&gt;
-]
-
-.pull-right[
-
-```r
-aug_1 %&gt;%
-  mutate(.fitted = cut_number(.fitted, 15)) %&gt;%
-  group_by(.fitted) %&gt;%
-  mutate(.resid = .resid - mean(.resid)) %&gt;%
-  ggplot(aes(x=.fitted, 
-             y=.resid)) + 
-  geom_boxplot() +
-  theme_bw(base_size = 20)
-```
-
-]
 
 ---
 
-## 5) Independence among the errors
+## 5. Independence among the errors
 
-.pull-left[
+
 ![](11-diagnostics_files/figure-html/independence-1.png)&lt;!-- --&gt;
-]
 
-.pull-right[
-
-```r
-aug_1$ID &lt;- c(1:118)
-ggplot(data = aug_1, 
-       aes(x=ID, y = .resid)) + 
-  geom_point() +  
-  geom_smooth(se = F) +
-  geom_hline(yintercept = 0)
-```
-]
 
 ---
-## 6) Normality of the errors
+## 6. Normality of the errors
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 
 
 ---
 
-## 6) Normality of the errors
-
+.code-small[
 
 
 ```r
 ggplot(model.1) +
   stat_qq(aes(sample = .stdresid)) +
   geom_abline() +
+  labs(title = "Q-Q Plot",
+       subtitle = "for Normality of Errors") +
   theme_bw(base_size = 20)
 ```
+]
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 ---
-## 6) Normality of the errors
+## 6. Normality of the errors
 
 
 
@@ -444,7 +443,7 @@ library(car)
 qqPlot(model.1)
 ```
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ```
 ## [1]  8 84
@@ -457,9 +456,7 @@ qqPlot(model.1)
 
 
 ---
-## Violations of assumptions
 
-How can we fix violations of assumptions of regression?
 
 |       Assumption              |       	Fix                      |
 |-------------------------------|----------------------------------|
@@ -471,7 +468,6 @@ How can we fix violations of assumptions of regression?
 |6. Normality of the Errors     | Additional IVs, different form    |
 
 ---
-## Violations of assumptions
 ### Robustness
 
 Regression models are considered **robust** meaning that even when you violate assumptions, you can still use the same models with some safety.
@@ -486,41 +482,34 @@ Regression is robust to violations of *some* assumptions, primarily
 ---
 
 
-In addition to the assumptions of models, there's also an underlying assumption* that our models are developed independent of the data. One easy way to violate this assumption is to change your regression model based on either the significance test(s) of the model or the fit. 
+There's also an underlying assumption* that our models are developed independent of the data. 
 
 - Changing the model based on assumptions does violate the data-model-independence assumption, but it's unclear how this affects the inferences. In general, it's a good idea to validate the new model using a new dataset. 
 
 - Changing the model based on the significance tests is *bad* and it's fairly clear how this affects our inferences. 
 
-.small[`*` this is true for all statistical tests]
+.tiny[`*` this is true for all statistical tests]
 
 ---
 
 
 
 
-## Screening your data
-
-### Steps for screening
+### Screening your data
 
 1) Calculate univariate and bivariate descriptive stats
 
   + Check the min and max to make sure data were entered correctly
-
   + Check the class of the variable
       + is your grouping variable a factor or numeric?
-
   + Check for skew or compare the mean and median
-
   + Compare correlation matrices with pairwise and listwise deletion for bias in missingness.
-  
   + Calculate reliability for your scales. 
   
 ---
 
-## Screening your data
+### Screening your data
 
-### Steps for screening
 
 2) Plot univariate and bivariate distributions
   
@@ -530,34 +519,24 @@ In addition to the assumptions of models, there's also an underlying assumption*
   
 ---
 
-## Screening your data
+### Screening your data
 
-### Steps for screening
 
-3) Test the assumptions of your regression model(s)
+3) Test  assumptions of your model(s)
 
-  + Calculate the variance inflation factor of each term (if you have two or more) to help check for correctly specified models.
-  
-  + Graph residuals by predictors to check for endogeniety.
-  
+  + Calculate the VIF of each term 
+  + Graph residuals by predictors to check for endogeneity.
   + Graph residuals by fitted values to check for homoscedasticity.
-  
   + Graph residuals by ID number (or date, or another variable not in your model) to check for independence.
-  
   + Graph the distribution of residuals or the Q-Q plot to check for normality. 
   
 ---
 
-## Screening your data
+### Screening your data
 
-### Steps for screening 
+4) Look for univariate or multivariate **outliers**. 
 
-4) Look for univariate or multivariate outliers. 
-
-
----
-
-## Outliers
+-- 
 
 - Broadly defined as atypical or highly influential data point(s)
 
@@ -574,11 +553,7 @@ How do we see the influence of outliers in the case of estimating the mean?
 
 ---
 
-## Outliers
-
-
-
-Outliers can be described in terms of three different metrics. Each metric conveys a sense of the magnitude of outliery-ness the case exhibits. However, some metrics also describe the degree to which your inferences will change: 
+Outliers can be described in terms of three different metrics. Each  conveys a sense of the magnitude of outliery-ness the case exhibits. However, some metrics also describe the degree to which your inferences will change: 
 
 1. Leverage
     + How unusual is this case from the rest of the cases in terms of predictors?
@@ -590,7 +565,6 @@ Outliers can be described in terms of three different metrics. Each metric conve
 ---
 ## Outliers
 
-### Leverage
 
 **Leverage** tells us how far observed values for a case are from mean values on the set of IVs (centroid). 
 
@@ -602,7 +576,6 @@ Outliers can be described in terms of three different metrics. Each metric conve
 
 ---
 
-## Outliers
 
 ### Leverage
 
@@ -612,13 +585,11 @@ library(car)
 leveragePlots(model.2)
 ```
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
 ---
 
 ## Outliers
-
-### Leverage
 
 One common metric for describing leverage is **Mahalanobis Distance**, which is the multidimensional extension of Euclidean distance where vectors are non-orthogonal. Given a set of variables, `\(\mathbf{X}\)` with means `\(\mathbf{\mu}\)` and covariance `\(\Sigma\)`:
 
@@ -626,8 +597,6 @@ One common metric for describing leverage is **Mahalanobis Distance**, which is 
 ---
 
 ## Outliers
-
-### Leverage
 
 
 ```r
@@ -648,12 +617,11 @@ a_data[MD &gt; cutoff ,]
 
 ---
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 
 ---
 ## Outliers
-### Distance
 
 - **Distance** is the distance from prediction, or how far a case's observed value is from its predicted value 
 
@@ -668,10 +636,9 @@ What might be problematic at looking at residuals in order to identify outliers?
 Problem: outliers influence the regression line, won't be easy to spot them
   
 ---
-## Outliers
 ### Distance
 
-- Raw residuals come from a model that is influenced by the outliers, making it harder to detect the outliers in the first place. To avoid this issue, it is advisable to examine the **deleted residuals.**
+Raw residuals come from a model that is influenced by the outliers, making it harder to detect the outliers in the first place. To avoid this issue, it is advisable to examine the **deleted residuals.**
 
   - This value represents the distance between the observed value from a predicted value _that is calculated from a regression model based on all data except the case at hand_
   
@@ -679,14 +646,12 @@ Problem: outliers influence the regression line, won't be easy to spot them
 
 ---
 ## Outliers
-### Influence
-
 
 **Influence** refers to how much a regression equation would change if the extreme case (outlier) is removed.
 
-- `\(\text{Influence} = \text{Leverage} \times \text{Distance}\)`
+`\(\text{Influence} = \text{Leverage} \times \text{Distance}\)`
 
-Like distance, there are several metrics by which you might assess any case's influence. The most common are:
+The most common are:
 
 - Cook's Distance (change in model fit)
 - DFFITS (change in model fit, standardized)
@@ -695,7 +660,6 @@ Like distance, there are several metrics by which you might assess any case's in
 ---
 
 ## Outliers
-### Influence
 
 **Cook’s Distance** is calculated by removing the `\(i\)`th data point from the model and recalculating the regression. It summarizes how much all the values in the regression model change when the `\(i\)`th observation is removed.
 
@@ -703,12 +667,11 @@ Like distance, there are several metrics by which you might assess any case's in
 
 ---
 ### Cook's Distance
-![](11-diagnostics_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ---
 
-## Outliers
-### Influence
+
 
 **DFFITS** indexes how much the predicted value for a case changes if you remove the case from the equation. 
 
@@ -720,8 +683,10 @@ head(dffits(model.2))
 ```
 
 ```
-##            1            2            3            4            5            6 
-##  0.142822222 -0.194364090 -0.026149990  0.133725184 -0.130437196 -0.004986982
+##            1            2            3            4            5 
+##  0.142822222 -0.194364090 -0.026149990  0.133725184 -0.130437196 
+##            6 
+## -0.004986982
 ```
 
 ```r
@@ -742,68 +707,44 @@ head(dfbeta(model.2))
 ---
 
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
 
 ---
-## Recommendations
+### Recommendations
 
 - Analyze data with/without outliers and see how results change
 
-- If you throw out cases you must believe it is not representative of population of interest or have appropriate explanation. You need to be able to **defend your decision** to the readers, your colleagues, and yourself. You also need to tell people what the hell you did (it is unfortunately very common to not specify how outliers were removed; instead you see *"outliers were removed prior to the analyses"*...ugh)
+- If you throw out cases you must believe it is not representative of population of interest or have appropriate explanation. You need to be able to **defend your decision** to the readers, your colleagues, and yourself. You also need to tell people what the hell you did
 
 - Don't throw out data just to be "safe". Data are hard to collect and outliers are expected!
 
 
 ---
 
-## Multicollinearity
+### Multicollinearity
 
 **Multicollinearity** occurs when predictor variables are highly related to each other. 
 - This can be a simple relationship, such as when X1 is strongly correlated with X2. This is easy to recognize, interpret, and correct for.
+
 - Sometimes multicollinearity is difficult to detect, such as when X1 is not strongly correlated with X2, X3, or X4, but the combination of the latter three is a strong predictor of X1. 
 
 
 ---
 
-### Multicollinearity
+### Addressing Multicollinearity
 
-Multicollinearity increases the standard errors of your slope coefficients.
+Increase sample size
 
-`$$\large se_{b} = \frac{s_{Y}}{s_{X}}\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}\sqrt{\frac{1}{1-R_{12}^2}}$$`
-- Perfect collinearity never happens. Like everything in statistics (except rejecting the null), it's never a binary situation; there are degrees of multicollinearity. More multicollinearity = more problematic model.
+Remove a variable from your model.
 
----
-
-## Multicollinearity
-### Diagnosis
-
-Multicollinearity can be diagnosed with tolerance. 
-
-Tolerance: `\(1-R_{12}^2\)`
-
-- Also look for models in which the coefficient of determination is large and the model is significant but the slope coefficients are small and non-significant. 
-
-- Look for unstable slope coefficients (i.e., large standard errors)
-
-- Look for sign changes
-
----
-
-## Addressing Multicollinearity
-
-* Increase sample size
-  - Remember, with small samples, our estimates can be wildly off. Even if the true relationship between X1 and X2 is small, the sample correlation might be high because of random error.
-  
-* Remove a variable from your model.
-
-* Composite or factor scores
+Composite or factor scores
   - If variables are highly correlated because they index the same underlying construct, why not just use them to create a more precise measure of that construct?
   
 * Centering (esp important if your model includes interaction terms)
 
 ---
 
-## Suppression
+### Suppression
 
 Multicollinearity is related to suppression. Normally our standardized partial regression coefficients fall between 0 and `\(r_{Y1}\)`. However, it is possible for `\(b_{Y1}\)` to be larger than `\(r_{Y1}\)`. We refer to this phenomenon as **suppression.**
 * A non-significant `\(r_{Y1}\)` can become a significant `\(b_{Y1}\)` when additional variables are added to the model.
@@ -816,8 +757,7 @@ class: inverse
 
 ## Next time...
 
-- Review Problems
-- Exam 1!
+- Interactions Galore!
 
 
 

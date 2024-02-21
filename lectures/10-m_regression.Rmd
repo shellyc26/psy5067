@@ -49,6 +49,25 @@ ANOVA, the long way
 
 It's important to note that by covering dummy coding a categorical variable, we have already covered ANOVA -- there is nothing more you can learn from this technique that the omnibus test of that model will not tell you. 
 
+???
+
+## ADD FOR NEXT YEAR!
+### Multicollinearity
+
+**Multicollinearity** occurs when predictor variables are highly related to each other. 
+- This can be a simple relationship, such as when X1 is strongly correlated with X2. This is easy to recognize, interpret, and correct for.
+
+- Sometimes multicollinearity is difficult to detect, such as when X1 is not strongly correlated with X2, X3, or X4, but the combination of the latter three is a strong predictor of X1. 
+
+
+### Multicollinearity
+
+Multicollinearity increases the standard errors of your slope coefficients.
+
+$$\large se_{b} = \frac{s_{Y}}{s_{X}}\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}\sqrt{\frac{1}{1-R_{12}^2}}$$
+- Perfect collinearity never happens. Like everything in statistics (except rejecting the null), it's never a binary situation; there are degrees of multicollinearity. More multicollinearity = more problematic model.
+
+
 ---
 
 Eye-hand coordination task while subjected to periodic 3-second bursts of 85 dB white noise played over earphones. They had participants keep a mouse pointer on a red dot that moved in a circle at a rate of 1 revolution per second. Participants performed the task until they allowed the pointer to stray from the rotating dot 10 times.  The time (in seconds) at the 10th failure was  the outcome measure.
