@@ -336,8 +336,6 @@ Assumption 3: Correctly specified model
 **Endogeniety** is when your your error term is associated with a predictor. 
 
 - Typically when you leave out an important predictor.  
-
-- "condition on a collider"
     
 ???
 
@@ -364,7 +362,7 @@ $$Y_i = b_0 + b_{1}X_{1} + (\epsilon_{i} + X_2)$$
 If $X_1$ and $X_2$ are correlated, and $X_2$ is associated with $Y_i$ above and beyond $X_1$, then the residual and predictor in the model you ran will be correlated! ( $r_{x_1,\epsilon} \neq 0$ )
 
 
----
+???
 ### Condition on a collider
 
 
@@ -632,6 +630,7 @@ cov = cov(a_data[c("Stress", "Support")])
 MD = mahalanobis(x = a_data[,c("Stress", "Support")], center = m, cov = cov)
 
 cutoff <- qchisq(p = 0.95 , df = ncol(a_data))
+cutoff
 
 ## Display observation whose distance greater than cutoff value
 a_data[MD > cutoff ,]
@@ -729,6 +728,7 @@ aug_2$dfbetastress <- dfbeta(model.2)[,"Stress"]
 ggplot(data = aug_2, aes(x = ID, y = dfbetastress)) + geom_point() +
 geom_text(aes(label = rownames(aug_2), vjust = -1)) + cowplot::theme_cowplot(font_size = 20)
 ```
+
 
 ---
 ### Recommendations

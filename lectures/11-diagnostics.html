@@ -131,18 +131,18 @@ aug_1
 
 ```
 ## # A tibble: 118 × 8
-##    Anxiety Support .fitted  .resid    .hat .sigma    .cooksd .std.resid
-##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-##  1   10.2     6.16    8.68  1.51   0.0137    2.10 0.00366        0.725 
-##  2    5.59    8.91    7.54 -1.95   0.00850   2.09 0.00376       -0.937 
-##  3    6.58   10.5     6.86 -0.278  0.0111    2.10 0.000100      -0.134 
-##  4    8.95   11.5     6.48  2.47   0.0144    2.09 0.0103         1.19  
-##  5    7.60    5.55    8.93 -1.33   0.0165    2.10 0.00346       -0.642 
-##  6    8.16    7.51    8.12  0.0368 0.00966   2.10 0.00000153     0.0177
-##  7    9.08    8.56    7.69  1.39   0.00850   2.10 0.00192        0.669 
-##  8    3.41    4.1     9.53 -6.12   0.0255    2.02 0.115         -2.96  
-##  9    8.66    5.39    9.00 -0.340  0.0173    2.10 0.000237      -0.164 
-## 10    4.85   13.9     5.47 -0.620  0.0299    2.10 0.00139       -0.301 
+##    Anxiety Support .fitted  .resid    .hat .sigma  .cooksd .std.resid
+##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+##  1   10.2     6.16    8.68  1.51   0.0137    2.10  3.66e-3     0.725 
+##  2    5.59    8.91    7.54 -1.95   0.00850   2.09  3.76e-3    -0.937 
+##  3    6.58   10.5     6.86 -0.278  0.0111    2.10  1.00e-4    -0.134 
+##  4    8.95   11.5     6.48  2.47   0.0144    2.09  1.03e-2     1.19  
+##  5    7.60    5.55    8.93 -1.33   0.0165    2.10  3.46e-3    -0.642 
+##  6    8.16    7.51    8.12  0.0368 0.00966   2.10  1.53e-6     0.0177
+##  7    9.08    8.56    7.69  1.39   0.00850   2.10  1.92e-3     0.669 
+##  8    3.41    4.1     9.53 -6.12   0.0255    2.02  1.15e-1    -2.96  
+##  9    8.66    5.39    9.00 -0.340  0.0173    2.10  2.37e-4    -0.164 
+## 10    4.85   13.9     5.47 -0.620  0.0299    2.10  1.39e-3    -0.301 
 ## # ℹ 108 more rows
 ```
 
@@ -160,13 +160,13 @@ Residuals are your best diagnostic tool for assessing your regression model. Not
 .left-column[
 ### What are residuals?
 ]
-&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 .left-column[
 ### What are residuals?
 ]
-&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 We can add stress to the model to see how this changes
 ---
@@ -196,7 +196,7 @@ There is ALWAYS measurement error. What do we do about this?
 
 Assumption 2: Correctly specified form
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 Don't use linear models on non-linear data! This will underestimate `\(R^2\)`
 
@@ -331,8 +331,6 @@ Assumption 3: Correctly specified model
 **Endogeniety** is when your your error term is associated with a predictor. 
 
 - Typically when you leave out an important predictor.  
-
-- "condition on a collider"
     
 ???
 
@@ -359,7 +357,7 @@ The extra term is absorbed into the error so that
 If `\(X_1\)` and `\(X_2\)` are correlated, and `\(X_2\)` is associated with `\(Y_i\)` above and beyond `\(X_1\)`, then the residual and predictor in the model you ran will be correlated! ( `\(r_{x_1,\epsilon} \neq 0\)` )
 
 
----
+???
 ### Condition on a collider
 
 
@@ -398,7 +396,7 @@ Many ways this can happen but one common one is selecting a sample (clinical stu
 
 ## 4. Homoscedasticity
 
-&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -412,7 +410,7 @@ Many ways this can happen but one common one is selecting a sample (clinical stu
 ---
 ## 6. Normality of the errors
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 
 
@@ -432,7 +430,7 @@ ggplot(model.1) +
 ]
 
 
-&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ## 6. Normality of the errors
 
@@ -443,7 +441,7 @@ library(car)
 qqPlot(model.1)
 ```
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
 ```
 ## [1]  8 84
@@ -585,7 +583,7 @@ library(car)
 leveragePlots(model.2)
 ```
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -605,7 +603,14 @@ cov = cov(a_data[c("Stress", "Support")])
 MD = mahalanobis(x = a_data[,c("Stress", "Support")], center = m, cov = cov)
 
 cutoff &lt;- qchisq(p = 0.95 , df = ncol(a_data))
+cutoff
+```
 
+```
+## [1] 11.0705
+```
+
+```r
 ## Display observation whose distance greater than cutoff value
 a_data[MD &gt; cutoff ,]
 ```
@@ -617,7 +622,7 @@ a_data[MD &gt; cutoff ,]
 
 ---
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -667,7 +672,7 @@ The most common are:
 
 ---
 ### Cook's Distance
-![](11-diagnostics_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -707,7 +712,8 @@ head(dfbeta(model.2))
 ---
 
 
-![](11-diagnostics_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](11-diagnostics_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+
 
 ---
 ### Recommendations
