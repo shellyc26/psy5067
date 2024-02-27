@@ -1,5 +1,5 @@
 ---
-title: "Homework #4"
+title: "Homework #3"
 output: html_document
 ---
 
@@ -9,16 +9,16 @@ Please complete this assignment by creating a new RMarkdown (or RNotebook) file 
 
 #### Formatting
 
--   All code should be in a code chunk (gray boxes)
--   All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks.
--   You may make comments in your code within the code chunks. However, no long form sentences should be in there.
--   Make use of headers! Question number should be the \#1 header (use one `#` symbol, then a space, then type "Question 1"). You may use sub headers (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
+- All code should be in a code chunk (gray boxes)
+- All text (as in, interpretations/opinions/summary statements etc.) should be *outside* the code chunks. 
+- You may make comments in your code within the code chunks. However, no long form sentences should be in there.
+- Make use of headers! Question number should be the #1 header (use one `#` symbol, then a space, then type "Question 1"). You may use subheaders (meaning more than 1 `#` symbol) for different parts of the question, if you wish. However, your interpretations/opinions/summary statements should not be contained within a header (that is, there should be no `#` symbols preceding it).
 
-You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url.
+You are allowed to Google things. *However*, if you use code from an outside source (meaning not the lecture slides or the R help documentation), then you must provide a **working link** to the website you used. You don't need to use APA formatting or anything. Just a working url. Similarly, you must do the same for any and all AI use (including Chat-GPT). You must include a working link to your conversation.
 
-All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
+All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else’s code**. If we believe one student has copied another’s work, both students will receive a 0 on the homework assignment. If you wind up working or consulting with a peer, please list them on your assignment (the equivalent of citing their work).
 
-In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
+In the instructions, when it says **_by hand_**, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
 **Data:** The dataset looks at happiness in college as a relationship with school success, friendship quality, SES, and an intervention group (1 = control, 2 = study skills training, 3 = social skills training). (Note that the variable names have spaces in them, which may make it tricky to work with. I suggest renaming the variables). The data are here: [`th-project-4.csv`](th-project-4.csv)
 
