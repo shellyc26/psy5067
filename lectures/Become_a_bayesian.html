@@ -7,7 +7,7 @@
 <link href="Become_a_bayesian_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Become_a_bayesian_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="Become_a_bayesian_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.0.38">
 
   <meta name="author" content="Josh Jackson">
   <title>Become a Bayesian in 3 simple steps</title>
@@ -19,15 +19,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -387,18 +382,11 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center">
   <h1 class="title">Become a Bayesian in 3 simple steps</h1>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Josh Jackson 
-</div>
-</div>
-</div>
-
+  <p class="author">Josh Jackson</p>
 </section>
+
 <section id="reassurance-before-we-get-to-the-three-steps" class="slide level2">
 <h2>Reassurance, before we get to the three steps</h2>
 <ul>
@@ -490,10 +478,6 @@ F-statistic: 246.8 on 1 and 926 DF,  p-value: &lt; 2.2e-16</code></pre>
 Call:
 glm(formula = child ~ parent, family = gaussian, data = galton.data)
 
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--7.8050  -1.3661   0.0487   1.6339   5.9264  
-
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept) 23.94153    2.81088   8.517   &lt;2e-16 ***
@@ -515,7 +499,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <h2>Maximum likelihood</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>lavaan 0.6.13 ended normally after 15 iterations
+<pre><code>lavaan 0.6.17 ended normally after 1 iteration
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -741,21 +725,21 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">tidy_draws</span>(fit.<span class="fl">1.</span>bayesian)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4,000 × 13
-   .chain .iteration .draw b_Inte…¹ b_par…² sigma   lp__ accep…³ steps…⁴ treed…⁵
-    &lt;int&gt;      &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1      1          1     1     25.2   0.630  2.35 -2070.   0.595   0.839       2
- 2      1          2     2     17.8   0.737  2.22 -2069.   0.972   0.839       2
- 3      1          3     3     30.2   0.555  2.25 -2069.   0.992   0.839       3
- 4      1          4     4     29.8   0.562  2.17 -2070.   0.942   0.839       3
- 5      1          5     5     21.7   0.678  2.14 -2069.   0.916   0.839       2
- 6      1          6     6     24.0   0.643  2.31 -2068.   0.919   0.839       2
- 7      1          7     7     21.2   0.687  2.16 -2069.   0.981   0.839       2
- 8      1          8     8     29.2   0.569  2.29 -2069.   0.962   0.839       3
- 9      1          9     9     29.1   0.571  2.25 -2068.   1       0.839       2
-10      1         10    10     18.4   0.727  2.25 -2069.   0.934   0.839       3
-# … with 3,990 more rows, 3 more variables: n_leapfrog__ &lt;dbl&gt;,
-#   divergent__ &lt;dbl&gt;, energy__ &lt;dbl&gt;, and abbreviated variable names
-#   ¹​b_Intercept, ²​b_parent, ³​accept_stat__, ⁴​stepsize__, ⁵​treedepth__</code></pre>
+   .chain .iteration .draw b_Intercept b_parent sigma   lp__ accept_stat__
+    &lt;int&gt;      &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+ 1      1          1     1        25.2    0.630  2.35 -2070.         0.595
+ 2      1          2     2        17.8    0.737  2.22 -2069.         0.972
+ 3      1          3     3        30.2    0.555  2.25 -2069.         0.992
+ 4      1          4     4        29.8    0.562  2.17 -2070.         0.942
+ 5      1          5     5        21.7    0.678  2.14 -2069.         0.916
+ 6      1          6     6        24.0    0.643  2.31 -2068.         0.919
+ 7      1          7     7        21.2    0.687  2.16 -2069.         0.981
+ 8      1          8     8        29.2    0.569  2.29 -2069.         0.962
+ 9      1          9     9        29.1    0.571  2.25 -2068.         1    
+10      1         10    10        18.4    0.727  2.25 -2069.         0.934
+# ℹ 3,990 more rows
+# ℹ 5 more variables: stepsize__ &lt;dbl&gt;, treedepth__ &lt;dbl&gt;, n_leapfrog__ &lt;dbl&gt;,
+#   divergent__ &lt;dbl&gt;, energy__ &lt;dbl&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -828,8 +812,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 
 </div>
 <img data-src="Become_a_bayesian_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
-<section id="be-comfortable-integrating-prior-knowledge" class="slide level2">
-<h2>3. Be comfortable integrating prior knowledge</h2>
+<section id="integrating-prior-knowledge" class="slide level2">
+<h2>3. Integrating prior knowledge</h2>
 <ul>
 <li><p>Priors insert knowledge you have outside of your data into your model</p></li>
 <li><p>This can seem “subjective” as opposed to the more “objective” way of letting the data speak.</p></li>
@@ -945,7 +929,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <pre><code># A tibble: 1 × 6
   b_parent .lower .upper .width .point .interval
      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-1    0.652  0.568  0.730   0.95 mode   hdi      </code></pre>
+1    0.651  0.567  0.730   0.95 mode   hdi      </code></pre>
 </div>
 </div>
 </section>
@@ -975,9 +959,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2>What is confusing:</h2>
 <div>
 <ul>
-<li class="fragment">Is it a philosophical different frame work? We can talk about how it is p(H0|d) vs p(d|H0) but it really doesn’t matter. Become a Bayesian just means using the algorithm, and again, most of us don’t have strong algo preferences</li>
-<li class="fragment">Technically we don’t have P-values, but Bayesian has analogues. Technically there isn’t NHST (because no null distribution to create sampling distribution) but you can easily do it.<br>
-</li>
+<li class="fragment">Is it a philosophical different frame work? We can talk about how it is p(H0|d) vs p(d|H0) but it doesn’t matter. Bayesian just means using the algorithm.</li>
+<li class="fragment">Technically we don’t have P-values, but Bayesian has analogues. Technically there isn’t NHST (because no null distribution to create sampling distribution) but you can easily do it.</li>
 <li class="fragment">Why don’t we do this already? Isn’t frequentist better? Historical accident due to computation limitations</li>
 <li class="fragment">Bayes Factors. Mostly garbage (imho) as they can be easily manipulated. But they have their place. BFs =/= Bayesian.</li>
 </ul>
@@ -1211,15 +1194,12 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -1230,6 +1210,13 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
               window.jQuery(currentSlide).trigger("shown");
             }
           }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
         }
 
         // hookup for slidy
@@ -1281,24 +1268,7 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
         setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1328,50 +1298,31 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
           return note.innerHTML;
         });
       }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
           });
-        }
+          return popup.innerHTML;
+        });
       }
     });
     </script>

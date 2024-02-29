@@ -294,7 +294,7 @@ spread_draws(b_Intercept, b_parent) %>%
 
 ```
 
-## 3. Be comfortable integrating prior knowledge
+## 3. Integrating prior knowledge
 
 -   Priors insert knowledge you have outside of your data into your model
 
@@ -587,8 +587,8 @@ data_grid(parent = seq_range(parent, n = 101)) %>%
 ## What is confusing:
 
 ::: incremental
--   Is it a philosophical different frame work? We can talk about how it is p(H0\|d) vs p(d\|H0) but it really doesn't matter. Become a Bayesian just means using the algorithm, and again, most of us don't have strong algo preferences
--   Technically we don't have P-values, but Bayesian has analogues. Technically there isn't NHST (because no null distribution to create sampling distribution) but you can easily do it.\
+-   Is it a philosophical different frame work? We can talk about how it is p(H0\|d) vs p(d\|H0) but it doesn't matter. Bayesian just means using the algorithm.
+-   Technically we don't have P-values, but Bayesian has analogues. Technically there isn't NHST (because no null distribution to create sampling distribution) but you can easily do it.
 -   Why don't we do this already? Isn't frequentist better? Historical accident due to computation limitations
 -   Bayes Factors. Mostly garbage (imho) as they can be easily manipulated. But they have their place. BFs =/= Bayesian.
 :::

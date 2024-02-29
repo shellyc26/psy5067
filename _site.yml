@@ -31,6 +31,8 @@ navbar:
         href: "lectures/11-diagnostics.html"
       - text: "12-Interactions 1"
         href: "lectures/12-interactions.html"
+      - text: "13-Bayes"
+        href: "lectures/Become_a_bayesian.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -57,6 +59,8 @@ navbar:
         href: "lectures/11-diagnostics.pdf"
       - text: "12-Interactions 1"
         href: "lectures/12-interactions.pdf"
+      - text: "13-Bayes"
+        href: "lectures/Become_a_bayesian.pdf"
     - text: Homework
       href: homework.html
   right:
