@@ -3,13 +3,34 @@ title: 'Interactions (II)'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
 
 ```{r, warning=FALSE, message=FALSE, include=FALSE}
 library(sjPlot)
@@ -18,7 +39,9 @@ library(tidyverse)
 
 ## Last time...
 
-Introduction to interactions with two continuous predictors
+- Introduction to interactions with two continuous predictors
+
+- Bayes galore with JJJ
 
 ---
 
@@ -26,14 +49,14 @@ Introduction to interactions with two continuous predictors
 
 We use interaction terms to test the hypothesis that the relationship between X and Y changes as a function of Z. 
   - social support buffers the effect of anxiety and stress
-  - conscientiousness predicts better health for affluent individuals and worse health for non-affluent individuals
+
   
-The interaction term represents how much the slope of X changes as you increase on Z, and also how much the slope of Z changes as you increase on X. Interactions are symmetric. 
+The interaction term represents how much the slope of X changes as you increase on Z, and also how much the slope of Z changes as you increase on X. Interactions are **symmetric**. 
 
 ---
 ### Recap: Output
 
-```{r}
+```{r, echo=FALSE}
 cars_model = lm(mpg ~ disp*hp, data = mtcars)
 summary(cars_model)
 ```
@@ -71,19 +94,19 @@ Start discussing Factorial ANOVA
 
 ## Mixing categorical and continuous
 
-Consider the case where D is a variable representing two groups. In a univariate regression, how do we interpret the coefficient for D?
+Consider the case where *D* is a *d*ummy coded variable representing two groups. In a univariate regression, how do we interpret the coefficient for D?
 
 $$\hat{Y} = b_{0} + b_{1}D$$
 
 --
 
-$b_0$ is the mean of the reference group, and D represents the difference in means between the two groups.
+$b_0$ is the mean of the reference group, and *D* represents the difference in means between the two groups.
 
 ---
 
 ### Interpreting slopes
 
-Extending this to the multivariate case, where X is continuous and D is a dummy code representing two groups.
+Extending this to the multivariate case, where *X* is continuous and *D* is a dummy code representing two groups.
 
 $$\hat{Y} = b_{0} + b_{1}D + b_2X$$
 
@@ -94,7 +117,7 @@ How do we interpret $b_1?$
 
 $b_1$ is the difference in means between the two groups *if the two groups have the same average level of X* or holding X constant. 
 
-This, by the way, is ANCOVA.
+This is called "ANCOVA". It's just regression.
 
 ---
 
@@ -182,7 +205,7 @@ Standardized coefficients can be used if we only have two groups, but what if we
 
 --
 
-Just like we use $R^2$ to report how much variance in Y is explained by the model, we can break this down into the unique contributions of each variable in the model, including factors with 3+ levels. 
+Just like we use $R^2$ to report how much variance in Y is explained by the model, we can look at the contributions of each variable in the model, including factors with 3+ levels. 
 
 $$\large \eta^2 = \frac{SS_{\text{Variable}}}{SS_{Y}}== \frac{SS_{\text{Variable}}}{SS_{\text{Total}}}$$
 
@@ -199,9 +222,7 @@ $$\large \eta^2_{D} = \frac{20.071}{64.045+20.071+17.707} = .19712 = 20\%$$
 
 ---
 
-## Interactions
-
-Now extend this example to include joint effects, not just additive effects:
+Now extend this to include joint effects:
 
 $$\hat{Y} = b_{0} + b_{1}D + b_2X + b_3DX$$
 
@@ -243,8 +264,6 @@ Where you draw the segment changes the difference in means. That's why $b_1$ can
 
 ---
 
-## Example 
-
 ```{r, echo = F}
 set.seed(022520)
 x = rnorm(n = 50)
@@ -262,7 +281,7 @@ inc_data$income[inc_data$income < 21] = rnorm(n = length(which(inc_data$income <
                                               m = 55, sd = 10)
 ```
 
-Wash U is interested in understanding how undergraduates' academic performance and choice of major impacts their career success. They contact 150 alumni between the ages of 25 and 35 and collect their current salary (in thousands of dollars), their primary undergraduate major, and their GPA upon graduating. 
+Wash U contacts 150 alumni and collects their current salary (in thousands of dollars), their primary undergraduate major, and their GPA upon graduating. 
 
 
 ```{r, message = F, warning = F}
@@ -272,7 +291,6 @@ describe(inc_data[,c("gpa", "income")], fast = T)
 ```
 
 ---
-### Model summary
 
 ```{r}
 career.mod = lm(income ~ gpa*major, data = inc_data)
@@ -290,7 +308,7 @@ For the model just defined in the previous slide...
 - Where is Econ? 
 
 ---
-### Model summary: centering predictors
+
 
 ```{r}
 inc_data$gpa_c = inc_data$gpa - mean(inc_data$gpa)
@@ -325,7 +343,8 @@ ggplot(data = predictedvals, aes(x = x, y = predicted, group = group)) +
        title = "I am in the wrong profession",
        color = "Undergraduate Major",
        fill = "Undergraduate Major",
-       group = "Undergraduate Major")
+       group = "Undergraduate Major") +
+  theme_classic(base_size = 16)
 
 ```
 
@@ -351,19 +370,20 @@ ggplot(data = predictedvals, aes(x = x, y = predicted, group = group)) +
        title = "I am in the wrong profession",
        color = "Undergraduate Major",
        fill = "Undergraduate Major",
-       group = "Undergraduate Major")
+       group = "Undergraduate Major") +
+  theme_classic(base_size = 16)
 
 ```
 
 ---
 
-## Two categorical predictors
+### Two categorical predictors
 
 If both X and M are categorical variables, the interpretation of coefficients is no longer the value of means and slopes, but means and differences in means. 
 
 Recall our Solomon's paradox example from a few weeks ago:
 
-```{r, warning=F, message=FALSE}
+```{r, warning=F, message=FALSE, echo=FALSE}
 library(here)
 solomon = read.csv(here("data/solomon.csv"))
 ```
@@ -438,10 +458,9 @@ plot_model(solomon.mod, type = "int")
 
 ---
 class:inverse
-## Factorial ANOVA
 
 
-The interaction of two or more categorical variables in a general linear model is formally known as **Factorial ANOVA**.
+The interaction of two or more categorical variables in a general linear model is formally known as *Factorial ANOVA*.
 
 A factorial design is used when there is an interest in how two or more variables (or factors) affect the outcome. 
 
@@ -491,7 +510,14 @@ The example data are from a simulated study in which 180 participants performed 
 ![](images/dot.jpg)
 ]
 
-The outcome was the time of the 10th failure. The experiment used a completely crossed, 3 x 3 factorial design. One factor was dot speed: .5, 1, or 1.5 revolutions per second.  The second factor was noise condition.  Some participants performed the task without any noise; others were subjected to periodic and unpredictable 3-second bursts of 85 dB white noise played over earphones.  Of those subjected to noise, half could do nothing to stop the noise (uncontrollable noise); half believed they could stop the noise by pressing a button (controllable noise).
+The outcome was the time of the 10th failure. The experiment used a completely crossed, 3 x 3 factorial design.
+
+---
+### Coordination Study
+One factor was dot speed: .5, 1, or 1.5 revolutions per second. 
+
+The second factor was noise condition.  Some participants performed the task without any noise; others were subjected to periodic and unpredictable 3-second bursts of 85 dB white noise played over earphones.  Of those subjected to noise, half could do nothing to stop the noise (uncontrollable noise); half believed they could stop the noise by pressing a button (controllable noise).
+
 
 ---
 
@@ -521,7 +547,6 @@ In this case, we have a 3 x 3 ANOVA ("three by three"), because our first factor
 
 ---
 
-### Questions 
 ```{r, echo = F, results = 'asis', message = F, warning = F}
 mean.summary = Data %>%
   group_by(Noise, Speed) %>%
@@ -540,7 +565,7 @@ kable(mean.summary, digits = 2) %>% kable_styling() %>% group_rows(start_row = 1
 ```
 
 
-There are three important ways we can view the results of this experiment.  Two of them correspond to questions that would arise in a simple one-way ANOVA:
+3 Hypothesies. 2 correspond to questions that would arise in a simple one-way ANOVA:
 
 Regardless of noise condition, does speed of the moving dot affect performance?
 
@@ -554,23 +579,21 @@ Regardless of dot speed, does noise condition affect performance?
 kable(mean.summary, digits = 2) %>% 
   kable_styling() %>% 
   group_rows(start_row = 1, end_row = 3) %>%
-  row_spec(4, bold = T, color = "white", background = "#562457")
+  row_spec(4, bold = T, color = "white", background = "#DD3E3E")
 ```
 
-We can answer those questions by examining the marginal means, which isolate one factor while collapsing across the other factor.
+We can answer those questions by examining the **marginal means**, which isolate one factor while collapsing across the other factor.
 
-Regardless of noise condition, does speed of the moving dot affect performance?  Faster moving dots are harder to track and lead to faster average failure times.
-
-Adding information about variability allows us a sense of whether these are significant and meaningful differences...
+Regardless of noise condition, does speed of the moving dot affect performance? 
 
 ---
 
 ```{r, message = F, warning = F, fig.width = 10, fig.height = 4.5}
 library(ggpubr)
-ggbarplot(data = Data, x = "Speed", y = "Time", add = c("mean_ci"), fill = "#562457", xlab = "Speed Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nspeed condition") + cowplot::theme_cowplot(font_size = 20)
+ggbarplot(data = Data, x = "Speed", y = "Time", add = c("mean_ci"), fill = "#DD3E3E", xlab = "Speed Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nspeed condition") + cowplot::theme_cowplot(font_size = 20)
 ```
 
-Looks like the mean differences are substantial.  The ANOVA will be able to tell us if the means are significantly different  and the magnitude of those differences in terms of variance accounted for.
+The ANOVA will be able to tell us if the means are significantly different  and the magnitude of those differences in terms of variance accounted for.
 
 ---
 
@@ -580,17 +603,16 @@ Looks like the mean differences are substantial.  The ANOVA will be able to tell
 kable(mean.summary, digits = 2) %>% 
   kable_styling() %>% 
   group_rows(start_row = 1, end_row = 3) %>% 
-  column_spec(5, bold = T, color = "white", background = "#562457")
+  column_spec(5, bold = T, color = "white", background = "#DD3E3E")
 ```
 
 Regardless of dot speed, does noise condition affect performance?  Performance declines in the presence of noise, especially if the noise is uncontrollable.
 
-Here, too adding information about variability allows us a sense of whether these are significant and meaningful differences...
 
 ---
 
 ```{r, message = F, warning = F, fig.width = 10, fig.height = 4.5}
-ggbarplot(data = Data, x = "Noise", y = "Time", add = c("mean_ci"), fill = "#562457", xlab = "Noise Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nnoise condition") + cowplot::theme_cowplot(font_size = 20)
+ggbarplot(data = Data, x = "Noise", y = "Time", add = c("mean_ci"), fill = "#DD3E3E", xlab = "Noise Condition", ylab = "Mean Seconds (95% CI)", title = "Failure time as a function of\nnoise condition") + cowplot::theme_cowplot(font_size = 20)
 ```
 
 The mean differences are not as apparent for this factor. The ANOVA will be particularly important for informing us about statistical significance and effect size.
@@ -606,7 +628,19 @@ kable(mean.summary, digits = 2) %>%
 ```
 The **marginal mean differences** correspond to main effects. They tell us what impact a particular factor has, ignoring the impact of the other factor. 
 
-The remaining effect in a factorial design, and it primary advantage over separate one-way ANOVAs, is the ability to examine **conditional mean differences**. 
+---
+
+
+### Marginal means
+
+```{r, echo = F, results = 'asis', message = F, warning = F}
+kable(mean.summary, digits = 2) %>% 
+  kable_styling() %>% 
+  group_rows(start_row = 1, end_row = 3) 
+```
+
+
+The remaining effect in a factorial design, and it primary advantage over separate one-way ANOVAs, is the ability to examine **conditional mean differences**
 
 ---
 

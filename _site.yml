@@ -33,6 +33,8 @@ navbar:
         href: "lectures/12-interactions.html"
       - text: "13-Bayes"
         href: "lectures/Become_a_bayesian.html"
+      - text: "14-Interactions 2"
+        href: "lectures/14-interactions.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -61,6 +63,8 @@ navbar:
         href: "lectures/12-interactions.pdf"
       - text: "13-Bayes"
         href: "lectures/Become_a_bayesian.pdf"
+      - text: "14-Interactions 2"
+        href: "lectures/14-interactions.pdf"
     - text: Homework
       href: homework.html
   right:
