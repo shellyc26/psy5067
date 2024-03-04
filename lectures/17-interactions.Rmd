@@ -3,17 +3,38 @@ title: 'Interactions (IV)'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
 
 ## Last time...
 
-- Factorial ANOVA
+- Factorial ANOVA with Grace
+- Qualitative Methods with Amy Eyler
 
 ## This time
 
@@ -68,7 +89,7 @@ The example data are from a simulated study in which 180 participants performed 
 ![](images/dot.jpg)
 ]
 
-The outcome was the time of the 10th failure. The experiment used a completely crossed, 3 x 3 factorial design. One factor was dot speed: .5, 1, or 1.5 revolutions per second.  The second factor was noise condition: no noise, controllable noise, and uncontrollable noise.  The design was balanced. 
+Outcome: time of 10th failure. Dot speed: .5, 1, or 1.5 revolutions. Noise: no noise, controllable noise, and uncontrollable noise. 3x3 balanced. 
 ---
 
 ### Marginal/cell means
@@ -120,15 +141,11 @@ $\eta^2$ represents the proportion of variance in Y explained by a single factor
 $$\large \eta^2 = \frac{SS_{\text{effect}}}{SS_{\text{Y}}}$$
 ---
 
-```{r}
-lsr::etaSquared(fit)
-```
+In an experimental design, variance in Y is created, rather than observed, by manipulating participants. The ways in which an experimenter chooses to manipulate participants can chnage variance in Y, making it difficult to compare the effect of a single manipulation across studies with different designs. 
 
-In an experimental design, variance in Y is created, rather than observed, by manipulating participants. The ways in which an experimenter chooses to manipulate particiapnts can increase or decrease variance in Y, making it difficult to compare the effect of a single manipulation across studies with different designs. 
+Partial $\eta^2$ helps interpretation by considering only the variance associated with an effect and random variability, which is naturally occurring
 
-Partial $\eta^2$ is meant to aid interpretation by considering only the variance associated with an effect and random variablity, which is naturally occuring and not under the control of the experimenter.
-
-$$\large \text{Partial }\eta^2 = \frac{SS_{\text{effect}}}{SS_{\text{effect}} + SS_{\text{within}}}$$
+$$\text{Partial }\eta^2 = \frac{SS_{\text{effect}}}{SS_{\text{effect}} + SS_{\text{within}}}$$
 
 ---
 
@@ -158,17 +175,15 @@ These means will be based on different sample sizes, which has an impact on the 
 
 ---
 
-### Precision
-
 If the homogeneity of variances assumption holds, a common estimate of score variability $(MS_{within})$ underlies all of the confidence intervals. 
 
-$$\large SE_{mean} = \sqrt{\frac{MS_{within}}{N}}$$
+$$SE_{mean} = \sqrt{\frac{MS_{within}}{N}}$$
 
-$$\large CI_{mean} = Mean \pm t_{df_{within}, \alpha = .05}\sqrt{\frac{MS_{within}}{N}}$$
+$$CI_{mean} = Mean \pm t_{df_{within}, \alpha = .05}\sqrt{\frac{MS_{within}}{N}}$$
 
 The sample size, $N$, depends on how many cases are aggregated to create the mean.
 
-The $MS_{within}$ is common to all calculations if homogeneity of variances is met.  The degrees of freedom for $MS_{within}$ determine the value of $t$ to use.
+The $MS_{within}$ is common to all calculations if HoV met.
 ---
 
 ```{r, message = F}
@@ -252,11 +267,24 @@ pooled_sd = sqrt(MS_error)
 
 (d_none_control = diff(noise_df[c(1,2), "lsmean"])/pooled_sd)
 ```
+---
 
+### Other `emmeans` functions
 
+```{r}
+em <- emmeans(fit, ~ Speed : Noise )
+em 
+```
+---
 
+```{r}
+pairs(em)
+
+```
 
 ---
+
+
 
 ### Follow-up comparisons
 
@@ -277,9 +305,23 @@ pairs(noise_lsm, adjust = "holm")
 
 ---
 
+### Cohen's D the easy way
+
+```{r}
+em.ef <- emmeans(fit, pairwise ~ Noise)
+eff_size(em.ef, sigma = sigma(fit), edf = 171)
+```
+
+
+---
+
 ## Assumptions
 
 You can check the assumptions of the factorial ANOVA in much the same way you check them for multiple regression; but given the categorical nature of the predictors, some assumptions are easier to check.
+
+---
+
+### Assumptions
 
 Homogeneity of variance, for example, can be tested using Levene's test, instead of examining a plot.
 
@@ -290,7 +332,6 @@ leveneTest(Time ~ Speed*Noise, data = Data)
 
 ---
 
-## Unbalanced designs
 
 If designs are balanced, then the main effects and interaction effects are independent/orthogonal. In other words, knowing what condition a case is in on Variable 1 will not make it any easier to guess what condition they were part of in Variable 2. 
 
@@ -327,34 +368,34 @@ table(Data2$Level, Data2$Noise)
 
 ---
 
-### Sums of Squares
-
 .pull-left[
-In a Venn diagram, the overlap represents the variance shared by the variables. Now there is variance accounted for in the outcome (Time) that cannot be unambiguously attributed to just one of the predictors There are several options for handling the ambiguous regions.]
+The overlap represents the variance shared by the variables. Now there is variance accounted for in the outcome (Time) that cannot be unambiguously attributed to just one of the predictors There are several options for handling the ambiguous regions.]
 .pull-right[
 ![](images/eta_sq_unbalanced.jpg)
 ]
 ---
 
-### Sums of Squares (III)
-
 .pull-left[
 ![](images/eta_sq_unbalanced_iii.jpg)]
 
 .pull-right[
-There are three basic ways that overlapping variance accounted for in the outcome can be handled.  These are known as Type I, Type II, and Type III sums of squares. 
+Overlap handled in 3 ways: Type I, Type II, and Type III sums of squares. 
 
-All credit for the following goes to Matt Cooper (no relation!) and this great blog post. I'm going to paraphrase from his post since I think he does a great job making it clear -- you can check it out [here](https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/). 
+All credit goes to Matt Cooper (no relation!) and this great blog post. I'm going to paraphrase from his post since I think he does a great job making it clear -- you can check it out [here](https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/). 
 ]
 
 ---
 ### Sums of Squares
 
 $SS(A, B, AB)$ is sum of squares for both main effects and interaction
+
 $SS(A, B)$ is sum of squares for a model with no interaction
+
 $SS(B, AB)$ is sum of squares for model that does not account for the effects from factor A
 
---
+---
+
+### Sum of Squares
 
 > The influence of particular factors (including interactions) can be tested by examining the differences between models. For example, to determine the presence of an interaction effect, an F-test of the models $SS(A, B, AB)$ and the no-interaction model $SS(A, B)$ would be carried out.
 
@@ -366,7 +407,7 @@ Read the pipe `|` as "after"; $SS(AB | A,B)$ is *"the sum of squares for interac
 
 ### Type 1 SS (aka sequential)
 
-Test for main effect of A, followed by main effect of B, followed by interaction. ORDER MATTERS! The overlapping part of the venn diagram goes to whichever factor is listed first (a priority rule). Rule needs to be justified or else you might be p-hacking. The rule might be based on theory or causal priority or methodological argument.
+Test for main effect of A, followed by main effect of B, followed by interaction. ORDER MATTERS! The overlapping part of the venn diagram goes to whichever factor is listed first (a priority rule). Rule needs to be justified or else you might be p-hacking. 
 
 
 | Effect | Type I            | Type II           | Type III            |
@@ -376,7 +417,7 @@ Test for main effect of A, followed by main effect of B, followed by interaction
 | A:B    | SS(AB&#124;A,B)    |     |   |
 
 ---
-### Sums of Squares (I)
+
 If a design is quite unbalanced, different orders of effects can produce quite different results.
 
 ```{r}
@@ -386,7 +427,7 @@ lsr::etaSquared(fit_1, type = 1)
 ```
 
 ---
-### Sums of Squares (I)
+
 If a design is quite unbalanced, different orders of effects can produce quite different results.
 
 ```{r}
@@ -442,12 +483,14 @@ The highest order effect (assuming standard ordering) has the same SS in all thr
 
 ---
 
-## Summary (ANOVA and Regression)
+### Summary (ANOVA and Regression)
 
-Factorial ANOVA is the method by which we can examine whether two (or more) categorical IVs have joint effects on a continuous outcome of interest. Like all general linear models, factorial ANOVA is a specific case of multiple regression. However, we may choose to use an ANOVA framework for the sake of interpretability. 
+Factorial ANOVA is the method by which we can examine whether two (or more) categorical IVs have joint effects on a continuous outcome of interest.
+
+Like all general linear models, factorial ANOVA is a specific case of multiple regression. However, we may choose to use an ANOVA framework for the sake of interpretability. 
 
 ---
-## Summary (ANOVA and Regression)
+### Summary (ANOVA and Regression)
 
 .pull-left[
 #### Factorial ANOVA
@@ -509,17 +552,24 @@ ggplot(data.frame(x = seq(70, 130)), aes(x)) +
 
 ---
 
-## Power in multiple regression (additive effects)
+### Power in multiple regression (additive effects)
 
 When calculating power for the omnibus test, use the expected multiple $R^2$ value to calculate an effect size:
 
 $$\large f^2 = \frac{R^2}{1-R^2}$$
 ---
 
-### Omnibus power
+## Omnibus power
 ```{r}
 R2 = .10
 (f = R2/(1-R2))
+```
+
+
+---
+## Omnibus power
+
+```{r}
 library(pwr)
 pwr.f2.test(u = 3, # number of predictors in the model
             f2 = f, 
@@ -543,6 +593,13 @@ $$\large f^2 = \frac{R^2_Y-R^2_{Y.X}}{1-R_Y^2}$$
 R2 = .10
 RX1 = .03
 (f = (R2-RX1)/(1-R2))
+
+```
+
+---
+
+### Coefficient power
+```{r}
 pwr.f2.test(u = 3, # number of predictors in the model
             f2 = f, 
             sig.level = .05, #alpha
