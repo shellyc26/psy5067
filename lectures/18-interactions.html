@@ -3,10 +3,8 @@
   <head>
     <title>Interactions (V)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,23 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
 
 
 
@@ -57,12 +72,8 @@ Interaction tests whether slope changes.
 
 ---
 
-## Power
-The likelihood of finding an effect *if the effect actually exists.* Power gets larger as we:
-* increase our sample size
-* reduce (error) variance
-* raise our Type I error rate
-* study larger effects
+### Power
+The likelihood of finding an effect *if the effect actually exists.*
 
 --
 
@@ -73,7 +84,7 @@ When calculating power for the omnibus test, use the expected multiple `\(R^2\)`
 To estimate power for a single coefficient, you need to consider (1) how much variance is accounted for by just the variable and (2) how much variance you'll account for in Y overall. `\(f^2 = \frac{R^2_Y-R^2_{Y.X}}{1-R_Y^2}\)`
 
 ---
-## Effect sizes (interactions)
+### Effect sizes (interactions)
 
 To start our discussion on powering interaction terms, we need to first consider the effect size of an interaction. 
 
@@ -81,13 +92,17 @@ How big can we reasonably expect an interaction to be?
 
 - Interactions are always partialled effects; that is, we examine the relationship between the product of variables X and Z only after we have controlled for X and controlled for Z. How does this affect the size of the relationship between XZ and Y?
 
-???
+---
 
-The effect of XZ and Y will be made smaller as X or Z (or both) is related to the product -- the semi-partial correlation is always smaller than or equal to the zero-order correlation. 
+### Effect sizes (interactions)
+
+The effect of XZ and Y will get **smaller** as `\(X\)` or `\(Z\)` (or both) is related to the product
+
+The semi-partial correlation is always smaller than or equal to the zero-order correlation. 
 
 ---
 
-## McClelland and Judd (1993)
+### McClelland and Judd (1993)
 
 Is it more difficult to find interaction effects in experimental studies or observational studies?
 
@@ -97,7 +112,7 @@ What factors make it relatively easier to find interactions in experimental work
 
 ---
 
-### Factors influencing power in experimental studies
+### Influencing power in experimental studies
 
 - No measurement error of IV 
     * don't have to guess what condition a participant is in
@@ -108,7 +123,7 @@ What factors make it relatively easier to find interactions in experimental work
     
 ---
 
-### Factors influencing power in experimental studies
+### Influencing power in experimental studies
 
 - Experimentalists can concentrate scores on extreme ends on both X and Z
     * in observational studies, data tends to cluster around the mean 
@@ -144,6 +159,12 @@ table(X,Z)
 
 For the field study simulations, they used values of X and Z that varied between the extreme values of +1 and —1. More specifically, in the field study simulations, values of X and Z were each sampled independently from a normal distribution with a mean of 0 and a standard deviation of 0.5. Values of X and Z were rounded to create equally spaced 9-point scales ranging from -1 to +1 because ranges in field studies are always finite and because ratings are often on scales with discrete intervals.
 
+---
+### McClelland and Judd's simulation
+
+For field studies
+
+
 
 ```r
 X = rnorm(n = 100, mean = 0, sd = .5)
@@ -159,9 +180,11 @@ psych::describe(data.frame(X,Z), fast = T)
 ## X    1 100 -0.05 0.5 -1.2 1.2   2.4 0.05
 ## Z    2 100  0.03 0.5 -1.6 1.2   2.8 0.05
 ```
+
+
 ---
 
-For the simulations of both the field studies and the experiments, `\(\beta_0 = 0, \beta_X=\beta_Z=\beta_{XZ} = 1.\)` There were 100 observations, and errors for the model were sampled from the same normal distribution with a mean of 0 and a standard deviation of 4.
+For both: `\(\beta_0 = 0, \beta_X=\beta_Z=\beta_{XZ} = 1.\)` `\(N = 100\)` , and randomly sampled normally distributed errors ( `\(\mu = 0, \sigma = 4\)` )
 
 
 ```r
@@ -192,11 +215,11 @@ summary(lm(Y ~ X*Z))
 
 ---
 
-From 100 simulations each, estimates of the model parameter `\(\beta_{XZ}\)` the moderator or interaction effect equaled 0.944 and 1.175 for the field studies and experiments, respectively.
 
 ```r
 set.seed(0305)
 ```
+
 
 .pull-left[
 
@@ -318,55 +341,71 @@ sum(osig)
 
 In our simulation, 66% of experimental studies were statistically significant, whereas only 12% of observational studies were significant. Remember, we built our simulation based on data where there really is an interaction effect (i.e., the null is false). 
 
-McClelland and Judd found that 74% of experimental studies and 9% of observational studies were significant.
-
----
-
-### Efficiency
-
-&lt;img src="images/efficiency.png" width="55%" /&gt;
-
-???
-Efficiency = the ratio of the variance of XZ (controlling for X and Z) of a design to the best possible design (upper right corner). High efficiency is better; best efficiency is 1. 
+McClelland and Judd: 74% and 9% 
 
 ---
 
 ### Efficiency
 
 .pull-left[
-If the optimal design has N obserations, then to have the same standard error (i.e., the same power), any other design needs to have N*(1/efficency). 
+&lt;img src="images/efficiency.png" width="95%" /&gt;
+]
 
-So a design with .06 efficency needs `\(\frac{1}{.06} = 16.67\)` times the sample size to detect the effect. 
+.pull-right[
+Efficiency = the ratio of the variance of XZ (controlling for X and Z) of a design to the best possible design (upper left corner). High efficiency is better; best efficiency is 1. 
+]
+
+
+---
+
+### Efficiency
+
+.pull-left[
+If the optimal design has N observations, then to have the same power, any other design needs to have N*(1/efficiency). 
+
+So a design with .06 efficiency needs `\(\frac{1}{.06} = 16.67\)` times the sample size to detect the effect. 
 ]
 
 .pull-right[
 ![](images/common.png)
 ]
 
+---
+
+### Efficiency
+
 This particular point has been ["rediscovered"](https://statmodeling.stat.columbia.edu/2018/03/15/need-16-times-sample-size-estimate-interaction-estimate-main-effect/) as recently as 2018: 
 
-* you need 16 times the sample size to detect an interaction as you need for a main effect of the same size. 
+- __you need *16* times the sample size to detect an interaction as you need for a main effect of the same size.__
 
-???
+--
 
-This generalizes to higher-order interactions as well. If you have a three-way interaction, you need 16*16 (256 times the number of people). 
+
+- This generalizes to higher-order interactions as well. If you have a three-way interaction, you need 16*16 (256 times the number of people). 
 
 ---
 
-## Observational studies: What NOT to do
+### Observational studies: What NOT to do
 
-Recode X and Z into more extreme values (e.g., median splits)
-    * while this increases variance in X and Z, it also increases measurement error
+Re-code X and Z into more extreme values (e.g., median splits)
 
-Collect a random sample and then only perform analyses on the subsample with extreme values
-    * reduces sample size and also generalizability
-    
+  * while this increases variance in X and Z, it also increases measurement error
+
+--
+
+Collect a random sample and then only perform analyses on the sub sample with extreme values
+
+  * reduces sample size and also generalizability
+
+---
+### Observational studies: What NOT to do
+
 #### What can be done?
 M&amp;J suggest oversampling extremes and using weighted and unweighted samples
 
 ---
 
-## Experimental studies: What NOT to do
+### Experimental studies: What NOT to do
 
 Be mean to field researchers
 
@@ -376,26 +415,31 @@ Ignore power when comparing interaction between covariate and experimental predi
 
 ---
 
-## Non-linear relationships
+class: middle, center, inverse
+
+# Polynomials
+
+---
+
+### Non-linear relationships
 
 Linear lines often make bad predictions -- very few processes that we study actually have linear relationships. For example, effort had diminishing returns (e.g., log functions), or small advantages early in life can have significant effects on mid-life outcones (e.g., exponentional functions). In cases where the direction of the effect is constant but changing in magnitude, the best way to handle the data is to transform a variable (usually the outcome) and run linear analyses.
 
 
 ```r
-log_y = ln(y)
+log_y = log(y)
 lm(log_y ~ x)
 ```
----
-
-## Polynomial relationships
-
-Other processes represent changes in the directon of relationship -- for example, it is believed that a small amount of anxiety is benefitial for performance on some tasks (positive direction) but too much is detrimental (negative direction). When the shape of the effect includes change(s) in direction, then a polynomial term(s) may be more appropriate.
-
-It should be noted that polynomials are often a poor approximation for a non-linear effect of X on Y. However, correctly testing for non-linear effects usually requires (a) a lot of data and (b) making a number of assumptions about the data. Polynomial regression can be a useful tool for exploratory analysis and in cases when data are limited in terms of quantity and/or quality.
-
 
 ---
-## Polynomial regression 
+
+Other processes represent changes in the direction of relationship -- a small amount of anxiety is beneficial for performance on some tasks but too much is detrimental. When the shape of the effect includes change(s) in direction, then a **polynomial** term(s) may be more appropriate.
+
+Polynomials are often a poor approx. for a non-linear effect. Correctly testing for non-linear effects usually requires (a) a lot of data and (b) making a number of assumptions about the data. Polynomial regression can be a useful tool for *exploratory* analysis and in cases when data are limited in terms of quantity and/or quality.
+
+
+---
+### Polynomial regression 
  
 Polynomial regression is most often a form of hierarchical regressoin that systematically tests a series of higher order functions for a single variable.
 
@@ -413,22 +457,17 @@ $$
 
 .left-column[
 ### How do you know if something is up?
-What if you ran a linear regression and looked at the diagnostics?
 ]
 
 &lt;img src="images/polynomial.png", width = "70%"&gt;
 
 .small[https://online.stat.psu.edu/stat501/book/export/html/962]
 ---
-### Example
+### Can a team have too much talent?
 
-Can a team have too much talent? Researchers hypothesized that teams with too many talented players have poor intrateam coordination and therefore perform worse than teams with a moderate amount of talent. To test this hypothesis, they looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
+Researchers hypothesized that teams with too many talented players have poor intra-team coordination and perform worse than teams with a moderate amount of talent. They looked at 208 international football teams. Talent was the percentage of players during the 2010 and 2014 World Cup Qualifications phases who also had contracts with elite club teams. Performance was the number of points the team earned during these same qualification phases.
 
 
-```r
-library(here)
-football = read.csv(here("data/swaab.csv"))
-```
 
 .small[Swaab, R.I., Schaerer, M, Anicich, E.M., Ronay, R., and Galinsky, A.D. (2014). [The too-much-talent effect: Team
 interdependence determines when more talent is too much or not enough.](https://www8.gsb.columbia.edu/cbs-directory/sites/cbs-directory/files/publications/Too%20much%20talent%20PS.pdf) _Psychological Science 25_(8), 1581-1591.]
@@ -513,28 +552,70 @@ summary(mod2)
 
 ```r
 library(sjPlot)
-plot_model(mod2, type = "pred")
-```
-
-```
-## $talent
+plot_model(mod2, type = "pred", terms = "talent")
 ```
 
 ![](18-interactions_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 ---
-## Interpretation
+### Interpretation
 
-The intercept is the predicted value of Y when x = 0 -- this is always the interpretation of the intercept, no matter what kind of regression model you're running. 
+The intercept is the predicted value of `\(Y\)` when `\(X = 0\)`
 
-The `\(b_1\)` coefficient is the tangent to the curve when X=0. In other words, this is the rate of change when X is equal to 0. If 0 is not a meaningful value on your X, you may want to center, as this will tell you the rate of change at the mean of X.
+`\(b_1\)` coefficient is the *tangent to the curve* when `\(X = 0\)`. In other words, this is the rate of change when `\(X\)` is equal to `\(0\)`. If `\(0\)` is not a meaningful value on your `\(X\)`, you may want to center, as this will tell you the rate of change at the mean of `\(X\)`.
 
+
+```r
+football$talent_c = football$talent - mean(football$talent)
+mod2_c = lm(points ~ talent_c + I(talent_c^2), data = football)
+```
+
+
+---
+
+
+```r
+summary(mod2_c)
+```
+
+```
+## 
+## Call:
+## lm(formula = points ~ talent_c + I(talent_c^2), data = football)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -384.66 -193.82  -35.34  152.11  729.66 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   476.01572   19.94656  23.865  &lt; 2e-16 ***
+## talent_c       51.22982    5.00212  10.242  &lt; 2e-16 ***
+## I(talent_c^2)  -0.57022    0.07499  -7.604 1.01e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 236.3 on 205 degrees of freedom
+## Multiple R-squared:  0.4644,	Adjusted R-squared:  0.4592 
+## F-statistic: 88.87 on 2 and 205 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+![](18-interactions_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+
+---
+
+Or you can choose another value to center your predictor on, if there's a value that has a particular meaning or interpretation.
 
 
 ```r
 football$talent_c50 = football$talent - 50
 mod2_50 = lm(points ~ talent_c50 + I(talent_c50^2), data = football)
 ```
+
+
 
 ---
 
@@ -567,69 +648,12 @@ summary(mod2_50)
 
 ---
 
-```
-## $talent_c50
-```
-
-![](18-interactions_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
----
-
-Or you can choose another value to center your predictor on, if there's a value that has a particular meaning or interpretation.
-
-
-```r
-football$talent_c = football$talent - mean(football$talent)
-mod2_c = lm(points ~ talent_c + I(talent_c^2), data = football)
-```
-
----
-
-
-```r
-mean(football$talent)
-```
-
-```
-## [1] 3.216346
-```
-
-```r
-summary(mod2_c)
-```
-
-```
-## 
-## Call:
-## lm(formula = points ~ talent_c + I(talent_c^2), data = football)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -384.66 -193.82  -35.34  152.11  729.66 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   476.01572   19.94656  23.865  &lt; 2e-16 ***
-## talent_c       51.22982    5.00212  10.242  &lt; 2e-16 ***
-## I(talent_c^2)  -0.57022    0.07499  -7.604 1.01e-12 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 236.3 on 205 degrees of freedom
-## Multiple R-squared:  0.4644,	Adjusted R-squared:  0.4592 
-## F-statistic: 88.87 on 2 and 205 DF,  p-value: &lt; 2.2e-16
-```
-
----
-
-```
-## $talent_c
-```
-
 ![](18-interactions_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+
 ---
 
 
-## Interpretation
+### Interpretation
 
 The `\(b_2\)` coefficient indexes the acceleration, which is how much the slope is going to change. More specifically, `\(2 \times b_2\)` is the acceleration: the rate of change in `\(b_1\)` for a 1-unit change in X.
 
@@ -679,7 +703,7 @@ tidy(mod2)
 
 ---
 
-## Polynomials are interactions
+### Polynomials are interactions
 
 An term for `\(X^2\)` is a term for `\(X \times X\)` or the multiplication of two independent variables holding the same values. 
 
@@ -697,9 +721,11 @@ tidy(lm(points ~ talent + talent_2, data = football))
 ## 2 talent        54.9      5.47       10.0  1.53e-19
 ## 3 talent_2      -0.570    0.0750     -7.60 1.01e-12
 ```
+
+
 ---
 
-## Polynomials are interactions
+### Polynomials are interactions
 
 Put another way:
 
@@ -710,18 +736,17 @@ Put another way:
 The interaction term in another model would be interpreted as "how does the slope of X change as I move up in Z?" -- here, we ask "how does the slope of X change as we move up in X?"
 ---
 
-## When should you use polynomial terms?
+### When should you use polynomial terms?
 
 You may choose to fit a polynomial term after looking at a scatterplot of the data or looking at residual plots. A U-shaped curve may be indicative that you need to fit a quadratic form -- although, as we discussed before, you may actually be measuring a different kind of non-linear relationship. 
 
 Polynomial terms should mostly be dictated by theory -- if you don't have a good reason for thinking there will be a change in sign, then a polynomial is not right for you.
 
-And, of course, if you fit a polynomial regression, be sure to once again check your diagnostics before interpreting the coefficients. 
 ---
 
-class: inverse
+class: inverse, center, middle
 
-## Three-way interactions and beyond
+# Three-way interactions and beyond
 
 ---
 
@@ -730,23 +755,25 @@ class: inverse
 
 **Regression equation**
 
-`$$\hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$`
+
+`$$\tiny \hat{Y} = b_{0} + b_{1}X + b_{2}Z + b_{3}W + b_{4}XZ + b_{5}XW + b_{6}ZW + b_{7}XZW$$`
 The three-way interaction qualifies the three main effects (and any two-way interactions). 
 
 Like a two-way interaction, the three-way interaction is a conditional effect.  And it is symmetrical, meaning there are several equally correct ways of interpreting it.
 
-**Factorial ANOVA**
+How do we describe a 3-way ANOVA?
 
-We describe the factorial ANOVA design by the number of levels of each factor. "X by Z by W" (e.g., 2 by 3 by 4, or 2x3x4)
 ---
 A two-way  (A x B) interaction means that the magnitude of one main effect (e.g., A main effect) depends on levels of the other variable (B).  But, it is equally correct to say that the magnitude of the B main effect depends on levels of A. In regression, we refer to these as **conditional effects** and in ANOVA, they are called **simple main effects.**
 
-A three-way interaction means that the magnitude of one two-way interaction (e.g., A x B) depends on levels of the remaining variable (C). 
+A three-way interaction means that the *magnitude of one two-way interaction (e.g., A x B) __depends__ on the levels of the remaining variable (C).*
+
+---
+A three-way interaction means that the *magnitude of one two-way interaction (e.g., A x B) __depends__ on the levels of the remaining variable (C).*
 
 It is equally correct to say that the magnitude of the A x C interaction depend on levels of B. Or, that the magnitude of the B x C interaction depends on levels of A. These are known as **simple interaction effects**.
 
 ---
-### Example (regression)
 
 
 
@@ -916,6 +943,9 @@ tidy(mod_stress)
 ## 8 bad_day:talk:gendermale    1.53      0.734    2.08   0.0393
 ```
 
+---
+
+
 ```r
 tidy(newmod)
 ```
@@ -943,7 +973,8 @@ $$
 `\begin{aligned}
 \hat{Y} &amp;= b_0 + b_1X + b_{2}Z + b_{3}W + b_{4}Q + b_{5}XW\\
 &amp;+ b_{6}ZW + b_{7}XZ + b_{8}QX + b_{9}QZ + b_{10}QW\\
-&amp;+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ + b_{15}XZWQ\\
+&amp;+ b_{11}XZQ + b_{12}XZW + b_{13}XWQ + b_{14}ZWQ\\
+&amp;+ b_{15}XZWQ\\
 \end{aligned}`
 $$
 
@@ -951,18 +982,18 @@ $$
 
 3-way (and higher) interactions are incredibly difficult to interpret, in part because they represent incredibly complicated processes. If you have a solid theoretical rationale for conducting a 3-day interaction, be sure you've collected enough subjects to power your test.
 
+---
+
 &lt;center&gt;
 
-&lt;img src="images/interactions pic.jpeg", width = "35%"&gt;  
+&lt;img src="images/interactions pic.jpeg", width = "100%"&gt;  
 
 &lt;/center&gt;
 ---
 
-Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interactoin during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
+Especially with small samples, three-way interactions may be the result of a few outliers skewing a regression line. If you have stumbled upon a three-way interaction during exploratory analyses, **be careful.** This is far more likely to be a result of over-fitting than uncovering a true underlying process.
 
-Best practice for 3-way (and higher) interactions is to use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator.
-
-Even better if one of these moderators is experimenter manipulated, which increases the likelihood of balanced conditions. 
+Use at least one nominal moderator (ideally with only 2 levels), instead of all continuous moderators. This allows you to examine the 2-way interaction at each level of the nominal moderator, esp if one moderator is experimenter manipulated, which increases the likelihood of balanced conditions. 
 
 ---
 
@@ -970,13 +1001,14 @@ class: inverse
 
 ## Next time...
 
-Review Problems
+Questions about tested material &amp; HW assistance
 
-Exam 2!!!!!!!!!!
+April 2nd = Exam 2!!!!!!!!!!
 
 (everything after this slide is extra or code-based; feel free to play around, but you won't be tested on it)
 
 ---
+
 
 ```r
 library(car) 
@@ -1010,7 +1042,9 @@ Anova(fit, type = 2)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
+
 ---
+
 
 ```r
 fit = lm(Time~Speed*Noise, data = Data)
@@ -1044,7 +1078,9 @@ summary(fit)
 ## Multiple R-squared:  0.6109,	Adjusted R-squared:  0.5927 
 ## F-statistic: 33.56 on 8 and 171 DF,  p-value: &lt; 2.2e-16
 ```
+
 ---
+
 
 ```r
 library(emmeans)

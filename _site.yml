@@ -41,6 +41,8 @@ navbar:
         href: "lectures/Qual-guest-lecture_2024.pdf"
       - text: "17-Interactions 4"
         href: "lectures/17-interactions.html"
+      - text: "18-Interactions 5"
+        href: "lectures/18-interactions.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -77,6 +79,8 @@ navbar:
         href: "lectures/Qual-guest-lecture_2024.pdf"
       - text: "17-Interactions 4"
         href: "lectures/17-interactions.pdf"
+      - text: "18-Interactions 5"
+        href: "lectures/18-interactions.pdf"
     - text: Homework
       href: homework.html
   right:
