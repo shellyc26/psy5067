@@ -3,7 +3,7 @@
   <head>
     <title>Logistic Regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
@@ -36,15 +36,13 @@ class: center, middle, inverse, title-slide
 }
 &lt;/style&gt;
 
-## This whole semester...
+## This whole semester has been linear regression (on steroids)
 
 - We've had continuous IVs (regression)
 
-- We've had categoical IVs (factorial ANOVA)
+- We've had categorical IVs (factorial ANOVA)
 
 - We've had a mixture of continuous/categorical IVs (more regression)
-
-- .small[Please note that slide 41 of this presentation was edited on 4/19]
 
 --
 - But we've never had a DV variable that is categorical... in comes Logistic Regression
@@ -53,24 +51,42 @@ class: center, middle, inverse, title-slide
 ---
 
 ## Linear Regression
-
-Let's take a step back and think about linear regression for a minute:
-
--  When we have a continuous DV, we can...
+When we have a continuous DV, we can...
   -   Calculate the `\(R^2\)` and determine if our IVs &amp; DV are correlated  (large value implying = large effect)
+  
   -   Calculate a `\(p\)`-value to determine if `\(R^2\)` (or our model) is statistically significant  
+  
   -   Use the line/slope of a linear regression to make a calculated prediction of *y* given *x*
+  
   -   Compare models
+  
   - Add in predictors &amp; look at interactions
 
 ---
 
 ## Logistic Regression
 
-Logistic Regression does something entirely different...
+What is the goal of prediction when you have a categorial (dichotomous) outcome?
 
+--
 
-When we have a categorical DV, we are trying to see if something is *TRUE* or *FALSE* rather than trying to understand or predict something on a continuous scale.
+We are trying to see if something is __*TRUE*__ or __*FALSE*__
+
+---
+
+## Learning Goals
+
+1. WTF is logistic regression. When to use it?
+2. WTF is the generalized linear model. When to use it?
+3. WTF is maximum likelihood estimation
+4. HTF do I do this in `R`
+
+--
+
+Learning goals today are *not*:
+- know every little thing about odds/probabilities/weird things I'm going to introduce
+- know every element of the output
+- memorize anything
 
 
 ---
@@ -93,14 +109,14 @@ The mean of the distribution is the same as the proportion of 1's in the distrib
 ---
 
 .left-column[ 
-If we plotted these points, they are either 1's or 0's. Looks like this...
+If we plotted these points, they are either 1's or 0's
 ]
 &lt;img src="images/Log.1.png" width="75%" /&gt;
 
 
 ---
 .left-column[
-If we plotted our OLS regression line, we get this. But it doesn't make sense! Predicted values can go above 1 or below 0...yikes
+If we plotted our OLS regression line. It doesn't make sense! Predicted values can go above 1 or below 0...yikes
 ]
 &lt;img src="images/Log.2.png" width="75%" /&gt;
 
@@ -116,7 +132,7 @@ Instead, we fit this non-linear function. None of our data fall on the line!
 
 Logistic Regression, rather than a straight, fitted line like linear regression, logistic regression fits an S-shaped logistic function.
 
-This curved line can tell us the probability that something will be "1" given *X*
+This curved line can tell us the __probability that something will be "1" given *X*__
 
 ---
 
@@ -124,7 +140,9 @@ This curved line can tell us the probability that something will be "1" given *X
 
 ...and just like linear regression, we can make simple models (a relationship between *x* and *y*, with *y* being a binary variable) or more complicated models (with covariates).
 
-Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model. Rather, we will want to do what is called a *Wald's Test* to find out if our prediction is significantly different from 0 (more on this later!).
+--
+
+Unlike linear regression, it isn't as easy to just compare a more complex model to a simple model
 
 ---
 
@@ -133,8 +151,11 @@ Unlike linear regression, it isn't as easy to just compare a more complex model 
 When our outcome is binary, we violate OLS regression assumptions
     
 Violates:      
+
 - Correctly specified form  (not linear)
+
 - Homoscedasticity (as probability approaches 1 or 0, variance approaches 0)
+
 - Normality of the errors (lol not close)
 
 
@@ -142,8 +163,10 @@ Violates:
 
 ## Need to think in terms of probabilities
 
-- If we use OLS, we violate assumptions and have predicted values that go outside 0 &amp; 1   
-- How does the predicted probability of getting a 0 or a 1 relate to our predictors?       
+- If we use OLS, we violate assumptions and have predicted values that go outside 0 &amp; 1
+
+- How does the predicted probability of getting a 0 or a 1 relate to our predictors?
+
 
 `$$\hat{p}_{i} \leftrightsquigarrow b_{0} + b_{1}X_{1} + b_{2}X_{2}... b_{3}X_{p}$$`
 
@@ -156,7 +179,7 @@ Violates:
 
 - Need to use if we cannot use the Gaussian normal e.g. the range of Y is restricted (e.g. binary, count) and/or the variance of Y depends on the mean, etc...
 
-- In other words, what is your DGP?
+- In other words, **what is your DGP?**
 
 ---
 ## Generalized linear models 
@@ -178,7 +201,11 @@ Violates:
 ---
 ## GLM components
 
-It is not common to have an average outcome `\(\mu\)` (other than in a normal distribution) and it is not common to have parameters range from negative to positive infinity. We need something that translates our model into the parameters that describe the distribution.  
+It is not common to have an average outcome `\(\mu\)` (other than in a normal distribution)
+
+It is not common to have parameters range from negative to positive infinity.
+
+We need something that translates our model into the parameters that describe the distribution.  
 
 ---
 ## Logistic regression
@@ -248,7 +275,7 @@ This all keeps the limits within the 0, 1 range.
 
 - Since it's nonlinear, `\(b\)` can't be interpreted as easily as we've been doing with OLS regression.
 
-- So in order to interpret our model parameter, we need to conver to **odds**
+- So in order to interpret our model parameter, we need to convert to **odds**
 
 ???
 where P is the probability of a 1 (the proportion of 1s, the mean of Y), e is the base of the natural logarithm (about 2.718) and a and b are the parameters of the model. The value of a yields P when X is zero, and b adjusts how quickly the probability changes with changing X a single unit (we can have standardized and unstandardized b weights in logistic regression, just as in ordinary linear regression). Because the relation between X and P is nonlinear, b does not have a straightforward interpretation in this model as it does in ordinary linear regression
@@ -320,21 +347,51 @@ Odds are 6 to 1:
 - Convert your odds back into probabilities
 
 ---
+
+## Uhhhhhh
+
+Does this seem convoluted?
+
+--
+
+We are predicting logits, which happen to be the log of odds. It's bananas.
+
+--
+
+How do we get these numbers in the first place? Can we use OLS?
+
+---
 ## Estimation with Maximum Likelihood
 
 - OLS minimizes the errors ( `\(SS_{res}\)`), which maximizes ( `\(SS_{reg}\)`)   
 - In logistic regression we are not so lucky  
 
-- Need to rely on iterative procedure, ML Estimation:
+- Need to rely on iterative procedure, Maximum Likelihood (ML) Estimation:
 
   - Pick parameters of your model ( `\(b_0\)`, `\(b_1\)` etc. ), and calculate the *likelihood* of the data, given those parameters. We do this iteratively until we find the best parameters -- the ones that *maximize* the *likelihood* of your data. 
 
 ---
+
+## Estimation with Maximium Likelihood
+
+Do any of you hike? Know how to read a topographic map?
+
+--
+
+ML Estimation is sort of like going hiking with your data to find the highest point. And most of the time you can!
+
+--
+
+But if if you take a wrong turn, you might get screwed. It's the risk we take when using ML Estimation!
+
+---
 ## Estimation with Maximum Likelihood
 
-More simply, we can think about using the distribution of the data to find the location that maximizes the likelihood of observing the variable that we measured. We are essentially trying to find the optimal value for the mean (or standard deviation) for a distribution giving our observed data.
+We are using the distribution of the data to find the location that maximizes the likelihood of observing the variable that we measured.
 
-We are talking here about the mean of the distribution, not the mean of the data. (However, in a normal distribution, these are the same thing.)
+We are essentially trying to find the optimal value for the mean (or standard deviation) for a distribution given our observed data.
+
+.small[We are talking here about the mean of the distribution, not the mean of the data. (However, in a normal distribution, these are the same thing.)]
 
 ---
 ## Estimation with Maximum Likelihood
@@ -352,6 +409,15 @@ We are talking here about the mean of the distribution, not the mean of the data
 ???
 asymptotic se's are just approximations since we finite-sample dist of the estimator isn't known
 
+---
+## All Together Now
+
+- We try to predict binary outcomes. Our DV is dichotomous.
+- We can use categorical or continuous predictors (IVs) to do so
+- We can write the equation in roughly the same way
+- We cannot use OLS because it will give us impossible values and just logically it doesn't work. We use ML Estimation to determine our logistic regression coefficients instead. This gives us a S-shaped curve
+- We can ask if our coefficients are significantly different from 0
+- We convert to odds and/or probabilities
 ---
 ## GLM in R
 
@@ -473,7 +539,7 @@ mortality
 ##  8                15                11 premature               0
 ##  9                16                21 normal                  1
 ## 10                19                22 normal                  1
-## # … with 290 more rows
+## # ℹ 290 more rows
 ```
 
 ---
@@ -519,10 +585,6 @@ summary(death.2)
 ## Call:
 ## glm(formula = NOT.premature ~ Intelligence_Self, data = mortality)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.9030   0.1084   0.1538   0.1907   0.3355  
-## 
 ## Coefficients:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
 ## (Intercept)       0.641769   0.098636   6.506 3.25e-10 ***
@@ -539,45 +601,6 @@ summary(death.2)
 ## Number of Fisher Scoring iterations: 2
 ```
 
-
----
-
-```r
-anova(death.1)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Response: NOT.premature
-##                    Df Sum Sq Mean Sq F value  Pr(&gt;F)  
-## Intelligence_Self   1  0.537 0.53653  3.8256 0.05141 .
-## Residuals         298 41.793 0.14025                  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
----
-
-```r
-anova(death.2)
-```
-
-```
-## Analysis of Deviance Table
-## 
-## Model: gaussian, link: identity
-## 
-## Response: NOT.premature
-## 
-## Terms added sequentially (first to last)
-## 
-## 
-##                   Df Deviance Resid. Df Resid. Dev
-## NULL                                299     42.330
-## Intelligence_Self  1  0.53653       298     41.793
-```
-
 ---
 
 
@@ -592,10 +615,6 @@ summary(death.3)
 ## Call:
 ## glm(formula = NOT.premature ~ Intelligence_Self, family = binomial, 
 ##     data = mortality)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.1175   0.4923   0.5716   0.6438   0.9943  
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error z value Pr(&gt;|z|)  
@@ -614,7 +633,7 @@ summary(death.3)
 ```
 
 ---
-### Slide corrected on 4/19
+## Interpretation
 
 For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by `\(e^{b_{1}}\)`
 
@@ -627,9 +646,7 @@ exp(1)^.08012
 ## [1] 1.083417
 ```
 
-*For every 1-unit increase in Intelligence, the odds of living increase by 8%*
-
-
+*For every 1-unit increase in Intelligence, the odds of not having a premature death 8%*
 
 ---
 
@@ -686,10 +703,6 @@ summary(death.4)
 ## glm(formula = NOT.premature ~ Intelligence_Self, family = binomial(link = "probit"), 
 ##     data = mortality)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.1265   0.4889   0.5723   0.6454   0.9750  
-## 
 ## Coefficients:
 ##                   Estimate Std. Error z value Pr(&gt;|z|)  
 ## (Intercept)        0.21961    0.38376   0.572   0.5671  
@@ -705,16 +718,6 @@ summary(death.4)
 ## 
 ## Number of Fisher Scoring iterations: 4
 ```
-
-
----
-class:inverse
-
-## 4 more to go... 
-
-- 3 talks on Machine Learning principles
-- 1 review session
-- 1 last exam!
 
 
     </textarea>
