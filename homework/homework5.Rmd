@@ -37,12 +37,14 @@ Good luck!
 
 6. Check the assumptions your winning model. Interpret what these mean and if you met each assumption.
 
-7. Run a multiple regression to predict a *categorical* outcome. First use the `lm` function and then the `glm` function. For each model, look at both the `anova` and `summary` outputs. What are the similarities and differences between these two approaches? Which do you prefer and why?
+7. Re-run your winning model using weighted least squares. What changes? Which do you prefer?
 
-8. Interpret your $b_0$ and $b_1$ terms for the logistic regression. Put them into odds and into probabilities. 
+8. Run a multiple regression to predict a *categorical* outcome. First use the `lm` function and then the `glm` function. For each model, look at both the `anova` and `summary` outputs. What are the similarities and differences between these two approaches? Which do you prefer and why?
 
-9. Instead of using a logit link function, rerun the analysis in #5 using a probit link function. What differences do you notice? Which one is most appropriate for your work and why?
+9. Interpret your $b_0$ and $b_1$ terms for the logistic regression. Put them into odds and into probabilities. 
 
-10. We have now talked about 3 different estimation methods. OLS, MLE, and WLS. Explain what each of these does and when you might use them.
+10. Instead of using a logit link function, rerun the analysis in #5 using a probit link function. What differences do you notice? Which one is most appropriate for your work and why?
 
-11. Pick one of your continuous variables that you feel like you know the *least* about. Please provide a bootstrapped estimate of some measure of central tendency (with bootstrapped 95% confidence intervals), as well as some bootstrapped estimate of variability (with bootstrapped 95% confidence intervals) 
+11. We have now talked about 3 different estimation methods. OLS, MLE, and WLS. Explain what each of these does and when you might use them.
+
+12. Pick one of your continuous variables that you feel like you know the *least* about. Please provide a bootstrapped estimate of some measure of central tendency (with bootstrapped 95% confidence intervals), as well as some bootstrapped estimate of variability (with bootstrapped 95% confidence intervals) 
