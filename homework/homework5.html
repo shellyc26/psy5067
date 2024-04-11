@@ -385,37 +385,52 @@ share code or answers with your peers, but you can discuss them in broad
 strokes. You absolutely should <strong>not simply copy someone else’s
 code</strong>. If we believe one student has copied another’s work, both
 students will receive a 0 on the homework assignment.</p>
-<p>In the instructions, when it says <strong><em>by hand</em></strong>,
-what we mean is that you should not use a function that is built into R
-to complete the task. For example, if I ask you to find the mean <em>by
-hand</em>, you should <strong>not</strong> use the <code>mean()</code>
-function. However, you can (and should!) use your variables. So for
-instance, if I ask you to find the <code>mean()</code> by hand, you may
-do something like <code>sum(variableX)/length(variableX)</code>. This
-would be an appropriate <em>by hand</em> calculation. (You don’t need to
-type <code>(3 + 5 + 5 + 17) / 4</code>…you can still use your
-variables). If we do <em>not</em> specify <em>by hand</em>, then you may
-of course use a R function.</p>
-<p><strong>Data:</strong> Use this mortality dataset to answer the
-questions below. <a href="mortality.csv"><code>mortality.csv</code></a></p>
+<p><strong>Data:</strong> <strong>Please use your own data to complete
+this assignment</strong></p>
 <p>Good luck!</p>
 </div>
 </div>
 <div id="homework-questions" class="section level2">
 <h2>Homework Questions</h2>
 <ol style="list-style-type: decimal">
-<li><p>Using the <code>glm</code> function, run a multiple regression
-with IQ to predict and mortality status. Past studies have found that
-higher levels of IQ are associated with longer life. Use this
-information to make sure you interpret the direction of your results
-correctly. Then run the same function using the <code>lm</code>
-function. What are the similarities, what are the differences between
-these two approaches? Look at both the <code>anova</code> and the
-<code>summary</code> outputs.</p></li>
-<li><p>Now control for risky behavior. Interpret all of the
-coefficients.</p></li>
-<li><p>Instead of using a logit link function, rerun the analysis in #2
-using a probit link function. What differences do you notice?</p></li>
+<li><p>Write a few sentences describing your dataset and the questions
+you are broadly interested in.</p></li>
+<li><p>Provide descriptive statistics of variables of interest (don’t go
+crazy here – just for the variables that you plan on using for Question
+3). Are you concerned about outliers at all? How can you check? If you
+need to remove an outlier, do it here.</p></li>
+<li><p>Run 2 different nested regressions. Provide the hypothesis being
+tested for each of them. (You have free reign here! This is your
+research and it needs to make sense. You can have continuous or
+categorical predictors, interactions, covariates…whatever it takes to
+answer the questions you’re asking). Make sure your dependent variable
+is <em>continuous</em>. Provide a few sentences about the hypotheses you
+are testing here.</p></li>
+<li><p>Run the model comparison. Which model should you keep and
+why?</p></li>
+<li><p>Interpret all aspects of the output from the “winning” model.
+What did you learn in relation to your hypotheses?</p></li>
+<li><p>Check the assumptions your winning model. Interpret what these
+mean and if you met each assumption.</p></li>
+<li><p>Run a multiple regression to predict a <em>categorical</em>
+outcome. First use the <code>lm</code> function and then the
+<code>glm</code> function. For each model, look at both the
+<code>anova</code> and <code>summary</code> outputs. What are the
+similarities and differences between these two approaches? Which do you
+prefer and why?</p></li>
+<li><p>Interpret your <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> terms for the logistic regression.
+Put them into odds and into probabilities.</p></li>
+<li><p>Instead of using a logit link function, rerun the analysis in #5
+using a probit link function. What differences do you notice? Which one
+is most appropriate for your work and why?</p></li>
+<li><p>We have now talked about 3 different estimation methods. OLS,
+MLE, and WLS. Explain what each of these does and when you might use
+them.</p></li>
+<li><p>Pick one of your continuous variables that you feel like you know
+the <em>least</em> about. Please provide a bootstrapped estimate of some
+measure of central tendency (with bootstrapped 95% confidence
+intervals), as well as some bootstrapped estimate of variability (with
+bootstrapped 95% confidence intervals)</p></li>
 </ol>
 </div>
 

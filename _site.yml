@@ -45,6 +45,8 @@ navbar:
         href: "lectures/18-interactions.html"
       - text: "19-Logistic"
         href: "lectures/logistic-regression-lecture.html"
+      - text: "20-Random"
+        href: "lectures/21-random.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -85,6 +87,8 @@ navbar:
         href: "lectures/18-interactions.pdf"
       - text: "19-Logistic"
         href: "lectures/logistic-regression-lecture.pdf"
+      - text: "20-Random"
+        href: "lectures/21-random.pdf"
     - text: Homework
       href: homework.html
   right:

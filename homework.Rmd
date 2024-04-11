@@ -32,5 +32,7 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 - Study for Exam 2 instead :-)
 
 ## Homework 5
+- [Here is Homework 5]
+- Due on **Wednesday 4/24 by 11:59pm**
 
 

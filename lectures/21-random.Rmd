@@ -3,13 +3,34 @@ title: 'Random Topics'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, rladies-fonts, "my-theme.css"]
+    css: ["xaringan-themer.css", "my-theme.css"]
     incremental: true
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
+
 
 ```{r, echo = F, message = F, warning = F}
 library(tidyverse)
@@ -24,19 +45,17 @@ Logistic Regression
 
 * Review & finish logistic regression
 * Weighted Least Squares
-* Other random `R` things
+* Work on HW 5
 
 ---
 
-## Estimation with Maximum Likelihood
+### Maximum Likelihood Estimation
 
 - Logistic regression is used when our outcomes are categorical
-- OLS minimizes the errors ( $SS_{res}$), which maximizes ( $SS_{reg}$)   
-- In logistic regression we are not so lucky  
 
-- Need to rely on iterative procedure, ML Estimation:
+- In logistic regression we are not so lucky to be able to use OLS  
 
-  - Pick parameters of your model ( $b_0$, $b_1$ etc. ), and calculate the *likelihood* of the data, given those parameters. We do this iteratively until we find the best parameters -- the ones that *maximize* the *likelihood* of your data. 
+- Pick parameters of your model ( $b_0$, $b_1$ etc. ), and calculate the *likelihood* of the data, given those parameters. We do this iteratively until we find the best parameters -- the ones that *maximize* the *likelihood* of your data. 
 
 ---
 ## GLM in R
@@ -125,7 +144,7 @@ Specify your dataset.
 ]
 
 ---
-## How to interpret
+
 - $b_1$ is the predicted change in the logit for a 1-unit change in X, holding the other predictors constant 
 
 - For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$   
@@ -201,7 +220,7 @@ summary(death.3)
 ```
 
 ---
-## Modified on 4/20
+### Interpretation
 
 For a 1-unit change in X, holding other predictors constant, the odds that Y = 1 changes by $e^{b_{1}}$
 
@@ -220,7 +239,7 @@ exp(1)^.08012
 ]
 
 ---
-## Specific Values?
+### Specific Values?
 
 What if you want the probability of being a premature death for a given level of Intelligence? (Now that we've run our model and have parameters...)
 
@@ -228,15 +247,15 @@ For fitted values, need to use entire equation
 $\hat{Y} = e^{b_{0}+b_{1}X_{1}}$
 
 ```{r}
-# get fitted value with a given value of X (here 20)
+# get odds with a given value of X (here 20)
 exp(1)^(0.28695 + (.08012*20))
  
-# now get odds
+# now get probability
 6.615067 / (1+6.615067)
 ```
 
 ---
-## Probit 
+### Probit 
 
 We can have different link functions. When your response variable (DV) is truly binary -- the data generating process generates legit binary data -- logit is your pick.
 
@@ -246,7 +265,7 @@ What if your response variable is binary, but the underlying construct you are t
 
 [Stack exchange thread if you're going down this route](https://stats.stackexchange.com/questions/20523/difference-between-logit-and-probit-models)
 ---
-## Probit
+### Probit
 
 
 ```{r}
@@ -256,7 +275,6 @@ summary(death.4)
 ```
 
 ---
-## Expanding upon simple logistic models
 
 - You can include covariates
 - You can have interactions...BUT
@@ -317,7 +335,7 @@ ggplot(Data, aes(x = calm, y = problems)) +
 Do we meet this assumption?
 ---
 
-## Weighted least squares
+### Weighted least squares
 
 Weighted least squares (WLS) is a commonly used remedial procedure for heteroscedasticity.
 
@@ -327,22 +345,37 @@ In an ordinary least squares (OLS) approach, each case in the dataset is given e
   - For observations for which the variance around the residuals around the regression line is low, the case is given a high weight.
 
 ---
+### OLS
 
 Recall that an OLS estimation chooses values of $b_0$ and $b_1$ that minimizes the sum of squared residuals:
 
-$$\large \text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$
+$$\text{min}(\sum e^2_i) = \text{min} \sum (Y_i-b_1X_i-b_0)^2$$
 
-In a WLS approach, weights are taken into account, such that the values of $b_0$ and $b_1$ are chosen to minimize the sum of the **weighted** squared residuals:
-
-$$\large \text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$
-
-The value of the weights is the inverse of the conditional variance of the residuals in the population corresponding to the specified value of X:
-
-$$\large w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$
 ---
 
-The value of $\sigma^2_{Y-\hat{Y}|X}$, the variance of the residuals in the population conditional on X, is not known and must be estimated. A common procedure for estimating weights is to estimate the usual OLS regression equation, square the residuals, and then regress the squared residuals onto X. The weight is then estimated as the inverse of the predicted value for a case. 
+### WLS
 
+Weights are taken into account, such that the values of $b_0$ and $b_1$ are chosen to minimize the sum of the **weighted** squared residuals:
+
+$$\text{min}(\sum w_ie^2_i) = \text{min} \sum w_i(Y_i-b_1X_i-b_0)^2$$
+
+The value of the weights is the inverse of the conditional variance of the residuals corresponding to the specified value of X:
+
+$$w_i = \frac{1}{\sigma^2_{Y-\hat{Y}|X}}$$
+---
+
+The value of $\sigma^2_{Y-\hat{Y}|X}$, the variance of the residuals in the population conditional on X, is not known and must be estimated.
+
+A common procedure for estimating weights is to:
+  1. Estimate the usual OLS regression equation
+  2. Square the residuals
+  3. Regress the squared residuals onto X (x predicts squared residuals)
+  
+The weight is then estimated as the inverse of the predicted value for a case. 
+
+---
+
+### Our Data
 Using our own data:
 
 ```{r}
@@ -381,7 +414,6 @@ head(pred.resid)
 # find inverse of predicted values
 # use absolute value if some of your predicted values are negative  
 est.weights = 1/abs(pred.resid) 
-head(est.weights)
 ```
 
 
@@ -392,12 +424,11 @@ wls.model = lm(problems ~ calm, data = Data, weights = est.weights)
 ```
 
 
-#### OLS solution
 ```{r}
 tidy(ols.model)
 ```
 
-#### WLS solution
+
 ```{r}
 tidy(wls.model)
 ```
@@ -415,19 +446,18 @@ Data %>%
 
 
 ---
-## When to use WLS
+### When to use WLS
 
-WLS is a **robust** method of estimation. "**Robust statistics** are statistics with good performance for data drawn from a wide range of probability distributions, especially for distributions that are not normal." .small[_(this quote taken straight from the [Wikipedia page](https://en.wikipedia.org/wiki/Robust_statistics))_]
+WLS is a **robust** method of estimation. **Robust statistics** are statistics with good performance for data drawn from a wide range of probability distributions, especially for distributions that are not normal." .small[_([Wikipedia](https://en.wikipedia.org/wiki/Robust_statistics))_]
 
 Use when...
 - Dealing with heteroscedasticity
-
-- You know already that points should not be treated equally (some should be weighed more than others); do you know that some of your data was measured with less error than other data?
+- You know already that points should not be treated equally (some should be weighed more than others); do you know that some of your data was measured with less error?
 
 ---
 class: inverse, center, middle
 
-# Other Random R Things
+# Totally Random + HW Assignment
 
 ---
 
@@ -453,20 +483,15 @@ check_model(x = model1)
 
 
 ---
-## Bayes Tutorial 
-
-(if time)
-
----
 
 class: inverse
 
 ## End of semester
 
-- Tuesday = Messi talking about resampling methods, namely bootstrapping
+- Tuesday = Resampling methods, namely bootstrapping
 
-- Thursday = Shelly talking about machine learning; READ THE YARKONI & WESTFALL PAPER
+- Thursday = Machine learning; READ THE YARKONI & WESTFALL PAPER!
 
-- Tuesday = Review session
+- Tuesday = Wrapping up, future directions, review
 
-- Thursday - Monday - Exam 3 will be open
+- Thursday = Exam 3. Oral exams will open after that. 

@@ -41,9 +41,9 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 | 12   | 4/2  | **Exam 2**                             |                                                                   |                           |     |
 | \-   | 4/4  | Multilevel Models Intro [**CANCELED** -- Shelly Sick]                |                                                                   |                           |     |
 | 13   | 4/9  | Logistic Regression/GLM                | [Cohen Logistic](readings/Logistic-Cohen.pdf)                     |                           |     |
-| \-   | 4/11 | Machine Learning 1 (Goals/Theory)      |                                                                   |                           |     |
-| 14   | 4/16 | ML 2 (Bootstrapping)                   |                                                                   |                           |     |
-| \-   | 4/18 | ML 3 (Over/Underfitting & Validation)  | [Yarkoni & Westfal](readings/Yarkoni%20Westfall%20PPS.pdf)        |                           |     |
+| \-   | 4/11 | Random Tidbits      |                                                                   |                           |     |
+| 14   | 4/16 | Resampling Methods                   |                                                                   |                           |     |
+| \-   | 4/18 | Machine Learning  | [Yarkoni & Westfal](readings/Yarkoni%20Westfall%20PPS.pdf)        |                           |     |
 | 15   | 4/23 | Wrapping Up & Future Directions        |                                                                   | **HW 5 DUE 4/24 11:59pm** |     |
 | \-   | 4/25 | **FINAL**                              |                                                                   |                           |     |
 

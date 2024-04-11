@@ -18,16 +18,31 @@ You are allowed to Google things. *However*, if you use code from an outside sou
 
 All homeworks are **independent projects**. You may not share code or answers with your peers, but you can discuss them in broad strokes. You absolutely should **not simply copy someone else's code**. If we believe one student has copied another's work, both students will receive a 0 on the homework assignment.
 
-In the instructions, when it says ***by hand***, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
-**Data:** Use this mortality dataset to answer the questions below. [`mortality.csv`](mortality.csv)
+**Data:** **Please use your own data to complete this assignment**
 
 Good luck!
 
 ## Homework Questions
 
-1. Using the `glm` function, run a multiple regression with IQ to predict and mortality status. Past studies have found that higher levels of IQ are associated with longer life. Use this information to make sure you interpret the direction of your results correctly. Then run the same function using the `lm` function. What are the similarities, what are the differences between these two approaches? Look at both the `anova` and the `summary` outputs. 
+1. Write a few sentences describing your dataset and the questions you are broadly interested in.
 
-2. Now control for risky behavior. Interpret all of the coefficients. 
+2. Provide descriptive statistics of variables of interest (don't go crazy here -- just for the variables that you plan on using for Question 3). Are you concerned about outliers at all? How can you check? If you need to remove an outlier, do it here.
 
-3. Instead of using a logit link function, rerun the analysis in #2 using a probit link function. What differences do you notice? 
+3. Run 2 different nested regressions. Provide the hypothesis being tested for each of them. (You have free reign here! This is your research and it needs to make sense. You can have continuous or categorical predictors, interactions, covariates...whatever it takes to answer the questions you're asking). Make sure your dependent variable is *continuous*. Provide a few sentences about the hypotheses you are testing here.
+
+4. Run the model comparison. Which model should you keep and why?
+
+5. Interpret all aspects of the output from the "winning" model. What did you learn in relation to your hypotheses?
+
+6. Check the assumptions your winning model. Interpret what these mean and if you met each assumption.
+
+7. Run a multiple regression to predict a *categorical* outcome. First use the `lm` function and then the `glm` function. For each model, look at both the `anova` and `summary` outputs. What are the similarities and differences between these two approaches? Which do you prefer and why?
+
+8. Interpret your $b_0$ and $b_1$ terms for the logistic regression. Put them into odds and into probabilities. 
+
+9. Instead of using a logit link function, rerun the analysis in #5 using a probit link function. What differences do you notice? Which one is most appropriate for your work and why?
+
+10. We have now talked about 3 different estimation methods. OLS, MLE, and WLS. Explain what each of these does and when you might use them.
+
+11. Pick one of your continuous variables that you feel like you know the *least* about. Please provide a bootstrapped estimate of some measure of central tendency (with bootstrapped 95% confidence intervals), as well as some bootstrapped estimate of variability (with bootstrapped 95% confidence intervals) 
