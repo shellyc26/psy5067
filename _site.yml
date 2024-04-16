@@ -47,6 +47,8 @@ navbar:
         href: "lectures/logistic-regression-lecture.html"
       - text: "20-Random"
         href: "lectures/21-random.html"
+      - text: "21-Resampling"
+        href: "lectures/21-bootstrapping.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -89,6 +91,8 @@ navbar:
         href: "lectures/logistic-regression-lecture.pdf"
       - text: "20-Random"
         href: "lectures/21-random.pdf"
+      - text: "21-Resampling"
+        href: "lectures/21-bootstrapping.pdf"
     - text: Homework
       href: homework.html
   right:
