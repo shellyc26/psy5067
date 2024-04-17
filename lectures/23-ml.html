@@ -3,10 +3,8 @@
   <head>
     <title>Lessons from Machine Learning</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
   <body>
@@ -18,6 +16,23 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
 
 
 &lt;style type="text/css"&gt;
@@ -33,7 +48,7 @@ class: center, middle, inverse, title-slide
 
 ## Last time...
 
-- Resampling methods via Bootstrapping (thank you Messi!)
+- Resampling methods via bootstrapping &amp; permutation testing
 
 ## Today
 
@@ -52,21 +67,24 @@ Similarities
 - Both are goals of science
 - Good predictions can help us develop theories of explanation and vice versa
 
---
+---
+## Explanation vs. Prediction
 
 Statistical Tensions
+
 - Statistical models that accurately describe causal truths often have poor prediction and are complex
+
 - Predictive models are often very different from the "true", underlying data generating processes
 
 ---
 
-## Explanation vs. Prediction
+### Explanation vs. Prediction
 
 #### What do we do in Psychology and Neuroscience?
-- Mostly we're in explanation territory
 
 #### What about regression?
-- Though it can be used for prediction, generally, we apply it more in an explanation setting. "Does ----- explain variability in -----?"
+
+--
 
 #### Point of Yarkoni &amp; Westfall (2017)
 - How far have we really come in the past 10 years? 20 years? 30 years? ...not as far as we'd like
@@ -77,43 +95,55 @@ class: center, middle
 
 ![](images/ai.png)
 ---
-## Some definitions you might find helpful
+### Maybe Helpful Definitions
 
-- **machine learning** is the process of feeding previous observations into a computer and using the computer to generate predictions for new observations. AKA:
+**Machine Learning (ML)** is the process of feeding previous observations into a computer and using the computer to generate predictions for new observations. AKA:
   - machine inference
   - pattern recognition (Google Photos!)
   - statistical estimation
   - prediction modeling
   - statistical learning (ish)
-- **training** occurs by extracting patterns from the observed data; think of this as *learning*
-- **testing** occurs by verifying predictions on previously unobserved data; think of this as *evaluating*
-- this concept is not the same as **artificial intelligence** (AI is the simulation of human intelligence by computers; AI systems are generally trained with machine learning approaches)
+
+---
+### Maybe Helpful Definitions
+
+**Training** occurs by extracting patterns from the observed data; think of this as *learning*
+
+**Testing** occurs by verifying predictions on previously unobserved data; think of this as *evaluating*
+
+**Artificial Intelligence** is not the same as machine learning. AI is the simulation of human intelligence by computers; AI systems are generally trained with machine learning approaches.
 
 ---
 
-## Some more definitions
+### Some more definitions
 
-- **supervised learning:** using known patterns between input and output observations to train a mapping between the two
-  - **regression!** learning the mapping between a continuous input feature variable and a continuous output target variable
-  - **classification:** learning the mapping between a continuous input feature variable and a categorical output target variable (i.e., a label)
+**Supervised Learning:** using known patterns between input and output observations to train a mapping between the two
 
---
+  - **Regression!** learning the mapping between a continuous input feature variable and a continuous output target variable
 
-- **unsupervised learning:** determining patterns in observations without guiding referents
-  - **dimensionality reduction:** decreasing the overall number of features considered in a learning procedure (i.e., PCA, ICA etc.)
-  - **clustering:** grouping features together that are similar as determined by *some* metric
+  - **Classification:** learning the mapping between a continuous input feature variable and a categorical output target variable (i.e., a label)
+
+---
+
+### Some more definitions
+
+**Unsupervised Learning:** determining patterns in observations without guiding referents
+
+  - **Dimensionality Reduction:** decreasing the overall number of features considered in a learning procedure (i.e., PCA, ICA etc.)
+  
+  - **Clustering:** grouping features together that are similar as determined by *some* metric
 
 ---
 
 ## @Wash U
 
-- **reinforcement learning:** determining a mapping between input and output observations using only a measure of training quality
+- **Reinforcement Learning:** determining a mapping between input and output observations using only a measure of training quality
 
 --
 
 - ML classes in CS department
 
-- Wouter Kool for reinforcement learning (maybe Zach Reagh but don't quote me)
+- Wouter Kool for reinforcement learning
 
 - ACCSN with Dennis Barbour and myself for high level discussions on these topics
 
@@ -130,10 +160,10 @@ class: center, middle
 - naive Bayes
 - ridge regression
 - LASSO regression
+- support vector machine
 ]
 
 .pull-right[
-- support vector machine
 - random forest
 - Gaussian process estimator
 - multilayer perceptron (deep net)
@@ -143,14 +173,16 @@ class: center, middle
 ]
 
 ---
-## Some terminology
+### Some terminology
 
 **Overfitting** is when we *mistakenly* fit sample-specific noise as if it were actually a signal. 
 
 - If our model has a `\(R^2 = .9\)`, we do an excellent job of explaining variance *in our sample*. 
 - OLS models tend to be overfit because they minimize error for a specific sample
 
---
+---
+
+### Bias and Variance
 
 **Bias** refers to systematically over- or under-estimating parameters.
 
@@ -173,7 +205,6 @@ class: center, middle, inverse
 
 ---
 
-## Proposals
 How do we take what we know from overfitting &amp; the bias-variance tradeoff and incorporate it? What can we learn from the ML world?
 
 --
@@ -189,13 +220,10 @@ How do we take what we know from overfitting &amp; the bias-variance tradeoff an
 
 ---
 
-## Big Data Sets
-
-"Every pattern that could be observed in a given dataset reflects some... unknown combination of signal and error" (page 1104). 
+"Every pattern that could be observed in a given dataset reflects some...unknown combination of signal and error"
 
 Error is random, so it cannot correlate with anything; as we aggregate many pieces of information together, we reduce error. 
 
-Thus, as we get bigger and bigger datasets, the amount of error we have gets smaller and smaller
 
 &lt;center&gt;
 ![](images/snr.jpeg)
@@ -208,29 +236,27 @@ Thus, as we get bigger and bigger datasets, the amount of error we have gets sma
 
 ---
 
-## Cross-validation
+### Cross-validation: Hold-out Samples
 
-#### Hold-out Samples
 - Split into training and testing sets
-- Fit your model on the training set
-- Using this training set, predict the outputs for the sample in your testing set
+- Fit your model on the *training* set
+- Predict outputs for your *testing* set
 
 --
 
 Pros
 
-* Straightforward
-* Not a lot of computational power needed
+* Straightforward; computationally easy
 
 --
 
 Cons
 
-* How do you choose which data go into the testing set or the training set?
+* Which data go into which set?
 * What if the vast majority of group A fall into the training set and the vast majority of group B fall into the testing set? 
 
 ---
-## K-fold Cross-validation
+### K-fold Cross-validation
 
 - Make _k_ subsets of your data
 - Repeat the hold-out method of test/train, but do it _k_ times
@@ -242,7 +268,7 @@ Cons
 
 .tiny[https://en.wikipedia.org/wiki/Cross-validation_(statistics)]
 ---
-## K-fold Cross-validation
+### K-fold Cross-validation
 
 Pros
 
@@ -258,8 +284,7 @@ Cons
 
 
 ---
-## Cross-validation
-#### Leave-one-out
+### Leave-One-Out Cross-validation
 
 - Same as _k_-fold, but now _k_ is equal to your `\(N\)`
 
@@ -307,11 +332,18 @@ summary(model.lm)$r.squared
 
 ---
 
+### A brief aside:
+
+Newer package called `tidymodels` is better for machine learning, but requires many more steps. For now, this is the simpler method. 
+
+`R` vs. `Python` 🐍 . `R` is excellent for statistics and visualizing data. Most of what we do in Psychology. `Python` is better for machine learning and is more of a full suite language. 
+
+If you're going hard with ML, use `tidymodels` or Python. See the grad student resources on our website for tools to help you learn both.
+
+---
+
 ### Example: 10-fold cross validation
 
-.small[Note, newer package called `tidymodels` is better for machine learning, but requires many more steps. For now, this is the simpler method. If you're going hard with ML, check out `tidymodels` or use Python 🐍]
-
-.code-small[
 
 ```r
 library(caret)
@@ -333,27 +365,35 @@ cv.model
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 107, 106, 106, 106, 107, 106, ... 
+## Summary of sample sizes: 106, 106, 106, 106, 106, 106, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE     
-##   1.540188  0.3782379  1.247221
+##   RMSE     Rsquared   MAE    
+##   1.56842  0.3760515  1.26069
 ## 
 ## Tuning parameter 'intercept' was held constant at a value of TRUE
 ```
-]
-
 
 ---
 
-## Regularization
+### Cross-Validation Summary
+
+- Tempers your estimates to protect against overfitting
+
+- You do not need fancy ML algorithms. You can do this with your classic regression!
+
+- If your whole sample is not representative, this will not save you
+
+---
+
+### Regularization
 
 Penalizing a model as it grows more complex. 
 * Usually involves _**shrinking**_ coefficient estimates -- the model will fit less well in-sample but may be more predictive
 
---
+---
 
-*LASSO regression*: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
+**LASSO regression**: balance minimizing sum of squared residuals (OLS) and minimizing smallest sum of absolute values of coefficients
 - Penalize the size of the coefficients
 - The larger the penalty applied, the more estimates are go towards zero (or "shrink" -- the first "S")
 - Coefficients are more biased (tend to underestimate coefficients) but produce less variability in results
@@ -361,8 +401,10 @@ Penalizing a model as it grows more complex.
 
 The coefficient `\(\lambda\)` is used to penalize the model.
 
+.tiny[Least Absolute Shrinkage and Selection Operator]
+
 ---
-## Lasso Regression
+### LASSO Regression
 The `glmnet` package has the tools for LASSO regression. One small complication is that the package uses matrix algebra, so you need to feed it a matrix of predictors -- specifically, instead of saying "find the interaction between A and B", you need to create the variable that represents this term.
 
 
@@ -378,20 +420,20 @@ head(X.matrix)
 ```
 
 ```
-##   (Intercept)  Anxiety Support groupTx Anxiety:Support Anxiety:groupTx
-## 1           1 10.18520  6.1602       1        62.74287         10.1852
-## 2           1  5.58873  8.9069       0        49.77826          0.0000
-## 3           1  6.58500 10.5433       1        69.42763          6.5850
-## 4           1  8.95430 11.4605       1       102.62076          8.9543
-## 5           1  7.59910  5.5516       0        42.18716          0.0000
-## 6           1  8.15600  7.5117       1        61.26543          8.1560
-##   Support:groupTx Anxiety:Support:groupTx
-## 1          6.1602                62.74287
-## 2          0.0000                 0.00000
-## 3         10.5433                69.42763
-## 4         11.4605               102.62076
-## 5          0.0000                 0.00000
-## 6          7.5117                61.26543
+##   (Intercept)  Anxiety Support groupTx Anxiety:Support Anxiety:groupTx Support:groupTx
+## 1           1 10.18520  6.1602       1        62.74287         10.1852          6.1602
+## 2           1  5.58873  8.9069       0        49.77826          0.0000          0.0000
+## 3           1  6.58500 10.5433       1        69.42763          6.5850         10.5433
+## 4           1  8.95430 11.4605       1       102.62076          8.9543         11.4605
+## 5           1  7.59910  5.5516       0        42.18716          0.0000          0.0000
+## 6           1  8.15600  7.5117       1        61.26543          8.1560          7.5117
+##   Anxiety:Support:groupTx
+## 1                62.74287
+## 2                 0.00000
+## 3                69.42763
+## 4               102.62076
+## 5                 0.00000
+## 6                61.26543
 ```
 
 ```r
@@ -505,9 +547,9 @@ lasso.mod
 .pull-right[
 &lt;br /&gt;
 &lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
+
+
+
 * DF = number of non-zero coefficients
 * dev = `\(R^2\)`
 * lambda = complexity parameter
@@ -517,12 +559,12 @@ lasso.mod
 ]
 
 ---
-## What value of `\(\lambda\)` to choose?
+### What value of `\(\lambda\)` to choose?
 
 .pull-left[
 
 ```r
-plot(lasso.mod, xvar = "dev", label = T)
+plot(lasso.mod, xvar = "dev", label = T, )
 ```
 
 ![](23-ml_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
@@ -532,18 +574,19 @@ plot(lasso.mod, xvar = "dev", label = T)
 ]
 
 ---
-## What value of `\(\lambda\)` to choose?
+### What value of `\(\lambda\)` to choose?
+
 
 ```r
-plot(lasso.mod, xvar = "lambda", label = TRUE)
+plot(lasso.mod, xvar = "lambda", label = TRUE, cex = 8)
 ```
 
 ![](23-ml_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
-I might look for lambda values where those coefficients are still different from 0. 
+Looking for `\(\lambda\)` values where those coefficients are still different from 0. 
 
 ---
-.pull-left[
+
 
 ```r
 coef = coef(lasso.mod, s = exp(-5))
@@ -562,9 +605,10 @@ round(x = coef, digits = 2)
 ## Support:groupTx          0.03
 ## Anxiety:Support:groupTx  0.00
 ```
-]
 
-.pull-left[
+---
+
+
 
 ```r
 coef = coef(lasso.mod, s = exp(-4))
@@ -583,7 +627,7 @@ round(x = coef, digits = 2)
 ## Support:groupTx          0.00
 ## Anxiety:Support:groupTx  .
 ```
-]
+
 
 
 ---
@@ -651,8 +695,8 @@ cvfit
 ## Measure: Mean-squared Error 
 ## 
 ##      Lambda Index Measure     SE Nonzero
-## min 0.02601    40   2.280 0.2924       4
-## 1se 0.20138    18   2.531 0.3641       2
+## min 0.01793    44   2.242 0.1875       6
+## 1se 0.10500    25   2.424 0.2213       2
 ```
 
 ]
@@ -668,19 +712,17 @@ plot(cvfit)
 
 
 ---
-## NHST no more
+Once you've imposed a shrinkage penalty on your coefficients, you've wandered far from the realm of NHST.
 
-Once you've imposed a shrinkage penalty on your coefficients, you've wandered far from the realm of null hypothesis significance testing.
-
-In general, you'll find that very few machine learning techniques are compatible with probability theory (including Bayesian), because they're focused on different goals.
+In general, you'll find that very few ML techniques are compatible with probability theory (including Bayesian), because they're focused on different goals.
 
 Instead of asking, "how does random chance factor into my result?", machine learning optimizes (out of sample) prediction. Both methods explicitly deal with random variability.
 
-In NHST and Bayesian probability, we're trying to estimate the degree of randomness; in machine learning, we're trying to remove it. 
+Rather than estimating degree of randomness; in machine learning, we're trying to remove it. 
 
 ---
 
-## Summary: Yarkoni and Westfall (2017)
+### Summary: Yarkoni and Westfall (2017)
 
 
 **Big Data**
