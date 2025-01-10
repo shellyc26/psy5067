@@ -15,7 +15,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 **PR = Peer Review**
 
 | Week | Date | Topic | Readings | HW Due |   |
-|----|----|----|----|----|----|
+|------------|------------|------------|------------|------------|------------|
 | 1 | 1/14 | Recap & GLM Intro |  |  |  |
 | \- | 1/16 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
 | 2 | 1/21 | GLM & Categorical Predictors | Ch. 13-14 (review) |  |  |
@@ -31,7 +31,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 | 7 | 2/25 | Interactions I |  |  |  |
 | \- | 2/27 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf) |  |  |
 | 8 | 3/4 | Interactions III | [Myers Ch. 10](readings/anova2-myers.pdf) |  |  |
-| \- | 3/6 | Interactions IV (Power & Effect Size) |  | **HW 3 DUE 3/9 11:59pm** |  |
+| \- | 3/6 | Interactions IV (Power & Effect Size) |  | **HW 3 DUE 3/7 11:59pm** |  |
 | 9 | 3/11 | **Spring Break** |  |  |  |
 | \- | 3/13 | **Spring Break** |  |  |  |
 | 10 | 3/18 | Interactions V (Polynomials) |  |  |  |
