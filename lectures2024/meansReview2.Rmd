@@ -1,0 +1,27 @@
+---
+title: "meansReview2 Slide"
+author: "Prof Coops"
+date: '2022-03-31'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(broom)
+library(palmerpenguins)
+penguins = penguins
+
+penguins$group = rep(c("group 1", "group 2", "group 3"), length.out = nrow(penguins))
+penguins$group = factor(penguins$group)
+
+means = penguins %>% 
+  group_by(group, island) %>% 
+  summarize(mean(body_mass_g, na.rm = T))
+
+```
+
+|             |  Biscoe  |  Dream   | Torgersen |
+|-------------|:--------:|:--------:|:---------:|
+| **Group 1** | 4661.818 | 3720.349 | 3776.562  |
+| **Group 2** | 4699.545 | 3761.310 | 3732.353  |
+| **Group 3** | 4784.211 | 3652.564 | 3619.444  |

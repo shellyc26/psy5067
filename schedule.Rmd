@@ -14,54 +14,73 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 
 **PR = Peer Review**
 
-| Week | Date | Topic                                  | Readings                                                          | HW Due                    |     |
-|------|------|----------------------------------------|-------------------------------------------------------------------|---------------------------|-----|
-| 1    | 1/16 | Recap & GLM Intro                      |                                                                   |                           |     |
-| \-   | 1/18 | Data Management                        | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |                           |     |
-| 2    | 1/23 | GLM & Categorical Predictors           | Ch. 13-14 (review)                                                |                           |     |
-| \-   | 1/25 | Correlation                            | [Chapter from Revelle](readings/CorrelationRevelle.pdf)           |                           |     |
-| 3    | 1/30 | Univariate Regression                  | Ch. 15.1 - 15.2                                                   |                           |     |
-| \-   | 2/1  | Univariate Regression                  | [MR Cohen](readings/Cohen-MR.pdf)                                 |                           |     |
-| 4    | 2/6  | Partial Correlations                   | Ch. 15.3 - end of chapter                                         | **HW 1 DUE 2/5 11:59pm**  |     |
-| \-   | 2/8  | Multiple Regression                    |                                                                   |                           |     |
-| 5    | 2/13 | Multiple Regression                    |                                                                   |                           |     |
-| \-   | 2/15 | Multiple Regression                    |                                                                   |                           |     |
-| 6    | 2/20 | **Exam 1**                             |                                                                   | **HW 2 DUE 2/19 11:59pm** |     |
-| \-   | 2/22 | Assumptions and Diagnostics            |                                                                   |                           |     |
-| 7    | 2/27 | Interactions I                         |                                                                   |                           |     |
-| \-   | 2/29 | Bayes *Guest: Josh Jackson*            |                                                                   |                           |     |
-| 8    | 3/5  | Interactions II (Factorial ANOVA)      | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf)                  |                           |     |
-| \-   | 3/7  | Interactions III *Guest: Grace Drake*  | [Myers Ch. 10](readings/anova2-myers.pdf)                         | **HW 3 DUE 3/9 11:59pm**  |     |
-| 9    | 3/12 | **Spring Break**                       |                                                                   |                           |     |
-| \-   | 3/14 | **Spring Break**                       |                                                                   |                           |     |
-| 10   | 3/19 | Qualitative Methods *Guest: Amy Eyler* |                                                                   |                           |     |
-| \-   | 3/21 | Interactions IV (Power & Effect Size)  |                                                                   |                           |     |
-| 11   | 3/26 | Interactions V (Polynomials)           |                                                                   |                           |     |
-| \-   | 3/28 | Flex/Catch Up                          |                                                                   | **HW 4 DUE 4/1 11:59pm**  |     |
-| 12   | 4/2  | **Exam 2**                             |                                                                   |                           |     |
-| \-   | 4/4  | Multilevel Models Intro [**CANCELED** -- Shelly Sick]                |                                                                   |                           |     |
-| 13   | 4/9  | Logistic Regression/GLM                | [Cohen Logistic](readings/Logistic-Cohen.pdf)                     |                           |     |
-| \-   | 4/11 | Random Tidbits      |                                                                   |                           |     |
-| 14   | 4/16 | Resampling Methods                   |                                                                   |                           |     |
-| \-   | 4/18 | Machine Learning  | [Yarkoni & Westfal](readings/Yarkoni%20Westfall%20PPS.pdf)        |                           |     |
-| 15   | 4/23 | Wrapping Up & Future Directions        |                                                                   | **HW 5 DUE 4/24 11:59pm** |     |
-| \-   | 4/25 | **FINAL**                              |                                                                   |                           |     |
+| Week | Date | Topic | Readings | HW Due |   |
+|----|----|----|----|----|----|
+| 1 | 1/14 | Recap & GLM Intro |  |  |  |
+| \- | 1/16 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
+| 2 | 1/21 | GLM & Categorical Predictors | Ch. 13-14 (review) |  |  |
+| \- | 1/23 | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf) |  |  |
+| 3 | 1/28 | Univariate Regression | Ch. 15.1 - 15.2 |  |  |
+| \- | 1/30 | Univariate Regression | [MR Cohen](readings/Cohen-MR.pdf) |  |  |
+| 4 | 2/4 | Partial Correlations | Ch. 15.3 - end of chapter | **HW 1 DUE 2/5 11:59pm** |  |
+| \- | 2/6 | Multiple Regression |  |  |  |
+| 5 | 2/11 | Multiple Regression |  |  |  |
+| \- | 2/13 | Multiple Regression |  |  |  |
+| 6 | 2/18 | **Exam 1** |  | **HW 2 DUE 2/19 11:59pm** |  |
+| \- | 2/20 | Assumptions and Diagnostics |  |  |  |
+| 7 | 2/25 | Interactions I |  |  |  |
+| \- | 2/27 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf) |  |  |
+| 8 | 3/4 | Interactions III | [Myers Ch. 10](readings/anova2-myers.pdf) |  |  |
+| \- | 3/6 | Interactions IV (Power & Effect Size) |  | **HW 3 DUE 3/9 11:59pm** |  |
+| 9 | 3/11 | **Spring Break** |  |  |  |
+| \- | 3/13 | **Spring Break** |  |  |  |
+| 10 | 3/18 | Interactions V (Polynomials) |  |  |  |
+| \- | 3/20 | Logistic Regression/GLM | [Cohen Logistic](readings/Logistic-Cohen.pdf) |  |  |
+| 11 | 3/25 | Random/Flex/Catch-up |  |  |  |
+| \- | 3/27 | **Exam 2** |  | **HW 4 DUE 3/28 11:59pm** |  |
+| 12 | 4/1 | Machine Learning | [Yarkoni & Westfall](readings/Yarkoni%20Westfall%20PPS.pdf) |  |  |
+| \- | 4/3 | Resampling Methods *Guest Lecture: Ran Zhang* |  |  |  |
+| 13 | 4/8 | Qualitative Methods *Guest Lecture: Amy Eyler* |  |  |  |
+| \- | 4/10 | Bayes Intro |  |  |  |
+| 14 | 4/15 | MLM Intro |  |  |  |
+| \- | 4/17 | TBD |  | **HW 5 DUE 4/18 11:59pm** |  |
+| 15 | 4/22 | AI Intro *Guest Lecture: Josh Oltmanns* |  |  |  |
+| \- | 4/24 | **FINAL** |  |  |  |
 
 # Overview
 
-This course is the second in a two-course sequence that introduces necessary skills and knowledge for carrying out statistical analyses in the social sciences. The course has an applied focus for psychological research, but theoretical details will be emphasized when they facilitate understanding of key concepts. In other words, we will strike a balance between learning how to do statistics and knowing why we are doing it a particular way. Mastering both will facilitate generalization to new problems and techniques. We will primarily be covering regression analyses throughout this semester, including extensions of classic regression analyses.
+### From the course catalog:
+
+Continuation of Psych 5066. Introduction to multiple regression/correlation analysis. Topics include bivariate and multiple correlation and regression, regression diagnostics, representation of nominal or qualitative variables, polynomials, logistic regression, interactions, ANOVA, analysis of covariance, repeated measures, power calculations, and Bayesian approaches to the general linear model
+
+### Holistic view:
+
+This course is the second in a two-course sequence that introduces necessary skills and knowledge for carrying out statistical analyses in the social sciences. The course has an applied focus for psychological research, but theoretical details will be emphasized when they facilitate understanding of key concepts. In other words, we will strike a balance between learning how to do statistics and knowing why we are doing them in a particular way. Mastering both will facilitate generalization to new problems and techniques. We will primarily be covering regression analyses throughout this semester, including extensions of classic regression analyses.
+
+### Prerequisites:
+
+Completion of Psych 5066
+
+### Learning Objectives:
+
+-   **Advanced Statistical Theory:** Develop a deep understanding of advanced statistical theories and principles, including hypothesis testing and inference, particularly as they relate to the general linear model
+
+<!-- -->
+
+-   **Data Analysis Techniques:** Apply advanced data analysis techniques such as regression analysis and be able to visualize results.
+
+-   **Statistical Software Proficiency:** Gain proficiency in using R statistical software for data manipulation, analysis, and visualization.
+
+-   **Innovative Quantitative Methodologies:** Explore and apply innovative quantitative methodologies, staying on top of emerging trends in the field.
 
 # Graded materials
 
 Your final grade is comprised of:
 
 -   5 Homework: 5% each, 25% total
--   Exam 1 - Written portion 22.5%
--   Exam 1 - Oral portion 7.5%
--   Exam 2 - Written portion 15%
--   Exam 2 - Oral portion 10%
--   Exam 3 - Written portion 5%
--   Exam 3 - Oral portion 15%
+-   Exam 1: 30% (90% written, 10% oral)
+-   Exam 2: 25% (90% written, 10% oral)
+-   Exam 3: 20% (90% written, 10% oral)
 
 ## Exams
 
@@ -71,11 +90,11 @@ The last exam is very similar to last semester, where it is technically a cumula
 
 Together, the first exam is worth 30% of your grade, the second exam is worth 25% of your grade, and the last exam is worth 20% of your grade.
 
-**New Rule**: If you have something going on in life that you think will impede you from doing your best on an exam, please come talk to me (even if it's like 5 minutes before we start!). Family emergency, sudden news of a loved one, illness, bereavement, etc. *Once you see an exam, you will not be able to make-up or do-over the test.* I would much prefer that you talk to me and we agree that you take the exam at a later date, rather than trying to take it first, seeing how you do, then asking for a redo. You are graduate students, and I think by now you've learned that I'm not particularly scary -- I will always work with you and very much want you to succeed!
+**New Rule**: If you have something going on in life that you think will impede you from doing your best on an exam, please come talk to me (even if it's like 5 minutes before we start!). Family emergency, sudden news of a loved one, illness, bereavement, etc. *Once you see an exam, you will not be able to make-up or retake the test.* I would much prefer that you talk to me and we agree that you take the exam at a later date, rather than trying to take it first, seeing how you do, then asking for a redo. You are graduate students, and I think by now you've learned that I'm not particularly scary -- I will always work with you and very much want you to succeed!
 
 ## Homework assignments
 
-Homework assignments are intended to gauge your ability to apply the topics covered in class to the practice of data analysis. Homework assignments are to be done using `R` and RMarkdown; completed assignments should be submitted to Canvas. Please submit BOTH your **.Rmd** and **.html** file. Please do *not* use PDF or Word documents. There will be 5 assignments in total, each worth 6% of your grade.
+Homework assignments are intended to gauge your ability to apply the topics covered in class to the practice of data analysis. Homework assignments are to be done using `R` and RMarkdown; completed assignments should be submitted to Canvas. Please submit BOTH your **.Rmd** and **.html** file. Please do *not* use PDF or Word documents. There will be 5 assignments in total, each worth 5% of your grade.
 
 I will specify exact due dates, and all will be required by 11:59pm. Grading will go by the following rubric:
 
@@ -99,7 +118,6 @@ You may work with your peers on homework assignments, with the following caveats
 
 All assignments and examinations are mandatory. If you need to miss an exam you must get in touch with me as soon as possible. Rescheduling of exams will be considered on a case by case basis, but I am *not* required to approve a rescheduled exam.
 
-```{=tex}
 \begin{equation}
 \begin{split}
 
@@ -123,7 +141,7 @@ All assignments and examinations are mandatory. If you need to miss an exam you 
 
 \end{split}
 \end{equation}
-```
+
 # Learning from Crappy Years
 
 Life has been weird since the pandemic. But instead of burying our heads in the sand and forgetting they existed, let's at least extract some things and incorporate them into our lives. For this class, here's what that means...
@@ -131,8 +149,6 @@ Life has been weird since the pandemic. But instead of burying our heads in the 
 ### Staying Connected
 
 The past few years have been lonely. Although we're back in person, we still might feel that residual loneliness. On top of that, learning stats, learning to code, and grad school in general can be really scary -- impostor syndrome is real! The best thing we can do to combat these feelings is to stay connected to one another. Here's how we'll accomplish this in our class:
-
--   Your peer review will be with the same person. This way, you will get to know your buddy over the course of the semester. Make a friend!
 
 -   We will have a dedicated class Slack work space (see upper right corner of website for link). You can post questions that everyone can see, or make use of direct messaging. Shelly or the AIs will respond to your questions on Slack (if your peers don't respond first!). This is really great for one-off questions, or if you need some quick clarification on something. We will also have a dedicated channel for silly programming and stats memes, because humor is important when you're learning a skill like coding, in which you'll repeatedly fail. Slack is not required *per se*, but it is **highly encouraged**.
 
@@ -155,6 +171,22 @@ The past few years have been lonely. Although we're back in person, we still mig
 -   Occasionally, I'll ask you to get into small groups and chat about something. Be aware that other people might not be super comfortable being physically close together. Maintain appropriate distance, and if a classmate asks you to step back a bit, please do so.
 
 # Policies & Resources
+
+**Contact Hours:**
+
+This is a 3 credit course and I anticipate that we will meet for all class periods scheduled. However, should anything arise that would prevent us from meeting in class, we will make up all contact hours. This will be addressed on a case-by-case basis but may include: synchronous Zoom class, asynchronous recording of lecture material, Canvas assignment etc.
+
+**UNIQUE TO SPRING 2025:**
+
+I am pregnant and due mid April. I have planned a great semester and therefore do not anticipate any disruptions to the course. Here is the plan:
+
+-   See class schedule above for topics on a day-by-day basis
+
+-   Once I go into labor, **Josh Jackson** will become the instructor for the course. You can reach him at [**j.jackson\@wustl.edu**](mailto:j.jackson@wustl.edu){.email}
+
+-   Please note that all the same class policies will apply when he is in charge! The grading will remain the same, and the exams have already been made – he is simply the point person for grade related questions and will give the remaining lectures. The class does not magically change.
+
+-   In the off chance that class must be canceled or rescheduled, note that all contact hours will be made up in some capacity as per the above Contact Hours section.
 
 **University Code of Conduct:**
 

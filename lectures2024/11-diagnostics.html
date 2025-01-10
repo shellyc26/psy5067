@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Assumptions and Diagnostics</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="my-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Assumptions and Diagnostics
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+
+
+
+
+
+
+## Today
+
+* Assumptions of GLM regression models
+* Diagnostics (checking those assumptions)
+
+
+---
+
+## BLUE
+
+**B**est **L**inear **U**nbiased **E**stimate of beta `\((\beta)\)`
+
+--
+* Unbiased
+* Efficient
+* Consistent
+
+???
+
+
+Unbiased: what does it mean for an estimate to be biased? How did we describe the bias of variance?
+Efficient: smallest standard error (best)
+Consistent: as N increases, standard error decreases
+
+
+---
+
+## Assumptions of regression
+
+1. No measurement error
+
+2. Correctly specified form
+
+3. No omitted variables
+
+4. Homoscedasticity 
+
+5. Independence among the residuals
+
+6. Normally distributed residuals
+
+---
+
+## What happens if we violate assumptions?
+
+--
+
+1. _Biased_ regression **coefficients**
+
+--
+
+2. _Biased_ **standard errors**
+
+---
+
+
+|Violated Regression Assumption |	Coefficients |	Standard Errors|
+|-------------------------------|--------------|-----------------|
+|1. Measured without error     	|	 Biased 		 |	  Biased       |
+|2. Correctly specified form 		|	 Biased 		 |	  Biased       |
+|3. Correctly specified model		|	 Biased			 |	  Biased       | 
+|4. Homoscedasticity 						|				       |    Biased       |
+|5. Independent Errors 				 	|				       |    Biased       |
+|6. Normality of the Errors 		|							 |    Biased       |
+
+---
+
+
+|       Assumption              |       	Detection                    |
+|-------------------------------|--------------------------------|
+|1. Measured without error	    |	  Reliability                  |
+|2. Correctly specified form 		|	  Residuals against predicted  |
+|3. Correctly specified model		|	  Theory, endogeneity test     | 
+|4. Homoscedasticity 						|		Residuals against predicted  |
+|5. Independent Errors 				 	|		Research Design              |
+|6. Normality of the Errors     |   q-q plot or distribution     |
+
+---
+
+
+
+
+```r
+a_data &lt;- read.csv(here("data/anxiety.csv"))
+library(broom)
+model.1 &lt;- lm(Anxiety ~ Support, a_data)
+aug_1&lt;- augment(model.1)
+aug_1
+```
+
+```
+## # A tibble: 118 × 8
+##    Anxiety Support .fitted  .resid    .hat .sigma  .cooksd .std.resid
+##      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+##  1   10.2     6.16    8.68  1.51   0.0137    2.10  3.66e-3     0.725 
+##  2    5.59    8.91    7.54 -1.95   0.00850   2.09  3.76e-3    -0.937 
+##  3    6.58   10.5     6.86 -0.278  0.0111    2.10  1.00e-4    -0.134 
+##  4    8.95   11.5     6.48  2.47   0.0144    2.09  1.03e-2     1.19  
+##  5    7.60    5.55    8.93 -1.33   0.0165    2.10  3.46e-3    -0.642 
+##  6    8.16    7.51    8.12  0.0368 0.00966   2.10  1.53e-6     0.0177
+##  7    9.08    8.56    7.69  1.39   0.00850   2.10  1.92e-3     0.669 
+##  8    3.41    4.1     9.53 -6.12   0.0255    2.02  1.15e-1    -2.96  
+##  9    8.66    5.39    9.00 -0.340  0.0173    2.10  2.37e-4    -0.164 
+## 10    4.85   13.9     5.47 -0.620  0.0299    2.10  1.39e-3    -0.301 
+## # ℹ 108 more rows
+```
+
+---
+
+## Residuals
+
+Residuals are your best diagnostic tool for assessing your regression model. Not only can they tell you if you've violated assumptions, but they can point to specific cases that contribute to the violations. This may help you to:
+
+* Notice patterns, which may lead you to change your theory
+* Remove problematic cases
+* Improve your research design
+
+---
+.left-column[
+### What are residuals?
+]
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+.left-column[
+### What are residuals?
+]
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+
+We can add stress to the model to see how this changes
+---
+
+## 1. Measurement Error
+
+Assumption 1: No measurement error in our independent variables
+
+* How does measurement error affect our coefficient estimates?
+
+* How does measurement error affect our the standard errors of the coefficients?
+
+* How can we check this assumption?
+
+---
+
+## Reliability Can Help!
+
+If there is measurement error, our coefficient estimates will always *UNDER*-estimate the true parameter. This is because
+`$$r_{xy} = \rho\sqrt{r_{xx}r_{yy}}$$`
+Measurement error inflates our standard errors, because they add...error
+
+There is ALWAYS measurement error. What do we do about this?
+
+---
+## 2. Form
+
+Assumption 2: Correctly specified form
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+Don't use linear models on non-linear data! This will underestimate `\(R^2\)`
+
+---
+## 3. Model
+
+Assumption 3: Correctly specified model
+- This is especially important for multiple regression.
+
+- Two problems: 
+  
+&gt; "Over control" and your coefficient is no longer interpretable
+  
+&gt; "Under control" and your coefficient is no longer interpretable
+  
+---
+## 3. Model
+&gt; "Over control" and your coefficient is no longer interpretable
+
+Cohen and Cohen (1983) discuss several problems associated with the inclusion of covariates/multiple independent predictors in a model. Those problems were:
+
+1. Computational accuracy (not a problem now, because computers)
+2. Sampling stability (tolerance)
+3. Interpretation
+
+---
+&gt; "Over control" and your coefficient is no longer interpretable
+
+Including multiple predictors in your model requires adjusting for the overlap in these predictors. 
+
+`$$se_{b} = \frac{s_{Y}}{s_{X}}\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}\sqrt{\frac{1}{1-R_{12}^2}}$$`
+
+Tolerance (in a two-predictor regression) is: 
+
+`$$1-R_{12}^2$$`
+
+---
+
+If your two independent predictors are highly correlated, tolerance gets smaller.
+
+* As tolerance gets smaller, the standard error gets larger. This is referred to as _variance inflation_. The **variance inflation factor** is an index to assess this problem. 
+
+`$$\text{VIF} = \frac{1}{\text{Tolerance}} = \frac{1}{1-R^2_{12}}$$`
+
+* As the standard error becomes larger, the CIs around coefficients becomes larger. When CIs around estimates are large, then we say the coefficients are *unstable.*
+
+---
+
+VIF is not bounded, but generally large numbers (greater than 5 or 10, based on who's giving you the heuristic) indicates a problem.
+
+
+```r
+library(car)
+vif(model.2)
+```
+
+```
+##  Support   Stress 
+## 1.378785 1.378785
+```
+
+The lesson from tolerance is that, as you add predictors to your model, it is best to select predictors that are not correlated or minimally correlated with each other. 
+
+What about interpretation?
+---
+
+* What construct does an independent variable represent once the shared variance with other constructs has been removed?
+
+* Partialling changes the meaning and interpretation of a variable.
+
+* Partialling only takes variance away from the reliable `\((r_{xx})\)` part of a measurement.
+
+  - If a scale has reliability .7 and correlates with another variable at .3, the partialling out the covariate removes .3 of the valid .7 variance or 9% out of 49%
+
+.tiny[[Lynam et al., 2016](../readings/Lynam-2006-Assessment.pdf)]
+
+---
+### Lessons from [Lynam et al., 2006](../readings/Lynam-2006-Assessment.pdf)
+
+*  Heterogeneous measures run the risk of greater dissimilarity following partialling. They showed this empirically. 
+
+  - partialling out sub-scales -- some correlations are even negative
+
+* **Nothing is a good substitute for good theory and reliable measurement.**
+
+* Always present zero-order correlations.
+
+???
+
+* It is difficult to know what construct an independent variable represents once the shared variance with other constructs has been removed
+
+* PARTIALLING CHANGES VARIABLES
+
+* Partialling only comes from the reliable part of the measurement -- if a scale has reliability .7 and correlates with another variable at .3, the partialling out the covariate removes .3 of the valid .7 variance or 9% out of 49%
+
+    * Heterogeneous measures run the risk of greater dissimilarity following partialling.
+    
+Empirical work: 
+~ 700 male inmates completed
+PCL-R assess psychopathy (interview coding)
+APSD (self-report)
+PRAQ proactive and reactive aggression
+EPQ
+PPI also psychopathy
+
+- 
+
+Good statistics cannot overcome poor measurement and bad theory
+
+- always present 
+
+---
+## 3. Model
+
+Assumption 3: Correctly specified model
+- This is especially important for multiple regression.
+
+- Two problems: 
+  
+&gt; "Over control" and your coefficient is no longer interpretable
+  
+&gt; **"Under control" and your coefficient is no longer interpretable
+**
+
+---
+## Endogeniety 
+
+
+&gt; "Under control" and your coefficient is no longer interpretable
+
+
+**Endogeniety** is when your your error term is associated with a predictor. 
+
+- Typically when you leave out an important predictor.  
+    
+???
+
+Underestimates `\(R^2\)`
+
+---
+
+
+If this is the true model:
+
+`$$Y_i = b_0 + b_{1}X_{1} + b_{2}X_{2} + \epsilon_{i}$$`
+But you only model this:
+
+`$$Y_i = b_0 + b_{1}X_{1} + \epsilon_{i}$$`
+
+
+--
+
+
+The extra term is absorbed into the error so that
+
+`$$Y_i = b_0 + b_{1}X_{1} + (\epsilon_{i} + X_2)$$`
+
+If `\(X_1\)` and `\(X_2\)` are correlated, and `\(X_2\)` is associated with `\(Y_i\)` above and beyond `\(X_1\)`, then the residual and predictor in the model you ran will be correlated! ( `\(r_{x_1,\epsilon} \neq 0\)` )
+
+
+???
+### Condition on a collider
+
+
+Many ways this can happen but one common one is selecting a sample (clinical students, college students) that is associated with your variables of interest (e.g., emotion regulation, memory ability)
+
+&lt;center&gt;
+
+&lt;img src = 11-diagnostics_files/figure-html/collider.jpg width = '80%')&gt;
+
+&lt;/center&gt;
+
+---
+
+
+### 4. Homoscedasticity
+
+.pull-left[
+**Homogeneity of variance**
+
+* the variance of an outcome is the same across two (or more) groups
+
+* Levene's test
+
+]
+
+.pull-left[
+**Homoscedasticity**
+
+* the variance of an outcome is the same across all levels of all continuous predictor variables
+
+* visual inspection of residuals by fitted values 
+
+]
+
+---
+
+## 4. Homoscedasticity
+
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## 5. Independence among the errors
+
+
+![](11-diagnostics_files/figure-html/independence-1.png)&lt;!-- --&gt;
+
+
+---
+## 6. Normality of the errors
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+
+
+---
+
+.code-small[
+
+
+```r
+ggplot(model.1) +
+  stat_qq(aes(sample = .stdresid)) +
+  geom_abline() +
+  labs(title = "Q-Q Plot",
+       subtitle = "for Normality of Errors") +
+  theme_bw(base_size = 20)
+```
+]
+
+
+&lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+---
+## 6. Normality of the errors
+
+
+
+```r
+library(car)
+qqPlot(model.1)
+```
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+```
+## [1]  8 84
+```
+
+```r
+#base plot function too
+#plot(model.1, which = 2)
+```
+
+
+---
+
+
+|       Assumption              |       	Fix                      |
+|-------------------------------|----------------------------------|
+|1. Measured without error	    |	SEM, factor scores, more data, better design    |
+|2. Correctly specified form 		|	Different model                  |
+|3. Correctly specified model		|	 ¯`\_`(ツ)`_`/¯  &amp; specificity analyses|
+|4. Homoscedasticity 						|	Bootstraps, WLS, transformations  |
+|5. Independent Errors 				 	| Use different analysis method                |
+|6. Normality of the Errors     | Additional IVs, different form    |
+
+---
+### Robustness
+
+Regression models are considered **robust** meaning that even when you violate assumptions, you can still use the same models with some safety.
+
+* E.g., *t*-tests are robust to violations of normality, because we can fall back on the central limit theorem. 
+
+Regression is robust to violations of *some* assumptions, primarily
+
+  * Homoscedasticity
+  * Normality of errors
+
+---
+
+
+There's also an underlying assumption* that our models are developed independent of the data. 
+
+- Changing the model based on assumptions does violate the data-model-independence assumption, but it's unclear how this affects the inferences. In general, it's a good idea to validate the new model using a new dataset. 
+
+- Changing the model based on the significance tests is *bad* and it's fairly clear how this affects our inferences. 
+
+.tiny[`*` this is true for all statistical tests]
+
+---
+
+
+
+
+### Screening your data
+
+1) Calculate univariate and bivariate descriptive stats
+
+  + Check the min and max to make sure data were entered correctly
+  + Check the class of the variable
+      + is your grouping variable a factor or numeric?
+  + Check for skew or compare the mean and median
+  + Compare correlation matrices with pairwise and listwise deletion for bias in missingness.
+  + Calculate reliability for your scales. 
+  
+---
+
+### Screening your data
+
+
+2) Plot univariate and bivariate distributions
+  
+  + Look for skew and outliers
+  
+  + Check correlation heat maps for expected and unexpected patterns in items
+  
+---
+
+### Screening your data
+
+
+3) Test  assumptions of your model(s)
+
+  + Calculate the VIF of each term 
+  + Graph residuals by predictors to check for endogeneity.
+  + Graph residuals by fitted values to check for homoscedasticity.
+  + Graph residuals by ID number (or date, or another variable not in your model) to check for independence.
+  + Graph the distribution of residuals or the Q-Q plot to check for normality. 
+  
+---
+
+### Screening your data
+
+4) Look for univariate or multivariate **outliers**. 
+
+-- 
+
+- Broadly defined as atypical or highly influential data point(s)
+
+- Due to contamination (e.g. recording error) or accurate observation of a rare case
+
+- Univariate vs. Multivariate
+
+How do we typically describe or identify outliers? 
+
+???
+
+Focus on influential part -- what do we mean by influential?
+How do we see the influence of outliers in the case of estimating the mean?
+
+---
+
+Outliers can be described in terms of three different metrics. Each  conveys a sense of the magnitude of outliery-ness the case exhibits. However, some metrics also describe the degree to which your inferences will change: 
+
+1. Leverage
+    + How unusual is this case from the rest of the cases in terms of predictors?
+2. Distance
+    + How distant is the observed case from the predicted value?
+3. Influence
+    + How much the does regression coefficient change if case were removed?
+
+---
+## Outliers
+
+
+**Leverage** tells us how far observed values for a case are from mean values on the set of IVs (centroid). 
+
+- Not dependent on Y values
+
+- High leverage cases have greater potential to influence regression results
+
+
+
+---
+
+
+### Leverage
+
+
+```r
+library(car)
+leveragePlots(model.2)
+```
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+
+---
+
+## Outliers
+
+One common metric for describing leverage is **Mahalanobis Distance**, which is the multidimensional extension of Euclidean distance where vectors are non-orthogonal. Given a set of variables, `\(\mathbf{X}\)` with means `\(\mathbf{\mu}\)` and covariance `\(\Sigma\)`:
+
+`$$\large D^2 = (x - \mu)' \Sigma^{-1} (x - \mu)$$` 
+---
+
+## Outliers
+
+
+```r
+m = colMeans(a_data[c("Stress", "Support")], na.rm = T)
+cov = cov(a_data[c("Stress", "Support")])
+MD = mahalanobis(x = a_data[,c("Stress", "Support")], center = m, cov = cov)
+
+cutoff &lt;- qchisq(p = 0.95 , df = ncol(a_data))
+cutoff
+```
+
+```
+## [1] 11.0705
+```
+
+```r
+## Display observation whose distance greater than cutoff value
+a_data[MD &gt; cutoff ,]
+```
+
+```
+## [1] id      Anxiety Stress  Support group  
+## &lt;0 rows&gt; (or 0-length row.names)
+```
+
+---
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
+
+
+---
+## Outliers
+
+- **Distance** is the distance from prediction, or how far a case's observed value is from its predicted value 
+
+  * i.e., residual
+  
+  * In units of Y.
+  
+What might be problematic at looking at residuals in order to identify outliers?
+
+???
+
+Problem: outliers influence the regression line, won't be easy to spot them
+  
+---
+### Distance
+
+Raw residuals come from a model that is influenced by the outliers, making it harder to detect the outliers in the first place. To avoid this issue, it is advisable to examine the **deleted residuals.**
+
+  - This value represents the distance between the observed value from a predicted value _that is calculated from a regression model based on all data except the case at hand_
+  
+  - The leave-one-out procedure is often referred to as a "jack-knife" procedure.
+
+---
+## Outliers
+
+**Influence** refers to how much a regression equation would change if the extreme case (outlier) is removed.
+
+`\(\text{Influence} = \text{Leverage} \times \text{Distance}\)`
+
+The most common are:
+
+- Cook's Distance (change in model fit)
+- DFFITS (change in model fit, standardized)
+- DFBETAS (change in coefficient estimate without the outlier)
+
+---
+
+## Outliers
+
+**Cook’s Distance** is calculated by removing the `\(i\)`th data point from the model and recalculating the regression. It summarizes how much all the values in the regression model change when the `\(i\)`th observation is removed.
+
+`$$CD_i = \frac{\sum_{j=1}^n(\hat{Y}_j-\hat{Y}_{j(1)})^2}{(p+1)MSE}$$`
+
+---
+### Cook's Distance
+![](11-diagnostics_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+
+---
+
+
+
+**DFFITS** indexes how much the predicted value for a case changes if you remove the case from the equation. 
+
+**DFBETAs** index how much the estimate for a coefficient changes if you remove a case from the equation.
+
+
+```r
+head(dffits(model.2))
+```
+
+```
+##            1            2            3            4            5 
+##  0.142822222 -0.194364090 -0.026149990  0.133725184 -0.130437196 
+##            6 
+## -0.004986982
+```
+
+```r
+head(dfbeta(model.2))
+```
+
+```
+##    (Intercept)       Support        Stress
+## 1  0.076047188 -0.0017168702 -0.0083977784
+## 2  0.022146938  0.0045635001 -0.0165118777
+## 3  0.003825565 -0.0004751821 -0.0007221716
+## 4 -0.045340834 -0.0007265234  0.0121830652
+## 5 -0.039420102  0.0065137198 -0.0063488839
+## 6 -0.001418211  0.0001272720 -0.0001032229
+```
+
+
+---
+
+
+![](11-diagnostics_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+
+
+---
+### Recommendations
+
+- Analyze data with/without outliers and see how results change
+
+- If you throw out cases you must believe it is not representative of population of interest or have appropriate explanation. You need to be able to **defend your decision** to the readers, your colleagues, and yourself. You also need to tell people what the hell you did
+
+- Don't throw out data just to be "safe". Data are hard to collect and outliers are expected!
+
+
+---
+
+### Multicollinearity
+
+**Multicollinearity** occurs when predictor variables are highly related to each other. 
+- This can be a simple relationship, such as when X1 is strongly correlated with X2. This is easy to recognize, interpret, and correct for.
+
+- Sometimes multicollinearity is difficult to detect, such as when X1 is not strongly correlated with X2, X3, or X4, but the combination of the latter three is a strong predictor of X1. 
+
+
+---
+
+### Addressing Multicollinearity
+
+Increase sample size
+
+Remove a variable from your model.
+
+Composite or factor scores
+  - If variables are highly correlated because they index the same underlying construct, why not just use them to create a more precise measure of that construct?
+  
+* Centering (esp important if your model includes interaction terms)
+
+---
+
+### Suppression
+
+Multicollinearity is related to suppression. Normally our standardized partial regression coefficients fall between 0 and `\(r_{Y1}\)`. However, it is possible for `\(b_{Y1}\)` to be larger than `\(r_{Y1}\)`. We refer to this phenomenon as **suppression.**
+* A non-significant `\(r_{Y1}\)` can become a significant `\(b_{Y1}\)` when additional variables are added to the model.
+
+* A *positive* `\(r_{Y1}\)` can become a *negative* and significant `\(b_{Y1}\)`.
+
+---
+
+class: inverse
+
+## Next time...
+
+- Interactions Galore!
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

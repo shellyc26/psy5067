@@ -1,0 +1,434 @@
+---
+title: 'Multiple Regression'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["xaringan-themer.css", "my-theme.css"]
+    incremental: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+</style>
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
+
+```
+
+```{r, echo = F, results='hide',warning=FALSE,message=FALSE}
+library(tidyverse)
+library(knitr)
+# function to display only part of the output
+hook_output <- knit_hooks$get("output")
+knit_hooks$set(output = function(x, options) {
+  lines <- options$output.lines
+  if (is.null(lines)) {
+    return(hook_output(x, options))  # pass to default hook
+  }
+  x <- unlist(strsplit(x, "\n"))
+  more <- "..."
+  if (length(lines)==1) {        # first n lines
+    if (length(x) > lines) {
+      # truncate the output, but add ....
+      x <- c(head(x, lines), more)
+    }
+  } else {
+    x <- c(more, x[lines], more)
+  }
+  # paste these lines together
+  x <- paste(c(x, ""), collapse = "\n")
+  hook_output(x, options)
+})
+```
+
+## Last time
+
+- Semi-partial and partial correlations
+
+## Today
+
+- Introduction to multiple regression
+
+---
+
+## Regression equation
+
+$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
+
+- regression coefficients are "partial" regression coefficients  
+
+  - predicted change in $Y$ for a 1 unit change in $X$, *holding all other predictors constant* 
+  
+  - similar to semi-partial correlation -- represents part of each $X$
+
+---
+## Interpretting multiple regression model
+$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
+
+- Intercept is the value of $Y$ when all predictors = 0
+- Regression coefficients are the predicted change in $Y$ for a 1 unit change in $X$, *holding all other predictors constant*
+
+---
+### Interpretting multiple regression model
+$$\large \hat{Y} = b_0 + b_1X_1 + b_2X_2 + \dots+b_kX_k$$
+
+- Residual in simple regression can be thought of as a measure of $Y$ that is left over after accounting for your DV
+- Partial correlation can be created by:
+
+  1. create a measure of $X_1$ that is independent of $X_2$
+  2. create a measure of $Y$ that is independent of $X_2$
+  3. correlate the new measures
+---
+
+## Example
+```{r, message=FALSE}
+library(here)
+stress.data = read.csv(here("data/stress.csv"))
+library(psych)
+describe(stress.data$Stress)
+```
+
+---
+
+## Example
+
+```{r, output.lines = c(9:19)}
+mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
+summary(mr.model)
+```
+
+???
+
+If a univariate regression is estimating the best-fit line, what is this estimating?
+
+---
+## Visualizing multiple regression
+
+```{r, echo=FALSE, fig.align='center'}
+library(visreg)
+
+visreg2d(mr.model,"Support", "Anxiety", plot.type = "persp")
+
+```
+
+---
+
+## Calculating coefficients 
+
+Just like with univariate regression, we calculate the OLS solution. As a reminder, this calculation will yield the estimate that reduces the sum of the squared deviations from the line:
+
+.pull-left[
+### Unstandardized
+$$\small \hat{Y} = b_0 + b_{1}X1 + b_{2}X_2$$
+$$\small \text{minimize} \sum (Y-\hat{Y})^2 $$
+]
+.pull-right[
+
+### Standardized
+$$\small \hat{Z}_{Y} = b_{1}^*Z_{X1} + b_{2}^*Z_{X2}$$
+$$\small \text{minimize} \sum (z_{Y}-\hat{z}_{Y})^2$$
+]
+
+---
+## Calculating the standardized partial regression coefficient 
+
+$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+
+$$b_{2}^* = \frac{r_{Y2}-r_{Y1}r_{12}}{1-r_{12}^2}$$
+---
+## Notice the similarity with semi-partial correlation
+
+$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+
+
+
+$$sr = r_{y(1.2)} = \frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
+
+
+---
+
+### Relationships between partial, semi- and b*  
+
+All ways to represent the relationship between two variables while taking into account a third (or more!) variables. 
+
+  - Each is a standardized effect, bounded by -1 and 1*. This means they can be compared.
+
+Not equal calculations!
+
+  - If predictors are not correlated, $r$,  sr $(r_{Y(1.2)})$ and b* are equal 
+
+.small[*Standardized regression coefficients are not bounded by -1 and 1, but it's rare and usually a problem ]
+---
+
+** Standardized mult regression coefficient** $b^*$
+
+$$\frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+
+
+** Semi-partial correlation** $r_{y(1.2)}$
+$$\frac{r_{Y1}-r_{Y2}r_{Y12} }{\sqrt{1-r_{12}^2}}$$
+
+** Partial correlation** $r_{y1.2}$
+$$\frac{r_{Y1}-r_{Y2}r_{{12}}}{\sqrt{1-r^2_{Y2}}\sqrt{1-r^2_{12}}}$$
+---
+
+```{r, echo=FALSE}
+z_score = function(x){
+  m = mean(x, na.rm=T)
+  s = sd(x, na.rm=T)
+  z = (x-m)/s
+  return(z)
+}
+
+stress.data = stress.data %>%
+  mutate(z_anxiety = z_score(Anxiety),
+         z_support = z_score(Support),
+         z_stress = z_score(Stress))
+```
+
+```{r}
+mod0 = lm(z_stress ~ z_anxiety + z_support, 
+          data = stress.data)
+
+round(coef(mod0),3)
+```
+
+.pull-left[
+```{r, message=F, warning = F, echo = 2:4}
+library(ppcor)
+spcor.test(x = stress.data$Anxiety, 
+           y = stress.data$Stress, 
+           z = stress.data$Support)$estimate
+```
+]
+
+.pull-right[
+
+```{r, message=F, warning = F}
+pcor.test(x = stress.data$Anxiety, 
+          y = stress.data$Stress, 
+          z = stress.data$Support)$estimate
+```
+
+]
+
+They're not the same, but they're close!
+
+---
+## Review
+
+.pull-left[
+
+#### Original Metric
+
+$$b_{1} = b_{1}^*\frac{s_{Y}}{s_{X1}}$$
+
+$$b_{1}^* = b_{1}\frac{s_{X1}}{s_{Y}}$$
+]
+
+.pull-right[
+
+#### Intercept
+
+$$b_{0} = \bar{Y} - b_{1}\bar{X_{1}} - b_{2}\bar{X_{2}}$$
+
+]
+
+---
+
+```{r, highlight.output = 11}
+mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
+summary(mr.model)
+```
+
+---
+
+```{r, highlight.output = 12:13}
+mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
+summary(mr.model)
+```
+
+---
+## "Controlling for"
+
+![](images/control.gif)
+
+Taken from [@nickchk](https://twitter.com/nickchk/status/1068215492458905600)
+
+---
+
+## Estimating model fit
+
+```{r, highlight.output = 18, echo=FALSE}
+mr.model <- lm(Stress ~ Support + Anxiety, data = stress.data)
+summary(mr.model)
+```
+
+---
+.pull-left[
+```{r, warning = FALSE, message = FALSE, eval=FALSE}
+library(broom)
+stress.data1 = augment(mr.model)
+stress.data1 %>%
+  ggplot(aes(x = Stress, y = .fitted)) + geom_point() + geom_smooth(method = "lm") + scale_x_continuous("Y (Stress)") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 20)
+```
+]
+
+.pull-right[
+```{r, warning = FALSE, message = FALSE, echo=FALSE}
+library(broom)
+stress.data1 = augment(mr.model)
+stress.data1 %>%
+  ggplot(aes(x = Stress, y = .fitted)) + geom_point() + geom_smooth(method = "lm") + scale_x_continuous("Y (Stress)") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 20)
+```
+]
+---
+## Multiple correlation, R
+
+$$\large \hat{Y} = b_{0} + b_{1}X_{1} + b_{2}X_{2}$$
+
+
+- $\hat{Y}$ is a linear combination of Xs
+- $r_{Y\hat{Y}}$ = multiple correlation = R
+
+--
+
+$$\large R = \sqrt{b_{1}^*r_{Y1} + b_{2}^*r_{Y2}}$$
+$$\large R^2 = {b_{1}^*r_{Y1} + b_{2}^*r_{Y2}}$$
+
+---
+
+![](images/venn/Slide7.jpeg)
+---
+
+![](images/venn/Slide8.jpeg)
+
+---
+## Decomposing sums of squares
+
+We haven't changed our method of decomposing variance from the univariate model
+
+$$\Large \frac{SS_{regression}}{SS_{Y}} = R^2$$
+$$\Large {SS_{regression}} = R^2({SS_{Y})}$$
+
+
+
+$$\Large {SS_{residual}} = (1- R^2){SS_{Y}}$$
+  
+---
+
+## Significance tests
+
+- $R^2$ (omnibus)  
+- Regression Coefficients  
+- Increments to $R^2$  
+    
+---
+
+## R-squared, $R^2$
+
+
+- Same interpretation as before  
+
+- Adding predictors into your model will increase $R^2$ – regardless of whether or not the predictor is significantly correlated with Y.    
+
+- Adjusted/Shrunken $R^2$ takes into account the number of predictors in your model  
+
+
+---
+
+## Adjusted R-squared, $\text{Adj} R^2$
+
+$$\large R_{A}^2 = 1 - \frac{Var_{res}}{Var_{total}}$$
+
+
+$$\large R_{A}^2 = 1 - \frac{\frac{SS_{res}}{n-p-1}}{\frac{SS_{total}}{n-1}}$$
+$$\large R_{A}^2 = 1 - (1 -R^2)\frac{n-1}{n-p-1}$$
+---
+
+## Adjusted R-squared, $\text{Adj} R^2$
+
+$$\large R_{A}^2 = 1 - (1 -R^2)\frac{n-1}{n-p-1}$$
+- What happens if you add many IV's to your model that are uncorrelated with your DV?
+
+--
+
+
+- What happens as you add more covariates to your model that are highly correlated with your key predictor, X?
+
+$$b_{1}^* = \frac{r_{Y1}-r_{Y2}r_{12}}{1-r_{12}^2}$$
+
+
+---
+
+## ANOVA
+
+```{r, highlight.output = 19}
+summary(mr.model)
+```
+---
+
+## ANOVA
+
+```{r, highlight.output = 5:6}
+anova(mr.model)
+```
+
+
+---
+
+```{r, highlight.output = 12:13}
+summary(mr.model)
+```
+
+---
+
+## Test of individual regression coefficients
+
+$$\Large H_{0}: \beta_{X}= 0$$
+$$\Large H_{1}: \beta_{X} \neq 0$$
+
+---
+
+### Test of individual regression coefficients
+
+In the case of univariate regression:
+
+$$se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-r_{xy}^2}{n-2}}}$$
+
+In the case of multiple regression:
+
+$$se_{b} = \frac{s_{Y}}{s_{X}}{\sqrt{\frac {1-R_{Y\hat{Y}}^2}{n-p-1}}} \sqrt{\frac {1}{1-R_{i.jkl...p}^2}}$$
+
+- As N increases... 
+- As variance explained increases... 
+
+---
+class: inverse
+
+## Next time
+
+More multiple regression
+
+#### Can you...
+- write out standardized and unstandardized regression equations?
+- interpret the coefficients of a multiple regression?
+- draw comparisons from ANOVA and regression?
+- calculate $R^2$?

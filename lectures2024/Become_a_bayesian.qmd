@@ -1,0 +1,600 @@
+---
+title: "Become a Bayesian in 3 simple steps"
+author: "Josh Jackson"
+format: revealjs
+editor: visual
+execute: 
+  echo: true
+html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Reassurance, before we get to the three steps
+
+-   Not drastically different!
+-   You get to keep everything you like
+-   Your models stay the same!!
+
+## GLM
+
+-   Our good friend that gives us 99% of the models psychologists use (general(ized) linear model), is exactly the same
+
+$$\Large Y = b_{0} + b_{1}X +e$$ - No need to think about setting up new t-test, ANOVAS, regressions, etc. ALL THE SAME.
+
+## A working mental model
+
+What are Bayesian models?
+
+1.  "Normal" regression with a different algorithm.
+
+2.  Results that represent a distribution rather than a point estimate and some uncertainty.
+
+3.  Priors that incorporate existing knowledge.
+
+## 1. Be comfortable with a different estimation algorithm
+
+-   What do you mean by estimation algorithm?
+
+::: incremental
+-   OLS i.e. $min\sum(Y_{i}-\hat{Y})^{2}$
+-   Fun fact, R uses QR decomposition, Newton Raphson, Fisher Scoring, SVR, etc -- not this equation.
+-   Another fun fact, more advanced stats use an even different algorithm (e.g., maximum likelihood)
+:::
+
+## Standard way
+
+```{r}
+#| code-fold: true
+
+library(tidyverse)
+galton.data <- psychTools::galton
+```
+
+```{r, echo = FALSE}
+galton.data %>% 
+  ggplot(aes(x = parent, y = child)) +
+  geom_jitter(alpha = 1/2) 
+
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+fit.1 <- lm(child ~ parent, data = galton.data)
+summary(fit.1)
+```
+
+## Fisher Scoring
+
+```{r}
+#| code-fold: true
+fit.1.g <- glm(child ~ parent, family = gaussian, data = galton.data)
+summary(fit.1.g)
+```
+
+## Maximum likelihood
+
+```{r, echo = FALSE}
+library(lavaan)
+
+l1 <- 'child ~ parent'
+fit <- sem(l1, data = galton.data, meanstructure = TRUE)
+summary(fit)
+```
+
+## Bayesian way
+
+```{r}
+#| code-fold: true
+library(brms)
+fit.1.bayesian <- brm(child ~ parent, data = galton.data, file = "fit.1.b")
+```
+
+```{r}
+summary(fit.1.bayesian)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+plot(conditional_effects(fit.1.bayesian), points = TRUE)
+```
+
+## Step 1 is easy
+
+-   Bayes gives you basically the same results
+
+::: incremental
+-   So why use it? Many reasons, but the most direct is manipulating, visualizing, and extrapolating from results
+:::
+
+## 2. Think of results in terms of distributions
+
+-   What are results?
+
+::: incremental
+-   Estimate and an SE
+-   Indicates a "best guess" ie mean/median/mode and the imprecision related to it
+-   If this guess is far away from zero (and imprecision not large), then it is significant
+-   We know that if we repeated this again we won't get the same answer (estimate), but likely in between our CIs
+-   How do we convey the "best guess?"
+:::
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+library(tidybayes)
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+select(b_parent) %>% 
+  mode_hdi(.width = c(.95)) %>%  
+ggplot(aes(y = as.factor(.width), x = b_parent, xmin = .lower, xmax = .upper)) + geom_pointinterval() + ylab("")
+
+```
+
+------------------------------------------------------------------------
+
+-   The problem is they obscure information
+
+```{r}
+#| code-fold: true
+#| 
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+ggplot(aes(x = b_parent)) +
+  stat_halfeye()
+```
+
+## Posterior distribution (ie results)
+
+-   Is made up of a series of educated guesses (via our algorithm), each of which is consistent with the data.
+
+-   In aggregate, these guesses provide us not with a best guess and an SD (as with Maximum Likelihood), but a more complete sense of each parameter we are trying to estimate.
+
+-   We can assume this distribution (typically normal) with standard estimation, but with bayes it can be flexible!
+
+## Posterior distribution (ie results)
+
+Is made of up of a series of educated guesses. Each dot represents a particular guess. Guesses that occur more often are considered more likely.
+
+```{r}
+#| code-fold: true
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+ggplot(aes(x = b_parent)) +
+  stat_dotsinterval()
+```
+
+## How does the algorithm work?
+
+-   Played a role in developing the thermonuclear bomb with one of the earliest computers. Published in 1953 but ignored within stats b/c it was published within a physics/chemistry journal. Took about until 1990 for desktop computers to run fast enough to do at home.
+
+-   Many variants, but the general idea is a) propose an estimate value + noise N(0, $\sigma$ ) then b) see how "likely" the data is given the estimate, c) based on some criteria (better than worse that some value) either accept or reject the estimate and d) repeat
+
+## What do you mean by likely?
+
+You've done this before last semester. Three parameters in a binomial distribution (# successes, \# of trials, probability of success). Often you would fix #trials and probability of success to see what \# successes are most/least likely.
+
+```{r}
+#| code-fold: true
+data.frame(heads = 0:10, prob = dbinom(x = 0:10, size = 10, prob = .5)) %>% 
+  ggplot(aes(x = factor(heads), y = prob)) +
+  geom_col(fill = "#562457") +
+  geom_text(aes(label = round(prob, 2), y = prob + .01),
+            position = position_dodge(.9),
+            size = 5, 
+            vjust = 0) +
+  labs(title = "Binomial Distribution of Coin Flips",
+       subtitle = "n = 10, p = .5",
+       x = "Number of Successes (Heads)",
+       y = "Density") +
+  theme_classic(base_size = 16)
+```
+
+------------------------------------------------------------------------
+
+-   But we often don't know what P is. That is the parameter we want to estimate. But we collected data! So we can look at what p is consistent (or not) with our data (2 successes in 10 trials).
+-   This is basically what our current ML algorithms do.
+
+```{r}
+#| code-fold: true
+p <- seq(0.01, 0.99, by = 0.01)
+loglike <- dbinom(2, size = 10, prob = p)
+plot(loglike)
+
+```
+
+------------------------------------------------------------------------
+
+-   The Bayesian (MCMC) algorithm tries out a bunch of parameter values. The one's that are *more likely* will appear more often.
+-   What do I mean "appear" more often. The algorithm lands on that just as our coin flipping example finds .2 to be most likely.
+
+```{r}
+#| code-fold: true
+
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+ggplot(aes(x = b_parent)) +
+  stat_dotsinterval()
+```
+
+------------------------------------------------------------------------
+
+Our posterior is literally made up of educated guesses by the algorithm
+
+```{r}
+
+tidy_draws(fit.1.bayesian)
+```
+
+## More intuituion
+
+-   Think of the algorithm as picking out marbles from a sack, with replacement, to figure out the distribution of colors.
+
+-   Or us doing `rnorm` with me hiding what the mean and SD are, but then figuring out what the mean and SD are through counting the samples.
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+
+sack <- as_tibble(rnorm(1000000, mean = 100, sd = 15))
+ggplot(sack, aes(x=value)) + 
+  geom_density()
+```
+
+## Bayesian analysis is just counting
+
+-   Bayesian analysis counts all ways that something can happen (according to assumptions/model). Assumptions with more ways that are consistent with data are more plausible.
+
+-   This method is not demonstrably different than standard approaches. Standard likelihood approaches use the values that are most consistent with the data as an estimate. Try out all possible numbers and then tells you which *one* is most likely.
+
+-   Where Bayes differs, is we will focus beyond just a "best estimate"
+
+## Visualizing uncertainty
+
+Our posterior (ie different educated guesses at a the correct parameters; distribution of plausible values) is highlighting: that there is no ONE result, that there are many possible results that are consistent with the data.
+
+```{r}
+#| code-fold: true
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+ggplot(aes(x = b_parent)) +
+  stat_dotsinterval()
+```
+
+## Some positives of focusing on uncertainty
+
+1.  Do not need to assume normal or multivariate normal. Uncertainty does not need to be even tailed.
+
+2.  Differences (say across groups) in uncertainty is allowed. Do not need to assume groups have same standard errors. One can better account for and/or probe situations where a certain group has a lot or little variability.
+
+3.  Easy to calculate uncertainty
+
+## CIs around a particular value
+
+With your current knowledge, calculate a 95% CI around parent = 72 inches, to tell you what is possible for the sample mean at that hight.
+
+$$  \hat{Y}\pm t_{critical} * se_{residual}*\sqrt{\frac {1}{n}+\frac{(X-\bar{X})^2}{(n-1)s_{X}^2}}  $$
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+  select(b_Intercept,b_parent) %>% 
+  mutate(mu_at_72 = b_Intercept + (b_parent * 72)) %>%  ggplot(aes(x = mu_at_72)) +
+  stat_halfeye() +
+  xlab(expression(mu["C-height at parent 72"])) 
+
+```
+
+## 3. Integrating prior knowledge
+
+-   Priors insert knowledge you have outside of your data into your model
+
+-   This can seem "subjective" as opposed to the more "objective" way of letting the data speak.
+
+::: incremental
+-   We will mostly not "tip the scales" towards an outcome we want.
+-   Most of the time the prior knowledge constrains plausible or implausible *range* of values e.g. we know an effect size of a million is very unlikely.
+-   Often priors don't matter...
+:::
+
+------------------------------------------------------------------------
+
+-   Take our height example where we are fitting $\Large Child = b_{0} + b_{1}Parent +e$
+
+-   We need to put priors on each parameter we want to estimate, here $b_{0}$ & $b_{1}$ (and e).
+
+-   $b_{0}$ is the intercept and reflect average child height when parent height is centered.
+
+-   We know, roughly, what average height of adults are so we can create a distribution, say \~N(66 (5.5 ft), 5). That means we are pretty sure (95%) the average height is between \~4'8 and 6\`4
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+p.0 <-
+  tibble(x = seq(from = 40, to = 100, by = .1)) %>% 
+  
+  ggplot(aes(x = x, y = dnorm(x, mean = 66, sd = 5))) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(from = 40, to = 100, by = 10)) +
+  labs(title = "mu ~ dnorm(66, 5)",
+       y = "density")
+
+p.0
+```
+
+------------------------------------------------------------------------
+
+-   We could argue that the $b_{1}$ parameter (which indexes the strength of association between parent and child height) is positive. But we don't want to stack the deck.
+
+-   Let's center it around zero, saying that the most plausible estimate is no association, but that we are willing to entertain some strong effects in either direction.
+
+------------------------------------------------------------------------
+
+```{r}
+#| code-fold: true
+p.1 <-
+  tibble(x = seq(from = -15, to = 15, by = .1)) %>% 
+  
+  ggplot(aes(x = x, y = dnorm(x, mean = 0, sd = 5))) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(from = -15, to = 15, by = 3)) +
+  labs(title = "mu ~ dnorm(0, 5)",
+       y = "density")
+
+p.1
+```
+
+## Okay so what does this mean?
+
+It means, *BEFORE WE SEE THE DATA* we are comfortable with different regression lines.
+
+```{r, echo = FALSE}
+
+pp <-
+  tibble(n = 1:100,
+         a = rnorm(100, mean = 68, sd = 5),
+         b = rnorm(100, mean = 0,   sd = 5)) %>% 
+  expand(nesting(n, a, b), height = range(galton.data$parent)) %>%   
+  mutate(c.height = a + b * (height - mean(galton.data$parent))) 
+
+g.pp <- pp %>% 
+  ggplot(aes(x = height, y = c.height, group = n)) +
+  geom_line(alpha = 1/10) +
+  coord_cartesian(ylim = c(36, 96)) 
+
+g.pp
+
+
+```
+
+## Okay so why is this important?
+
+-   A model that makes impossible predictions prior to seeing the data isn't too useful. Why waste the effort? We often know what values are likely, given what we know about effect sizes
+
+-   This is exactly what we do with standard "frequentist" methods. They have implicit priors such that all values, from negative infinity to positive infinity are equally likely.
+
+-   If we use priors from a uniform distribution we will get the EXACT same results as a frequentist method.
+
+## Tying it together
+
+1.  Be comfortable with a different estimation algorithm
+2.  Think of results in terms of distributions
+3.  Be comfortable integrating prior knowledge
+
+$$p(\theta | data) \propto \frac{p(data | \theta) \times p(\theta )}{p(data)}$$ P(θ\|data) is the posterior probability.
+
+P(θ) is the prior probability.
+
+p(data\| $\theta$ ) is the likelihood.
+
+p(data) can be ignored, it is just a normalized coefficient
+
+## Combining the three components
+
+Priors influencing Posterior
+
+```{r, message = FALSE, echo = FALSE}
+library(gridExtra)
+library(tidyverse)
+sequence_length <- 1e3
+
+d <-
+  tibble(probability = seq(from = 0, to = 1, length.out = sequence_length)) %>% 
+  tidyr::expand(probability, row = c("flat", "stepped", "Laplace")) %>% 
+  arrange(row, probability) %>% 
+  mutate(prior = ifelse(row == "flat", 1,
+                        ifelse(row == "stepped", rep(0:1, each = sequence_length / 2),
+                               exp(-abs(probability - .5) / .25) / ( 2 * .25))),
+         likelihood = dbinom(x = 6, size = 9, prob = probability)) %>% 
+  group_by(row) %>% 
+  mutate(posterior = prior * likelihood / sum(prior * likelihood)) %>% 
+  gather(key, value, -probability, -row) %>% 
+  ungroup() %>% 
+  mutate(key = factor(key, levels = c("prior", "likelihood", "posterior")),
+         row = factor(row, levels = c("flat", "stepped", "Laplace"))) 
+
+p1 <-
+  d %>%
+  filter(key == "prior") %>% 
+  ggplot(aes(x = probability, y = value)) +
+  geom_line() +
+  scale_x_continuous(NULL, breaks = c(0, .5, 1)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "prior") +
+  theme(panel.grid       = element_blank(),
+        strip.background = element_blank(),
+        strip.text       = element_blank()) +
+  facet_wrap(row ~ ., scales = "free_y", ncol = 1)
+
+p2 <-
+  d %>%
+  filter(key == "likelihood") %>% 
+  ggplot(aes(x = probability, y = value)) +
+  geom_line() +
+  scale_x_continuous(NULL, breaks = c(0, .5, 1)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "likelihood") +
+  theme(panel.grid       = element_blank(),
+        strip.background = element_blank(),
+        strip.text       = element_blank()) +
+  facet_wrap(row ~ ., scales = "free_y", ncol = 1)
+
+p3 <-
+  d %>%
+  filter(key == "posterior") %>% 
+  ggplot(aes(x = probability, y = value)) +
+  geom_line() +
+  scale_x_continuous(NULL, breaks = c(0, .5, 1)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(subtitle = "posterior") +
+  theme(panel.grid       = element_blank(),
+        strip.background = element_blank(),
+        strip.text       = element_blank()) +
+  facet_wrap(row ~ ., scales = "free_y", ncol = 1)
+
+library(gridExtra)
+
+grid.arrange(p1, p2, p3, ncol = 3)
+```
+
+## sample size influence
+
+```{r, echo = FALSE}
+
+bernoulli_likelihood <- function(theta, data) {
+  # `theta` = success probability parameter ranging from 0 to 1
+  # `data` = the vector of data (i.e., a series of 0s and 1s)
+  n   <- length(data)
+  return(theta^sum(data) * (1 - theta)^(n - sum(data)))
+}
+  
+small_data <- rep(0:1, times = c(3, 1))
+
+s <- tibble(theta =   seq(from = 0,     to = 1, by = .001),
+       Prior = c(seq(from = 0,     to = 1, length.out = 501),
+                 seq(from = 0.998, to = 0, length.out = 500))) %>% 
+  mutate(Prior      = Prior / sum(Prior),
+         Likelihood = bernoulli_likelihood(theta = theta,
+                                           data  = small_data)) %>% 
+  mutate(marginal_likelihood = sum(Prior * Likelihood)) %>% 
+  mutate(Posterior           = (Prior * Likelihood) / marginal_likelihood) %>% 
+  select(theta, Prior, Likelihood, Posterior) %>% 
+  gather(key, value, -theta) %>% 
+  mutate(key = factor(key, levels = c("Prior", "Likelihood", "Posterior")))  
+
+small <- ggplot(s, aes(x = theta, ymin = 0, ymax = value)) +
+  geom_ribbon(fill = "grey67") +
+  scale_x_continuous(breaks = seq(from = 0, to = 1, by = .2)) +
+  labs(x = expression(theta),
+       y = "probability density") +
+  theme(panel.grid = element_blank()) +
+  facet_wrap(~key, scales = "free_y", ncol = 1)
+
+
+large_data <- rep(0:1, times = c(30, 10))
+
+l <- tibble(theta =   seq(from = 0,     to = 1, by = .001),
+       Prior = c(seq(from = 0,     to = 1, length.out = 501),
+                 seq(from = 0.998, to = 0, length.out = 500))) %>% 
+  mutate(Prior      = Prior / sum(Prior),
+         Likelihood = bernoulli_likelihood(theta = theta,
+                                           data  = large_data)) %>% 
+  mutate(marginal_likelihood = sum(Prior * Likelihood)) %>% 
+  mutate(Posterior           = (Prior * Likelihood) / marginal_likelihood) %>% 
+  select(theta, Prior, Likelihood, Posterior) %>% 
+  gather(key, value, -theta) %>% 
+  mutate(key = factor(key, levels = c("Prior", "Likelihood", "Posterior"))) 
+  
+ large <- ggplot(l, aes(x = theta, ymin = 0, ymax = value)) +
+  geom_ribbon(fill = "grey67") +
+  scale_x_continuous(breaks = seq(from = 0, to = 1, by = .2)) +
+  labs(x = expression(theta),
+       y = "probability density") +
+  theme(panel.grid = element_blank()) +
+  facet_wrap(~key, scales = "free_y", ncol = 1)
+library(patchwork)
+(small | large)
+```
+
+## Going from prior to posterior
+
+What is our regression estimate again?
+
+```{r}
+#| code-fold: true
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+select(b_parent) %>% 
+  mode_hdi(.width = c(.95))
+```
+
+## Going from prior to posterior
+
+With a prior for b0 of N(0, .5)
+
+```{r}
+#| code-fold: true
+fit.1.bayesian %>% 
+spread_draws(b_Intercept, b_parent) %>% 
+  ggplot(aes(x = b_parent)) +
+  stat_slab() +
+  stat_function(data = data.frame(x = c(-2, 2)), aes(x), fun = dnorm, n = 100, args = list(0, .5)) 
+```
+
+## Going from prior to posterior
+
+-   plusible lines prior to data --\> plausible lines after data
+
+```{r, echo = FALSE}
+library(modelr)
+pp <-
+  tibble(n = 1:100,
+         a = rnorm(100, mean = 68, sd = 5),
+         b = rnorm(100, mean = 0,   sd = .5)) %>% 
+  expand(nesting(n, a, b), height = range(galton.data$parent)) %>%   
+  mutate(c.height = a + b * (height - mean(galton.data$parent))) 
+
+g.pp <- pp %>% 
+  ggplot(aes(x = height, y = c.height, group = n)) +
+  geom_line(alpha = 3/10) +
+  coord_cartesian(ylim = c(48, 89)) +
+  xlab("parent_height")
+
+
+
+g.pp2<- galton.data %>% 
+data_grid(parent = seq_range(parent, n = 101)) %>% 
+ add_epred_draws(fit.1.bayesian, ndraws = 200) %>% 
+  ggplot(aes(x = parent, y = child)) +
+  geom_line(aes(y = .epred, group = .draw), alpha = .05) +
+  geom_point(data = galton.data, size = 1) +
+  xlab("parent_height")
+
+
+(g.pp | g.pp2)
+```
+
+## What is confusing:
+
+::: incremental
+-   Is it a philosophical different frame work? We can talk about how it is p(H0\|d) vs p(d\|H0) but it doesn't matter. Bayesian just means using the algorithm.
+-   Technically we don't have P-values, but Bayesian has analogues. Technically there isn't NHST (because no null distribution to create sampling distribution) but you can easily do it.
+-   Why don't we do this already? Isn't frequentist better? Historical accident due to computation limitations
+-   Bayes Factors. Mostly garbage (imho) as they can be easily manipulated. But they have their place. BFs =/= Bayesian.
+:::
+
+## Learn more - take my Bayes Class!
+
+-   Basically an advanced glm class, bayes is sort of extra.
+-   Easy graphing, CIs, model evaluation.
+-   Create generative model, where you can simulate data more directly.

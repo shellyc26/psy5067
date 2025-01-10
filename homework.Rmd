@@ -13,26 +13,21 @@ Homework assignments will appear here. You'll be able to access the assignment, 
 Note that this semester you will be making your RMarkdown/RNotebook (anything with the extension `.Rmd`) files on your own. If you need help, within RStudio, go to Help > Cheatsheets and select either the R Markdown Cheat Sheet or the R Markdown Reference Guide for help with formatting. Please contact us ASAP with any questions or issues when knitting to HTML.
 
 ## Homework 1
-- [Here is Homework 1](homework/homework1.html)
-- Due on **Tuesday 2/6 by 11:59pm**
+- Due on **Wednesday 2/5 by 11:59pm**
 
 
 ## Homework 2
-- [Here is Homework 2](homework/homework3.html)
-- Due on **Monday 2/19 by 11:59pm**
+- Due on **Wednesday 2/19 by 11:59pm**
 
 
 ## Homework 3
-- [Here is Homework 3](homework/homework4.html)
-- Due on **Saturday 3/9 by 11:59pm**
+- Due on **Friday 3/7 by 11:59pm**
 
 
 ## Homework 4
-- Homework for has been canceled
-- Study for Exam 2 instead :-)
+- Due on **Friday 3/28 by 11:59pm**
 
 ## Homework 5
-- [Here is Homework 5](homework/homework5.html)
-- Due on **Wednesday 4/24 by 11:59pm**
+- Due on **Friday 4/18 by 11:59pm**
 
 

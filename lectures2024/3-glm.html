@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>General Linear Model</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="my-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# General Linear Model
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+
+
+
+### So far
+
+
+
+
+- Reviewed last semester and previewed this semester
+  - Theme 1: The Backstreet Boys
+  - Theme 2: What is 0? 
+  
+- Put some checks and balances in place to minimize errors as much as possible
+---
+
+### Thinking in terms of models
+
+- All the tests run tus far can be thought of as a model for how you think "the world works"
+
+- Our DV (here forth `\(Y\)`) is what we are trying to understand 
+
+- We hypothesize it has some relationship with your IV(s) (here forth `\(X\)`s), with what is left over described as error ($E$)
+
+- `\(Y = X + E\)`
+
+
+---
+
+## See this in our R code
+
+Independent samples t-test
+
+```r
+t.1 &lt;- t.test(y ~ x, data = d) 
+# y is cont and x is a categoriocal/nominal (dichotomous) factor
+```
+
+One-way ANOVA
+
+```r
+a.1 &lt;- aov(y ~ x, data=d)
+# y is cont and x is a categoriocal/nominal factor
+```
+
+---
+
+
+## General linear model (GLM)
+
+- This model (equation) can be very simple as in a treatment/control experiment  
+
+- It can be very complex in terms of trying to understand something like academic achievement  
+
+- The majority of our models fall under the umbrella of a general(ized) linear model
+
+- Models imply our theory about how the data are generated (ie how the world works)
+
+---
+
+
+
+`$$Y_i = b_{0} + b_{1}X_i +e_i$$`
+- `\(Y\)` / DV / Outcome / Response / Criterion
+- `\(X\)` / IV / Predictor / Explanatory variable
+- Regression coefficient (weight) / `\(b\)` / `\(b*\)` / `\(\beta\)`
+- Intercept `\(b_0\)` / `\(\beta_{0}\)`
+- Error / Residuals `\(e\)`
+- Predictions  `\(\hat{Y}\)`
+
+
+- `\(Y_i \sim Normal(\mu, \sigma)\)`
+- The DV, `\(Y\)` for each person `\(i\)` is distributed normally, with a mean of `\(\mu\)` and a standard deviation of `\(\sigma\)`
+
+---
+
+## Regression models
+
+- These models are a way to convey the relationship between two (or more) variables. They translate our hypotheses into math. 
+
+- We can use these models to get information we may be interested in (e.g. means, SEs) and test hypotheses about the relationship among variables
+
+- *"All models are wrong but some are useful (and some are better than others)"* - George Box
+
+---
+class: clear
+
+.pull-left[
+
+Example data can be found on GitHub, or here: [`exampleData.csv`](../data/exampleData.csv)
+
+]
+.pull-right[
+
+```r
+example.data
+```
+
+```
+## # A tibble: 270 × 3
+##       id    tx traffic.risk
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
+##  1     1     1         1.86
+##  2     2     1         1   
+##  3     3     1         3.29
+##  4     4     1         2   
+##  5     5     1         2.43
+##  6     6     1         3.29
+##  7     7     0         1.17
+##  8     8     0         2.43
+##  9     9     0         3   
+## 10    10     1         1.71
+## # ℹ 260 more rows
+```
+]
+
+---
+class: clear
+.pull-left[
+
+```r
+ggplot(example.data,
+       aes(x = as.factor(tx),
+           y = traffic.risk)) +
+  geom_violin(aes(fill = as.factor(tx)),
+              alpha = .3,
+              show.legend = FALSE) +
+  geom_boxplot(aes(color = as.factor(tx)),
+               fill = "white",
+               width = .2) +
+  geom_jitter(aes(color = as.factor(tx))) +
+  labs(x = "Treatment",
+       y = "Traffic Risk")
+```
+]
+
+.pull-right[
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-6-1.png" width="504" /&gt;
+]
+
+---
+class: clear
+.small[
+
+```r
+t.test(traffic.risk ~ tx, data = example.data, 
+              var.equal = TRUE) 
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  traffic.risk by tx
+## t = 4.9394, df = 268, p-value = 0.000001381
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+## 95 percent confidence interval:
+##  0.2893360 0.6728755
+## sample estimates:
+## mean in group 0 mean in group 1 
+##        2.650641        2.169535
+```
+]
+---
+class: clear
+.small[
+
+```r
+a.1 &lt;- aov(traffic.risk ~ tx, data = example.data) 
+summary(a.1)
+```
+
+```
+##              Df Sum Sq Mean Sq F value     Pr(&gt;F)    
+## tx            1   14.8  14.800    24.4 0.00000138 ***
+## Residuals   268  162.6   0.607                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+---
+class: clear
+
+
+```r
+mod.1 &lt;- lm(traffic.risk ~ tx, data = example.data)
+summary(mod.1)
+```
+
+```
+## 
+## Call:
+## lm(formula = traffic.risk ~ tx, data = example.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.65064 -0.59811 -0.02668  0.54475  2.54475 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  2.65064    0.07637  34.707 &lt; 0.0000000000000002 ***
+## tx          -0.48111    0.09740  -4.939           0.00000138 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7789 on 268 degrees of freedom
+## Multiple R-squared:  0.08344,	Adjusted R-squared:  0.08002 
+## F-statistic:  24.4 on 1 and 268 DF,  p-value: 0.000001381
+```
+
+
+---
+.small[
+
+```r
+mod.1 &lt;- lm(traffic.risk ~ tx, data = example.data)
+anova(mod.1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: traffic.risk
+##            Df Sum Sq Mean Sq F value      Pr(&gt;F)    
+## tx          1  14.80 14.7999  24.398 0.000001381 ***
+## Residuals 268 162.57  0.6066                        
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+---
+## Example summary
+Same *p*-values for each test; same SS; same test!   
+&lt;br&gt;    
+
+- *t*-test gives you a *t* &amp; df (output may also give you group mean and SD)    
+- ANOVA gives you an SSs, dfs, MS and *F*s  
+- Linear model (regression) gives you an equation (and SSs and *F*s)
+--
+
+- Which one is more useful? 
+
+---
+## ANOVA as regression
+
+`$$Y_i = b_{0} + b_{1}X_i + e_i$$`
+`$$T.risk_i = b_{0} + b_{1}TX_i + e_i$$` 
+
+- Each individual has a unique `\(Y\)` value an `\(X\)` value and a residual/error term  
+
+- The model only has a single `\(b_{0}\)` and `\(b_{1}\)` term. These are the regression parameters. `\(b_{0}\)` is the intercept and `\(b_{1}\)` quantifies the relationship between your model of the world and the DV. 
+
+---
+
+## What do the estimates tell us? 
+
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+
+--
+
+
+```r
+example.data %&gt;% 
+  group_by(tx) %&gt;% 
+  summarise(mean(traffic.risk))
+```
+
+```
+## # A tibble: 2 × 2
+##      tx `mean(traffic.risk)`
+##   &lt;dbl&gt;                &lt;dbl&gt;
+## 1     0                 2.65
+## 2     1                 2.17
+```
+
+---
+
+## How to interpret regression estimates
+
+- Intercept is the mean of group of variable tx that is coded 0
+- Regression coefficient is the slope or rise over run, scaled as a 1 unit on the x axis
+- **"For a one unit change in X, there is a b1 predicted change in Y."**
+- Regression coefficient is the difference in means between the groups, given that we coded our groups as 0 and 1. 
+
+---
+class: clear
+.pull-left[
+
+```r
+library(ggstatsplot)
+ggstatsplot::ggbetweenstats(
+  data = example.data,
+  x = tx,
+  y = traffic.risk,
+  xlab = "Traffic Risk Score", # label for the x-axis variable
+  ylab = "Treatment group", # label for the y-axis variable
+  bf.message = FALSE, 
+  messages = FALSE
+) 
+```
+]
+
+.pull-right[
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
+]
+---
+class: clear
+.pull-left[
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-15-1.png" width="504" /&gt;
+]
+
+.pull-right[
+This is what it looks like if we wanted to put a "regression line" to the data. 
+Note that the same interpretation for a regression line holds: for a 1 unit change in `\(X\)` (tx) there is a predicted `\(b\)` change in `\(Y\)` (traffic risk)
+]
+---
+
+## Interpretations
+
+- Intercept ( `\(b_0\)` ) signifies the level of `\(Y\)` when your model IVs ( `\(X\)`s ) are zero 
+- Regression ( `\(b1\)` ) signifies the difference for a one unit change in your `\(X\)`
+
+- As with last semester you have estimates (like `\(\bar{x}\)`) and standard errors, which you can then ask whether they are likely assuming a null or create a CI
+
+---
+## Predicted scores
+
+- Based on the output how do I calculate means for each group? 
+
+```r
+tidy(mod.1)
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+
+---
+## ANOVA as regression
+- "For a one unit change in `\(X\)`, there is a `\(b_1\)` predicted change in `\(Y\)`" -- always true
+
+- Nominal/categorical variables do not have any inherent numbers associated with them so we need to assign them numbers
+
+- What numbers you assign will impact the equation/estimates/hypothesis you can test  
+- Make them useful! O and 1 are useful and are the default in `R`
+
+---
+## ANOVA as regression
+.center[
+`$$T.risk_i = b_{0} + b_{1}TX_i + e_i$$`
+
+
+```
+## # A tibble: 270 × 3
+##       id    tx traffic.risk
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
+##  1     1     1         1.86
+##  2     2     1         1   
+##  3     3     1         3.29
+##  4     4     1         2   
+##  5     5     1         2.43
+##  6     6     1         3.29
+##  7     7     0         1.17
+##  8     8     0         2.43
+##  9     9     0         3   
+## 10    10     1         1.71
+## # ℹ 260 more rows
+```
+]
+
+---
+class: clear
+
+```r
+library(dplyr)
+example.data$tx.r &lt;- as.factor(example.data$tx)
+example.data$tx.r &lt;- recode_factor(example.data$tx.r, "0" = "control", "1" = "treatment") 
+```
+Create a new variable that is not numeric
+
+```r
+example.data
+```
+
+```
+## # A tibble: 270 × 4
+##       id    tx traffic.risk tx.r     
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;fct&gt;    
+##  1     1     1         1.86 treatment
+##  2     2     1         1    treatment
+##  3     3     1         3.29 treatment
+##  4     4     1         2    treatment
+##  5     5     1         2.43 treatment
+##  6     6     1         3.29 treatment
+##  7     7     0         1.17 control  
+##  8     8     0         2.43 control  
+##  9     9     0         3    control  
+## 10    10     1         1.71 treatment
+## # ℹ 260 more rows
+```
+
+
+---
+class: clear
+.small[
+
+```r
+mod.1 &lt;- lm(traffic.risk ~ tx, data = example.data)
+tidy(mod.1)
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+
+
+```r
+mod.1r &lt;- lm(traffic.risk ~ tx.r, data = example.data)
+tidy(mod.1r)
+```
+
+```
+## # A tibble: 2 × 5
+##   term          estimate std.error statistic   p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)      2.65     0.0764     34.7  3.80e-101
+## 2 tx.rtreatment   -0.481    0.0974     -4.94 1.38e-  6
+```
+]
+---
+## What if we changed 0 and 1 to other values? 
+
+- Infinite number of ways to code categorical/nominal variables, only a few meaningful ways  
+- The `R` default is called "dummy coding"  
+- Uses 0s and 1s to put numbers to categories. We will soon see what this looks like when you have more than 2 groups. 
+- Changing the numbers changes...?
+
+---
+## Effect coding
+.small[
+
+```r
+example.data$tx.effect &lt;- dplyr::recode(example.data$tx, '0' = -1, '1' = 1) 
+```
+]
+
+
+
+```r
+example.data
+```
+
+```
+## # A tibble: 270 × 5
+##       id    tx traffic.risk tx.r      tx.effect
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;fct&gt;         &lt;dbl&gt;
+##  1     1     1         1.86 treatment         1
+##  2     2     1         1    treatment         1
+##  3     3     1         3.29 treatment         1
+##  4     4     1         2    treatment         1
+##  5     5     1         2.43 treatment         1
+##  6     6     1         3.29 treatment         1
+##  7     7     0         1.17 control          -1
+##  8     8     0         2.43 control          -1
+##  9     9     0         3    control          -1
+## 10    10     1         1.71 treatment         1
+## # ℹ 260 more rows
+```
+
+---
+## Effect coding
+
+
+```r
+mod.1.eff &lt;- lm(traffic.risk ~ tx.effect, data = example.data)
+tidy(mod.1.eff)
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.41     0.0487     49.5  8.15e-137
+## 2 tx.effect     -0.241    0.0487     -4.94 1.38e-  6
+```
+- systematically changes both the intercept and the regression estimate
+
+---
+class: clear
+
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.41     0.0487     49.5  8.15e-137
+## 2 tx.effect     -0.241    0.0487     -4.94 1.38e-  6
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+- Intercept: value when your predictor `\(X\)` is zero. *WHAT DOES ZERO MEAN?!*
+
+- Regression coefficient: one unit increase in `\(X\)` is associated with a (regression estimate) predicted increase in `\(Y\)`
+
+
+---
+## Effect coding
+Consists of -1, 1s (And zeros for more than 2 groups)
+
+1. The intercept is the "grand mean" or "mean of means" if unbalanced
+2. The regression coefficient represents the group "effect":
+  - the difference between the mean of means and the group labeled 1 (we will revisit this when we have more than 2 groups)
+
+---
+## Dummy coding
+- More appropriate when you are interested in comparing to a specific group rather than an "average person"  
+
+- Intercept: value of the group coded zero 
+- Regression coefficient: mean difference between groups 
+
+---
+## Contrast coding
+
+- As our models get more complex our coding schemes can too
+
+- What happens if you code the groups -.5, -.5, and 1? 
+
+- These make more sense when we have more groups. More groups require more independent variables 
+
+---
+
+### Statistical Inference
+- The way the world is = our model + error
+- How good is our model? Is it a good representation of reality? Does it "fit" the data well? 
+- Need to go beyond asking if it is significant, because what does that mean? 
+- We are going to make predictions and see if the predictions (based on our model) matches our data
+- We can then compare one model to another to see which one matches our data better. Which one is a better representation of reality?
+
+---
+## Predictions
+- predictions `\(\hat{Y}\)` are of the form of `\(E(Y|X)\)`
+- They are created by simply plugging a persons `\(X\)`s into the created model
+- If you have `\(b_0\)`, `\(b_1\)`, and `\(X\)`s then you can create a prediction 
+
+`\(\hat{Y}_{i}\)` = 2.65064 + -0.48111* `\(X_{i}\)`
+
+- You have already done this with dummy codes above
+
+---
+## Predictions
+- We want our predictions to be close to our actual data for each person ( `\(Y_{i}\)` )
+- The difference between the actual data and our our prediction ( `\(Y_{i}  - \hat{Y}_{i} = e\)` ) is the residual, how far we are "off". This tells us how good our fit is. 
+- You can have the same estimates for two models but completely different fit. 
+- Previously you have evaluated fit by looking at Eta Squared, SS Error and visualizing observations around group means
+
+
+---
+
+## Which one has better fit? 
+
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
+
+
+
+---
+
+## Easy to examine fit with `lm` objects
+- These are automatically created anytime you run a `lm` in R
+
+```r
+mod.1 &lt;- lm(traffic.risk ~ tx, data = example.data)
+```
+
+
+
+```r
+coefficients(mod.1)       # coefficients
+residuals(mod.1)          # residuals
+fitted.values(mod.1)      # fitted values ie predicted
+summary(mod.1)$r.squared  # R-sq for the model
+summary(mod.1)$sigma      # sd of residuals
+```
+
+---
+class: clear
+
+```r
+coefficients(mod.1)
+```
+
+```
+## (Intercept)          tx 
+##   2.6506410  -0.4811057
+```
+
+---
+class: clear
+
+
+```r
+fitted.values(mod.1)
+```
+
+```
+##        1        2        3        4        5        6        7        8        9       10       11 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.650641 2.169535 2.169535 
+##       12       13       14       15       16       17       18       19       20       21       22 
+## 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.169535 2.169535 2.169535 
+##       23       24       25       26       27       28       29       30       31       32       33 
+## 2.169535 2.169535 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 
+##       34       35       36       37       38       39       40       41       42       43       44 
+## 2.650641 2.650641 2.650641 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.650641 2.650641 
+##       45       46       47       48       49       50       51       52       53       54       55 
+## 2.169535 2.650641 2.650641 2.650641 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 
+##       56       57       58       59       60       61       62       63       64       65       66 
+## 2.650641 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.650641 2.169535 2.169535 
+##       67       68       69       70       71       72       73       74       75       76       77 
+## 2.650641 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 
+##       78       79       80       81       82       83       84       85       86       87       88 
+## 2.169535 2.169535 2.650641 2.169535 2.650641 2.650641 2.650641 2.650641 2.169535 2.169535 2.650641 
+##       89       90       91       92       93       94       95       96       97       98       99 
+## 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 
+##      100      101      102      103      104      105      106      107      108      109      110 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 
+##      111      112      113      114      115      116      117      118      119      120      121 
+## 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 2.169535 2.650641 2.650641 
+##      122      123      124      125      126      127      128      129      130      131      132 
+## 2.650641 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 
+##      133      134      135      136      137      138      139      140      141      142      143 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 
+##      144      145      146      147      148      149      150      151      152      153      154 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641 
+##      155      156      157      158      159      160      161      162      163      164      165 
+## 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 
+##      166      167      168      169      170      171      172      173      174      175      176 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.169535 2.169535 2.169535 2.650641 
+##      177      178      179      180      181      182      183      184      185      186      187 
+## 2.650641 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 
+##      188      189      190      191      192      193      194      195      196      197      198 
+## 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.650641 2.169535 
+##      199      200      201      202      203      204      205      206      207      208      209 
+## 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 2.169535 
+##      210      211      212      213      214      215      216      217      218      219      220 
+## 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 
+##      221      222      223      224      225      226      227      228      229      230      231 
+## 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.650641 
+##      232      233      234      235      236      237      238      239      240      241      242 
+## 2.169535 2.169535 2.650641 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.169535 
+##      243      244      245      246      247      248      249      250      251      252      253 
+## 2.650641 2.169535 2.169535 2.169535 2.169535 2.650641 2.650641 2.650641 2.169535 2.650641 2.650641 
+##      254      255      256      257      258      259      260      261      262      263      264 
+## 2.169535 2.169535 2.169535 2.169535 2.169535 2.650641 2.169535 2.169535 2.650641 2.650641 2.650641 
+##      265      266      267      268      269      270 
+## 2.650641 2.650641 2.650641 2.650641 2.650641 2.650641
+```
+
+---
+class: clear
+
+
+```r
+residuals(mod.1)
+```
+
+```
+##            1            2            3            4            5            6            7            8 
+## -0.312392427 -1.169535284  1.116179002 -0.169535284  0.259036145  1.116179002 -1.483974359 -0.222069597 
+##            9           10           11           12           13           14           15           16 
+##  0.349358974 -0.455249570  1.687607573 -0.079212455  0.206501831  0.920787545  1.349358974  0.349358974 
+##           17           18           19           20           21           22           23           24 
+## -0.936355312 -1.364926740 -0.364926740 -0.312392427 -0.598106713 -0.026678141  0.116179002 -0.455249570 
+##           25           26           27           28           29           30           31           32 
+##  1.063644688 -0.650641026 -0.079212455  0.206501831  0.777930403 -1.079212455  0.063644688 -0.507783883 
+##           33           34           35           36           37           38           39           40 
+##  0.777930403 -0.936355312 -1.079212455 -1.079212455  0.116179002 -0.598106713 -0.598106713  0.116179002 
+##           41           42           43           44           45           46           47           48 
+##  0.635073260 -0.598106713 -0.507783883  0.635073260  0.116179002 -0.793498169  0.635073260  1.349358974 
+##           49           50           51           52           53           54           55           56 
+##  0.830464716  0.492216117  0.497131383 -0.598106713 -0.312392427 -0.883820998  0.973321859 -0.222069597 
+##           57           58           59           60           61           62           63           64 
+## -1.169535284  0.259036145 -0.455249570 -0.169535284 -0.079212455  0.544750430  1.259036145  0.920787545 
+##           65           66           67           68           69           70           71           72 
+##  0.830464716  2.259036145 -0.650641026 -1.650641026 -0.169535284  1.687607573 -1.026678141  0.401893287 
+##           73           74           75           76           77           78           79           80 
+##  0.973321859 -1.026678141 -0.598106713  0.973321859  0.849358974 -0.598106713  0.973321859  0.777930403 
+##           81           82           83           84           85           86           87           88 
+##  1.401893287 -1.364926740 -1.079212455 -0.222069597  0.492216117  1.687607573 -1.026678141 -0.650641026 
+##           89           90           91           92           93           94           95           96 
+## -0.312392427 -0.312392427  1.973321859  0.920787545 -1.169535284  0.116179002 -1.026678141  0.973321859 
+##           97           98           99          100          101          102          103          104 
+## -0.026678141 -0.598106713 -0.883820998  1.116179002 -0.883820998 -0.169535284 -1.026678141  0.116179002 
+##          105          106          107          108          109          110          111          112 
+##  0.063644688  0.349358974  0.206501831  0.349358974  1.206501831  0.777930403  0.777930403 -0.079212455 
+##          113          114          115          116          117          118          119          120 
+##  1.206501831  0.349358974  0.492216117  0.777930403 -0.650641026  0.206501831  0.544750430  0.920787545 
+##          121          122          123          124          125          126          127          128 
+## -0.222069597  0.349358974 -0.793498169  0.973321859 -0.026678141  1.544750430  0.259036145 -0.883820998 
+##          129          130          131          132          133          134          135          136 
+## -1.079212455 -1.026678141 -0.598106713 -0.169535284  0.259036145 -1.169535284  1.259036145 -0.740963855 
+##          137          138          139          140          141          142          143          144 
+## -0.169535284 -0.169535284  0.116179002  1.116179002 -0.026678141 -0.502868617 -0.312392427  1.259036145 
+##          145          146          147          148          149          150          151          152 
+##  2.544750430 -1.026678141  0.401893287  0.830464716  0.920787545 -1.507783883  0.920787545 -1.364926740 
+##          153          154          155          156          157          158          159          160 
+## -0.222069597  0.063644688 -0.312392427  0.349358974  0.401893287 -0.883820998 -0.455249570 -0.312392427 
+##          161          162          163          164          165          166          167          168 
+##  0.349358974 -1.026678141  0.687607573 -0.169535284  1.116179002  0.116179002 -0.598106713 -0.669535284 
+##          169          170          171          172          173          174          175          176 
+##  0.259036145 -0.455249570  0.492216117 -0.936355312 -0.598106713  0.687607573  0.401893287  0.492216117 
+##          177          178          179          180          181          182          183          184 
+##  0.920787545 -0.364926740 -0.026678141 -0.740963855 -0.026678141 -0.026678141  0.259036145 -1.364926740 
+##          185          186          187          188          189          190          191          192 
+## -0.598106713 -0.598106713 -1.026678141 -1.169535284 -0.002868617 -0.936355312 -0.740963855  0.687607573 
+##          193          194          195          196          197          198          199          200 
+## -0.598106713  1.349358974 -0.883820998  0.259036145 -0.364926740 -0.740963855  0.401893287 -0.883820998 
+##          201          202          203          204          205          206          207          208 
+## -0.312392427 -0.079212455  0.401893287  0.259036145  0.687607573 -0.740963855 -0.598106713 -0.455249570 
+##          209          210          211          212          213          214          215          216 
+##  0.259036145  0.259036145  0.401893287 -0.740963855 -0.312392427  0.635073260 -1.507783883 -0.598106713 
+##          217          218          219          220          221          222          223          224 
+##  0.973321859 -0.312392427  0.116179002 -0.026678141  1.259036145 -0.169535284 -1.079212455  0.830464716 
+##          225          226          227          228          229          230          231          232 
+## -0.883820998 -0.026678141  0.401893287  0.635073260 -0.740963855  0.116179002 -0.793498169 -0.598106713 
+##          233          234          235          236          237          238          239          240 
+## -0.026678141  1.492216117  0.544750430  0.544750430 -0.312392427 -0.455249570 -0.455249570 -0.936355312 
+##          241          242          243          244          245          246          247          248 
+##  0.063644688  0.401893287 -0.650641026 -0.312392427  0.401893287  0.259036145 -1.026678141  0.777930403 
+##          249          250          251          252          253          254          255          256 
+##  1.063644688  0.063644688  0.973321859  0.920787545  0.349358974  0.544750430  0.259036145  0.973321859 
+##          257          258          259          260          261          262          263          264 
+## -0.455249570 -0.740963855 -0.936355312 -1.169535284 -0.169535284  0.635073260 -0.222069597 -0.222069597 
+##          265          266          267          268          269          270 
+## -0.222069597  0.349358974 -0.364926740 -0.079212455 -0.507783883 -0.079212455
+```
+
+---
+### Pop quiz 
+ 
+`$$\hat{Y}_{i} = b_{0} + b_{1}X_{i}$$` 
+
+
+`$$Y_{i} = b_{0} + b_{1}X_{i} +e_{i}$$` 
+
+`$$Y_{i}  - \hat{Y}_{i} = e$$` 
+
+- Can you plug in numbers and calculate subject 3's predicted and residual scores without explicitly asking for lm object residuals and fitted values? (using the same model from slide 37 on)
+
+- Post answers in Slack -- see if you and your peers get the same results!
+
+---
+class: clear
+
+
+```r
+example.data
+```
+
+```
+## # A tibble: 270 × 5
+##       id    tx traffic.risk tx.r      tx.effect
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt; &lt;fct&gt;         &lt;dbl&gt;
+##  1     1     1         1.86 treatment         1
+##  2     2     1         1    treatment         1
+##  3     3     1         3.29 treatment         1
+##  4     4     1         2    treatment         1
+##  5     5     1         2.43 treatment         1
+##  6     6     1         3.29 treatment         1
+##  7     7     0         1.17 control          -1
+##  8     8     0         2.43 control          -1
+##  9     9     0         3    control          -1
+## 10    10     1         1.71 treatment         1
+## # ℹ 260 more rows
+```
+
+---
+
+## Residuals
+
+
+.small[.pull-left[
+
+```r
+ggplot(fit.1.data,
+       aes(.resid)) +
+    geom_density(fill = "cornflowerblue") +
+  theme_classic()
+```
+]]
+
+.pull-right[
+&lt;img src="3-glm_files/figure-html/unnamed-chunk-35-1.png" width="504" /&gt;
+]
+---
+### `lm` objects
+.pull-left[
+- `lm` objects consist of the information embedded in your linear model
+- the `broom` package makes model objects into dataframes
+]
+
+.pull-right[
+
+```r
+library(broom)
+fit.1.tidy &lt;- tidy(mod.1)  
+fit.1.tidy
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+]
+---
+class: clear
+
+- `Augment` function from the `broom` package amends the original dataset with lm object content. The new variable names of have a "." in front of the name to distinguish
+
+
+```r
+fit.1.data &lt;- augment(mod.1) 
+head(fit.1.data)
+```
+
+```
+## # A tibble: 6 × 8
+##   traffic.risk    tx .fitted .resid    .hat .sigma  .cooksd .std.resid
+##          &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1         1.86     1    2.17 -0.312 0.00602  0.780 0.000490     -0.402
+## 2         1        1    2.17 -1.17  0.00602  0.777 0.00687      -1.51 
+## 3         3.29     1    2.17  1.12  0.00602  0.777 0.00626       1.44 
+## 4         2        1    2.17 -0.170 0.00602  0.780 0.000144     -0.218
+## 5         2.43     1    2.17  0.259 0.00602  0.780 0.000337      0.334
+## 6         3.29     1    2.17  1.12  0.00602  0.777 0.00626       1.44
+```
+
+---
+.pull-left[
+- `tidy` = model components like `\(\beta\)`
+
+- `glance` is similar but for model fit measures; `\(\eta^2\)` or `\(R^2\)` 
+
+- `augment` = adds to existing dataset
+
+
+]
+
+.pull-right[
+
+```r
+tidy(mod.1) 
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    2.65     0.0764     34.7  3.80e-101
+## 2 tx            -0.481    0.0974     -4.94 1.38e-  6
+```
+
+
+
+```r
+glance(mod.1) 
+```
+
+```
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC deviance df.residual  nobs
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.     163.         268   270
+```
+
+
+]
+---
+## Pop quiz #2
+- For a four group Oneway ANOVA how many different predicted values will we have? Residuals? 
+
+- Post your answer in Slack and see how you compare to your peers!
+
+---
+## Statistical Inference
+- In making predictions, we have to compare our prediction to some alternative prediction to see if we are doing well or not. 
+
+- What is our best guess (ie prediction) if we didn't collect any data? 
+
+$$ \hat{Y} = \bar{Y} $$
+- Regression can be thought of as: is `\(E(Y|X)\)` better than `\(E(Y)\)`?
+
+---
+## Statistical Inference
+- To the extent that we can generate different predicted values of `\(Y\)` based on the values of the predictors, our model is doing well
+
+- The closer our model is to the "actual" data generating model, our guesses ( `\(\hat{Y}\)` ) will be closer to our actual data ( `\(Y\)` )  
+
+---
+
+class: clear
+
+- We formally test how well we are doing with our guesses by partitioning variation
+
+$$ Y = \hat{Y} + e$$
+
+$$ Y = \hat{Y} + (Y - \hat{Y}) $$
+
+$$ Y - \bar{Y} = (\hat{Y} -\bar{Y}) + (Y - \hat{Y}) $$
+
+$$ (Y - \bar{Y})^2 = [(\hat{Y} -\bar{Y}) + (Y - \hat{Y})]^2 $$
+
+$$ \sum (Y - \bar{Y})^2 = \sum (\hat{Y} -\bar{Y})^2 + \sum(Y - \hat{Y})^2 $$
+
+---
+### Partitioning the variation in Y
+$$ \sum (Y_i - \bar{Y})^2 = \sum (\hat{Y}_i -\bar{Y})^2 + \sum(Y_i - \hat{Y}_i)^2 $$
+
+- SS total = SS between + SS within
+
+- SS total = SS regression + SS residual (or error)
+
+- Completely the same as last semester because ANOVA IS REGRESSION
+
+---
+# What can we do with this? 
+
+- Last semester you did omnibus `\(F\)` tests
+- What hypothesis does the omnibus F test test, generally? 
+
+`$$s_{y}^2 = s_{regression}^2 + s_{residual}^2$$`
+
+`$$1 = \frac{s_{regression}^2}{s_{y}^2} + \frac{s_{residual}^2}{s_{y}^2}$$`
+
+---
+## Coefficient of Determination
+
+`$$\frac{s_{regression}^2}{s_{y}^2} = \frac{SS_{regression}}{SS_{Y}} = R^2$$`
+
+- Percent (of total) variance explained by your model...which currently are groups
+
+- Another way of asking how much variance group status explains
+
+---
+## `\(R^2\)` and Eta squared
+
+
+```r
+summary(mod.1)$r.squared
+```
+
+```
+## [1] 0.08344007
+```
+
+
+
+```r
+library(lsr)
+etaSquared(mod.1)
+```
+
+```
+##        eta.sq eta.sq.part
+## tx 0.08344007  0.08344007
+```
+
+---
+## `\(R^2\)` for different coding schemes
+.small[
+
+```r
+glance(mod.1)
+```
+
+```
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC deviance df.residual  nobs
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.     163.         268   270
+```
+
+
+```r
+glance(mod.1.eff)
+```
+
+```
+## # A tibble: 1 × 12
+##   r.squared adj.r.squared sigma statistic    p.value    df logLik   AIC   BIC deviance df.residual  nobs
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+## 1    0.0834        0.0800 0.779      24.4 0.00000138     1  -315.  635.  646.     163.         268   270
+```
+]
+---
+.small[
+## Note the `\(R^2\)` *p*-value
+
+```
+## 
+## Call:
+## lm(formula = traffic.risk ~ tx, data = example.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.65064 -0.59811 -0.02668  0.54475  2.54475 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  2.65064    0.07637  34.707 &lt; 0.0000000000000002 ***
+## tx          -0.48111    0.09740  -4.939           0.00000138 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7789 on 268 degrees of freedom
+## Multiple R-squared:  0.08344,	Adjusted R-squared:  0.08002 
+## F-statistic:  24.4 on 1 and 268 DF,  p-value: 0.000001381
+```
+]
+---
+## Summary
+
+![](images/regMeme.jpeg)
+
+---
+
+## Summary
+
+- We are using linear models to do the exact same tests as *t*-tests and ANOVAs
+- It is the exact same because *t*-tests and ANOVAs are part of the general linear model
+- Using linear models gives us the same information, and more!
+- Provides a more systematic way at 1) building and testing your theoretical model and 2) comparing between alternative theoretical models
+- You can get 1) estimates and 2) fit statistics from the model. Both are important. 
+
+---
+class: inverse
+
+## Next time
+
+
+Revisiting correlations, and turning those into regression
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

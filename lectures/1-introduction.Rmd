@@ -46,7 +46,7 @@ style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
 
 - [Class Website](https://shellyc26.github.io/psy5067/index.html)
 
-- [Slack Workspace](https://quant-ii.slack.com); here for answering questions, posting stats/`R` memes and gifs, building community
+- [Slack Workspace](https://quantitativem-fbj8840.slack.com); here for answering questions, posting stats/`R` memes and gifs, building community
 
 - [Canvas](https://wustl.instructure.com/courses/126223); where you'll turn in your homeworks
 
@@ -80,9 +80,9 @@ style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
 ---
 ## Two AIs
 
-- Merve Ileri Tayar
+- Ke Ning
 
-- Grace Drake
+- Ran Zhang
 
 Both incredible. USE THEM TO YOUR ADVANTAGE! **Set up meetings with them**. Ask them `R` questions.
 
