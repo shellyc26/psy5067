@@ -9,10 +9,14 @@ navbar:
       menu:
       - text: "1-Intro"
         href: "lectures/1-introduction.html"
+      - text: "2-Data Management"
+        href: "lectures/DataManagementActivity/index.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
         href: "lectures/1-introduction.pdf"
+      - text: "2-Data Management"
+        href: "lectures/DataManagementActivity.pdf"
     - text: Homework
       href: homework.html
   right:
