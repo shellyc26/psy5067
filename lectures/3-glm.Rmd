@@ -46,12 +46,12 @@ options(scipen=999)
   - Theme 1: The Backstreet Boys
   - Theme 2: What is 0? 
   
-- Put some checks and balances in place to minimize errors as much as possible
+- Put some checks and balances in place to minimize *procedural* errors as much as possible
 ---
 
 ### Thinking in terms of models
 
-- All the tests run tus far can be thought of as a model for how you think "the world works"
+- All the tests run thus far can be thought of as a model for how you think the world works
 
 - Our DV (here forth $Y$) is what we are trying to understand 
 
@@ -307,7 +307,7 @@ Note that the same interpretation for a regression line holds: for a 1 unit chan
 ## Interpretations
 
 - Intercept ( $b_0$ ) signifies the level of $Y$ when your model IVs ( $X$s ) are zero 
-- Regression ( $b1$ ) signifies the difference for a one unit change in your $X$
+- Regression ( $b_1$ ) signifies the difference for a one unit change in your $X$
 
 - As with last semester you have estimates (like $\bar{x}$) and standard errors, which you can then ask whether they are likely assuming a null or create a CI
 
@@ -616,7 +616,7 @@ head(fit.1.data)
 
 ---
 .pull-left[
-- `tidy` = model components like $\beta$
+- `tidy` = model components like b
 
 - `glance` is similar but for model fit measures; $\eta^2$ or $R^2$ 
 

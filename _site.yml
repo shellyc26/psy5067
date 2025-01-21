@@ -11,12 +11,16 @@ navbar:
         href: "lectures/1-introduction.html"
       - text: "2-Data Management"
         href: "lectures/DataManagementActivity/index.html"
+      - text: "3-GLM"
+        href: "lectures/3-glm.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
         href: "lectures/1-introduction.pdf"
       - text: "2-Data Management"
         href: "lectures/DataManagementActivity.pdf"
+      - text: "3-GLM"
+        href: "lectures/3-glm.pdf"
     - text: Homework
       href: homework.html
   right:
