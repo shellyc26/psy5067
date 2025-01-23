@@ -13,6 +13,8 @@ navbar:
         href: "lectures/DataManagementActivity/index.html"
       - text: "3-GLM"
         href: "lectures/3-glm.html"
+      - text: "4-Correlations"
+        href: "lectures/4-correlation.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -21,6 +23,8 @@ navbar:
         href: "lectures/DataManagementActivity.pdf"
       - text: "3-GLM"
         href: "lectures/3-glm.pdf"
+      - text: "4-Correlations"
+        href: "lectures/4-correlation.pdf"
     - text: Homework
       href: homework.html
   right:
