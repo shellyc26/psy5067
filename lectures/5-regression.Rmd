@@ -125,9 +125,9 @@ How do we uncover the relationship?
 
 ## Regression Equation
 
-$$\Large Y = b_{0} + b_{1}X +e$$
+$$\Large Y_i = b_{0} + b_{1}X_i +e_i$$
 
-$$\Large \hat{Y} = b_{0} + b_{1}X$$
+$$\Large \hat{Y_i} = b_{0} + b_{1}X_i$$
 
 $\hat{Y}$ signifies the predicted score -- no error
 
@@ -220,9 +220,9 @@ ggplot(d1.f , aes(x=x.1, y=y.1)) +
 
 ## What is error?
 
-$$\Large Y = b_{0} + b_{1}X +e$$
+$$\Large Y_i = b_{0} + b_{1}X_i +e_i$$
 
-$$\Large \hat{Y} = b_{0} + b_{1}X$$
+$$\Large \hat{Y_i} = b_{0} + b_{1}X_i$$
 
 $$\Large Y_i = \hat{Y_i} + e_i$$
 
@@ -304,7 +304,7 @@ cor(galton.data)
 
 ---
 
-If we regress child height onto parents':
+If we regress child height (Y) onto parents' (X):
 
 ```{r}
 r = cor(galton.data)[2,1]

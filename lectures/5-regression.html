@@ -3,7 +3,7 @@
   <head>
     <title>Univariate regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -124,9 +124,9 @@ How do we uncover the relationship?
 
 ## Regression Equation
 
-`$$\Large Y = b_{0} + b_{1}X +e$$`
+`$$\Large Y_i = b_{0} + b_{1}X_i +e_i$$`
 
-`$$\Large \hat{Y} = b_{0} + b_{1}X$$`
+`$$\Large \hat{Y_i} = b_{0} + b_{1}X_i$$`
 
 `\(\hat{Y}\)` signifies the predicted score -- no error
 
@@ -177,9 +177,9 @@ $$ min\sum(Y_{i}-\hat{Y})^{2} $$
 
 ## What is error?
 
-`$$\Large Y = b_{0} + b_{1}X +e$$`
+`$$\Large Y_i = b_{0} + b_{1}X_i +e_i$$`
 
-`$$\Large \hat{Y} = b_{0} + b_{1}X$$`
+`$$\Large \hat{Y_i} = b_{0} + b_{1}X_i$$`
 
 `$$\Large Y_i = \hat{Y_i} + e_i$$`
 
@@ -253,7 +253,7 @@ According to this regression equation, when `\(X = 0, Y = 0\)`. Our interpretati
 
 
 
-```r
+``` r
 galton.data &lt;- psychTools::galton
 head(galton.data)
 ```
@@ -268,17 +268,17 @@ head(galton.data)
 ## 6   67.5  62.2
 ```
 
-```r
+``` r
 describe(galton.data, fast = T)
 ```
 
 ```
-##        vars   n  mean   sd  min  max range   se
-## parent    1 928 68.31 1.79 64.0 73.0     9 0.06
-## child     2 928 68.09 2.52 61.7 73.7    12 0.08
+##        vars   n  mean   sd median  min  max range  skew kurtosis   se
+## parent    1 928 68.31 1.79   68.5 64.0 73.0     9 -0.04     0.05 0.06
+## child     2 928 68.09 2.52   68.2 61.7 73.7    12 -0.09    -0.35 0.08
 ```
 
-```r
+``` r
 cor(galton.data)
 ```
 
@@ -290,10 +290,10 @@ cor(galton.data)
 
 ---
 
-If we regress child height onto parents':
+If we regress child height (Y) onto parents' (X):
 
 
-```r
+``` r
 r = cor(galton.data)[2,1]
 m_parent = mean(galton.data$parent)
 m_child = mean(galton.data$child)
@@ -307,7 +307,7 @@ s_child = sd(galton.data$child)
 ## [1] 0.6462906
 ```
 
-```r
+``` r
 (b0 = m_child - b1*m_parent)
 ```
 
@@ -321,7 +321,7 @@ How will this change if we regress parent height onto child height?
 ---
 
 
-```r
+``` r
 (b1 = r*(s_child/s_parent))
 ```
 
@@ -329,7 +329,7 @@ How will this change if we regress parent height onto child height?
 ## [1] 0.6462906
 ```
 
-```r
+``` r
 (b0 = m_child - b1*m_parent)
 ```
 
@@ -339,7 +339,7 @@ How will this change if we regress parent height onto child height?
 
 
 
-```r
+``` r
 (b1 = r*(s_parent/s_child))
 ```
 
@@ -347,7 +347,7 @@ How will this change if we regress parent height onto child height?
 ## [1] 0.3256475
 ```
 
-```r
+``` r
 (b0 = m_parent - b1*m_child)
 ```
 
@@ -359,7 +359,7 @@ How will this change if we regress parent height onto child height?
 ## In `R`
 
 
-```r
+``` r
 fit.1 &lt;- lm(child ~ parent, data = galton.data)
 summary(fit.1)
 ```
@@ -389,7 +389,7 @@ summary(fit.1)
 ## Reversed
 
 
-```r
+``` r
 summary(lm(parent ~ child, data = galton.data))
 ```
 
@@ -431,7 +431,7 @@ summary(lm(parent ~ child, data = galton.data))
 ### Data, predicted, and residuals
 
 
-```r
+``` r
 library(broom)
 model_info = augment(fit.1)
 head(model_info)
@@ -450,7 +450,7 @@ head(model_info)
 ```
 
 
-```r
+``` r
 describe(model_info)
 ```
 
@@ -490,7 +490,7 @@ Point out the average of the residuals is 0, just like average deviation from th
 ---
 
 
-```r
+``` r
 model_info %&gt;% ggplot(aes(x = parent, y = .fitted)) +
   geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste("X is related to ", hat(Y))))+
   scale_x_continuous("X") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
@@ -501,7 +501,7 @@ model_info %&gt;% ggplot(aes(x = parent, y = .fitted)) +
 ---
 
 
-```r
+``` r
 model_info %&gt;% ggplot(aes(x = parent, y = .resid)) +
   geom_point() + geom_smooth(se = F, method = "lm") + ggtitle("X is always unrelated to e")+
   scale_x_continuous("X") + scale_y_continuous("e") + theme_bw(base_size = 30)
@@ -512,7 +512,7 @@ model_info %&gt;% ggplot(aes(x = parent, y = .resid)) +
 ---
 
 
-```r
+``` r
 model_info %&gt;% ggplot(aes(x = child, y = .fitted)) +
   geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste("Y can be related to ", hat(Y))))+
   scale_x_continuous("Y") + scale_y_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
@@ -523,7 +523,7 @@ model_info %&gt;% ggplot(aes(x = child, y = .fitted)) +
 ---
 
 
-```r
+``` r
 model_info %&gt;% ggplot(aes(x = child, y = .resid)) +
   geom_point() + geom_smooth(se = F, method = "lm") + ggtitle("Y is sometimes related to e")+
   scale_x_continuous("Y") + scale_y_continuous("e") + theme_bw(base_size = 25)
@@ -534,7 +534,7 @@ model_info %&gt;% ggplot(aes(x = child, y = .resid)) +
 ---
 
 
-```r
+``` r
 model_info %&gt;% ggplot(aes(x = .fitted, y = .resid)) +
   geom_point() + geom_smooth(se = F, method = "lm") + ggtitle(expression(paste(hat(Y), " is always unrelated to e")))+
   scale_y_continuous("e") + scale_x_continuous(expression(hat(Y))) + theme_bw(base_size = 30)
@@ -545,7 +545,7 @@ model_info %&gt;% ggplot(aes(x = .fitted, y = .resid)) +
 ---
 
 
-```r
+``` r
 model_info %&gt;% rename(y = child, x = parent) %&gt;% select(x,y,.fitted,.resid) %&gt;% gather("key", "value") %&gt;%
   ggplot(aes(value, fill = key)) + geom_histogram(bins = 25) + guides(fill = F)+
   facet_wrap(~key, scales = "free") + theme_bw(base_size = 20)
