@@ -161,7 +161,7 @@ d1.f %>%
 ---
 
 .small[
-```{r highlight.output = 17}
+```{r highlight.output = 18}
 galton.data <- psychTools::galton
 fit.1 = lm(child ~ parent, data = galton.data)
 summary(fit.1) 
@@ -287,7 +287,7 @@ mse
 
 ## Residual Standard Error
 
-```{r, echo=FALSE, highlight.output = 16}
+```{r, echo=FALSE, highlight.output = 17}
 summary(fit.1)
 ```
 
@@ -307,7 +307,7 @@ $$\hat{\sigma} = \sqrt{\frac{SS_{\text{Residual}}}{df_{\text{Residual}}}} = s_{Y
 ---
 
 
-### Residual standard error/deviation or standard error of the estimate
+### RSE
 
 
 ```{r}
@@ -538,7 +538,7 @@ anova(fit.1)
 
 ---
 
-```{r,highlight.output=18}
+```{r,highlight.output=19}
 summary(fit.1)
 ```
 
@@ -718,7 +718,7 @@ pred
 
 class: inverse
 
-### Things you should be able to do (based on this lecture and the one before):
+### Things you should be able to do:
 
 - Can you get an individual's predicted score & residual from an equation?
 - Can you calculate b0 & b1?
