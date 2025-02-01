@@ -14,7 +14,7 @@ Note that this semester you will be making your RMarkdown/RNotebook (anything wi
 
 ## Homework 1
 - HW 1 is posted [here](homework/homework1.html)
-- Due on **Wednesday 2/5 by 11:59pm**
+- Due on **Wednesday 2/9 by 11:59pm**
 
 
 ## Homework 2

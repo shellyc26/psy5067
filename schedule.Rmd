@@ -15,15 +15,15 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 **PR = Peer Review**
 
 | Week | Date | Topic | Readings | HW Due |   |
-|----|----|----|----|----|----|
+|------------|------------|------------|------------|------------|------------|
 | 1 | 1/14 | Recap & GLM Intro |  |  |  |
 | \- | 1/16 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
 | 2 | 1/21 | GLM & Categorical Predictors | Ch. 13-14 (review) |  |  |
 | \- | 1/23 | Correlation | [Chapter from Revelle](readings/CorrelationRevelle.pdf) |  |  |
-| 3 | 1/28 | Univariate Regression | Ch. 15.1 - 15.2 |  |  |
-| \- | 1/30 | Univariate Regression | [MR Cohen](readings/Cohen-MR.pdf) |  |  |
-| 4 | 2/4 | Partial Correlations | Ch. 15.3 - end of chapter | **HW 1 DUE 2/5 11:59pm** |  |
-| \- | 2/6 | Multiple Regression |  |  |  |
+| 3 | 1/28 | Catch up |  |  |  |
+| \- | 1/30 | Univariate Regression | [MR Cohen](readings/Cohen-MR.pdf); Ch. 15.1 - 15.2 |  |  |
+| 4 | 2/4 | Univariate Regression |  |  |  |
+| \- | 2/6 | Partial Correlations | Ch. 15.3 - end of chapter | **HW 1 DUE 2/9 11:59pm** |  |
 | 5 | 2/11 | Multiple Regression |  |  |  |
 | \- | 2/13 | Multiple Regression |  |  |  |
 | 6 | 2/18 | **Exam 1** |  | **HW 2 DUE 2/19 11:59pm** |  |
