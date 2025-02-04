@@ -497,9 +497,3 @@ class: inverse
 ## Next time...
 
 Multiple regression!!
-
-#### Can you...
-
-- interpret a partial correlation and a semi-partial correlation?
-- calculate a partial and semipartial correlation from 
-- you will get practice on this in the hw!

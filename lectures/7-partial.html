@@ -3,7 +3,7 @@
   <head>
     <title>Partial correlations</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -312,7 +312,7 @@ Notation:
 `\(r_{12} = .2\)`
 
 
-```r
+``` r
 sr1 = (.3 - (.3*.2)) / sqrt(1 - (.2^2))
 ```
 
@@ -322,7 +322,7 @@ sr1 = (.3 - (.3*.2)) / sqrt(1 - (.2^2))
 `\(r_{12} = .5\)`
 
 
-```r
+``` r
 sr2 = (.3 - (.3*.5)) / sqrt(1 - (.5^2))
 sr1
 ```
@@ -331,7 +331,7 @@ sr1
 ## [1] 0.244949
 ```
 
-```r
+``` r
 sr2
 ```
 
@@ -472,7 +472,7 @@ Partial: used when some third variable, Z, is a plausible explanation of the cor
 Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
 
 
-```r
+``` r
 library(ppcor)
 # zero-order correlation
 round(cor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")]), digits = 2)
@@ -491,7 +491,7 @@ round(cor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")]), digits = 2)
 Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
 
 
-```r
+``` r
 # semi-partial correlation
 round(spcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, digits = 2)
 ```
@@ -509,7 +509,7 @@ round(spcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, d
 Iris dataset from before. Sepal.Length, Sepal.Width, Petal.Length
 
 
-```r
+``` r
 # partial correlation
 # semi-partial correlation
 round(pcor(iris[,c("Sepal.Length", "Sepal.Width", "Petal.Length")])$estimate, digits = 2)
@@ -554,7 +554,7 @@ Or we can calculate a measure of Y that is also independent of `\(X_2\)` and cor
 ## Example
 
 
-```r
+``` r
 # create measure of Sepal.Length *independent* of Sepal.Width
 # model where X1 = SLength, X2 = SWidth
 # error is part of SLength that is independent of SWidth
@@ -569,7 +569,7 @@ round(cor(indep.Sepals$.resid, iris$Petal.Length), digits = 2)
 ## [1] 0.83
 ```
 
-```r
+``` r
 # Measure of Y = PLength that is also independent of X2 = SWidth
 # create measure of Petal.Length independent of Sepal.Width score
 mod.petals = lm(Petal.Length ~ Sepal.Width, data = iris)
@@ -602,12 +602,6 @@ class: inverse
 ## Next time...
 
 Multiple regression!!
-
-#### Can you...
-
-- interpret a partial correlation and a semi-partial correlation?
-- calculate a partial and semipartial correlation from 
-- you will get practice on this in the hw!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

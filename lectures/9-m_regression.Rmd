@@ -440,7 +440,6 @@ class: inverse
 
 ## Next time...
 
-Analysis of Variance (the long way)
-
+Exam 1!
 
 

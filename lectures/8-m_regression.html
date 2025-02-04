@@ -3,7 +3,7 @@
   <head>
     <title>Multiple Regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -78,7 +78,7 @@ class: center, middle, inverse, title-slide
 
 ## Example
 
-```r
+``` r
 library(here)
 stress.data = read.csv(here("data/stress.csv"))
 library(psych)
@@ -86,10 +86,8 @@ describe(stress.data$Stress)
 ```
 
 ```
-##    vars   n mean   sd median trimmed  mad  min   max range skew
-## X1    1 118 5.18 1.88   5.27    5.17 1.65 0.62 10.32  9.71 0.08
-##    kurtosis   se
-## X1     0.22 0.17
+##    vars   n mean   sd median trimmed  mad  min   max range skew kurtosis   se
+## X1    1 118 5.18 1.88   5.27    5.17 1.65 0.62 10.32  9.71 0.08     0.22 0.17
 ```
 
 ---
@@ -97,7 +95,7 @@ describe(stress.data$Stress)
 ## Example
 
 
-```r
+``` r
 mr.model &lt;- lm(Stress ~ Support + Anxiety, data = stress.data)
 summary(mr.model)
 ```
@@ -191,7 +189,7 @@ Not equal calculations!
 
 
 
-```r
+``` r
 mod0 = lm(z_stress ~ z_anxiety + z_support, 
           data = stress.data)
 
@@ -205,7 +203,7 @@ round(coef(mod0),3)
 
 .pull-left[
 
-```r
+``` r
 spcor.test(x = stress.data$Anxiety, 
            y = stress.data$Stress, 
            z = stress.data$Support)$estimate
@@ -219,7 +217,7 @@ spcor.test(x = stress.data$Anxiety,
 .pull-right[
 
 
-```r
+``` r
 pcor.test(x = stress.data$Anxiety, 
           y = stress.data$Stress, 
           z = stress.data$Support)$estimate
@@ -256,7 +254,7 @@ They're not the same, but they're close!
 ---
 
 
-```r
+``` r
 mr.model &lt;- lm(Stress ~ Support + Anxiety, data = stress.data)
 summary(mr.model)
 ```
@@ -286,7 +284,7 @@ summary(mr.model)
 ---
 
 
-```r
+``` r
 mr.model &lt;- lm(Stress ~ Support + Anxiety, data = stress.data)
 summary(mr.model)
 ```
@@ -350,7 +348,7 @@ Taken from [@nickchk](https://twitter.com/nickchk/status/1068215492458905600)
 ---
 .pull-left[
 
-```r
+``` r
 library(broom)
 stress.data1 = augment(mr.model)
 stress.data1 %&gt;%
@@ -443,7 +441,7 @@ We haven't changed our method of decomposing variance from the univariate model
 ## ANOVA
 
 
-```r
+``` r
 summary(mr.model)
 ```
 
@@ -473,7 +471,7 @@ summary(mr.model)
 ## ANOVA
 
 
-```r
+``` r
 anova(mr.model)
 ```
 
@@ -493,7 +491,7 @@ anova(mr.model)
 ---
 
 
-```r
+``` r
 summary(mr.model)
 ```
 
