@@ -32,44 +32,6 @@ style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
 
 ```
 
-
-### Pop Quiz
-
-
-```{r, echo=FALSE}
-irisModel <- lm(Sepal.Length ~ Species, data = iris)
-summary(irisModel)
-```
-
-
-- Interpret all 3 coefficients
-
-
----
-### Pop Quiz
-
-
-```{r, echo=FALSE}
-irisModel <- lm(Sepal.Length ~ Species, data = iris)
-summary(irisModel)
-```
-
-
-- What is the mean of each of the 3 categories?
-
----
-### Pop Quiz
-
-
-```{r, echo=FALSE}
-irisModel <- lm(Sepal.Length ~ Species, data = iris)
-summary(irisModel)
-```
-
-
-- Is it a good model? How do you know?
-
----
 ## Today
 
 - path diagrams
