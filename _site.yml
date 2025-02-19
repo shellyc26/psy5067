@@ -27,6 +27,8 @@ navbar:
         href: "lectures/9-m_regression.html"
       - text: "Exam 1 Review"
         href: "lectures/reviewExam1-KeNing.html"
+      - text: "10-Diagnostics"
+        href: "lectures/11-diagnostics.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -49,6 +51,8 @@ navbar:
         href: "lectures/9-m_regression.pdf"
       - text: "Exam 1 Review"
         href: "lectures/reviewExam1-KeNing.pdf"
+      - text: "10-Diagnostics"
+        href: "lectures/11-diagnostics.pdf"
     - text: Homework
       href: homework.html
   right:
