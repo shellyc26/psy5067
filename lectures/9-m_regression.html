@@ -1837,11 +1837,179 @@ anova(mod.3)
 
 ---
 
+```
+##   ID Predict Control Group Time
+## 1  1       0       1     3  504
+## 2  2       0       0     1  443
+## 3  3       1       1     4  292
+## 4  4       0       1     3  398
+## 5  5       1       1     4  119
+## 6  6       0       0     1  545
+```
+
+```
+## [1] "integer"
+```
+
+
+```
+##              Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## Group_lab     3 2000252  666751   149.8 &lt;2e-16 ***
+## Residuals   196  872288    4450                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+The `\(F\)` statistic is highly unusual in the `\(F\)` distribution, assuming the null hypothesis is true.  We reject the null hypothesis.
+
+
+---
+
+```
+##              Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## Group_lab     3 2000252  666751   149.8 &lt;2e-16 ***
+## Residuals   196  872288    4450                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+We know the means are not equal, but the particular source of the inequality is not revealed by the `\(F\)` test.
+
+One simple way to determine what is behind the significant `\(F\)` test is to compare each condition to all other conditions.
+
+These pairwise comparisons can quickly grow in number as the number of conditions increases.  With 4 (k) conditions, we have k(k-1)/2 = 6 possible pairwise comparisons.
+
+---
+
+As the number of groups in the ANOVA grows, the number of possible pairwise comparisons increases dramatically. 
+
+
+![](9-m_regression_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+
+---
+
+As the number of significance tests grows, and assuming the null hypothesis is true, the probability that we will make one or more Type I errors increases.  To approximate the magnitude of the problem, we can assume that the multiple pairwise comparisons are independent. The probability that we don’t make a Type I error for just one test is:
+
+`$$P(\text{No Type I}, 1 \text{ test}) = 1-\alpha$$`
+The probability that we don't make a Type I error for two tests is (note the reason we assume independence):
+
+`$$P(\text{No Type I}, 2 \text{ test}) = (1-\alpha)(1-\alpha)$$`
+---
+For C tests, the probability that we make **no** Type I errors is
+
+`$$P(\text{No Type I}, C \text{ tests}) = (1-\alpha)^C$$`
+We can then use the following to calculate the probability that we make one or more Type I errors in a collection of C independent tests.
+
+`$$P(\text{At least one Type I}, C \text{ tests}) = 1-(1-\alpha)^C$$`
+As the number of comparisons grows, the inflation of the Type I error rate can be substantial.
+
+**Family-wise Error Rate**
+
+---
+
+Need "correction" procedures. Many exist.
+
+![](9-m_regression_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+
+---
+
+Multiple comparisons, each tested with `\(\alpha_{per-test}\)`, increases the family-wise `\(\alpha\)` level. 
+
+`$$\alpha_{family-wise} = 1 - (1-\alpha_{per-test})^C$$`
+Šidák showed that the family-wise `\(\alpha\)` could be controlled to a desired level (e.g., .05) by changing the `\(\alpha_{per-test}\)` to:
+
+`$$\alpha_{per-wise} = 1 - (1-\alpha_{family-wise})^{\frac{1}{C}}$$`
+Bonferroni (and Dunn, and others) suggested this simple approximation: 
+
+`$$\alpha_{per-test} = \frac{\alpha_{family-wise}}{C}$$`
+
+This is typically called the Bonferroni correction and is very often used even though better alternatives are available. 
+
+---
+
+
+``` r
+library(rstatix)
+
+rotate %&gt;% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "bonferroni")
+```
+
+```
+## # A tibble: 6 × 9
+##   .y.   group1 group2    n1    n2        p p.signif    p.adj p.adj.signif
+## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;       
+## 1 Time  1      2         47    52 1.33e-31 ****     7.99e-31 ****        
+## 2 Time  1      3         47    45 2.27e-24 ****     1.36e-23 ****        
+## 3 Time  2      3         52    45 5.52e- 2 ns       3.31e- 1 ns          
+## 4 Time  1      4         47    56 7.93e-52 ****     4.76e-51 ****        
+## 5 Time  2      4         52    56 1.53e-10 ****     9.2 e-10 ****        
+## 6 Time  3      4         45    56 5.92e-15 ****     3.55e-14 ****
+```
+
+---
+
+The Bonferroni procedure is conservative. The most common other one is the Holm procedure.
+
+The Holm procedure does not make a constant adjustment to each per-test `\(\alpha\)`. Instead it makes adjustments in stages depending on the relative size of each pairwise p-value.
+
+---
+
+## Holm Procedure
+
+1. Rank order the p-values from largest to smallest.
+2. Start with the smallest p-value. Multiply it by its rank.
+3. Go to the next smallest p-value. Multiply it by its rank. If the result is larger than the previous step, keep it. Otherwise replace with the previous step adjusted p-value.
+4.  Repeat Step 3 for the remaining p-values.
+5. Judge significance of each new p-value against `\(\alpha = .05\)`.
+
+---
+## Holm Procedure
+
+``` r
+hp = rotate %&gt;% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "holm") %&gt;% 
+  arrange(p) %&gt;% 
+  mutate(Rank = 6:1, rXp = Rank*p)
+
+hp[,c(2,3,6:11)]
+```
+
+```
+## # A tibble: 6 × 8
+##   group1 group2        p p.signif    p.adj p.adj.signif  Rank      rXp
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt;
+## 1 1      4      7.93e-52 ****     4.76e-51 ****             6 4.76e-51
+## 2 1      2      1.33e-31 ****     6.66e-31 ****             5 6.65e-31
+## 3 1      3      2.27e-24 ****     9.07e-24 ****             4 9.08e-24
+## 4 3      4      5.92e-15 ****     1.78e-14 ****             3 1.78e-14
+## 5 2      4      1.53e-10 ****     3.07e-10 ****             2 3.06e-10
+## 6 2      3      5.52e- 2 ns       5.52e- 2 ns               1 5.52e- 2
+```
+---
+
+
+```
+## # A tibble: 6 × 8
+##   group1 group2        p p.signif    p.adj p.adj.signif  Rank      rXp
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt;
+## 1 1      4      7.93e-52 ****     4.76e-51 ****             6 4.76e-51
+## 2 1      2      1.33e-31 ****     6.66e-31 ****             5 6.65e-31
+## 3 1      3      2.27e-24 ****     9.07e-24 ****             4 9.08e-24
+## 4 3      4      5.92e-15 ****     1.78e-14 ****             3 1.78e-14
+## 5 2      4      1.53e-10 ****     3.07e-10 ****             2 3.06e-10
+## 6 2      3      5.52e- 2 ns       5.52e- 2 ns               1 5.52e- 2
+```
+
+A single adjusted per-test a would be used with the Bonferroni procedure: .05/6 = .0083. We would compare each original p-value to this new criterion and claim as significant only those that are less. Or, we could multiply the original p-values by 6 and judge them against a =.05.
+
+---
 class: inverse
 
 ## Next time...
 
-Exam 1!
+Assumptions &amp; Diagnostics of Regression
 
 
     </textarea>

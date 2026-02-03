@@ -435,11 +435,163 @@ anova(mod.3)
 ```
 
 ---
+```{r, message = F, echo=FALSE}
+library(here)
+rotate = read.csv(here("data/pursuit_rotor.csv"))
+head(rotate)
+class(rotate$Group)
+rotate$Group_lab = factor(rotate$Group, 
+                          labels = c("Controllable\nPredictable", 
+                                     "Uncontrollable\nPredictable",
+                                     "Controllable\nUnpredictable",
+                                     "Uncontrollable\nUnpredictable"))
+```
 
+```{r, echo=FALSE}
+fit_1 = aov(Time ~ Group_lab, data = rotate)
+summary(fit_1)
+```
+
+The $F$ statistic is highly unusual in the $F$ distribution, assuming the null hypothesis is true.  We reject the null hypothesis.
+
+
+---
+```{r, echo=FALSE}
+fit_1 = aov(Time ~ Group_lab, data = rotate)
+summary(fit_1)
+```
+We know the means are not equal, but the particular source of the inequality is not revealed by the $F$ test.
+
+One simple way to determine what is behind the significant $F$ test is to compare each condition to all other conditions.
+
+These pairwise comparisons can quickly grow in number as the number of conditions increases.  With 4 (k) conditions, we have k(k-1)/2 = 6 possible pairwise comparisons.
+
+---
+
+As the number of groups in the ANOVA grows, the number of possible pairwise comparisons increases dramatically. 
+
+
+```{r,echo = F, fig.width = 10, fight.height = 6}
+data.frame(g = 2:15) %>%
+  mutate(num = (g*(g-1))/2) %>%
+  ggplot(aes(x = g, y = num)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 3)+
+  scale_x_continuous("Number of Groups in the ANOVA") +
+  scale_y_continuous("Number of Pairwise Comparisons") +
+  theme_bw(base_size = 16)
+```
+
+---
+
+As the number of significance tests grows, and assuming the null hypothesis is true, the probability that we will make one or more Type I errors increases.  To approximate the magnitude of the problem, we can assume that the multiple pairwise comparisons are independent. The probability that we don’t make a Type I error for just one test is:
+
+$$P(\text{No Type I}, 1 \text{ test}) = 1-\alpha$$
+The probability that we don't make a Type I error for two tests is (note the reason we assume independence):
+
+$$P(\text{No Type I}, 2 \text{ test}) = (1-\alpha)(1-\alpha)$$
+---
+For C tests, the probability that we make **no** Type I errors is
+
+$$P(\text{No Type I}, C \text{ tests}) = (1-\alpha)^C$$
+We can then use the following to calculate the probability that we make one or more Type I errors in a collection of C independent tests.
+
+$$P(\text{At least one Type I}, C \text{ tests}) = 1-(1-\alpha)^C$$
+As the number of comparisons grows, the inflation of the Type I error rate can be substantial.
+
+**Family-wise Error Rate**
+
+---
+
+Need "correction" procedures. Many exist.
+
+```{r,echo = F, fig.width = 10, fight.height = 6}
+data.frame(g = 2:15) %>%
+  mutate(num = (g*(g-1))/2,
+         p_notype1 = (1-.05)^num,
+         p_type1 = 1-p_notype1) %>%
+  ggplot(aes(x = g, y = p_type1)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 3)+
+  scale_x_continuous("Number of Groups in the ANOVA") +
+  scale_y_continuous("Probability of a Type I Error") +
+  theme_bw(base_size = 16)
+```
+
+---
+
+Multiple comparisons, each tested with $\alpha_{per-test}$, increases the family-wise $\alpha$ level. 
+
+$$\alpha_{family-wise} = 1 - (1-\alpha_{per-test})^C$$
+Šidák showed that the family-wise $\alpha$ could be controlled to a desired level (e.g., .05) by changing the $\alpha_{per-test}$ to:
+
+$$\alpha_{per-wise} = 1 - (1-\alpha_{family-wise})^{\frac{1}{C}}$$
+Bonferroni (and Dunn, and others) suggested this simple approximation: 
+
+$$\alpha_{per-test} = \frac{\alpha_{family-wise}}{C}$$
+
+This is typically called the Bonferroni correction and is very often used even though better alternatives are available. 
+
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(rstatix)
+
+rotate %>% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "bonferroni")
+```
+
+---
+
+The Bonferroni procedure is conservative. The most common other one is the Holm procedure.
+
+The Holm procedure does not make a constant adjustment to each per-test $\alpha$. Instead it makes adjustments in stages depending on the relative size of each pairwise p-value.
+
+---
+
+## Holm Procedure
+
+1. Rank order the p-values from largest to smallest.
+2. Start with the smallest p-value. Multiply it by its rank.
+3. Go to the next smallest p-value. Multiply it by its rank. If the result is larger than the previous step, keep it. Otherwise replace with the previous step adjusted p-value.
+4.  Repeat Step 3 for the remaining p-values.
+5. Judge significance of each new p-value against $\alpha = .05$.
+
+---
+## Holm Procedure
+```{r}
+
+hp = rotate %>% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "holm") %>% 
+  arrange(p) %>% 
+  mutate(Rank = 6:1, rXp = Rank*p)
+
+hp[,c(2,3,6:11)]
+
+```
+---
+
+```{r, echo=FALSE}
+
+hp = rotate %>% 
+  pairwise_t_test(Time ~ Group,
+                  p.adjust.method = "holm") %>% 
+  arrange(p) %>% 
+  mutate(Rank = 6:1, rXp = Rank*p)
+
+hp[,c(2,3,6:11)]
+
+```
+
+A single adjusted per-test a would be used with the Bonferroni procedure: .05/6 = .0083. We would compare each original p-value to this new criterion and claim as significant only those that are less. Or, we could multiply the original p-values by 6 and judge them against a =.05.
+
+---
 class: inverse
 
 ## Next time...
 
-Exam 1!
+Assumptions & Diagnostics of Regression
 
 
