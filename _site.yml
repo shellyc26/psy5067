@@ -21,6 +21,8 @@ navbar:
         href: "lectures/8-m_regression.html"
       - text: "7-Multiple Regression 2"
         href: "lectures/9-m_regression.html"
+      - text: "8-Diagnostics"
+        href: "lectures/11-diagnostics.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -37,6 +39,8 @@ navbar:
         href: "lectures/8-m_regression.pdf"
       - text: "7-Multiple Regression 2"
         href: "lectures/9-m_regression.pdf"
+      - text: "8-Diagnostics"
+        href: "lectures/11-diagnostics.pdf"
     - text: Homework
       href: homework.html
   right:

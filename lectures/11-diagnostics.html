@@ -3,7 +3,7 @@
   <head>
     <title>Assumptions and Diagnostics</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -430,6 +430,17 @@ ggplot(model.1) +
 ]
 
 
+
+```
+## Warning: `fortify(&lt;lm&gt;)` was deprecated in ggplot2 4.0.0.
+## ℹ Please use `broom::augment(&lt;lm&gt;)` instead.
+## ℹ The deprecated feature was likely used in the ggplot2 package.
+##   Please report the issue at &lt;https://github.com/tidyverse/ggplot2/issues&gt;.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
 &lt;img src="11-diagnostics_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ## 6. Normality of the errors
@@ -524,7 +535,7 @@ There's also an underlying assumption* that our models are developed independent
 
   + Calculate the VIF of each term 
   + Graph residuals by predictors to check for endogeneity.
-  + Graph residuals by fitted values to check for homoscedasticity.
+  + **Graph fitted by residuals** values to check for homoscedasticity.
   + Graph residuals by ID number (or date, or another variable not in your model) to check for independence.
   + Graph the distribution of residuals or the Q-Q plot to check for normality. 
   
@@ -533,8 +544,6 @@ There's also an underlying assumption* that our models are developed independent
 ### Screening your data
 
 4) Look for univariate or multivariate **outliers**. 
-
--- 
 
 - Broadly defined as atypical or highly influential data point(s)
 
@@ -744,8 +753,6 @@ Remove a variable from your model.
 Composite or factor scores
   - If variables are highly correlated because they index the same underlying construct, why not just use them to create a more precise measure of that construct?
   
-* Centering (esp important if your model includes interaction terms)
-
 ---
 
 ### Suppression
@@ -761,7 +768,8 @@ class: inverse
 
 ## Next time...
 
-- Interactions Galore!
+- Exam
+- Interactions galore!
 
 
 
@@ -770,9 +778,9 @@ class: inverse
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

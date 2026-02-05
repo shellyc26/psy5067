@@ -550,7 +550,7 @@ library(broom)
 
   + Calculate the VIF of each term 
   + Graph residuals by predictors to check for endogeneity.
-  + Graph residuals by fitted values to check for homoscedasticity.
+  + **Graph fitted by residuals** values to check for homoscedasticity.
   + Graph residuals by ID number (or date, or another variable not in your model) to check for independence.
   + Graph the distribution of residuals or the Q-Q plot to check for normality. 
   
@@ -559,8 +559,6 @@ library(broom)
 ### Screening your data
 
 4) Look for univariate or multivariate **outliers**. 
-
--- 
 
 - Broadly defined as atypical or highly influential data point(s)
 
@@ -761,8 +759,6 @@ Remove a variable from your model.
 Composite or factor scores
   - If variables are highly correlated because they index the same underlying construct, why not just use them to create a more precise measure of that construct?
   
-* Centering (esp important if your model includes interaction terms)
-
 ---
 
 ### Suppression
@@ -778,7 +774,8 @@ class: inverse
 
 ## Next time...
 
-- Interactions Galore!
+- Exam
+- Interactions galore!
 
 
 ```{r, echo = F, message = F, warning = F, fig.height = 8, fig.width = 10, include=FALSE}
