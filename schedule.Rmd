@@ -15,7 +15,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 **PR = Peer Review**
 
 | Week | Date | Topic | Readings | HW Due |   |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | 1 | 1/13 | Recap & GLM Intro |  |  |  |
 | \- | 1/15 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
 | 2 | 1/20 | Correlations (Quant1) |  |  |  |
