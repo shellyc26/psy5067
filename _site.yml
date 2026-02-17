@@ -25,6 +25,8 @@ navbar:
         href: "lectures/11-diagnostics.html"
       - text: "9-Measurement"
         href: "lectures/25-measurement.html"
+      - text: "10-Interactions 1"
+        href: "lectures/12-interactions-ethan.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -45,6 +47,8 @@ navbar:
         href: "lectures/11-diagnostics.pdf"
       - text: "9-Measurement"
         href: "lectures/25-measurement.pdf"
+      - text: "10-Interactions 1"
+        href: "lectures/12-interactions-ethan.pdf"
     - text: Homework
       href: homework.html
   right:
