@@ -29,6 +29,10 @@ navbar:
         href: "lectures/12-interactions-ethan.html"
       - text: "11-Interactions 2"
         href: "lectures/14-interactions.html"
+      - text: "12-Model Comparisons"
+        href: "lectures/19-modelcomparison.html"
+      - text: "13-Factorial ANOVA"
+        href: "lectures/23-interactions.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -53,6 +57,10 @@ navbar:
         href: "lectures/12-interactions-ethan.pdf"
       - text: "11-Interactions 2"
         href: "lectures/14-interactions.pdf"
+      - text: "12-Model Comparisons"
+        href: "lectures/19-modelcomparison.pdf"
+      - text: "13-Factorial ANOVA"
+        href: "lectures/23-interactions.pdf"
     - text: Homework
       href: homework.html
   right:

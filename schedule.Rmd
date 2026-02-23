@@ -15,7 +15,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 **PR = Peer Review**
 
 | Week | Date | Topic | Readings | HW Due |   |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | 1 | 1/13 | Recap & GLM Intro |  |  |  |
 | \- | 1/15 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
 | 2 | 1/20 | Correlations (Quant1) |  |  |  |
@@ -28,14 +28,14 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 | \- | 2/12 | **Exam 1** |  |  |  |
 | 6 | 2/17 | Interactions I |  |  |  |
 | \- | 2/19 | Interactions II (Factorial ANOVA) | Ch. 16, [Myers Ch. 9](readings/anova1-myers.pdf) |  |  |
-| 7 | 2/24 | Interactions III | [Myers Ch. 10](readings/anova2-myers.pdf) |  |  |
-| \- | 2/26 | Interactions IV (Power & Effect Size) |  |  |  |
-| 8 | 3/3 | Interactions V (Polynomials) |  |  |  |
-| \- | 3/5 | TBD (maybe chisq) |  |  |  |
+| 7 | 2/24 | Model Comparison (Quant I) | [Myers Ch. 10](readings/anova2-myers.pdf) |  |  |
+| \- | 2/26 | Factorial ANOVA the long way (Quant I) |  |  |  |
+| 8 | 3/3 | Interactions IV (Power & Effect Size) |  |  |  |
+| \- | 3/5 | Interactions V (Polynomials) |  |  |  |
 | 9 | 3/10 | **Spring Break** |  |  |  |
 | \- | 3/12 | **Spring Break** |  |  |  |
-| 10 | 3/17 | Logistic Regression/GLM | [Cohen Logistic](readings/Logistic-Cohen.pdf) |  |  |
-| \- | 3/19 | Random/Flex/Catch-up |  | **HW 2 DUE 3/22 11:59pm** |  |
+| 10 | 3/17 | Chi-square |  |  |  |
+| \- | 3/19 | Logistic Regression/GLM | [Cohen Logistic](readings/Logistic-Cohen.pdf) | **HW 2 DUE 3/22 11:59pm** |  |
 | 11 | 3/24 | **Exam 2** |  |  |  |
 | \- | 3/26 | Resampling Methods |  |  |  |
 | 12 | 3/31 | Machine Learning | [Yarkoni & Westfall](readings/Yarkoni%20Westfall%20PPS.pdf) |  |  |
@@ -44,7 +44,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 | \- | 4/9 | AI Intro - *Dr. Oltmanns* |  |  |  |
 | 14 | 4/14 | MLM Intro *- Ben Hardin* |  |  |  |
 | \- | 4/16 | Bayes Intro - *Dr. Jackson* |  |  |  |
-| 15 | 4/21 | Validity |  | **HW 3 DUE 4/19 11:59pm** |  |
+| 15 | 4/21 | Miscellaneous/Random/Catch-up |  | **HW 3 DUE 4/19 11:59pm** |  |
 | \- | 4/23 | **FINAL** |  |  |  |
 
 # Overview
