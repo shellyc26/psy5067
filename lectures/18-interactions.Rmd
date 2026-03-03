@@ -39,18 +39,17 @@ library(tidyverse)
 
 ## Last time...
 
-Factorial ANOVA
-* Estimated marginal means
-* Estimated cell means
-* Sums of squares
+- Within subjects ANOVA conceptually
+- ANCOVA conceptually
+- Non-parametric tests
 
-Power
-* Omnibus test
-* Coefficients
+--
 
----
+## This time
 
-## ANOVA vs Regression
+- Power
+- Polynomials
+- 3+way interactions
 
 ```{r, echo = F}
 set.seed(23)
@@ -84,21 +83,6 @@ Data = data.frame(Time = c(DV_Slow_N,
 Data$Speed = factor(Data$Speed, levels = c("Slow", "Medium", "Fast")) # set order of levels as I want them presented
 Data$Noise = factor(Data$Noise, levels = c("None", "Controllable", "Uncontrollable")) # set order of levels as I want them presented
 ```
-
-.pull-left[
-### Factorial ANOVA
-
-Interaction tests whether there are differences in differences.
-
-**Simple main effect** -- the effect of Factor A at a specific level of Factor B
-]
-.pull-right[
-### Regression
-
-Interaction tests whether slope changes. 
-
-**Simple slopes** -- the slope of Variable A at a specific level of Variable B
-]
 
 ---
 
@@ -753,13 +737,11 @@ class: inverse
 
 ## Next time...
 
-Logistic Regression
+Spring Break!!!
 
-Catch Up/Flex -- if nothing, then Ke will run the review session in class
+March 24th = Exam 2!!!!!!!!!!
 
-March 27th = Exam 2!!!!!!!!!!
-
-April 1st = discussion of Yarkoni & Westfall paper. You 100% need to read it. Not optional.
+March 31st = discussion of Yarkoni & Westfall paper. You 100% need to read it. Not optional.
 
 (everything after this slide is extra or code-based; feel free to play around, but you won't be tested on it)
 

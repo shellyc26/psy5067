@@ -3,7 +3,7 @@
   <head>
     <title>Interactions (V)</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -40,35 +40,19 @@ class: center, middle, inverse, title-slide
 
 ## Last time...
 
-Factorial ANOVA
-* Estimated marginal means
-* Estimated cell means
-* Sums of squares
+- Within subjects ANOVA conceptually
+- ANCOVA conceptually
+- Non-parametric tests
 
-Power
-* Omnibus test
-* Coefficients
+--
 
----
+## This time
 
-## ANOVA vs Regression
-
+- Power
+- Polynomials
+- 3+way interactions
 
 
-.pull-left[
-### Factorial ANOVA
-
-Interaction tests whether there are differences in differences.
-
-**Simple main effect** -- the effect of Factor A at a specific level of Factor B
-]
-.pull-right[
-### Regression
-
-Interaction tests whether slope changes. 
-
-**Simple slopes** -- the slope of Variable A at a specific level of Variable B
-]
 
 ---
 
@@ -986,13 +970,11 @@ class: inverse
 
 ## Next time...
 
-Logistic Regression
+Spring Break!!!
 
-Catch Up/Flex -- if nothing, then Ke will run the review session in class
+March 24th = Exam 2!!!!!!!!!!
 
-March 27th = Exam 2!!!!!!!!!!
-
-April 1st = discussion of Yarkoni &amp; Westfall paper. You 100% need to read it. Not optional.
+March 31st = discussion of Yarkoni &amp; Westfall paper. You 100% need to read it. Not optional.
 
 (everything after this slide is extra or code-based; feel free to play around, but you won't be tested on it)
 
@@ -1080,40 +1062,40 @@ pairs(fit.grid, adjust = "holm")
 ```
 ##  contrast                                    estimate   SE  df t.ratio p.value
 ##  Slow None - Medium None                        105.4 35.8 171   2.944  0.0553
-##  Slow None - Fast None                          301.4 35.8 171   8.418  &lt;.0001
+##  Slow None - Fast None                          301.4 35.8 171   8.418 &lt;0.0001
 ##  Slow None - Slow Controllable                   54.1 35.8 171   1.509  1.0000
 ##  Slow None - Medium Controllable                138.0 35.8 171   3.854  0.0026
-##  Slow None - Fast Controllable                  343.5 35.8 171   9.592  &lt;.0001
+##  Slow None - Fast Controllable                  343.5 35.8 171   9.592 &lt;0.0001
 ##  Slow None - Slow Uncontrollable                 36.3 35.8 171   1.013  1.0000
-##  Slow None - Medium Uncontrollable              326.1 35.8 171   9.106  &lt;.0001
-##  Slow None - Fast Uncontrollable                362.6 35.8 171  10.124  &lt;.0001
-##  Medium None - Fast None                        196.0 35.8 171   5.473  &lt;.0001
+##  Slow None - Medium Uncontrollable              326.1 35.8 171   9.106 &lt;0.0001
+##  Slow None - Fast Uncontrollable                362.6 35.8 171  10.124 &lt;0.0001
+##  Medium None - Fast None                        196.0 35.8 171   5.473 &lt;0.0001
 ##  Medium None - Slow Controllable                -51.4 35.8 171  -1.435  1.0000
 ##  Medium None - Medium Controllable               32.6 35.8 171   0.910  1.0000
-##  Medium None - Fast Controllable                238.1 35.8 171   6.648  &lt;.0001
+##  Medium None - Fast Controllable                238.1 35.8 171   6.648 &lt;0.0001
 ##  Medium None - Slow Uncontrollable              -69.2 35.8 171  -1.931  0.6615
-##  Medium None - Medium Uncontrollable            220.7 35.8 171   6.162  &lt;.0001
-##  Medium None - Fast Uncontrollable              257.1 35.8 171   7.180  &lt;.0001
-##  Fast None - Slow Controllable                 -247.4 35.8 171  -6.908  &lt;.0001
+##  Medium None - Medium Uncontrollable            220.7 35.8 171   6.162 &lt;0.0001
+##  Medium None - Fast Uncontrollable              257.1 35.8 171   7.180 &lt;0.0001
+##  Fast None - Slow Controllable                 -247.4 35.8 171  -6.908 &lt;0.0001
 ##  Fast None - Medium Controllable               -163.4 35.8 171  -4.564  0.0002
 ##  Fast None - Fast Controllable                   42.0 35.8 171   1.174  1.0000
-##  Fast None - Slow Uncontrollable               -265.2 35.8 171  -7.405  &lt;.0001
+##  Fast None - Slow Uncontrollable               -265.2 35.8 171  -7.405 &lt;0.0001
 ##  Fast None - Medium Uncontrollable               24.7 35.8 171   0.689  1.0000
 ##  Fast None - Fast Uncontrollable                 61.1 35.8 171   1.707  0.9867
 ##  Slow Controllable - Medium Controllable         84.0 35.8 171   2.344  0.2627
-##  Slow Controllable - Fast Controllable          289.4 35.8 171   8.082  &lt;.0001
+##  Slow Controllable - Fast Controllable          289.4 35.8 171   8.082 &lt;0.0001
 ##  Slow Controllable - Slow Uncontrollable        -17.8 35.8 171  -0.496  1.0000
-##  Slow Controllable - Medium Uncontrollable      272.1 35.8 171   7.597  &lt;.0001
-##  Slow Controllable - Fast Uncontrollable        308.5 35.8 171   8.615  &lt;.0001
-##  Medium Controllable - Fast Controllable        205.5 35.8 171   5.738  &lt;.0001
+##  Slow Controllable - Medium Uncontrollable      272.1 35.8 171   7.597 &lt;0.0001
+##  Slow Controllable - Fast Uncontrollable        308.5 35.8 171   8.615 &lt;0.0001
+##  Medium Controllable - Fast Controllable        205.5 35.8 171   5.738 &lt;0.0001
 ##  Medium Controllable - Slow Uncontrollable     -101.7 35.8 171  -2.841  0.0707
-##  Medium Controllable - Medium Uncontrollable    188.1 35.8 171   5.252  &lt;.0001
-##  Medium Controllable - Fast Uncontrollable      224.6 35.8 171   6.271  &lt;.0001
-##  Fast Controllable - Slow Uncontrollable       -307.2 35.8 171  -8.579  &lt;.0001
+##  Medium Controllable - Medium Uncontrollable    188.1 35.8 171   5.252 &lt;0.0001
+##  Medium Controllable - Fast Uncontrollable      224.6 35.8 171   6.271 &lt;0.0001
+##  Fast Controllable - Slow Uncontrollable       -307.2 35.8 171  -8.579 &lt;0.0001
 ##  Fast Controllable - Medium Uncontrollable      -17.4 35.8 171  -0.486  1.0000
 ##  Fast Controllable - Fast Uncontrollable         19.1 35.8 171   0.533  1.0000
-##  Slow Uncontrollable - Medium Uncontrollable    289.8 35.8 171   8.093  &lt;.0001
-##  Slow Uncontrollable - Fast Uncontrollable      326.3 35.8 171   9.111  &lt;.0001
+##  Slow Uncontrollable - Medium Uncontrollable    289.8 35.8 171   8.093 &lt;0.0001
+##  Slow Uncontrollable - Fast Uncontrollable      326.3 35.8 171   9.111 &lt;0.0001
 ##  Medium Uncontrollable - Fast Uncontrollable     36.5 35.8 171   1.018  1.0000
 ## 
 ## P value adjustment: holm method for 36 tests
@@ -1205,9 +1187,9 @@ plot_model(fit, type = "emm",
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

@@ -33,6 +33,10 @@ navbar:
         href: "lectures/19-modelcomparison.html"
       - text: "13-Factorial ANOVA"
         href: "lectures/23-interactions.html"
+      - text: "14-Within"
+        href: "lectures/24-within.html"
+      - text: "15-Interactions Cont."
+        href: "lectures/18-interactions.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -61,6 +65,10 @@ navbar:
         href: "lectures/19-modelcomparison.pdf"
       - text: "13-Factorial ANOVA"
         href: "lectures/23-interactions.pdf"
+      - text: "14-Within"
+        href: "lectures/24-within.pdf"
+      - text: "15-Interactions Cont."
+        href: "lectures/18-interactions.pdf"
     - text: Homework
       href: homework.html
   right:
