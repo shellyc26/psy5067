@@ -1,5 +1,5 @@
 ---
-title: "Homework #3"
+title: "Homework #2"
 output: html_document
 ---
 
@@ -20,7 +20,9 @@ All homeworks are **independent projects**. You may not share code or answers wi
 
 In the instructions, when it says **_by hand_**, what we mean is that you should not use a function that is built into R to complete the task. For example, if I ask you to find the mean *by hand*, you should **not** use the `mean()` function. However, you can (and should!) use your variables. So for instance, if I ask you to find the `mean()` by hand, you may do something like `sum(variableX)/length(variableX)`. This would be an appropriate *by hand* calculation. (You don't need to type `(3 + 5 + 5 + 17) / 4`...you can still use your variables). If we do *not* specify *by hand*, then you may of course use a R function.
 
-**Data:** The dataset looks at happiness in college as a relationship with school success, friendship quality, SES, and an intervention group (1 = control, 2 = study skills training, 3 = social skills training). (Note that the variable names have spaces in them, which may make it tricky to work with. I suggest renaming the variables). The data are here: [`th-project-4.csv`](th-project-4.csv)
+**Data 1 (questions 1-5):** The dataset looks at happiness in college as a relationship with school success, friendship quality, SES, and an intervention group (1 = control, 2 = study skills training, 3 = social skills training). (Note that the variable names have spaces in them, which may make it tricky to work with. I suggest renaming the variables). The data are here: [`th-project-4.csv`](th-project-4.csv)
+
+**Data 2 (question 6):** [`th-project-4-part2.csv`](th-project-4-part2.csv)
 
 Good luck!
 
@@ -38,4 +40,20 @@ Good luck!
 3. Graph the three simple slopes from question 3 within a single plot.
 
 4. Are any of these simple slopes significantly different from 0? How do you know? (i.e., I want a little more info than just "yes" or "no", but you could do this in 1-2 sentences.)
+
+5. Try the `check_model()` function from the `performance` package for your initial model. Does it meet the assumptions?
+
+6. These data are set up perfectly to run a 2x2 ANOVA:
+
+  - Use the model comparison approach to test the hypothesis that there is a main effect of Therapy on Anxiety scores. Then use the `aov` function to check your work. 
+  - Use the model comparison approach to test the hypothesis that there is a main effect of Sleep on Anxiety scores. Use `aov` to check your work.
+  - Use the model comparison approach to test the hypothesis that there is an interaction of Sleep and Therapy on Anxiety scores. Use `aov` to check your work. 
+
+7. We have talked about interactions in many different forms during this unit! Pick a variant that you feel the least comfortable with (2 continuous variables, 2 categorical variables, or 1 of each, polynomial, 3way interaction etc.). Ask Chat-GPT (or any AI tool) to generate a small dataset for you such that you can practice. Use the dataset it provides to:
+
+- Run the model (if you want more practice with model comparisons, that's OK too)
+_ Write the equation
+- Interpret all coefficients
+- Interpret the omnibus test
+- Create an appropriate visualization of the interaction
 

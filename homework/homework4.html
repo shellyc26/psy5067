@@ -11,7 +11,7 @@
 
 
 
-<title>Homework #3</title>
+<title>Homework #2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,7 +348,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Homework #3</h1>
+<h1 class="title toc-ignore">Homework #2</h1>
 
 </div>
 
@@ -400,12 +400,13 @@ would be an appropriate <em>by hand</em> calculation. (You don’t need to
 type <code>(3 + 5 + 5 + 17) / 4</code>…you can still use your
 variables). If we do <em>not</em> specify <em>by hand</em>, then you may
 of course use a R function.</p>
-<p><strong>Data:</strong> The dataset looks at happiness in college as a
-relationship with school success, friendship quality, SES, and an
-intervention group (1 = control, 2 = study skills training, 3 = social
-skills training). (Note that the variable names have spaces in them,
-which may make it tricky to work with. I suggest renaming the
-variables). The data are here: <a href="th-project-4.csv"><code>th-project-4.csv</code></a></p>
+<p><strong>Data 1 (questions 1-5):</strong> The dataset looks at
+happiness in college as a relationship with school success, friendship
+quality, SES, and an intervention group (1 = control, 2 = study skills
+training, 3 = social skills training). (Note that the variable names
+have spaces in them, which may make it tricky to work with. I suggest
+renaming the variables). The data are here: <a href="th-project-4.csv"><code>th-project-4.csv</code></a></p>
+<p><strong>Data 2 (question 6):</strong> <a href="th-project-4-part2.csv"><code>th-project-4-part2.csv</code></a></p>
 <p>Good luck!</p>
 </div>
 </div>
@@ -433,7 +434,37 @@ plot.</p></li>
 <li><p>Are any of these simple slopes significantly different from 0?
 How do you know? (i.e., I want a little more info than just “yes” or
 “no”, but you could do this in 1-2 sentences.)</p></li>
+<li><p>Try the <code>check_model()</code> function from the
+<code>performance</code> package for your initial model. Does it meet
+the assumptions?</p></li>
+<li><p>These data are set up perfectly to run a 2x2 ANOVA:</p></li>
 </ol>
+<ul>
+<li>Use the model comparison approach to test the hypothesis that there
+is a main effect of Therapy on Anxiety scores. Then use the
+<code>aov</code> function to check your work.</li>
+<li>Use the model comparison approach to test the hypothesis that there
+is a main effect of Sleep on Anxiety scores. Use <code>aov</code> to
+check your work.</li>
+<li>Use the model comparison approach to test the hypothesis that there
+is an interaction of Sleep and Therapy on Anxiety scores. Use
+<code>aov</code> to check your work.</li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li>We have talked about interactions in many different forms during
+this unit! Pick a variant that you feel the least comfortable with (2
+continuous variables, 2 categorical variables, or 1 of each, polynomial,
+3way interaction etc.). Ask Chat-GPT (or any AI tool) to generate a
+small dataset for you such that you can practice. Use the dataset it
+provides to:</li>
+</ol>
+<ul>
+<li>Run the model (if you want more practice with model comparisons,
+that’s OK too) _ Write the equation</li>
+<li>Interpret all coefficients</li>
+<li>Interpret the omnibus test</li>
+<li>Create an appropriate visualization of the interaction</li>
+</ul>
 </div>
 
 

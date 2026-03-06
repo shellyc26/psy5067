@@ -18,7 +18,7 @@ Note that this semester you will be making your RMarkdown/RNotebook/Quarto (anyt
 
 
 ## Homework 2
-- HW 2 will be posted here
+- [HW 2 is here](homework/homework4.html)
 - Due on **Sunday 3/22 by 11:59pm**
 
 
