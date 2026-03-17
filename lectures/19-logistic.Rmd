@@ -116,7 +116,16 @@ knitr::include_graphics("images/Log.1.png")
 
 ---
 .left-column[
-OLS regression line. It doesn't make sense! Predicted values can go above 1 or below 0...yikes
+OLS regression line.
+]
+```{r out.width = '75%', echo = FALSE}
+
+knitr::include_graphics("images/Log.2.png")
+```
+
+---
+.left-column[
+It doesn't make sense! Predicted values can go above 1 or below 0...yikes
 ]
 ```{r out.width = '75%', echo = FALSE}
 

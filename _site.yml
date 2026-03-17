@@ -37,6 +37,10 @@ navbar:
         href: "lectures/24-within.html"
       - text: "15-Interactions Cont."
         href: "lectures/18-interactions.html"
+      - text: "16-ChiSq"
+        href: "lectures/14-chisq.html"
+      - text: "17-Logistic"
+        href: "lectures/19-logistic.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -69,6 +73,10 @@ navbar:
         href: "lectures/24-within.pdf"
       - text: "15-Interactions Cont."
         href: "lectures/18-interactions.pdf"
+      - text: "16-ChiSq"
+        href: "lectures/14-chisq.pdf"
+      - text: "17-Logistic"
+        href: "lectures/19-logistic.pdf"
     - text: Homework
       href: homework.html
   right:

@@ -3,7 +3,7 @@
   <head>
     <title>Logistic Regression</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -116,7 +116,13 @@ If we plotted these points, they are either 1's or 0's
 
 ---
 .left-column[
-OLS regression line. It doesn't make sense! Predicted values can go above 1 or below 0...yikes
+OLS regression line.
+]
+&lt;img src="images/Log.2.png" width="75%" /&gt;
+
+---
+.left-column[
+It doesn't make sense! Predicted values can go above 1 or below 0...yikes
 ]
 &lt;img src="images/Log.2.png" width="75%" /&gt;
 
@@ -719,9 +725,9 @@ summary(death.4)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Chi-Square Distribution</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="my-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Chi-Square Distribution
+]
+
+---
+
+
+
+
+
+
+## Recap
+
+Typically, the probability distribution function for a distribution is regulated by two parameters. For the normal:
+
+ - mean `\(\mu\)`
+ - standard deviation `\(\sigma\)`
+ 
+--
+
+These parameters are sometimes independent (normal, `\(t\)` ) and sometimes associated with one another (binomial)
+
+---
+## What have we been doing all year?
+
+- Take a normally distributed variable
+- Get deviation scores
+- Square the deviation scores
+- Sum them up
+
+--
+
+**What are the consequences of doing so?**
+
+---
+## Chi-Square Distribution
+
+`\(\chi^2 = \sum_{i=1}^{k} Z_i^2\)`
+
+- `\(Z_i\)` = standard normal variable
+- `\(k\)` = number of independent variables (**degrees of freedom**)
+
+--
+
+In English:
+
+&gt; `\(\chi^2\)` is created by squaring standard normal variables and adding them together
+
+
+---
+## Chi-Square Distribution
+
+The **chi-square** ( `\(\chi^2\)` ) distribution is very unique in that we really only have one parameter, `\(k\)`, which are your **degrees of freedom**
+
+- mean = `\(k\)`
+- variance = `\(2k\)`
+
+It is entirely defined by degrees of freedom! It is the *number of pieces of information that you have*
+
+---
+
+&lt;img src="14-chisq_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+## What kind of crazy function would lead to a distribution like this?!?!!
+
+![](images/animal.png)
+
+---
+class: inverse, center, middle
+
+## If a tree falls in the forest, and no one is around, does it make a sound?
+
+---
+
+## Trees Example
+
+Let's say a total of 110 trees have fallen. We might *expect* that half of those trees make a sound and half of them don't.
+  - 55 trees fall and do make a sound
+  - 55 trees fall and do not make a sound
+
+---
+
+## Trees Example
+
+We expect 55 trees to fall per category (sound and no sound). However, our data show that 10 fell and made a sound whereas 100 fell and did not make a sound.
+
+--
+
+This let's build a table that shows us what we have:
+
+
+``` r
+trees = data.frame(TreesFallen = c(10, 100),
+                   Expected = c(55, 55))
+rownames(trees) = c("Registered Noise", "No Registered Noise")
+
+trees
+```
+
+```
+##                     TreesFallen Expected
+## Registered Noise             10       55
+## No Registered Noise         100       55
+```
+
+---
+
+## Trees Example
+
+
+```
+##                     TreesFallen Expected
+## Registered Noise             10       55
+## No Registered Noise         100       55
+```
+
+
+
+$$ \chi^2_P = \Sigma\frac{(\text{observed frequency} - \text{expected frequency})^2}{\text{expected frequency}}$$
+---
+
+## Trees Example
+
+
+```
+##                     TreesFallen Expected
+## Registered Noise             10       55
+## No Registered Noise         100       55
+```
+
+Step 1: Get the ratio across rows:
+
+`\(\frac{(10-55)^2}{55}\)`
+`\(\frac{(100-55)^2}{55}\)`
+
+
+
+``` r
+noise &lt;- ((10-55)^2)/55
+noise
+```
+
+```
+## [1] 36.81818
+```
+
+``` r
+noNoise &lt;- ((100-55)^2)/55
+noNoise
+```
+
+```
+## [1] 36.81818
+```
+
+---
+## Trees Example
+
+Step 2: Sum these up
+
+
+
+``` r
+noise + noNoise
+```
+
+```
+## [1] 73.63636
+```
+
+
+---
+## Trees Example
+
+Step 3: Determine Degrees of Freedom
+
+df = `\((r-1)(c-1)\)`
+
+df = `\((2-1)(2-1)\)`
+
+df = 1
+
+---
+
+## Trees Example
+
+.left-column[
+.small[
+`\(\chi^2(1) = 73.636\)`
+]
+]
+
+
+```
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+![](14-chisq_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+## What did we learn?
+
+The `\(\chi^2\)` distribution gives us the probability to find the data (or those more extreme) given a theory (expected values)
+
+--
+
+Comparing that against some threshold for determining whether that probability is within the range of expectations or not
+
+
+``` r
+pchisq(q = 73.636, df = 1, lower.tail = FALSE)
+```
+
+```
+## [1] 9.393574e-18
+```
+
+--
+
+Our calculation reflects our value minus some expectation, to understand how far away it is from that expectation.
+
+---
+## Interim Summary
+
+- We are comparing observed counts to what we would expect from under a model:
+
+  * If the observed = expected, `\(\chi^2\)` is very small
+  * If observed is really different from expected, `\(\chi^2\)` is large
+  * Larger `\(\chi^2\)` statistic, given some df parameter, the more likely it is that this model is wrong -- that our data come from something else
+  
+--
+
+- The `\(\chi^2\)` test statistic is a weighted squared error statistic!
+
+---
+## What do we want to know?
+Are variables related?
+- Chi-square test of association / independence (contingency tables)
+
+--
+
+Does the data match what a model predicts?
+- Goodness-of-fit test
+
+--
+
+Does a more complex model improve fit?
+- Likelihood ratio test
+
+--
+
+Does the model adequately explain the data?
+- Deviance statistic
+
+---
+## What do we want to know?
+
+All of these ask the same underlying question:
+
+&gt; How far are the observed data from what the model predicts?
+
+--
+
+$$ \chi^2_P = \Sigma\frac{(\text{observed frequency} - \text{expected frequency})^2}{\text{expected frequency}}$$
+
+---
+## Let's go back...
+
+Sometimes we want to know...are two categorical variables related to one another?
+
+- Intervention (yes/no) &amp; Outcome (good/bad)
+
+--
+
+If we want to to know if there's a difference
+  - Chi-square test of association
+
+If we want to know the magnitude of the association? 
+  - Odds Ratio
+
+---
+## Effect Sizes for Chi-Square
+    
+**Odds Ratio**
+OR = number experiencing event divided by number who did not experience event.
+  
+
+|             |Outcome Yes |Outcome No |
+|:------------|:-----------|:----------|
+|Exposure Yes |a           |b          |
+|Exposure No  |c           |d          |
+
+- Odds of outcome given exposure: `\(\frac{a}{b}\)`
+- Odds of outcome without exposure: `\(\frac{c}{d}\)`
+- **Odds Ratio**: `\(\frac{a/b}{c/d}\)`
+
+---
+## All together
+
+- Chi-square test is a *hypothesis* test. Gives you a p-value
+
+- Odds ratios quantify how large the association is. It's an *effect size*
+
+- Interpretation of OR
+  
+  - OR = 1 → no association (even odds)
+  - OR &gt; 1 → exposure increases odds of outcome
+  - OR &lt; 1 → exposure decreases odds of outcome
+  
+--
+
+Cohen (1988) provided the following advice for interpreting odds ratios:
+
+- 1.5 small
+- 2.5 medium
+- 4.3 large
+
+---
+
+## Where are we going?
+
+Logistic regression estimates *log odds ratios*
+
+---
+
+class: inverse
+
+## Next Time
+
+- Logistic Regression
+- Exam 2 on 3/24
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
