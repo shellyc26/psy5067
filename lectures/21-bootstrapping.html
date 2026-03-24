@@ -3,7 +3,7 @@
   <head>
     <title>Resampling Methods</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="my-theme.css" type="text/css" />
   </head>
@@ -38,11 +38,8 @@ class: center, middle, inverse, title-slide
 
 ## Last time...
 
-### Review Lecture
-
-* Weighted Least Squares (WLS)
-* Worked on assignment
-
+* Exam 2
+* Whole unit on interactions
 --
 
 ## Today
@@ -100,8 +97,6 @@ A statistical technique that involves re-estimation of the population parameter 
 
 - Bootstrapping
 
-- Jackknife method (just a glimpse)
-
 - Permutation testing (just a glimpse; Research Methods will cover it)
 
 ---
@@ -144,11 +139,11 @@ To estimate their height, you decide to perform bootstrapping, meaning you draw 
 
 
 ```
-## [1] "Ross"     "Rachel"   "Chandler" "Monica"   "Monica"   "Rachel"
+## [1] "Chandler" "Phoebe"   "Ross"     "Monica"   "Monica"   "Monica"
 ```
 
 ```
-## [1] "Mean height of this sample: 168.5"
+## [1] "Mean height of this sample: 169.666666666667"
 ```
 
 --
@@ -162,36 +157,36 @@ Within the same sample, there can be duplicates. This is what it means to random
 
 
 ```
-## [1] "Rachel"   "Phoebe"   "Ross"     "Monica"   "Monica"   "Chandler"
-```
-
-```
-## [1] "Mean height of this sample: 169.666666666667"
-```
---
-
-```
-## [1] "Monica"   "Phoebe"   "Chandler" "Chandler" "Rachel"   "Chandler"
-```
-
-```
-## [1] "Mean height of this sample: 170.166666666667"
-```
---
-
-```
-## [1] "Chandler" "Rachel"   "Chandler" "Chandler" "Joey"     "Rachel"
+## [1] "Joey"   "Phoebe" "Joey"   "Joey"   "Phoebe" "Rachel"
 ```
 
 ```
 ## [1] "Mean height of this sample: 169.833333333333"
+```
+--
+
+```
+## [1] "Ross"     "Rachel"   "Monica"   "Monica"   "Chandler" "Monica"
+```
+
+```
+## [1] "Mean height of this sample: 168.5"
+```
+--
+
+```
+## [1] "Monica"   "Monica"   "Ross"     "Chandler" "Ross"     "Ross"
+```
+
+```
+## [1] "Mean height of this sample: 172.833333333333"
 ```
 
 ---
 ### Bootstrap 10,000 Times
 
 
-```r
+``` r
 # When resampling, it is generally a good practice to set random seed
 # for full reproducibility of the resampling process
 set.seed(5067)
@@ -208,7 +203,7 @@ sample_means &lt;- NULL # Initialize list to store sample means
 ### Bootstrap 10,000 Times
 
 
-```r
+``` r
 # When resampling, it is generally a good practice to set random seed
 # for full reproducibility of the resampling process
 set.seed(5067)
@@ -244,7 +239,7 @@ For the mean and standard deviation, we have theoretical sampling distributions 
 Central tendency and variability of 216 reaction times
 
 
-```r
+``` r
 # Set random seed before generating data
 set.seed(5067)
 
@@ -260,7 +255,7 @@ response = response * 500 + rnorm(n = 216, mean = 200, sd = 100)
 ---
 
 
-```r
+``` r
 set.seed(5067) # Set random seed
 boot &lt;- 10000 # Set number of bootstrap samples
 
@@ -275,7 +270,7 @@ for(i in 1:boot){
 What is the bootstrap mean and its 95% CI?
 
 
-```r
+``` r
 mean(response_means)
 ```
 
@@ -283,7 +278,7 @@ mean(response_means)
 ## [1] 682.5499
 ```
 
-```r
+``` r
 quantile(response_means, probs = c(.025, .975))
 ```
 
@@ -301,7 +296,7 @@ quantile(response_means, probs = c(.025, .975))
 ---
 
 
-```r
+``` r
 set.seed(5067)
 boot &lt;- 10000
 response_med &lt;- NULL
@@ -315,7 +310,7 @@ for(i in 1:boot){
 ]
 .pull-right[
 
-```r
+``` r
 mean(response_med)
 ```
 
@@ -323,7 +318,7 @@ mean(response_med)
 ## [1] 600.4248
 ```
 
-```r
+``` r
 median(response_med)
 ```
 
@@ -331,7 +326,7 @@ median(response_med)
 ## [1] 598.9464
 ```
 
-```r
+``` r
 quantile(response_med, 
          probs = c(.025, .975))
 ```
@@ -345,7 +340,7 @@ quantile(response_med,
 ---
 
 
-```r
+``` r
 set.seed(5067)
 boot &lt;- 10000
 response_sd &lt;- NULL
@@ -359,7 +354,7 @@ for(i in 1:boot){
 ]
 .pull-right[
 
-```r
+``` r
 mean(response_sd)
 ```
 
@@ -367,7 +362,7 @@ mean(response_sd)
 ## [1] 374.7614
 ```
 
-```r
+``` r
 median(response_sd)
 ```
 
@@ -375,7 +370,7 @@ median(response_sd)
 ## [1] 374.299
 ```
 
-```r
+``` r
 quantile(response_sd, 
          probs = c(.025, .975))
 ```
@@ -401,7 +396,7 @@ The `boot` package and function provides some help to speed this process along. 
 
 
 
-```r
+``` r
 library(boot)
 
 # function to obtain R-Squared from the data
@@ -421,7 +416,7 @@ results &lt;- boot(data = mtcars, statistic = rsq, R = 10000)
 
 .pull-right[
 
-```r
+``` r
 median(results$t)
 ```
 
@@ -429,7 +424,7 @@ median(results$t)
 ## [1] 0.7972849
 ```
 
-```r
+``` r
 boot.ci(results, type = "perc")
 ```
 
@@ -456,7 +451,7 @@ In this district, Verizon provides line service to both Verizon and non-Verizon 
 
 
 
-```r
+``` r
 head(Verizon, 3)
 ```
 
@@ -505,7 +500,7 @@ Here, we'll resample with replacement separately from the two samples and calcul
 
 ---
 
-```r
+``` r
 # Set random seed and number of bootstrap samples
 set.seed(5067)
 boot &lt;- 10000
@@ -531,7 +526,7 @@ for(i in 1:boot){
 ### One Solution
 
 
-```r
+``` r
 set.seed(5067)
 boot &lt;- 10000
 difference &lt;- NULL
@@ -544,7 +539,7 @@ difference &lt;- NULL
 ### One Solution
 
 
-```r
+``` r
 set.seed(5067)
 boot &lt;- 10000
 difference &lt;- NULL
@@ -568,7 +563,7 @@ for(i in 1:boot){
 ### One Solution
 
 
-```r
+``` r
 set.seed(5067)
 boot &lt;- 10000
 difference &lt;- NULL
@@ -644,64 +639,6 @@ Bootstrapping will **NOT** help you deal with:
 * Caveats: representativeness of the sample, outliers
 
 ---
-## Jackknife Resampling
-
-**Jackknife Resampling** is a method where researchers generate n sub-samples, each leaving out one observation. The method is very similar to bootstrapping except **the way that we create the sub-samples**.
-
----
-Friends Example. If you decide to jackknife their heights, you would draw six sub-samples and calculate their respective mean height.
-
-
-```r
-friends = c('Monica', 'Rachel', 'Ross', 'Joey', 'Phoebe', 'Chandler')
-heights = c(165, 165, 178, 170, 172, 173)
-names(heights) = friends
-```
---
-
-```
-## [1] "First Sub-sample:  Rachel, Ross, Joey, Phoebe, Chandler"
-```
---
-
-```
-## [1] "Second Sub-sample:  Monica, Ross, Joey, Phoebe, Chandler"
-```
---
-
-```
-## [1] "Third Sub-sample:  Monica, Rachel, Joey, Phoebe, Chandler"
-```
---
-
-```
-## [1] "Fourth Sub-sample:  Monica, Rachel, Ross, Phoebe, Chandler"
-```
---
-
-```
-## [1] "Fifth Sub-sample:  Monica, Rachel, Ross, Joey, Chandler"
-```
---
-
-```
-## [1] "Sixth Sub-sample:  Monica, Rachel, Ross, Joey, Phoebe"
-```
-
-Notice that there are **6** sub-samples of **size 5**. 
-
----
-### Jack of all trades, master of none - Jackknife
-1. Can assess the accuracy of a statistical estimator without making assumptions about the underlying distribution
-
-2. Computationally efficient bc only *n* sub-samples are generated (compared to 10,000 for example)
-
-3. Not used as much these days
-
-4. Sensitive to sample size: If sample size is small, it can result in inaccurate estimates of the bias (e.g., sample size of 6 means six jackknife samples).
-
-
----
 ### Permutation Testing
 
 A resampling method that involves **randomly shuffling the labels** (e.g., conditions) across the data and recomputing the test statistic of interest, thereby deriving a null distribution of the test statistic.
@@ -757,7 +694,7 @@ The observed difference is...
 --
 
 
-```r
+``` r
 perm_df %&gt;% filter(group == 'A') %&gt;% pull(rating) %&gt;% mean() - perm_df %&gt;% filter(group == 'B') %&gt;% pull(rating) %&gt;% mean()
 ```
 
@@ -782,7 +719,7 @@ Initially, the three restaurants in group A were:
 Now, we are going to randomly assign restaurants to group A and group B, and calculate the mean difference in ratings. 
 
 
-```r
+``` r
 random_indices &lt;- sample.int(nrow(perm_df), 3)
 random_A &lt;- perm_df[random_indices,]
 random_B &lt;- perm_df[-random_indices,]
@@ -795,7 +732,7 @@ random_A %&gt;% pull(name)
 ```
 
 
-```r
+``` r
 random_A %&gt;% pull(rating) %&gt;% mean() - random_B %&gt;% pull(rating) %&gt;% mean()
 ```
 
@@ -809,7 +746,7 @@ random_A %&gt;% pull(rating) %&gt;% mean() - random_B %&gt;% pull(rating) %&gt;%
 
 
 
-&lt;img src="21-bootstrapping_files/figure-html/unnamed-chunk-48-1.png" width="504" /&gt;
+&lt;img src="21-bootstrapping_files/figure-html/unnamed-chunk-41-1.png" width="504" /&gt;
 
 
 We could count the number of permutations that have larger test statistic value than the observed difference, which would be equivalent to the `\(p\)`-value (or the probability that a test statistic is greater than or equal to the observed value, **under the null**).
@@ -821,7 +758,7 @@ We could count the number of permutations that have larger test statistic value 
 Initially, we had 23 CLEC and 1,664 ILEC customers. **First**, we are going to calculate the mean difference in waiting time between the two groups using the observed data. 
 
 
-```r
+``` r
 subsample_CLEC = Verizon %&gt;% filter(Group == "CLEC")
 subsample_ILEC = Verizon %&gt;% filter(Group == "ILEC")
 
@@ -843,7 +780,7 @@ We are going to randomly shuffle the labels of groups (previous CLEC and ILEC la
 One iteration would look something like this: 
 
 
-```r
+``` r
 random_indices &lt;- sample.int(nrow(Verizon), 23)
 random_CLEC &lt;- Verizon[random_indices,]
 random_ILEC &lt;- Verizon[-random_indices,]
@@ -861,7 +798,7 @@ random_ILEC &lt;- Verizon[-random_indices,]
 One iteration would look something like this: 
 
 
-```r
+``` r
 random_indices &lt;- sample.int(nrow(Verizon), 23)
 random_CLEC &lt;- Verizon[random_indices,]
 random_ILEC &lt;- Verizon[-random_indices,]
@@ -891,7 +828,7 @@ random_ILEC &lt;- Verizon[-random_indices,]
 ### One Way to do this
 
 
-```r
+``` r
 subsample_CLEC = Verizon %&gt;% filter(Group == "CLEC")
 subsample_ILEC = Verizon %&gt;% filter(Group == "ILEC")
 observed_diff &lt;- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
@@ -907,7 +844,7 @@ perm = 1000 # Set number of permutations
 ### One Way to do this
 
 
-```r
+``` r
 subsample_CLEC = Verizon %&gt;% filter(Group == "CLEC")
 subsample_ILEC = Verizon %&gt;% filter(Group == "ILEC")
 observed_diff &lt;- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
@@ -932,7 +869,7 @@ for (i in 1:perm){
 
 
 
-```r
+``` r
 subsample_CLEC = Verizon %&gt;% filter(Group == "CLEC")
 subsample_ILEC = Verizon %&gt;% filter(Group == "ILEC")
 observed_diff &lt;- mean(subsample_CLEC$Time) - mean(subsample_ILEC$Time)
@@ -958,7 +895,7 @@ for (i in 1:perm){
 ## [1] "Number of mean differences greater than observed difference:  24"
 ```
 
-```r
+``` r
 *paste("p-value: ", sum(differences &gt; observed_diff)/length(differences))
 ```
 
@@ -969,7 +906,7 @@ for (i in 1:perm){
 ---
 
 ### Visualization
-&lt;img src="21-bootstrapping_files/figure-html/unnamed-chunk-55-1.png" width="504" /&gt;
+&lt;img src="21-bootstrapping_files/figure-html/unnamed-chunk-48-1.png" width="504" /&gt;
 
 ---
 
@@ -986,18 +923,17 @@ class: inverse
 
 ## Next time ...
 
-- Thursday: One more machine learning lecture 
+- Machine Learning
 
 - Don't forget to read Yarkoni &amp; Westfall, 2017!
 
-- Next Tuesday: Final review session
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

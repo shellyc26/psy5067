@@ -35,11 +35,8 @@ style_mono_accent(base_color = "#17139C",link_color = "#DD3E3E")
 
 ## Last time...
 
-### Review Lecture
-
-* Weighted Least Squares (WLS)
-* Worked on assignment
-
+* Exam 2
+* Whole unit on interactions
 --
 
 ## Today
@@ -96,8 +93,6 @@ A statistical technique that involves re-estimation of the population parameter 
 ### Types of Resampling
 
 - Bootstrapping
-
-- Jackknife method (just a glimpse)
 
 - Permutation testing (just a glimpse; Research Methods will cover it)
 
@@ -665,57 +660,6 @@ Bootstrapping will **NOT** help you deal with:
 * Caveats: representativeness of the sample, outliers
 
 ---
-## Jackknife Resampling
-
-**Jackknife Resampling** is a method where researchers generate n sub-samples, each leaving out one observation. The method is very similar to bootstrapping except **the way that we create the sub-samples**.
-
----
-Friends Example. If you decide to jackknife their heights, you would draw six sub-samples and calculate their respective mean height.
-
-```{r}
-friends = c('Monica', 'Rachel', 'Ross', 'Joey', 'Phoebe', 'Chandler')
-heights = c(165, 165, 178, 170, 172, 173)
-names(heights) = friends
-```
---
-```{r, echo = F}
-paste("First Sub-sample: ", toString(friends[-1]))
-```
---
-```{r, echo = F}
-paste("Second Sub-sample: ", toString(friends[-2]))
-```
---
-```{r, echo = F}
-paste("Third Sub-sample: ", toString(friends[-3]))
-```
---
-```{r, echo = F}
-paste("Fourth Sub-sample: ", toString(friends[-4]))
-```
---
-```{r, echo = F}
-paste("Fifth Sub-sample: ", toString(friends[-5]))
-```
---
-```{r, echo = F}
-paste("Sixth Sub-sample: ", toString(friends[-6]))
-```
-
-Notice that there are **6** sub-samples of **size 5**. 
-
----
-### Jack of all trades, master of none - Jackknife
-1. Can assess the accuracy of a statistical estimator without making assumptions about the underlying distribution
-
-2. Computationally efficient bc only *n* sub-samples are generated (compared to 10,000 for example)
-
-3. Not used as much these days
-
-4. Sensitive to sample size: If sample size is small, it can result in inaccurate estimates of the bias (e.g., sample size of 6 means six jackknife samples).
-
-
----
 ### Permutation Testing
 
 A resampling method that involves **randomly shuffling the labels** (e.g., conditions) across the data and recomputing the test statistic of interest, thereby deriving a null distribution of the test statistic.
@@ -981,8 +925,7 @@ class: inverse
 
 ## Next time ...
 
-- Thursday: One more machine learning lecture 
+- Machine Learning
 
 - Don't forget to read Yarkoni & Westfall, 2017!
 
-- Next Tuesday: Final review session

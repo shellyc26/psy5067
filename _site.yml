@@ -41,6 +41,8 @@ navbar:
         href: "lectures/14-chisq.html"
       - text: "17-Logistic"
         href: "lectures/19-logistic.html"
+      - text: "18-Resampling"
+        href: "lectures/21-bootstrapping.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -77,6 +79,8 @@ navbar:
         href: "lectures/14-chisq.pdf"
       - text: "17-Logistic"
         href: "lectures/19-logistic.pdf"
+      - text: "18-Resampling"
+        href: "lectures/21-bootstrapping.pdf"
     - text: Homework
       href: homework.html
   right:

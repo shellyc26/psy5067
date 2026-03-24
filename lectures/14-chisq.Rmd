@@ -200,7 +200,7 @@ ggplot(data.frame(x = seq(0, 100)), aes(x)) +
                 color = "black", linetype = "dashed") +
   scale_x_continuous("Variable X") +
   scale_y_continuous("Density") +
-  geom_vline(aes(xintercept = 73.636), color = "red", size = 3) +
+  geom_vline(aes(xintercept = 73.636), color = "red") +
   ggtitle("Trees Example") +
   theme_classic()
 ```
