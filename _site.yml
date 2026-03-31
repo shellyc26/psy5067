@@ -43,6 +43,8 @@ navbar:
         href: "lectures/19-logistic.html"
       - text: "18-Resampling"
         href: "lectures/21-bootstrapping.html"
+      - text: "19-Machine Learning"
+        href: "lectures/23-ml.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -81,6 +83,8 @@ navbar:
         href: "lectures/19-logistic.pdf"
       - text: "18-Resampling"
         href: "lectures/21-bootstrapping.pdf"
+      - text: "19-Machine Learning"
+        href: "lectures/23-ml.pdf"
     - text: Homework
       href: homework.html
   right:

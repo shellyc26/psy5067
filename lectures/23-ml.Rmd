@@ -47,7 +47,7 @@ library(tidyverse)
 
 ## Last time...
 
-Exam 2
+Resampling methods
 
 ## Today
 
@@ -122,7 +122,7 @@ At the very least, maybe there are some lessons we can take away from the ML wor
 
 **Artificial Intelligence** is not the same as machine learning. AI is the simulation of human intelligence by computers; AI systems are generally trained with machine learning approaches.
 
-Last class of the semester, we will hear more of this from Josh Oltmanns. 
+We will hear more of this from Josh Oltmanns 4/9. 
 
 ---
 
@@ -535,17 +535,11 @@ Rather than estimating degree of randomness; in machine learning, we're trying t
 ---
 class: inverse
 
-### Enjoy the rest of the semester!!
+### Next Time
 
-- Ran talking about Resampling Methods
+Qualitative Methods with Dr. Seanna Leath
 
-- Josh Jackson talking about Bayes & MLM. *Taking over as instructor!*
-
-- Amy Eyeler talking about Qualitative Methods
-
-- Josh Oltmanns talking about AI
-
-- *Hint for Exam 3: you do NOT get to forget p-values or confidence intervals.*
+**Class begins at 10am**
 
 ---
 ## Machine Learning Algorithms
