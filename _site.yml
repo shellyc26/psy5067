@@ -45,6 +45,8 @@ navbar:
         href: "lectures/21-bootstrapping.html"
       - text: "19-Machine Learning"
         href: "lectures/23-ml.html"
+      - text: "20-PCA"
+        href: "lectures/pca.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -85,6 +87,8 @@ navbar:
         href: "lectures/21-bootstrapping.pdf"
       - text: "19-Machine Learning"
         href: "lectures/23-ml.pdf"
+      - text: "20-PCA"
+        href: "lectures/pca.pdf"
     - text: Homework
       href: homework.html
   right:

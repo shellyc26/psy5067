@@ -15,7 +15,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 **PR = Peer Review**
 
 | Week | Date | Topic | Readings | HW Due |   |
-|----|----|----|----|----|----|
+|------------|------------|------------|------------|------------|------------|
 | 1 | 1/13 | Recap & GLM Intro |  |  |  |
 | \- | 1/15 | Data Management | [Human Fallibility](readings/HumanFallibility_DataManagement.pdf) |  |  |
 | 2 | 1/20 | Correlations (Quant1) |  |  |  |
@@ -40,7 +40,7 @@ LSR readings can be found in the free, online textbook, [*Learning Statistics wi
 | \- | 3/26 | Resampling Methods |  |  |  |
 | 12 | 3/31 | Machine Learning | [Yarkoni & Westfall](readings/Yarkoni%20Westfall%20PPS.pdf) |  |  |
 | \- | 4/2 | Qualitative Methods *– Dr. Leath* |  |  |  |
-| 13 | 4/7 | Factor Analysis |  |  |  |
+| 13 | 4/7 | PCA |  |  |  |
 | \- | 4/9 | AI Intro - *Dr. Oltmanns* |  |  |  |
 | 14 | 4/14 | MLM Intro *- Ben Hardin* |  |  |  |
 | \- | 4/16 | Bayes Intro - *Dr. Jackson* |  |  |  |
