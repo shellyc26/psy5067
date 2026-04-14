@@ -47,6 +47,8 @@ navbar:
         href: "lectures/23-ml.html"
       - text: "20-PCA"
         href: "lectures/pca.html"
+      - text: "21-MLM"
+        href: "lectures/mlm_lecture.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -89,6 +91,8 @@ navbar:
         href: "lectures/23-ml.pdf"
       - text: "20-PCA"
         href: "lectures/pca.pdf"
+      - text: "21-MLM"
+        href: "lectures/mlm_lecture.pdf"
     - text: Homework
       href: homework.html
   right:

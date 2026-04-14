@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Multilevel</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="my-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Multilevel Models
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 30px;
+    padding: 1em 4em 1em 4em;
+}
+
+.small .remark-code { 
+  font-size: 80% !important;
+}
+.tiny .remark-code {
+  font-size: 50% !important;
+}
+
+&lt;/style&gt;
+
+### Last Time
+Our future AI overlords, and how they can be help us in the present
+
+### Today
+Multilevel Models
+
+- Why are they?
+- What are they?
+- How do I?
+---
+
+### Why MLM?
+- MLM is used when data are non-independent.
+- Non-independence means that knowing one observation on the outcome tells you something about another observation.
+- Happens when data have a clustered or nested structure.
+
+---
+
+### Why MLM?
+Examples of __*clustered*__ or __*nested*__ data
+
+- Students nested in classrooms
+- Parents and children nested in families
+- Partners nested within couples
+- Neighborhoods nested within cities
+- Time points nested within people
+- In experimental settings: stimuli nested within people, but also people nested within stimuli
+
+---
+
+### Violating the independence assumption is bad.
+`$$Y_i = b_0 + b_{1}X_{1} + \epsilon_{i}$$`
+
+- Values of Y should be uncorrelated with each other. If not, then there will be correlations (dependencies) among the residuals.
+- Leads to you to __*underestimate*__ standard errors.
+- __INFLATED TYPE I ERROR__
+
+---
+
+One option is to aggregate (discard within-cluster variability)
+- e.g., if you have 3 timepoints for each person, average across those and use peoples' average levels as the outcome.
+
+Another option is to cancel out the cluster variable and only look at the within-level (discard between-cluster variability)
+- e.g., remove variability due to average levels, and use peoples' deviations across the three time points as the outcome.
+- This is basically repeated measures ANOVA
+
+---
+
+### Both options are terrible.
+Obscures different meanings at different levels of analysis.
+
+---
+
+Obscures different meanings at different levels of analysis.
+- e.g., does studying -> better grades?
+&lt;img src="mlm_lecture/mlm-figure1.png" width="75%" /&gt;
+
+---
+
+Obscures different meanings at different levels of analysis.
+- e.g., does studying -> better grades?
+&lt;img src="mlm_lecture/mlm-figure2.png" width="75%" /&gt;
+
+---
+
+Obscures different meanings at different levels of analysis.
+- e.g., does studying -> better grades?
+
+&lt;img src="mlm_lecture/mlm-figure3.png" width="75%" /&gt;
+
+---
+
+### Both options are terrible.
+Obscures different meanings at different levels of analysis.
+- Between person: do people who study more get better grades (vs. people who study less)?
+- Within person: when a person studies more, do they get better grades (vs. when they study less)?
+Neither option really allows for people to have individual differences.
+- i.e., assume that the effect is the same for everyone.
+
+---
+
+class: inverse, center, middle
+
+# Multilevel Models:
+# the good option
+
+---
+### What is MLM?
+
+&lt;img src="mlm_lecture/mlm-image1.png" width="75%" /&gt;
+
+---
+
+### What is MLM?
+- MLM is going to directly model the dependencies by decomposing variance into within- vs. between-cluster variance.
+- Separate effects into Level 1 (within-cluster) and Level 2 (between-cluster)
+
+---
+
+### The Null model
+
+What is the null model in regular linear regression?
+`$$Y_i = b_0 + \epsilon_{i}$$ $$\hat{Y}i = \bar{Y}i$$`
+
+- Now we are in multilevel land. We are going to separate this into two equations.
+- decompose the variance into Level 1 (within) and Level 2 (between)
+
+---
+### The Null Model
+Level 1
+`$$Y_{ij} = b_{0j} + \epsilon_{ij}$$`
+- i = observations
+- j = clusters
+- `\(b_{0j}\)` = mean level of Y for each cluster j
+- `\(\epsilon_{ij}\)` = within cluster variance around each `\(b_{0j}\)`
+
+---
+### The Null Model
+Level 1
+`$$Y_{ij} = b_{0j} + \epsilon_{ij}$$`
+
+Level 2
+`$$b_{0j} = \gamma_{00} + U_{0j}$$`
+- j = clusters
+- `\(\gamma_{00}\)` = the grand mean of Y across all clusters
+- `\(U_{0j}\)` = variance of the cluster means `\(b_{0j}\)` around the grand mean `\(\gamma_{00}\)`
+
+---
+### The Null Model
+Level 1
+`$$Y_{ij} = b_{0j} + \epsilon_{ij}$$`
+
+Level 2
+`$$b_{0j} = \gamma_{00} + U_{0j}$$`
+
+Can simplify into a single formula
+`$$Y_{ij} = \gamma_{00} + U_{0j} + \epsilon_{ij}$$`
+
+---
+### The Null Model
+`$$Y_{ij} = \gamma_{00} + U_{0j} + \epsilon_{ij}$$`
+
+Fixed vs. Random effects
+- `\(U_{0}\)` is a random effect, meaning that it varies across clusters (j)
+- `\(\gamma_{00}\)` is a fixed effect, meaning it is the same across all clusters.
+
+---
+
+### Research example
+EMA study, we have 6 people who reported how happy they feel 6x per day for 10 days
+
+&lt;img src="mlm_lecture/mlm-image2.png" width="75%" /&gt;
+---
+### Research example
+EMA study, we have 6 people who reported how happy they feel 6x per day for 10 days
+```r
+dat <-  read.csv("pa_esm.csv")
+```
+```
+##        ID  posemo   obs
+## 1   Shelly     10    1
+## 2      Ben      5    1
+## 3    Ethan      7    1
+## 4     Josh      7    1
+## 5    Qilin      8    1
+## 6   Jessie      8    1
+## 7   Shelly     10    2
+## 8      Ben      3    2
+## 9    Ethan      7    2
+## 10    Josh      4    2
+## 11   Qilin      5    2
+## 12  Jessie      7    2  
+##
+## # 1-12 of 360 rows
+```
+---
+### Research example
+EMA study, we have 6 people who reported how happy they feel 6x per day for 10 days
+
+Null Model 
+`$$Y_{ij} = \gamma_{00} + U_{0j} + \epsilon_{ij}$$`
+
+`$$\text{Happy}_{ij} = \text{Grand Mean(Happy)} + $$` 
+`$$\text{Person Mean(Happy)}_j - \text{Grand Mean(Happy)} + $$` 
+`$$\text{Happy}_{ij} - \text{Person Mean(Happy)}_j$$`
+
+---
+### Research example
+Null Model 
+
+&lt;img src="mlm_lecture/mlm-figure4.png" width="75%" /&gt;
+- this should look familiar?
+
+---
+### Intraclass correlation
+`$$\text{ICC} = \frac{U_{0j}}{U_{0j} + \epsilon_{ij}}$$`
+
+- Out of the total variation, how much is due to between-cluster differences?
+- Metric of dependency: how well can you predict a persons score at one moment from their score at another moment?
+- Also has a substantive meaning: what % of var in happiness is explained by individual differences in average happiness vs. people varying in happiness from moment to moment?
+
+---
+### Adding a level-1 predictor
+- Correlating a repeated outcome with something else that is measured repeatedly within the cluster.
+- For example, do people feel happier during moments when they are acting more extraverted?
+
+---
+### Random Intercept model
+Level 1
+`$$Y_{ij} = b_{0j} + b_1X_{ij} + \epsilon_{ij}$$`
+
+Level 2
+`$$b_{0j} = \gamma_{00} + U_{0j}$$ $$b_1 = \gamma_{10}$$`
+
+Simplifies to
+`$$Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0j} + \epsilon_{ij}$$`
+
+---
+
+## Random Intercept model
+`$$Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0j} + \epsilon_{ij}$$`
+
+Two fixed effects
+- `\(\gamma_{00}\)` = fixed intercept (average persons level of Y when X = 0)
+- `\(\gamma_{10}\)` = fixed slope (expected change in Y for 1-unit change in X)
+One random effect
+- `\(U_{0j}\)` = individual differences in the intercept
+- No random effect for slope.
+- Thus, the slope is *fixed*, meaning our model says everyone has the same effect.
+
+---
+
+### Random Intercept model
+
+&lt;img src="mlm_lecture/mlm-figure5.png" width="75%" /&gt;
+
+---
+
+### Random Slope Model
+- The random intercept model incorporates individual differences by saying that each person gets their own intercept.
+- Incorporates individual differences in average levels or starting levels.
+- But we can go further.
+- People might not only have different means, they may also have different relationships between X and Y.
+
+---
+### Random Intercept model
+Level 1
+`$$Y_{ij} = b_{0j} + b_1X_{ij} + \epsilon_{ij}$$`
+
+Level 2
+`$$b_{0j} = \gamma_{00} + U_{0j}$$ $$b_1 = \gamma_{10}$$`
+
+Simplifies to
+`$$Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0j} + \epsilon_{ij}$$`
+
+---
+### Random Slope Model
+Level 1
+`$$Y_{ij} = b_{0j} + b_1X_{ij} + \epsilon_{ij}$$`
+
+Level 2
+`$$b_{0j} = \gamma_{00} + U_{0j}$$ $$b_1 = \gamma_{10} + U_{1j}$$`
+
+Simplifies to
+`$$Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0j} + U_{1}X_{ij} + \epsilon_{ij}$$`
+
+---
+## Random Slope model
+`$$Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0j} + U_{1j}X_{ij} + \epsilon_{ij}$$`
+
+Two fixed effects
+- `\(\gamma_{00}\)` = fixed intercept (average person's level of Y when X = 0)
+- `\(\gamma_{10}\)` = fixed slope (average person's change in Y for 1-unit change in X)
+Two random effects
+- `\(U_{0j}\)` = individual differences in the intercept
+- `\(U_{1j}\)` = individual differences in the slope
+Every person gets their own intercept ( `\(b_{0j}\)` ) + slope ( `\(b_{1j}\)` )
+
+---
+### Random Slope model
+
+&lt;img src="mlm_lecture/mlm-figure6.png" width="75%" /&gt;
+
+---
+### Technical things to be aware of
+Estimation
+- Do you remember maximum likelihood estimation?
+- e.g., from logistic?
+- Multilevel models use MLE, not OLS
+
+---
+### Partial pooling
+- Each cluster/group/person is treated as coming from a population.
+- All clusters are alike in some ways, but also different in their own unique ways.
+- With MLM, we fit a regression separately for each cluster, but we are not just getting the best fit within the cluster.
+- We adjust predictions using information from other groups. This helps us avoid overfitting.
+- Total pooling = everyone is the same.
+- No pooling = calculate each person's fit in isolation.
+- Partial pooling = somewhere inbetween.
+
+---
+
+class: inverse, middle, center
+
+# Practical considerations
+
+---
+### Centering
+- Centering is really important in MLM.
+- As a rule, any given level-1 predictor is really 2 predictors (one per each level)
+- You want to separate the within-sources of variance from the between-sources. If you don't level 1 and level 2 get "smushed" together.
+
+---
+### Group-mean Centering
+- To isolate level 1 effects, we typically want to create group-mean centered variables (AKA person-mean centered if people are level 2)
+- Each cluster at level 2 gets its own mean, then we subtract that mean from each observation for that cluster.
+- Eliminates between-cluster differences in the predictor variable.
+
+---
+### Group-mean Centering
+```r
+# Person-mean center extraversion
+dat <- dat %>%
+  group_by(ID) %>%
+  mutate(extraversion.m = mean(extraversion, na.rm = T),
+         extraversion.c = extraversion - extraversion.m)
+```
+```
+## # A tibble: 360 × 4
+## # Groups:   ID [6]
+##    ID     extraversion extraversion.m extraversion.c
+##    <chr>         <dbl>          <dbl>          <dbl>
+##   1 Ben            2.33           2.91         -0.572
+##   2 Ben            2.67           2.91         -0.239
+##   3 Ethan          4              3.41          0.589
+##   4 Ethan          4              3.41          0.589
+##   5 Josh           3.67           4.18         -0.517
+##   6 Josh           2.33           4.18         -1.85 
+##   7 Qilin          5              1.86          3.14 
+##   8 Qilin          1.67           1.86         -0.190
+##   9 Shelly         6.67           5.10          1.57 
+##  10 Shelly         7              5.10          1.90
+## # ℹ 350 more rows
+```
+---
+### Power
+- There are many levels of effects, so power depends on what level you care about.
+- e.g., level 1 effects depend on number of observations per cluster. Level 2 effects depend on the number of clusters.
+- Because MLM effects include many different components of variance and covariance, power analyses are much less straightforward.
+- Need to run simulations.
+- PowerAnalysisIL shinyapp (Lafit et al., 2021, AMPPS): https://github.com/ginettelafit/PowerAnalysisIL
+
+---
+### Preregistration
+Modeling choices can influence the results! So you should be explicit about them.
+
+How are predictors centered?
+What random slopes will you model?
+What will you do if the model doesn't converge?
+
+---
+### Convergence issues
+- Models can easily become complex -> estimation issues (e.g., too many random slopes, too little variance)
+- Which random slopes *should* you fit?
+
+What can you do in cases of non-convergence?
+- Adjust the optimizer
+- Drop random slopes with little variance
+- Bayes estimators can fit more complex models
+
+---
+
+class: inverse, middle, center
+
+# Running a MLM in R
+
+---
+### Null Model
+```r
+library(lme4)
+mod.null <- lmer(posemo ~ (1 |ID),
+                 data = dat)
+summary(mod.null)
+```
+```
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  ID       (Intercept) 2.690    1.640   
+##  Residual             3.474    1.864 
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value
+## (Intercept)   5.2134     0.6771 4.9817   7.699
+```
+---
+### Null Model
+Calculating the intraclass correlation
+```r
+null_var <- data.frame(VarCorr(mod.null), row.names = c('between', 'within'))
+ICC <- null_var['between', 'vcov']/(null_var['between', 'vcov'] + null_var['within', 'vcov'])
+ICC
+```
+```
+## [1] 0.4365
+```
+`$$\text{ICC} = \frac{U_{0ID}}{U_{0ID} + \epsilon_{IDmoment}}$$`
+- 43% of variation in happiness is due to individual differences in average happiness
+- 57% of variation is due to people changing in happiness moment-to-moment
+---
+
+### Random Intercept Model
+```r
+mod.fixed <- lmer(posemo ~ extraversion.c + (1 |ID),
+                 data = dat)
+summary(mod.fixed)
+```
+```
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  ID       (Intercept) 2.699    1.643   
+##  Residual             3.126    1.768   
+## Number of obs: 345, groups:  ID, 6
+## 
+## Fixed effects:
+##                 Estimate Std. Error        df t value
+## (Intercept)      5.21301    0.67749   4.98353   7.695
+## extraversion.c   0.44867    0.07209 337.98351   6.224
+```
+
+---
+Random Slope Model
+```r
+mod.random <- lmer(posemo ~ extraversion.c + (extraversion.c |ID),
+                 data = dat)
+summary(mod.random)
+```
+```
+## Random effects:
+##  Groups   Name           Variance Std.Dev. Corr 
+##  ID       (Intercept)    2.7052   1.6448        
+##           extraversion.c 0.1066   0.3264   -0.94
+##  Residual                3.0412   1.7439        
+## Number of obs: 345, groups:  ID, 6
+## 
+## Fixed effects:
+##                Estimate Std. Error     df t value 
+## (Intercept)      5.2118     0.6780 4.9838   7.687 
+## extraversion.c   0.5156     0.1525 3.5774   3.380
+```
+
+---
+### Random effects: variances and covariances
+```
+## # A tibble: 6 × 3
+##   id          U0     U1
+##   <chr>      <dbl>  <dbl>
+## 1 Shelly     0.460 -1.10 
+## 2 Ben        0.828 -0.484
+## 3 Ethan      0.234 -0.443  
+## 4 Josh      -0.840  0.253
+## 5 Qilin     -2.89   0.328
+## 6 Jessie     2.21   1.44
+```
+\(r\) = -.94 means that people who have higher average levels of happiness have a less strong association between momentary extraversion and momentary happiness.
+
+---
+### Random Slope Model 
+&lt;img src="mlm_lecture/mlm-figure7.png" width="75%" /&gt;
+
+---
+### Random Slope Model 
+Can think of each person's predicted scores as comprising the overall, fixed component + their own unique random component
+
+`$$\hat{Y}_{iShelly} = \gamma_{00} + \gamma_{10}X_{ij} + U_{0Shelly} + U_{10Shelly}X_{ij}$$`
+`$$\hat{Happy}_{iShelly} = 5.25 + .51*Extra_{ij} + .46 + \\
+-1.10*Extra_{ij}$$`
+
+---
+### Infinite possibilities
+Adding Level-2 predictors
+- These can include cross-level interactions where you predict individual differences in slope from individual differences in measured variables at level 2.
+- e.g., do more extraverted people get a bigger happiness boost from being extraverted in the moment?
+
+Multiple levels of nesting (level 3, level 4...)
+- e.g., students within classrooms, within schools, within districts...
+- There are practical limitations to how many you can model in practice though
+
+---
+### Infinite possibilities
+Clusters can be crossed rather than nested
+- e.g., in experiments
+- The same person responds to many stimuli.
+- The same stimuli receives responses from many people.
+- But one is not nested in the other.
+
+---
+### Wrap-up
+- You should be using multilevel models!
+- Applicable anytime that the same person does multiple things or a few people who have something in common do anything.
+- You should take HLM with Emily Willroth in the Fall!
+
+---
+
+class: inverse
+
+### Next Time
+Bayes: Josh Jackson Returns
+
+Final class of the semester next Tuesday :0
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
