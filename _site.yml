@@ -47,8 +47,12 @@ navbar:
         href: "lectures/23-ml.html"
       - text: "20-PCA"
         href: "lectures/pca.html"
-      - text: "21-MLM"
+      - text: "21-AI"
+        href: "lectures/ai-slides-2026.pdf"
+      - text: "22-MLM"
         href: "lectures/mlm_lecture.html"
+      - text: "23-Bayes"
+        href: "lectures/Become_a_bayesian.html"
     - text: PDF Slides
       menu:
       - text: "1-Intro"
@@ -91,8 +95,12 @@ navbar:
         href: "lectures/23-ml.pdf"
       - text: "20-PCA"
         href: "lectures/pca.pdf"
-      - text: "21-MLM"
+      - text: "21-AI"
+        href: "lectures/ai-slides-2026.pdf"
+      - text: "22-MLM"
         href: "lectures/mlm_lecture.pdf"
+      - text: "23-Bayes"
+        href: "lectures/Become_a_bayesian.pdf"
     - text: Homework
       href: homework.html
   right:
