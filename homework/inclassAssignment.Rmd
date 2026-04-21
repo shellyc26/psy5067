@@ -1,0 +1,267 @@
+---
+title: "Last Hurrah"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+---
+
+Instead of a homework assignment, we are going to do an in-class activity to help review for the last exam. This is a **collaborative review** -- you will not be graded on accuracy, but you will be graded on completeness and putting in a good effort.
+
+Your goal is to produce a shared written document (and some R code) that your group could actually use to study from. AI assistance is welcome for code — your job is to make sure the explanations are in your own words and actually make sense to you.
+
+#### What you're turning in
+
+One shared document per group (Google Doc or RMarkdown):
+
+- Written answers to Part 1
+- Part 2 write-up: conceptual answers + annotated R code (every line explained)
+- Part 3 connecting concepts paragraph
+
+**DUE TONIGHT AT 11:59PM**
+
+You will use a simulated dataset I'm calling GradWell
+
+| Variable | Type | Description |
+|---|---|---|
+| `student_id` | integer | Unique student identifier (1–300) |
+| `program_id` | factor | Graduate program (prog_1 through prog_6) |
+| `cohort_year` | factor | Enrollment cohort (cohort_1 through cohort_3) |
+| `age` | integer | Student age in years |
+| `gender` | factor | Gender identity (woman, man, nonbinary) |
+| `first_gen` | binary (0/1) | First-generation graduate student status |
+| `year_in_prog` | integer | Current year in program (1–6) |
+| `funding` | factor | Funding type (fellowship, TA, RA, unfunded) |
+| `social_support` | numeric (1–10) | Perceived social support scale |
+| `advisor_quality` | numeric (1–10) | Perceived advisor relationship quality |
+| `hours_worked` | integer | Self-reported hours worked per week |
+| `imp1`–`imp5` | integer (1–5) | Impostor syndrome battery items (Likert) |
+| `stress1`–`stress5` | integer (1–5) | Perceived stress battery items (Likert) |
+| `wellbeing` | numeric (0–100) | Psychological wellbeing score (primary outcome) |
+| `counseling` | binary (0/1) | Sought counseling services this year |
+
+# Part 1 - Rapid Fire Questions
+
+Write a 2–4 sentence answer for each. Aim for clarity over completeness — if you could explain it to a confused labmate, that's the right level.
+
+Q1. In a regression predicting `wellbeing` from `social_support` controlling for `first_gen` status — what does "controlling for" actually mean, and why does it change the coefficient on `social_support`?
+
+Q2. You add an interaction between `social_support` and `gender` to the model. Describe in plain language what a significant interaction would tell you about social support and wellbeing.
+
+Q3. You run a chi-square test on `counseling` × `funding` type. What is the null hypothesis? What are the "expected counts" and where do they come from?
+
+Q4. Why is linear regression a poor choice when your outcome is `counseling` (0/1)? What does logistic regression do differently?
+
+Q5. Describe bootstrapping in plain terms using this dataset as context — what would you actually be doing to the rows of `gw`?
+
+Q6. You fit a very complex ML model to `gw` and it predicts `wellbeing` with R² = 0.97 in-sample but R² = 0.21 on held-out data. What is happening and why?
+
+Q7. The five `imp` items are all measuring the same underlying construct. What does PCA do with them, and what does the first component represent?
+
+Q8. Students are nested in programs. Why does this violate a key assumption of ordinary regression, and what does a multilevel model do to address it?
+
+Q9. A Bayesian analysis of the effect of `social_support` on `wellbeing` gives you a posterior distribution. What does that distribution represent, and how is it different from a p-value?
+
+Q10. A colleague says qualitative research on grad student wellbeing "doesn't count" because it's not generalizable. How would you respond?
+
+# Part 2 -- Deep Dive on Specific Topics
+
+Complete the 3 tasks for your given group's topic. First answer the conceptual questions, then annotate each line of the `R` code with a plain-English explanation for what that line of code is doing.
+
+### Group 1 -- Regression with covariates & interactions
+
+Predict wellbeing from social_support, controlling for first_gen and hours_worked, and test whether the effect of social_support differs by gender.
+
+Before running anything: which direction do you expect each predictor to go, and why? What would a social_support × gender interaction look like if it were real?
+
+After running the model: interpret the interaction coefficient in plain language. What does it mean that gender = "woman" is the reference level?
+
+Make an interaction plot. Describe what it shows as if presenting to a non-statistician.
+
+```{r, eval=FALSE}
+# ── Group 1 scaffold ─────────────────────────────────────────────
+library(ggplot2)
+
+# Fit model with covariates and interaction
+m1 <- lm(DV ~ IV1 * IV2 + Cov1 + Cov2,
+         data = gw)
+summary(m1)
+
+# Interaction plot — predicted wellbeing across social_support, by gender
+gw$pred <- predict(m1)
+
+ggplot(gw, aes(x = social_support, y = wellbeing, color = gender)) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "Social support × gender interaction on wellbeing",
+       x = "Social support (1–10)", y = "Wellbeing (0–100)") +
+  theme_minimal()
+
+# What does the interaction coefficient tell you?
+# Annotate each line above with a plain-English explanation.
+```
+
+### Group 2 -- Machine Learning
+
+Predict `wellbeing` using all available predictors. Compare an overfit model to a regularized one, and explain what's happening conceptually.
+
+In your own words: draw or describe the bias-variance tradeoff curve. Where does a simple linear model sit? Where does a massively overfit model sit?
+
+Explain what Lasso regularization is doing mathematically in one sentence, then explain it again using only non-technical language.
+
+Use cross-validation to pick the best lambda. What would it mean if the best lambda were very large?
+
+Below should run the code -- your job is to annotate each line so you know what it's doing. 
+
+```{r, eval=FALSE}
+# ── Group 2 scaffold ─────────────────────────────────────────────
+library(glmnet)
+
+# Prepare predictors (all numeric columns except outcomes and IDs)
+pred_vars <- c("age","first_gen","year_in_prog","social_support",
+               "advisor_quality","hours_worked",
+               paste0("imp", 1:5), paste0("stress", 1:5))
+
+X <- as.matrix(gw[, pred_vars])
+y <- gw$wellbeing
+
+# Split into train/test (80/20)
+set.seed(2024)
+train_idx <- sample(1:nrow(gw), 0.8 * nrow(gw))
+X_train <- X[train_idx, ];   y_train <- y[train_idx]
+X_test  <- X[-train_idx, ];  y_test  <- y[-train_idx]
+
+# Overfit baseline: ordinary OLS on training data
+m_ols <- lm(y_train ~ X_train)
+pred_ols_test <- cbind(1, X_test) %*% coef(m_ols)
+cat("OLS test R²:", cor(pred_ols_test, y_test)^2, "\n")
+
+# Lasso with cross-validation to select lambda
+cv_lasso <- cv.glmnet(X_train, y_train, alpha = 1)
+plot(cv_lasso)   # what does this plot show?
+
+best_lambda <- cv_lasso$lambda.min
+pred_lasso_test <- predict(cv_lasso, s = best_lambda, newx = X_test)
+cat("Lasso test R²:", cor(pred_lasso_test, y_test)^2, "\n")
+
+# Which predictors survived? (coef = 0 means Lasso dropped them)
+coef(cv_lasso, s = "lambda.min")
+    
+# Annotate each line above with a plain-English explanation.
+```
+
+### Group 3 -- PCA & Bootstrapping
+
+Use PCA to reduce the 5 impostor syndrome items to component scores, then use bootstrapping to get a confidence interval on a correlation — without assuming normality.
+
+What is PCA actually doing to the covariance structure of the 5 imp items? Is the first component a "real" psychological variable?
+
+Walk through bootstrapping step by step as if explaining to a skeptical labmate. Why does resampling with replacement work as a substitute for having more data?
+
+How does the bootstrapped CI compare to the parametric one? When would you expect them to differ most?
+
+```{r, eval=FALSE}
+# ── Group 3 scaffold ─────────────────────────────────────────────
+library(boot)
+
+# PCA on the 5 impostor syndrome items
+pca_out <- prcomp(gw[, paste0("imp", 1:5)], scale. = TRUE)
+
+# Scree plot — how many components are worth keeping?
+screeplot(pca_out, type = "lines", main = "Scree plot: impostor syndrome items")
+abline(h = 1, lty = 2)   # Kaiser criterion
+
+# Loadings: what does each item contribute to PC1?
+pca_out$rotation[, 1:2]
+
+# Add PC1 scores to the dataframe
+gw$imp_PC1 <- pca_out$x[, 1]
+
+# Parametric correlation: imp_PC1 vs wellbeing
+cor.test(gw$imp_PC1, gw$wellbeing)
+
+# Bootstrapped correlation (no normality assumption)
+corr_fn <- function(data, i) {
+  cor(data$imp_PC1[i], data$wellbeing[i])
+}
+boot_out <- boot(data = gw, statistic = corr_fn, R = 1000)
+boot.ci(boot_out, type = "perc")   # percentile CI
+
+# Compare: how similar are the two CIs?
+# Annotate each line above with a plain-English explanation.
+```
+
+
+### Group 4 -- Multilevel Models & Bayesian
+
+Students are nested in programs. Fit MLMs to account for this, then connect the logic to Bayesian thinking — both are about modeling uncertainty at multiple levels.
+
+Explain random intercepts vs. random slopes using program_id as your example. Draw or describe what each allows to vary.
+
+The Bayesian posterior on the social_support coefficient is a distribution, not a point. What does the width of that distribution tell you? How does a 95% credible interval differ from a 95% confidence interval?
+
+Compare the fixed-effect estimate of social_support from the MLM to the simple regression. Does accounting for nesting change it? Why might it?
+
+```{r, eval=FALSE}
+# ── Group 4 scaffold ─────────────────────────────────────────────
+library(lme4)
+
+# Baseline: ignore nesting (what's wrong with this?)
+m_ols <- lm(wellbeing ~ social_support + year_in_prog + first_gen, data = gw)
+
+# Random intercept model: each program gets its own baseline wellbeing
+m_ri <- lmer(wellbeing ~ social_support + year_in_prog + first_gen +
+               (1 | program_id), data = gw)
+summary(m_ri)
+
+# How much variance is between programs vs. within?
+as.data.frame(VarCorr(m_ri))   # ICC = between / (between + within)
+
+# Random slope model: social_support effect varies by program
+m_rs <- lmer(wellbeing ~ social_support + year_in_prog + first_gen +
+               (1 + social_support | program_id), data = gw)
+summary(m_rs)
+
+# Compare fixed effects across models
+coef(summary(m_ols))["social_support", ]
+coef(summary(m_ri))["social_support", ]
+coef(summary(m_rs))["social_support", ]
+
+# ── Bayesian sketch (brms) ────────────────────────────────────────
+# If brms is installed, uncomment and run (takes ~1 min):
+# library(brms)
+# m_bayes <- brm(
+#   wellbeing ~ social_support + year_in_prog + (1 | program_id),
+#   data = gw, family = gaussian(),
+#   prior = c(prior(normal(0, 10), class = b),
+#             prior(normal(50, 20), class = Intercept)),
+#   chains = 2, iter = 1000, seed = 2024
+# )
+# summary(m_bayes)
+# plot(m_bayes)   # posterior distributions
+# Annotate each line above with a plain-English explanation.
+```
+
+### Group 5 -- Qualitative & AI Basics
+
+ Qualitative methods + AI basics
+No R code required. Your deliverables are all written. Consider: the GradWell survey captured numbers, but what does it miss about grad student wellbeing?
+
+Write a brief (~150 word) qualitative methods section for a follow-up interview study on impostor syndrome in grad students. What would make it rigorous?
+
+The GradWell survey has an imp_PC1 score. A qualitative researcher says "that number doesn't capture what impostor syndrome actually feels like." Respond to this critique — and also respond to what the qualitative researcher's approach would miss.
+
+In plain language: how does a large language model generate text? Identify two specific ways this makes LLMs unreliable for scientific work.
+
+Bonus discussion: Someone proposes using an LLM to code qualitative interview transcripts for themes. What are the strongest arguments for and against this?
+
+# Part 3 - Connecting Ideas
+
+Each group picks one option. Aim for 1 solid paragraph.
+
+Option A. A reviewer says the GradWell study has "too many predictors and only 300 participants." Using at least two concepts from this course, explain what statistical risks this creates and how you would address them.
+
+Option B. You ran both an MLM and a Bayesian MLM on the GradWell data. A colleague asks why you'd bother with Bayes if the fixed-effect estimates are nearly the same. How do you answer?
+
+Option C. A news headline reads: "AI model predicts grad student burnout with 93% accuracy." Using what you know about overfitting, train/test splits, and what accuracy actually measures, explain what questions you'd ask before believing this claim.
+
