@@ -22,8 +22,8 @@ Note that this semester you will be making your RMarkdown/RNotebook/Quarto (anyt
 - Due on **Sunday 3/22 by 11:59pm**
 
 
-## Homework 3
-- HW 3 will be posted here
-- Due on **Sunday 4/19 by 11:59pm**
+## In-class Assignment
+- [In-class assignment posted here](homework/inclassAssignment.html)
+- Due on **Tuesday 4/21 by 11:59pm**
 
 
