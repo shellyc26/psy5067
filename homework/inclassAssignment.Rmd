@@ -23,6 +23,8 @@ One shared document per group (Google Doc or RMarkdown):
 
 You will use a simulated dataset I'm calling GradWell
 
+[`gradwelldata.csv`](gradwelldata.csv)
+
 | Variable | Type | Description |
 |---|---|---|
 | `student_id` | integer | Unique student identifier (1–300) |
